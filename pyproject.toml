@@ -1,0 +1,32 @@
+[project]
+name = "mkdocstrings-matlab"
+version = "0.1.4"
+description = "Add your description here"
+authors = [
+    { name = "Mark Hu", email = "watermarkhu@gmail.com" }
+]
+dependencies = [
+    "mkdocs>=1.6.0",
+    "mkdocstrings>=0.25.2",
+    "mkdocstrings[python]>=0.18",
+    "griffe>=1.2.0",
+    "mkdocs-material>=9.5.33",
+    "markdown>=3.7",
+    "charset-normalizer>=3.3.2",
+    "textmate-grammar-python>=0.6.1",
+]
+readme = "README.md"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = []
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mkdocstrings_handlers"]

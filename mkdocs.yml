@@ -1,0 +1,28 @@
+site_name: "mkdocstrings-matlab"
+repo_name: "watermarkhu/mkdocstrings-matlab"
+site_dir: "site"
+
+nav:
+  - Home: index.md
+
+theme:
+  name: material
+
+watch:
+  - src
+
+plugins:
+- search
+- autorefs
+- mkdocstrings:
+    default_handler: python
+    handlers:
+      # python:
+      #   paths: ["src"]
+      #   options:
+      #     show_root_heading: true
+      #     show_docstring_attributes: false
+      matlab:
+        paths: ["/home/mahu/repositories/github-matlab-test-action/src"]
+        options:
+          show_root_heading: true
