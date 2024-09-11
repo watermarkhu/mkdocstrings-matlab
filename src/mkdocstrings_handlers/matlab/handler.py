@@ -126,10 +126,13 @@ class MatlabHandler(BaseHandler):
 
         if paths is None:
             paths = ""
+        else:
+            config_path = Path(config_file_path).parent
+            full_paths = [str((config_path / path).resolve()) for path in paths]
 
         self.engine = MatlabEngine()
         self.engine.addpath(str(Path(__file__).parent / "matlab"))
-        self.engine.matlab_startup(paths, startup_expression)
+        self.engine.matlab_startup(full_paths, startup_expression)
         self.models = ModelsCollection()
         self.lines = LinesCollection()
         self.parser = MatlabParser()

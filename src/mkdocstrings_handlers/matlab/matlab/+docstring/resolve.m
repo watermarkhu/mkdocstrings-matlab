@@ -60,13 +60,19 @@ switch exist(identifier) %#ok<EXIST>
 
         % Try with metafunction
         object = matlab.internal.metafunction(identifier);
-        if ~isempty(object) && isa(object, 'matlab.internal.metadata.Function')
-            if isempty(object.Signature)
-                data = docstring.metadata.script(object);
+        if ~isempty(object)
+            if isa(object, 'matlab.internal.metadata.Function')
+                if isempty(object.Signature)
+                    data = docstring.metadata.script(object);
+                else
+                    data = docstring.metadata.func(object);
+                end
+                data.name = identifier;
+            elseif isa(object, 'matlab.internal.metadata.Method')
+                data = docstring.case.class(identifier);
             else
-                data = docstring.metadata.func(object);
+                docstring.exception(identifier);
             end
-            data.name = identifier;
         else
             docstring.exception(identifier);
         end
