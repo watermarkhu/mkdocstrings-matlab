@@ -125,7 +125,7 @@ class MatlabHandler(BaseHandler):
         super().__init__(*args, **kwargs)
 
         if paths is None:
-            paths = ""
+            full_paths = ""
         else:
             config_path = Path(config_file_path).parent
             full_paths = [str((config_path / path).resolve()) for path in paths]

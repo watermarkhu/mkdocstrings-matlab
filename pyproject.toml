@@ -1,6 +1,6 @@
 [project]
 name = "mkdocstrings-matlab"
-version = "0.1.6"
+version = "0.1.7"
 description = "Add your description here"
 authors = [
     { name = "Mark Hu", email = "watermarkhu@gmail.com" }
