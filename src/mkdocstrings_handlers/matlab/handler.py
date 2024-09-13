@@ -10,6 +10,7 @@ from pprint import pprint
 
 import charset_normalizer
 import json
+import requests
 
 
 from mkdocstrings_handlers.matlab.collections import LinesCollection, ModelsCollection
@@ -60,7 +61,7 @@ class MatlabHandler(BaseHandler):
         # "find_stubs_package": False,
         # "allow_inspection": True,
         "show_bases": True,
-        "show_inheritance_diagram": False,  # Insider feature
+        "show_inheritance_diagram": True,
         "show_source": True,
         # "preload_modules": None,
         # Heading options
@@ -143,6 +144,27 @@ class MatlabHandler(BaseHandler):
         # (it assumes the python handler is installed)
         return super().get_templates_dir("python")
 
+    def get_ast(self, identifier:str, config: Mapping[str, Any]) -> dict:
+        ast_json = self.engine.docstring.resolve(identifier)
+        ast = json.loads(ast_json)
+
+        # TODO: skip when encountering MATLAB builtins
+        if ast['type'] == 'class':
+            
+            if isinstance(ast["superclasses"], str):
+                ast["superclasses"] = [ast["superclasses"]]
+                
+            if config["show_inheritance_diagram"]:
+                for index, base in enumerate(ast["superclasses"]):
+                    
+                    try:
+                        ast["superclasses"][index] = self.get_ast(base, config)
+                        ast["superclasses"][index]["name"] = base
+                    except MatlabExecutionError:
+                        ast["superclasses"][index] = {"name": base}
+        return ast
+
+
     def collect(self, identifier: str, config: Mapping[str, Any]) -> CollectorItem:
         """Collect data given an identifier and user configuration.
 
@@ -156,26 +178,28 @@ class MatlabHandler(BaseHandler):
         Returns:
             CollectorItem
         """
+        if identifier == "":
+            raise CollectionError("Empty identifier")
+
         final_config = ChainMap(config, self.default_config)  # type: ignore[arg-type]
         if identifier in self.models:
             return self.models[identifier]
 
         try:
-            ast_json = self.engine.docstring.resolve(identifier)
+            ast = self.get_ast(identifier, final_config)
         except MatlabExecutionError as error:
             raise CollectionError(error.args[0].strip()) from error
-        ast_dict = json.loads(ast_json)
 
-        filepath = Path(ast_dict["path"])
+        filepath = Path(ast["path"])
         if filepath not in self.lines:
             lines = str(charset_normalizer.from_path(filepath).best()).splitlines()
             self.lines[filepath] = lines
 
-        match ast_dict["type"]:
+        match ast["type"]:
             case "function" | "method":
-                return self.collect_function(ast_dict, final_config)
+                return self.collect_function(ast, final_config)
             case "class":
-                return self.collect_class(ast_dict, final_config)
+                return self.collect_class(ast, final_config)
             case _:
                 return None
 
@@ -247,15 +271,11 @@ class MatlabHandler(BaseHandler):
             lambda template_name: template_name in self.env.list_templates()
         )
 
-    def collect_class(self, ast_dict: dict, config: Mapping) -> Class:
-        docstring = (
-            Docstring(ast_dict["docstring"], parser=config["docstring_style"])
-            if ast_dict["docstring"]
-            else None
-        )
+    def collect_class(self, ast: dict, config: Mapping) -> Class:
 
-        filepath = Path(ast_dict["path"])
+        filepath = Path(ast["path"])
 
+        # Parse textmate object
         if config["show_source"]:
             tmObject = self.parser.parse_file(filepath)
             tmClass = next(
@@ -266,18 +286,24 @@ class MatlabHandler(BaseHandler):
         else:
             tmClass = None
 
-        bases = ast_dict["superclasses"] if isinstance(ast_dict["superclasses"], list) else [ast_dict["superclasses"]]
-        bases = [base for base in bases if base != "handle"]
-
+        # Get bases
+        if config["show_bases"]:
+            if config["show_inheritance_diagram"]:
+                bases = [base["name"] for base in ast["superclasses"]]
+            else:
+                bases = ast["superclasses"] if isinstance(ast["superclasses"], list) else [ast["superclasses"]]
+        else:
+            bases = []
+        
+        # Load model
         model = Class(
-            ast_dict["name"],
-            docstring=docstring,
+            ast["name"],
             parent=self.get_parent(filepath.parent),
-            hidden=ast_dict["hidden"],
-            sealed=ast_dict["sealed"],
-            abstract=ast_dict["abstract"],
-            enumeration=ast_dict["enumeration"],
-            handle=ast_dict["handle"],
+            hidden=ast["hidden"],
+            sealed=ast["sealed"],
+            abstract=ast["abstract"],
+            enumeration=ast["enumeration"],
+            handle=ast["handle"],
             bases=bases,
             filepath=filepath,
             modules_collection=self.models,
@@ -286,8 +312,21 @@ class MatlabHandler(BaseHandler):
             endlineno=len(self.lines[filepath]),
             textmate=tmClass,
         )
+        ast["name"] = model.canonical_path
 
-        for property_dict in ast_dict["properties"]:
+        # Format mermaid inheritance diagram
+        if config["show_inheritance_diagram"] and ast["superclasses"]:
+            section = get_inheritance_diagram(ast)
+            docstring = Docstring(ast["docstring"] + section, parser=config["docstring_style"])
+        elif ast["docstring"]:
+            docstring = Docstring(ast["docstring"], parser=config["docstring_style"])
+        else:
+            docstring
+
+        model.docstring = docstring
+
+        # Load properties
+        for property_dict in ast["properties"]:
             name = property_dict.pop("name")
             defining_class = property_dict.pop("class")
             property_doc = property_dict.pop("docstring")
@@ -306,7 +345,8 @@ class MatlabHandler(BaseHandler):
             model.members[name] = prop
             self.models[prop.canonical_path] = prop
 
-        for method_dict in ast_dict["methods"]:
+        # Load methods
+        for method_dict in ast["methods"]:
             name = method_dict.pop("name")
             defining_class = method_dict.pop("class")
             if (
@@ -337,13 +377,13 @@ class MatlabHandler(BaseHandler):
 
         return model
 
-    def collect_function(self, ast_dict: dict, config: Mapping) -> Function:
+    def collect_function(self, ast: dict, config: Mapping) -> Function:
         parameters = []
 
         inputs = (
-            ast_dict["inputs"]
-            if isinstance(ast_dict["inputs"], list)
-            else [ast_dict["inputs"]]
+            ast["inputs"]
+            if isinstance(ast["inputs"], list)
+            else [ast["inputs"]]
         )
         for input_dict in inputs:
             if input_dict["name"] == "varargin":
@@ -362,16 +402,16 @@ class MatlabHandler(BaseHandler):
                 )
             )
 
-        filepath = Path(ast_dict["path"])
+        filepath = Path(ast["path"])
         model = Function(
-            ast_dict["name"],
+            ast["name"],
             parameters=Parameters(*parameters),
             docstring=Docstring(
-                ast_dict["docstring"],
+                ast["docstring"],
                 parser=config["docstring_style"],
                 parser_options=config["docstring_options"],
             )
-            if ast_dict["docstring"]
+            if ast["docstring"]
             else None,
             parent=self.get_parent(filepath.parent),
             filepath=filepath,
@@ -408,6 +448,32 @@ class MatlabHandler(BaseHandler):
         else:
             parent = ROOT
         return parent
+
+def get_inheritance_diagram(ast: dict) -> str:
+    def get_id(str: str) -> str:
+        return str.replace('.', '_')
+    def get_nodes(ast: dict, nodes: set[str] = set(), clicks: set[str] = set()) -> str:
+        id = get_id(ast['name'])
+        nodes.add(f"   {id}[{ast['name']}]")
+        if "help" in ast:
+            clicks.add(f"   click {id} \"{ast['help']}\"")
+        if "superclasses" in ast:
+            for superclass in ast["superclasses"]:
+                get_nodes(superclass, nodes)
+        return (nodes, clicks)
+    def get_links(ast: dict, links: set[str] = set()) -> str:
+        if "superclasses" in ast:
+            for superclass in ast["superclasses"]:
+                links.add(f"   {get_id(ast['name'])} --> {get_id(superclass['name'])}")
+                get_links(superclass, links)
+        return links
+    
+    (nodes, clicks) = get_nodes(ast)
+    nodes_str = '\n'.join(list(nodes))
+    clicks_str = '\n'.join(list(clicks))
+    links_str = '\n'.join(list(get_links(ast)))
+    section = f"\n\n## Inheritance diagram\n\n```mermaid\nflowchart BT\n{nodes_str}\n{clicks_str}\n{links_str}\n```"
+    return section
 
 
 def get_handler(
