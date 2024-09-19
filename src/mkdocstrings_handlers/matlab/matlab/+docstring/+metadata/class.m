@@ -1,6 +1,7 @@
-function data = class(object)
+function data = class(object, opts)
     arguments
         object (1,1) % meta.class matlab.metadata.Class
+        opts.builtin (1,1) logical = false
     end
     data.type = 'class';
     
@@ -8,7 +9,6 @@ function data = class(object)
     data.name = namespaces{end};
     
     data.docstring = docstring.utils.parse_doc(object);
-    data.path = matlab.internal.metafunction(object.Name).Location;
     data.hidden = object.Hidden;
     data.sealed = object.Sealed;
     data.abstract = object.Abstract;
@@ -16,6 +16,11 @@ function data = class(object)
     data.superclasses = arrayfun(@(o) string(o.Name), object.SuperclassList);
     data.handle = object.HandleCompatible;
     data.aliases = object.Aliases;
+    if opts.builtin
+        data.path = '';
+    else
+        data.path = matlab.internal.metafunction(object.Name).Location;
+    end
     
     data.methods = [];
     for methodObject = object.MethodList'

@@ -46,7 +46,7 @@ if contains(identifier, '.')
 end
 
 % Try built-in aliases with which
-if contains(which(identifier), ' built-in ')
+if contains(which(identifier), {' built-in ', matlabroot})
     data = docstring.case.builtin(identifier);
     jsonString = jsonencode(data);
     return
