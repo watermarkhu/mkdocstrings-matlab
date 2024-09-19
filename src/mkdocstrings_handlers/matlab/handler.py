@@ -62,6 +62,7 @@ class MatlabHandler(BaseHandler):
         # "allow_inspection": True,
         "show_bases": True,
         "show_inheritance_diagram": True,
+        "inheritance_diagram_show_builtin": False,
         "show_source": True,
         # "preload_modules": None,
         # Heading options
@@ -145,18 +146,37 @@ class MatlabHandler(BaseHandler):
         return super().get_templates_dir("python")
 
     def get_ast(self, identifier:str, config: Mapping[str, Any]) -> dict:
+        """Retrieve the Abstract Syntax Tree (AST) for a given MATLAB identifier.
+        
+        This method resolves the docstring for the specified identifier and parses it into an AST.
+        If the identifier corresponds to a class, it processes its superclasses and optionally 
+        includes an inheritance diagram based on the provided configuration.
+        Args:
+            identifier (str): The MATLAB identifier to resolve.
+            config (Mapping[str, Any]): Configuration options for processing the AST.
+        Returns:
+            dict: The parsed AST for the given identifier.
+        Raises:
+            MatlabExecutionError: If there is an error resolving the superclass AST.
+        """
+
         ast_json = self.engine.docstring.resolve(identifier)
         ast = json.loads(ast_json)
 
-        # TODO: skip when encountering MATLAB builtins
         if ast['type'] == 'class':
             
             if isinstance(ast["superclasses"], str):
                 ast["superclasses"] = [ast["superclasses"]]
-                
+            
             if config["show_inheritance_diagram"]:
+                # Check if class is builtin and skip superclasses if option is not set
+                builtin = ast.get('builtin', False) or ast["name"].startswith("matlab.")
+                resursive = not builtin or config["inheritance_diagram_show_builtin"]
+                if not resursive:
+                    ast["superclasses"] = []
+
+                # Get superclasses AST
                 for index, base in enumerate(ast["superclasses"]):
-                    
                     try:
                         ast["superclasses"][index] = self.get_ast(base, config)
                         ast["superclasses"][index]["name"] = base
