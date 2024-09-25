@@ -1,15 +1,15 @@
 [project]
-name = "mkdocstrings-matlab-r2023a"
+name = "mkdocstrings-matlab-r2024b"
 version = "0.1.2"
 description = "Add your description here"
 authors = [
     { name = "Mark Shui Hu", email = "watermarkhu@gmail.com" }
 ]
 dependencies = [
-    "matlabengine==9.14.7",
+    "matlabengine==24.2.1",
 ]
 readme = "README.md"
-requires-python = ">=3.8,<3.11"
+requires-python = ">=3.9,<3.13"
 keywords = ["mkdocs", "mkdocstrings", "documentation", "docstring", "matlab"]
 license = {file = "LICENSE"}
 classifiers = [
@@ -28,16 +28,16 @@ classifiers = [
 
   # Specify the Python versions you support here.
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
 ]
 
 [project.urls]
 Documentation = "http://watermarkhu.nl/mkdocstrings-matlab/"
 Repository = "https://github.com/watermarkhu/mkdocstrings-matlab"
 Issues = "https://github.com/watermarkhu/mkdocstrings-matlab/issues"
-
 
 [build-system]
 requires = ["hatchling"]
@@ -52,4 +52,3 @@ allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/mkdocstrings_handlers"]
-

@@ -23,6 +23,6 @@ plugins:
       #     show_root_heading: true
       #     show_docstring_attributes: false
       matlab:
-        paths: ["/home/mahu/repositories/github-matlab-test-action/src"]
+        paths: ["/home/mahu/repositories/matlab-test-action/src"]
         options:
           show_root_heading: true

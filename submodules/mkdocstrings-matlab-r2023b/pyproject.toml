@@ -35,8 +35,8 @@ classifiers = [
 
 [project.urls]
 Documentation = "http://watermarkhu.nl/mkdocstrings-matlab/"
-Repository = "https://github.com/watermarkhu/mkdocstrings-matlab-r2023b"
-Issues = "https://github.com/watermarkhu/mkdocstrings-matla-r2023b/issues"
+Repository = "https://github.com/watermarkhu/mkdocstrings-matlab"
+Issues = "https://github.com/watermarkhu/mkdocstrings-matlab/issues"
 
 [build-system]
 requires = ["hatchling"]
