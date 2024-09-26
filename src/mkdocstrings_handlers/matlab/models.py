@@ -62,7 +62,7 @@ class Class(CanonicalPathMixin, PathMixin, GriffeClass):
             for block in self._textmate.children
             if block.token == "meta.methods.matlab"
         ]:
-            for method in block.children:
+            for method in [c for c in block.children if c.token == "meta.function.matlab"]:
                 declaration = next(
                     item
                     for item in method.children

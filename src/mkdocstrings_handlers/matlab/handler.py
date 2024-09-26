@@ -167,6 +167,10 @@ class MatlabHandler(BaseHandler):
             
             if isinstance(ast["superclasses"], str):
                 ast["superclasses"] = [ast["superclasses"]]
+            if isinstance(ast["properties"], dict):
+                ast["properties"] = [ast["properties"]]
+            if isinstance(ast["methods"], dict):
+                ast["methods"] = [ast["methods"]]
             
             if config["show_inheritance_diagram"]:
                 # Check if class is builtin and skip superclasses if option is not set
@@ -341,7 +345,7 @@ class MatlabHandler(BaseHandler):
         elif ast["docstring"]:
             docstring = Docstring(ast["docstring"], parser=config["docstring_style"])
         else:
-            docstring
+            docstring = None
 
         model.docstring = docstring
 
@@ -390,7 +394,8 @@ class MatlabHandler(BaseHandler):
         if config["merge_init_into_class"] and model.name in model.members:
             constructor = model.members.pop(model.name)
             model.members["__init__"] = constructor
-            if constructor.docstring.value == model.docstring.value:
+
+            if getattr(constructor.docstring, 'value', '') == getattr(model.docstring, 'value', ''):
                 model.docstring = None
 
         self.models[model.canonical_path] = model
