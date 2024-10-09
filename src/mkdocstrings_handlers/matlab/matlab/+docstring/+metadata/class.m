@@ -13,6 +13,7 @@ function data = class(object, opts)
     data.sealed = object.Sealed;
     data.abstract = object.Abstract;
     data.enumeration = object.Enumeration;
+    data.properties = arrayfun(@(prop) docstring.metadata.property(prop), object.PropertyList);
     data.superclasses = arrayfun(@(o) string(o.Name), object.SuperclassList);
     data.handle = object.HandleCompatible;
     data.aliases = object.Aliases;
@@ -43,9 +44,6 @@ function data = class(object, opts)
     end
 
     numProp = numel(object.PropertyList);
-    for iProp = numProp:-1:1
-        data.properties(iProp) = docstring.metadata.property(object.PropertyList(iProp));
-    end
 
     nameparts = split(object.Name, '.');
     data.constructor = any(strcmp(nameparts(end), [data.methods.name]));
