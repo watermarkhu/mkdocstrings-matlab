@@ -44,7 +44,7 @@ function data = argument(object)
             for iSize = numel(object.Validation.Size):-1:1
 
                 if isprop(object.Validation.Size(iSize), 'Length')
-                    data.size(iSize) = object.Validation.Size(iSize).Length;
+                    data.size(iSize) = string(object.Validation.Size(iSize).Length);
                 else
                     data.size(iSize) = ":";
                 end
