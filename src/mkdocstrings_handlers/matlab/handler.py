@@ -10,7 +10,6 @@ from pprint import pprint
 
 import charset_normalizer
 import json
-import requests
 
 
 from mkdocstrings_handlers.matlab.collections import LinesCollection, ModelsCollection
@@ -145,11 +144,11 @@ class MatlabHandler(BaseHandler):
         # (it assumes the python handler is installed)
         return super().get_templates_dir("python")
 
-    def get_ast(self, identifier:str, config: Mapping[str, Any]) -> dict:
+    def get_ast(self, identifier: str, config: Mapping[str, Any]) -> dict:
         """Retrieve the Abstract Syntax Tree (AST) for a given MATLAB identifier.
-        
+
         This method resolves the docstring for the specified identifier and parses it into an AST.
-        If the identifier corresponds to a class, it processes its superclasses and optionally 
+        If the identifier corresponds to a class, it processes its superclasses and optionally
         includes an inheritance diagram based on the provided configuration.
         Args:
             identifier (str): The MATLAB identifier to resolve.
@@ -163,18 +162,17 @@ class MatlabHandler(BaseHandler):
         ast_json = self.engine.docstring.resolve(identifier)
         ast = json.loads(ast_json)
 
-        if ast['type'] == 'class':
-            
+        if ast["type"] == "class":
             if isinstance(ast["superclasses"], str):
                 ast["superclasses"] = [ast["superclasses"]]
             if isinstance(ast["properties"], dict):
                 ast["properties"] = [ast["properties"]]
             if isinstance(ast["methods"], dict):
                 ast["methods"] = [ast["methods"]]
-            
+
             if config["show_inheritance_diagram"]:
                 # Check if class is builtin and skip superclasses if option is not set
-                builtin = ast.get('builtin', False) or ast["name"].startswith("matlab.")
+                builtin = ast.get("builtin", False) or ast["name"].startswith("matlab.")
                 resursive = not builtin or config["inheritance_diagram_show_builtin"]
                 if not resursive:
                     ast["superclasses"] = []
@@ -187,7 +185,6 @@ class MatlabHandler(BaseHandler):
                     except MatlabExecutionError:
                         ast["superclasses"][index] = {"name": base}
         return ast
-
 
     def collect(self, identifier: str, config: Mapping[str, Any]) -> CollectorItem:
         """Collect data given an identifier and user configuration.
@@ -296,7 +293,6 @@ class MatlabHandler(BaseHandler):
         )
 
     def collect_class(self, ast: dict, config: Mapping) -> Class:
-
         filepath = Path(ast["path"])
 
         # Parse textmate object
@@ -315,10 +311,14 @@ class MatlabHandler(BaseHandler):
             if config["show_inheritance_diagram"]:
                 bases = [base["name"] for base in ast["superclasses"]]
             else:
-                bases = ast["superclasses"] if isinstance(ast["superclasses"], list) else [ast["superclasses"]]
+                bases = (
+                    ast["superclasses"]
+                    if isinstance(ast["superclasses"], list)
+                    else [ast["superclasses"]]
+                )
         else:
             bases = []
-        
+
         # Load model
         model = Class(
             ast["name"],
@@ -341,7 +341,9 @@ class MatlabHandler(BaseHandler):
         # Format mermaid inheritance diagram
         if config["show_inheritance_diagram"] and ast["superclasses"]:
             section = get_inheritance_diagram(ast)
-            docstring = Docstring(ast["docstring"] + section, parser=config["docstring_style"])
+            docstring = Docstring(
+                ast["docstring"] + section, parser=config["docstring_style"]
+            )
         elif ast["docstring"]:
             docstring = Docstring(ast["docstring"], parser=config["docstring_style"])
         else:
@@ -395,7 +397,9 @@ class MatlabHandler(BaseHandler):
             constructor = model.members.pop(model.name)
             model.members["__init__"] = constructor
 
-            if getattr(constructor.docstring, 'value', '') == getattr(model.docstring, 'value', ''):
+            if getattr(constructor.docstring, "value", "") == getattr(
+                model.docstring, "value", ""
+            ):
                 model.docstring = None
 
         self.models[model.canonical_path] = model
@@ -405,11 +409,7 @@ class MatlabHandler(BaseHandler):
     def collect_function(self, ast: dict, config: Mapping) -> Function:
         parameters = []
 
-        inputs = (
-            ast["inputs"]
-            if isinstance(ast["inputs"], list)
-            else [ast["inputs"]]
-        )
+        inputs = ast["inputs"] if isinstance(ast["inputs"], list) else [ast["inputs"]]
         for input_dict in inputs:
             if input_dict["name"] == "varargin":
                 parameter_kind = ParameterKind.var_positional
@@ -474,11 +474,13 @@ class MatlabHandler(BaseHandler):
             parent = ROOT
         return parent
 
+
 def get_inheritance_diagram(ast: dict) -> str:
     def get_id(str: str) -> str:
-        return str.replace('.', '_')
+        return str.replace(".", "_")
+
     def get_nodes(ast: dict, nodes: set[str] = set(), clicks: set[str] = set()) -> str:
-        id = get_id(ast['name'])
+        id = get_id(ast["name"])
         nodes.add(f"   {id}[{ast['name']}]")
         if "help" in ast:
             clicks.add(f"   click {id} \"{ast['help']}\"")
@@ -486,17 +488,18 @@ def get_inheritance_diagram(ast: dict) -> str:
             for superclass in ast["superclasses"]:
                 get_nodes(superclass, nodes)
         return (nodes, clicks)
+
     def get_links(ast: dict, links: set[str] = set()) -> str:
         if "superclasses" in ast:
             for superclass in ast["superclasses"]:
                 links.add(f"   {get_id(ast['name'])} --> {get_id(superclass['name'])}")
                 get_links(superclass, links)
         return links
-    
+
     (nodes, clicks) = get_nodes(ast)
-    nodes_str = '\n'.join(list(nodes))
-    clicks_str = '\n'.join(list(clicks))
-    links_str = '\n'.join(list(get_links(ast)))
+    nodes_str = "\n".join(list(nodes))
+    clicks_str = "\n".join(list(clicks))
+    links_str = "\n".join(list(get_links(ast)))
     section = f"\n\n## Inheritance diagram\n\n```mermaid\nflowchart BT\n{nodes_str}\n{clicks_str}\n{links_str}\n```"
     return section
 

@@ -43,9 +43,8 @@ Issues = "https://github.com/watermarkhu/mkdocstrings-matlab/issues"
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[tool.rye]
+[tool.uv]
 managed = true
-dev-dependencies = []
 
 [tool.hatch.metadata]
 allow-direct-references = true
