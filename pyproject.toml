@@ -6,14 +6,15 @@ authors = [
     { name = "Mark Hu", email = "watermarkhu@gmail.com" }
 ]
 dependencies = [
+    "charset-normalizer>=3.3.2",
+    "griffe>=1.5.1",
     "mkdocs>=1.6.0",
     "mkdocstrings>=0.25.2",
     "mkdocstrings[python]>=0.18",
-    "griffe>=1.2.0",
     "mkdocs-material>=9.5.33",
     "markdown>=3.7",
-    "charset-normalizer>=3.3.2",
-    "textmate-grammar-python>=0.6.1",
+    "tree-sitter>=0.23.2",
+    "tree-sitter-matlab>=1.0.2",
 ]
 readme = "README.md"
 

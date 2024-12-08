@@ -1,15 +1,58 @@
 from enum import Enum
 from typing import Any
-from griffe import Function as GriffeFunction, Class as GriffeClass, Module, Attribute
+from griffe import (
+    Function as GriffeFunction,
+    Class as GriffeClass,
+    Module,
+    Attribute,
+    Docstring,
+    Parameters,
+    Parameter,
+)
 from pathlib import Path
-from textmate_grammar.elements import ContentElement
 
 
-class Access(Enum):
-    PUBLIC = "public"
-    PROTECTED = "protected"
-    PRIVATE = "private"
-    IMMUTABLE = "immutable"
+__all__ = [
+    "Access",
+    "Attribute",
+    "CanonicalPathMixin",
+    "Class",
+    "Classfolder",
+    "Function",
+    "Module",
+    "Namespace",
+    "Docstring",
+    "Parameters",
+    "Parameter",
+    "ParameterKind",
+    "Property",
+    "ROOT",
+]
+
+
+
+class ParameterKind(str, Enum):
+    """Enumeration of the different parameter kinds."""
+
+    positional: str = "positional"
+    """Positional-only parameter."""
+    # positional_or_keyword: str = "positional or keyword"
+    # """Positional or keyword parameter."""
+    # var_positional: str = "variadic positional"
+    # """Variadic positional parameter."""
+    
+    optional: str = "optional"
+    """Optional parameter."""
+    keyword_only: str = "keyword-only"
+    """Keyword-only parameter."""
+    var_keyword: str = "variadic keyword"
+    """Variadic keyword parameter."""
+
+class Access(str, Enum):
+    PUBLIC: str = "public"
+    PROTECTED: str = "protected"
+    PRIVATE: str = "private"
+    IMMUTABLE: str = "immutable"
 
 
 class CanonicalPathMixin:
@@ -43,7 +86,6 @@ class Class(CanonicalPathMixin, PathMixin, GriffeClass):
         abstract: bool = False,
         enumeration: bool = False,
         handle: bool = False,
-        textmate: ContentElement | None = None,
         **kwargs: Any,
     ) -> None:
         super().__init__(*args, **kwargs)
@@ -52,11 +94,9 @@ class Class(CanonicalPathMixin, PathMixin, GriffeClass):
         self._abstract: bool = abstract
         self._enumeration: bool = enumeration
         self._handle: bool = handle
-        self._textmate: ContentElement | None = textmate
 
         self._method_lineno: dict[str, tuple[int, int]] = {}
-        if textmate is None:
-            return
+
         for block in [
             block
             for block in self._textmate.children
@@ -93,6 +133,11 @@ class Class(CanonicalPathMixin, PathMixin, GriffeClass):
 
     def get_lineno_method(self, method_name: str) -> tuple[int, int]:
         return self._method_lineno.get(method_name, (self.lineno, self.endlineno))
+
+
+class Classfolder(Class):
+    def __repr__(self) -> str:
+        return f"Classfolder({self.path!r})"
 
 
 class Property(CanonicalPathMixin, Attribute):
@@ -140,7 +185,9 @@ class Property(CanonicalPathMixin, Attribute):
 
 class Function(CanonicalPathMixin, PathMixin, GriffeFunction):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
+        returns = kwargs.pop("returns", None)
         super().__init__(*args, **kwargs)
+        self.returns: Parameters | None = returns
         self._access: Access = Access.PUBLIC
         self._static: bool = False
         self._abstract: bool = False
@@ -171,8 +218,3 @@ class _Root(Namespace):
 
 
 ROOT = _Root()
-
-
-class Classfolder(Class):
-    def __repr__(self) -> str:
-        return f"Classfolder({self.path!r})"

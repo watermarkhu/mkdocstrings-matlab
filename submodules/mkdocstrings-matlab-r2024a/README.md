@@ -1,4 +1,0 @@
-# mkdocstrings-matlab-r2024a
-
-Submodule for [mkdocstrings-matlab](https://pypi.org/project/mkdocstrings-matlab/) required for compatiblity with MATLAB R2024a. 
-
