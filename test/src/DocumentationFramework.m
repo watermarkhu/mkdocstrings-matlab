@@ -1,4 +1,4 @@
-classdef DocumentationFramework
+classdef (Hidden=true, Abstract=false, Sealed) DocumentationFramework < handle & double
     % DocumentationFramework - A class that represents the state of a documentation framework.
     %
     %   This class provides a way to manage and organize documentation for a software project.
@@ -29,14 +29,26 @@ classdef DocumentationFramework
     %   ```
     %
     %   See also: addComponent, updateDocumentation, getDocumentation
-    
-    properties
-        projectName
-        components
-        documentation
+
+    enumeration
+        foo
+        bar
     end
     
-    methods
+    properties (Access = public)
+        projectName (1,:) char = 'foo'
+            % The name of the software project
+        components 
+            % A cell array containing the names of the components in the project
+        documentation (1,1) string {mustBeText} = "fdsa" % Doc
+            % A struct that stores the documentation for each component
+    end
+    properties (Dependent)
+        projectSummary
+    end
+
+
+    methods (Static, Access = public)
         function obj = DocumentationFramework(projectName)
             % DocumentationFramework - Constructor for the DocumentationFramework class.
             %
@@ -102,6 +114,30 @@ classdef DocumentationFramework
             %       doc = framework.getDocumentation('Component1');
             
             doc = obj.documentation.(componentName);
+        end
+    end
+
+    methods
+        function summary = get.projectSummary(obj)
+            % get.projectSummary - Getter for the projectSummary property.
+            %
+            %   Outputs:
+            %       - summary: A summary of the project, including the project name and the number of components.
+            %
+            %   Example:
+            %       summary = framework.projectSummary;
+            
+            summary = sprintf('Project: %s, Number of components: %d', obj.projectName, numel(obj.components));
+        end
+        
+        function set.projectSummary(obj, ~)
+            % set.projectSummary - Setter for the projectSummary property.
+            % This property is read-only and cannot be set directly.
+            %
+            %   Example:
+            %       framework.projectSummary = 'New Summary'; % This will produce an error.
+            
+            error('projectSummary is a read-only property.');
         end
     end
 end

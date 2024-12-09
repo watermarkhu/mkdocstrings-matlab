@@ -13,7 +13,7 @@ from pathlib import Path
 
 
 __all__ = [
-    "Access",
+    "AccessEnum",
     "Attribute",
     "CanonicalPathMixin",
     "Class",
@@ -30,7 +30,6 @@ __all__ = [
 ]
 
 
-
 class ParameterKind(str, Enum):
     """Enumeration of the different parameter kinds."""
 
@@ -40,7 +39,7 @@ class ParameterKind(str, Enum):
     # """Positional or keyword parameter."""
     # var_positional: str = "variadic positional"
     # """Variadic positional parameter."""
-    
+
     optional: str = "optional"
     """Optional parameter."""
     keyword_only: str = "keyword-only"
@@ -48,7 +47,8 @@ class ParameterKind(str, Enum):
     var_keyword: str = "variadic keyword"
     """Variadic keyword parameter."""
 
-class Access(str, Enum):
+
+class AccessEnum(str, Enum):
     PUBLIC: str = "public"
     PROTECTED: str = "protected"
     PRIVATE: str = "private"
@@ -81,48 +81,32 @@ class Class(CanonicalPathMixin, PathMixin, GriffeClass):
     def __init__(
         self,
         *args: Any,
-        hidden: bool = False,
-        sealed: bool = False,
-        abstract: bool = False,
-        enumeration: bool = False,
-        handle: bool = False,
+        Abstract: bool = False,
+        Hidden: bool = False,
+        Sealed: bool = False,
         **kwargs: Any,
     ) -> None:
         super().__init__(*args, **kwargs)
-        self._hidden: bool = hidden
-        self._sealed: bool = sealed
-        self._abstract: bool = abstract
-        self._enumeration: bool = enumeration
-        self._handle: bool = handle
+        self.abstract: bool = Abstract
+        self.hidden: bool = Hidden
+        self.sealed: bool = Sealed
 
-        self._method_lineno: dict[str, tuple[int, int]] = {}
+    @property
+    def parameters(self) -> Parameters:
+        """The parameters of this class' `__init__` method, if any.
 
-        for block in [
-            block
-            for block in self._textmate.children
-            if block.token == "meta.methods.matlab"
-        ]:
-            for method in [
-                c for c in block.children if c.token == "meta.function.matlab"
-            ]:
-                declaration = next(
-                    item
-                    for item in method.children
-                    if item.token == "meta.function.declaration.matlab"
-                )
-                name = next(
-                    item
-                    for item in declaration.children
-                    if item.token == "entity.name.function.matlab"
-                ).content
-                charaters_ids = method.characters.keys()
-                lineno = min(charaters_ids, key=lambda p: p[0])[0]
-                endlino = max(charaters_ids, key=lambda p: p[0])[0] + 1
-                self._method_lineno[name] = (lineno, endlino)
+        This property fetches inherited members,
+        and therefore is part of the consumer API:
+        do not use when producing Griffe trees!
+        """
+        try:
+            return self.all_members[self.name].parameters  # type: ignore[union-attr]
+        except KeyError:
+            return Parameters()
 
     @property
     def is_private(self) -> bool:
-        return self._hidden
+        return self.hidden
 
     @property
     def canonical_path(self) -> str:
@@ -144,66 +128,78 @@ class Property(CanonicalPathMixin, Attribute):
     def __init__(
         self,
         *args: Any,
-        get_access: Access = Access.PUBLIC,
-        set_access: Access = Access.PUBLIC,
-        dependent: bool = False,
-        constant: bool = False,
-        abstract: bool = False,
-        transient: bool = False,
-        hidden: bool = False,
-        get_observable: bool = False,
-        set_observable: bool = False,
-        abort_set: bool = False,
-        non_copyable: bool = False,
-        has_default: bool = False,
-        size: str | None = None,
-        validation: str | None = None,
+        AbortSet: bool = False,
+        Abstract: bool = False,
+        Constant: bool = False,
+        Dependent: bool = False,
+        GetObservable: bool = False,
+        Hidden: bool = False,
+        NonCopyable: bool = False,
+        SetObservable: bool = False,
+        Transient: bool = False,
+        WeakHandle: bool = False,
+        GetAccess: AccessEnum = AccessEnum.PUBLIC,
+        SetAccess: AccessEnum = AccessEnum.PUBLIC,
         **kwargs: Any,
     ) -> None:
         super().__init__(*args, **kwargs)
-        self._get_access: Access = get_access
-        self._set_access: Access = set_access
-        self._dependent: bool = dependent
-        self._constant: bool = constant
-        self._abstract: bool = abstract
-        self._transient: bool = transient
-        self._hidden: bool = hidden
-        self._get_observable: bool = get_observable
-        self._set_observable: bool = set_observable
-        self._abort_set: bool = abort_set
-        self._non_copyable: bool = non_copyable
-        self._has_default: bool = has_default
-        self._size: str | None = size
-        self._validation: str | None = validation
+        self.abort_set: bool = AbortSet
+        self.abstract: bool = Abstract
+        self.constant: bool = Constant
+        self.dependent: bool = Dependent
+        self.get_observable: bool = GetObservable
+        self.hidden: bool = Hidden
+        self.non_copyable: bool = NonCopyable
+        self.set_observable: bool = SetObservable
+        self.transient: bool = Transient
+        self.weak_handle: bool = WeakHandle
+        self.get_access: AccessEnum = GetAccess
+        self.set_access: AccessEnum = SetAccess
+
+        self.getter: Function | None = None
+        """The getter linked to this property."""
 
     @property
     def is_private(self) -> bool:
-        set_public = self._access == Access.PUBLIC | self._access == Access.IMMUTABLE
-        get_public = self._access == Access.PUBLIC
+        set_public = self._access == AccessEnum.PUBLIC | self._access == AccessEnum.IMMUTABLE
+        get_public = self._access == AccessEnum.PUBLIC
         return (set_public or get_public) and not self._hidden
 
 
 class Function(CanonicalPathMixin, PathMixin, GriffeFunction):
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        returns = kwargs.pop("returns", None)
+    def __init__(
+        self,
+        *args: Any,
+        returns: Parameters | None = None,
+        Abstract: bool = False,
+        Access: AccessEnum = AccessEnum.PUBLIC,
+        Hidden: bool = False,
+        Sealed: bool = False,
+        Static: bool = False,
+        setter: bool = False,
+        getter: bool = False,
+        **kwargs: Any,
+    ) -> None:
         super().__init__(*args, **kwargs)
         self.returns: Parameters | None = returns
-        self._access: Access = Access.PUBLIC
-        self._static: bool = False
-        self._abstract: bool = False
-        self._sealed: bool = False
-        self._hidden: bool = False
+        self.access: AccessEnum = Access
+        self.static: bool = Static
+        self.abstract: bool = Abstract
+        self.sealed: bool = Sealed
+        self.hidden: bool = Hidden
+        self._is_setter: bool = setter
+        self._is_getter: bool = getter
 
     @property
     def is_private(self) -> bool:
-        public = self._access == Access.PUBLIC | self._access == Access.IMMUTABLE
-        return public and not self._hidden
+        public = self.access == AccessEnum.PUBLIC | self.access == AccessEnum.IMMUTABLE
+        return public and not self.hidden
 
 
 class Namespace(CanonicalPathMixin, PathMixin, Module):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
-        self._access: Access = Access.PUBLIC
+        self._access: AccessEnum = AccessEnum.PUBLIC
 
     def __repr__(self) -> str:
         return f"Namespace({self.path!r})"
