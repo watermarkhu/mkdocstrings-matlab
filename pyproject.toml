@@ -18,6 +18,7 @@ dependencies = [
     "setuptools>=75.6.0",
 ]
 readme = "README.md"
+requires-python = ">=3.10"
 
 [build-system]
 requires = ["hatchling"]
@@ -31,3 +32,8 @@ allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/mkdocstrings_handlers"]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.29.5",
+]
