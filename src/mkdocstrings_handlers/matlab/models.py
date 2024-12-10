@@ -1,4 +1,3 @@
-from enum import Enum
 from typing import Any
 from griffe import (
     Function as GriffeFunction,
@@ -6,16 +5,17 @@ from griffe import (
     Module,
     Attribute,
     Docstring,
+    Object,
     Parameters,
     Parameter,
 )
-from pathlib import Path
+
+from mkdocstrings_handlers.matlab.enums import AccessEnum
+from mkdocstrings_handlers.matlab.mixins import CanonicalPathMixin, PathMixin
 
 
 __all__ = [
-    "AccessEnum",
     "Attribute",
-    "CanonicalPathMixin",
     "Class",
     "Classfolder",
     "Function",
@@ -24,57 +24,14 @@ __all__ = [
     "Docstring",
     "Parameters",
     "Parameter",
-    "ParameterKind",
     "Property",
-    "ROOT",
+    "Script",
 ]
 
 
-class ParameterKind(str, Enum):
-    """Enumeration of the different parameter kinds."""
 
-    positional: str = "positional"
-    """Positional-only parameter."""
-    # positional_or_keyword: str = "positional or keyword"
-    # """Positional or keyword parameter."""
-    # var_positional: str = "variadic positional"
-    # """Variadic positional parameter."""
-
-    optional: str = "optional"
-    """Optional parameter."""
-    keyword_only: str = "keyword-only"
-    """Keyword-only parameter."""
-    var_keyword: str = "variadic keyword"
-    """Variadic keyword parameter."""
-
-
-class AccessEnum(str, Enum):
-    PUBLIC: str = "public"
-    PROTECTED: str = "protected"
-    PRIVATE: str = "private"
-    IMMUTABLE: str = "immutable"
-
-
-class CanonicalPathMixin:
-    @property
-    def canonical_path(self) -> str:
-        """The full dotted path of this object.
-
-        The canonical path is the path where the object was defined (not imported).
-        """
-        if isinstance(self.parent, _Root):
-            return self.name
-        return f"{self.parent.path}.{self.name}"
-
-
-class PathMixin:
-    def __init__(self, *args: Any, filepath: Path | None = None, **kwargs: Any) -> None:
-        self._filepath: Path | None = filepath
-        super().__init__(*args, **kwargs)
-
-    @property
-    def filepath(self) -> Path | None:
-        return self._filepath
+class Script(CanonicalPathMixin, PathMixin, Object):
+    pass
 
 
 class Class(CanonicalPathMixin, PathMixin, GriffeClass):
@@ -161,7 +118,9 @@ class Property(CanonicalPathMixin, Attribute):
 
     @property
     def is_private(self) -> bool:
-        set_public = self._access == AccessEnum.PUBLIC | self._access == AccessEnum.IMMUTABLE
+        set_public = (
+            self._access == AccessEnum.PUBLIC | self._access == AccessEnum.IMMUTABLE
+        )
         get_public = self._access == AccessEnum.PUBLIC
         return (set_public or get_public) and not self._hidden
 
@@ -203,14 +162,3 @@ class Namespace(CanonicalPathMixin, PathMixin, Module):
 
     def __repr__(self) -> str:
         return f"Namespace({self.path!r})"
-
-
-class _Root(Namespace):
-    def __init__(self) -> None:
-        super().__init__("ROOT", parent=None)
-
-    def __repr__(self) -> str:
-        return "MATLABROOT"
-
-
-ROOT = _Root()

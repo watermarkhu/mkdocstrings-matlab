@@ -1,21 +1,40 @@
-# %%
+#%%
 from tree_sitter import Language, Parser, Node, TreeCursor
 import tree_sitter_matlab as tsmatlab
-from distutils.util import strtobool
 
 from pathlib import Path
 
 import charset_normalizer
 
-import mkdocstrings_handlers.matlab.models as models
-from mkdocstrings_handlers.matlab.collect import LinesCollection, ModelsCollection
+from mkdocstrings_handlers.matlab.models import (
+    Function,
+    Class,
+    Docstring,
+    Parameters,
+    Parameter,
+    Property,
+    AccessEnum,
+    Script,
+)
+from mkdocstrings_handlers.matlab.mixins import ROOT, PathMixin
+from mkdocstrings_handlers.matlab.enums import ParameterKind
+
+
+__all__ = ["parse_file"]
 
 
 LANGUAGE = Language(tsmatlab.language())
-parser = Parser(LANGUAGE)
+PARSER = Parser(LANGUAGE)
 
 
-def _dedent_lines(lines: list[str]) -> list[str]:
+def strtobool(value: str) -> bool:
+    if value.lower() in ["true", "1"]:
+        return True
+    else:
+        return False
+
+
+def dedent_lines(lines: list[str]) -> list[str]:
     """
     Dedent a list of strings by removing the minimum common leading whitespace.
 
@@ -33,7 +52,7 @@ def _dedent_lines(lines: list[str]) -> list[str]:
         return [line[indent:] if line.strip() else line for line in lines]
 
 
-def comment_node_docstring(node: Node) -> list[str]:
+def comment_node_docstring(node: Node, encoding: str) -> list[str]:
     """
     Extracts and processes docstring comments from a given node.
     This function iterates over the lines of text within the provided node,
@@ -61,7 +80,7 @@ def comment_node_docstring(node: Node) -> list[str]:
 
         if line[:2] == "%{" or line[:2] == "%%":
             if comment_lines:
-                docstring += _dedent_lines(comment_lines)
+                docstring += dedent_lines(comment_lines)
                 comment_lines = []
             if line[:2] == "%%":
                 docstring.append(line[2:].lstrip())
@@ -80,7 +99,7 @@ def comment_node_docstring(node: Node) -> list[str]:
                 if last_line:
                     comment_block.append(last_line)
             docstring.append(comment_block[0])
-            docstring += _dedent_lines(comment_block[1:])
+            docstring += dedent_lines(comment_block[1:])
 
         elif line[0] == "%":
             comment_lines.append(line[1:])
@@ -88,12 +107,12 @@ def comment_node_docstring(node: Node) -> list[str]:
             raise LookupError
 
     if comment_lines:
-        docstring += _dedent_lines(comment_lines)
+        docstring += dedent_lines(comment_lines)
 
     return docstring
 
 
-def parse_function(cursor: TreeCursor, **kwargs) -> models.Function:
+def parse_function(cursor: TreeCursor, encoding: str, **kwargs) -> Function:
     docstring = []
     doclineno, docendlineno = 0, 0
     used_arguments = False
@@ -107,22 +126,20 @@ def parse_function(cursor: TreeCursor, **kwargs) -> models.Function:
             case "function_output":
                 cursor.goto_first_child()
                 if cursor.node.type == "identifier":
-                    returns = [models.Parameter(cursor.node.text.decode(encoding))]
+                    returns = [Parameter(cursor.node.text.decode(encoding))]
                 else:
                     cursor.goto_first_child()
                     returns = []
                     while cursor.goto_next_sibling():
                         if cursor.node.type == "identifier":
-                            returns.append(
-                                models.Parameter(cursor.node.text.decode(encoding))
-                            )
+                            returns.append(Parameter(cursor.node.text.decode(encoding)))
                     cursor.goto_parent()
-                kwargs["returns"] = models.Parameters(*returns)
+                kwargs["returns"] = Parameters(*returns)
                 cursor.goto_parent()
 
             case "set.":
                 kwargs["setter"] = True
-            
+
             case "get.":
                 kwargs["getter"] = True
 
@@ -138,10 +155,8 @@ def parse_function(cursor: TreeCursor, **kwargs) -> models.Function:
                 parameters = []
                 while cursor.goto_next_sibling():
                     if cursor.node.type == "identifier":
-                        parameters.append(
-                            models.Parameter(cursor.node.text.decode(encoding))
-                        )
-                kwargs["parameters"] = models.Parameters(*parameters)
+                        parameters.append(Parameter(cursor.node.text.decode(encoding)))
+                kwargs["parameters"] = Parameters(*parameters)
                 cursor.goto_parent()
 
             case "comment":
@@ -150,7 +165,7 @@ def parse_function(cursor: TreeCursor, **kwargs) -> models.Function:
                 if not doclineno:
                     doclineno = cursor.node.start_point.row
                 docendlineno = cursor.node.end_point.row
-                docstring += comment_node_docstring(cursor.node)
+                docstring += comment_node_docstring(cursor.node, encoding)
 
             case "arguments_statement":
                 used_arguments = True
@@ -175,8 +190,8 @@ def parse_function(cursor: TreeCursor, **kwargs) -> models.Function:
                             if kwargsparameter:
                                 parameters._params.remove(kwargsparameter)
                             identifier = identifier.split(".")[-1]
-                            parameter = models.Parameter(
-                                identifier, kind=models.ParameterKind.keyword_only
+                            parameter = Parameter(
+                                identifier, kind=ParameterKind.keyword_only
                             )
                             parameters._params.append(parameter)
                         else:
@@ -184,9 +199,9 @@ def parse_function(cursor: TreeCursor, **kwargs) -> models.Function:
                                 (p for p in parameters if p.name == identifier), None
                             )
                             if identifier == "varargin":
-                                parameter.kind = models.ParameterKind.var_keyword
+                                parameter.kind = ParameterKind.var_keyword
                             else:
-                                parameter.kind = models.ParameterKind.positional
+                                parameter.kind = ParameterKind.positional
 
                         while cursor.goto_next_sibling():
                             match cursor.node.type:
@@ -204,14 +219,11 @@ def parse_function(cursor: TreeCursor, **kwargs) -> models.Function:
                                     parameter.default = cursor.node.text.decode(
                                         encoding
                                     )[1:].strip()
-                                    if (
-                                        parameter.kind
-                                        is models.ParameterKind.positional
-                                    ):
-                                        parameter.kind = models.ParameterKind.optional
+                                    if parameter.kind is ParameterKind.positional:
+                                        parameter.kind = ParameterKind.optional
                                 case "comment":
                                     parameter.docstring = "\n".join(
-                                        comment_node_docstring(cursor.node)
+                                        comment_node_docstring(cursor.node, encoding)
                                     )
                         cursor.goto_parent()
                 cursor.goto_parent()
@@ -222,18 +234,19 @@ def parse_function(cursor: TreeCursor, **kwargs) -> models.Function:
     cursor.goto_parent()
 
     if docstring:
-        kwargs["docstring"] = models.Docstring(
+        kwargs["docstring"] = Docstring(
             "\n".join(docstring), lineno=doclineno, endlineno=docendlineno
         )
 
-    return models.Function(identifier, **kwargs)
+    return Function(identifier, **kwargs)
 
 
-def parse_class(cursor: TreeCursor, **kwargs) -> models.Class:
-
+def parse_class(cursor: TreeCursor, encoding: str, **kwargs) -> Class:
     docstring = []
     doclineno, docendlineno = 0, 0
     comment_for_docstring = True
+
+    savedKwargs = {key: value for key, value in kwargs.items()}
     kwargs["lineno"] = cursor.node.start_point.row
     kwargs["endlineno"] = cursor.node.end_point.row
     methods, properties = [], []
@@ -279,19 +292,20 @@ def parse_class(cursor: TreeCursor, **kwargs) -> models.Class:
                 if not doclineno:
                     doclineno = cursor.node.start_point.row
                 docendlineno = cursor.node.end_point.row
-                docstring += comment_node_docstring(cursor.node)
+                docstring += comment_node_docstring(cursor.node, encoding)
 
             case "properties":
                 comment_for_docstring = False
 
                 cursor.goto_first_child()
-                property_kwargs = dict(lines_collection=linesCollection)
+                property_kwargs = {key: value for key, value in savedKwargs.items()}
 
                 while cursor.goto_next_sibling():
                     if cursor.node.type == "property":
-                        
                         cursor.goto_first_child()
-                        prop = models.Property(cursor.node.text.decode(encoding), **property_kwargs)
+                        prop = Property(
+                            cursor.node.text.decode(encoding), **property_kwargs
+                        )
                         while cursor.goto_next_sibling():
                             match cursor.node.type:
                                 case "dimensions":
@@ -303,9 +317,13 @@ def parse_class(cursor: TreeCursor, **kwargs) -> models.Class:
                                     # Do nothing with validation functions for now
                                     continue
                                 case "default_value":
-                                    prop.value = cursor.node.text.decode(encoding)[1:].strip()
+                                    prop.value = cursor.node.text.decode(encoding)[
+                                        1:
+                                    ].strip()
                                 case "comment":
-                                    prop.docstring = "\n".join(comment_node_docstring(cursor.node))
+                                    prop.docstring = "\n".join(
+                                        comment_node_docstring(cursor.node, encoding)
+                                    )
                         properties.append(prop)
                         cursor.goto_parent()
 
@@ -334,7 +352,9 @@ def parse_class(cursor: TreeCursor, **kwargs) -> models.Class:
                                     while cursor.goto_next_sibling():
                                         if cursor.node.type == "boolean":
                                             value = bool(
-                                                strtobool(cursor.node.text.decode(encoding))
+                                                strtobool(
+                                                    cursor.node.text.decode(encoding)
+                                                )
                                             )
                                     kwargs[attributeIdentifier] = value
 
@@ -349,7 +369,7 @@ def parse_class(cursor: TreeCursor, **kwargs) -> models.Class:
                                         "immutable",
                                     ]:
                                         property_kwargs[attributeIdentifier] = (
-                                            models.AccessEnum(access)
+                                            AccessEnum(access)
                                         )
                                 cursor.goto_parent()
                         cursor.goto_parent()
@@ -361,12 +381,11 @@ def parse_class(cursor: TreeCursor, **kwargs) -> models.Class:
 
                 cursor.goto_first_child()
                 is_abstract = False
-                function_kwargs = dict(lines_collection=linesCollection)
+                function_kwargs = {key: value for key, value in savedKwargs.items()}
 
                 while cursor.goto_next_sibling():
                     if cursor.node.type == "function_definition":
-
-                        method = parse_function(cursor, **function_kwargs)
+                        method = parse_function(cursor, encoding, **function_kwargs)
 
                         if method.name != identifier and not is_abstract:
                             # Remove self from first method argument
@@ -392,7 +411,9 @@ def parse_class(cursor: TreeCursor, **kwargs) -> models.Class:
                                     while cursor.goto_next_sibling():
                                         if cursor.node.type == "boolean":
                                             value = bool(
-                                                strtobool(cursor.node.text.decode(encoding))
+                                                strtobool(
+                                                    cursor.node.text.decode(encoding)
+                                                )
                                             )
                                     function_kwargs[attributeIdentifier] = value
                                 elif attributeIdentifier == "Access":
@@ -405,7 +426,9 @@ def parse_class(cursor: TreeCursor, **kwargs) -> models.Class:
                                         "private",
                                         "immutable",
                                     ]:
-                                        function_kwargs[attributeIdentifier] = models.AccessEnum(access)
+                                        function_kwargs[attributeIdentifier] = (
+                                            AccessEnum(access)
+                                        )
                                 cursor.goto_parent()
 
                         is_abstract = function_kwargs.get("abstract", False)
@@ -419,11 +442,11 @@ def parse_class(cursor: TreeCursor, **kwargs) -> models.Class:
                 continue
 
     if docstring:
-        kwargs["docstring"] = models.Docstring(
+        kwargs["docstring"] = Docstring(
             "\n".join(docstring), lineno=doclineno, endlineno=docendlineno
         )
 
-    model = models.Class(identifier, **kwargs)
+    model = Class(identifier, **kwargs)
     for prop in properties:
         prop.parent = model
         model[prop.name] = prop
@@ -431,7 +454,9 @@ def parse_class(cursor: TreeCursor, **kwargs) -> models.Class:
     for method in methods:
         method.parent = model
         if method._is_getter or method._is_setter:
-            prop = model.members.get(method.name.split(".")[1], None) # TODO replace with all_members
+            prop = model.members.get(
+                method.name.split(".")[1], None
+            )  # TODO replace with all_members
             if prop:
                 if method._is_getter:
                     prop.getter = method
@@ -444,48 +469,44 @@ def parse_class(cursor: TreeCursor, **kwargs) -> models.Class:
             model[method.name] = method
 
     return model
-# %%
-
-linesCollection = LinesCollection()
 
 
-filepath = Path(__file__).parents[3] / "test" / "src" / "DocumentationFramework.m"
-encoding = charset_normalizer.from_path(filepath).best().encoding
-with open(filepath, "rb") as f:
-    content = f.read()
+def parse_file(filepath: Path, **kwargs) -> tuple[PathMixin, str]:
+    encoding = charset_normalizer.from_path(filepath).best().encoding
+    with open(filepath, "rb") as f:
+        content = f.read()
 
-linesCollection[filepath] = content.decode(encoding).splitlines()
+    tree = PARSER.parse(content)
+    cursor = tree.walk()
+    cursor.goto_first_child()
 
-tree = parser.parse(content)
-cursor = tree.walk()
-cursor.goto_first_child()
+    header_comment = []
+    doclineno, docendlineno = 0, 0
 
-header_comment = []
-doclineno, docendlineno = 0, 0
+    parent = kwargs.get("parent", ROOT)
 
-while True:
-    if cursor.node.type == "function_definition":
-        model = parse_function(cursor, lines_collection=linesCollection)
-        break
-    elif cursor.node.type == "class_definition":
-        model = parse_class(cursor, lines_collection=linesCollection)
-        break
-    elif cursor.node.type == "comment":
-        header_comment += comment_node_docstring(cursor.node)
-        if not doclineno:
-            doclineno = cursor.node.start_point.row
-        docendlineno = cursor.node.end_point.row
-    else:
-        print(f"Must be a script: {cursor.node.type}")
-        break
+    while True:
+        if cursor.node.type == "function_definition":
+            model = parse_function(cursor, encoding, parent=parent, **kwargs)
+            break
+        elif cursor.node.type == "class_definition":
+            model = parse_class(cursor, encoding, parent=parent, **kwargs)
+            break
+        elif cursor.node.type == "comment":
+            header_comment += comment_node_docstring(cursor.node, encoding)
+            if not doclineno:
+                doclineno = cursor.node.start_point.row
+            docendlineno = cursor.node.end_point.row
+        else:
+            model = Script(filepath.stem, parent=parent, **kwargs)
+            break
 
-    if not cursor.goto_next_sibling():
-        break
+        if not cursor.goto_next_sibling():
+            break
 
+    if not model.docstring:
+        model.docstring = Docstring(
+            "\n".join(header_comment), lineno=doclineno, endlineno=docendlineno
+        )
 
-if not model.docstring:
-    model.docstring = models.Docstring(
-        "\n".join(header_comment), lineno=doclineno, endlineno=docendlineno
-    )
-
-# %%
+    return model, content.decode(encoding)

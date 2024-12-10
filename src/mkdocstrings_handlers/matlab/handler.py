@@ -12,8 +12,7 @@ import charset_normalizer
 import json
 
 
-from mkdocstrings_handlers.matlab.collections import LinesCollection, ModelsCollection
-from mkdocstrings_handlers.matlab_engine import MatlabEngine, MatlabExecutionError
+from mkdocstrings_handlers.matlab.collect import LinesCollection, ModelsCollection
 from mkdocstrings_handlers.matlab.models import (
     Function,
     Class,
@@ -22,7 +21,6 @@ from mkdocstrings_handlers.matlab.models import (
     Property,
     ROOT,
 )
-from mkdocstrings_handlers.matlab.parser import MatlabParser
 
 
 class MatlabHandler(BaseHandler):
