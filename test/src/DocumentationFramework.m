@@ -1,4 +1,4 @@
-classdef (Hidden=true, Abstract=false, Sealed) DocumentationFramework < handle & double
+classdef (Hidden=true, Abstract=false, Sealed) DocumentationFramework < handle & AbstractFramework
     % DocumentationFramework - A class that represents the state of a documentation framework.
     %
     %   This class provides a way to manage and organize documentation for a software project.

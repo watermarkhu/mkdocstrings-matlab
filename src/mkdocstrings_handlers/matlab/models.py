@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Optional, TYPE_CHECKING
 from griffe import (
     Function as GriffeFunction,
     Class as GriffeClass,
@@ -11,16 +11,18 @@ from griffe import (
 )
 
 from mkdocstrings_handlers.matlab.enums import AccessEnum
-from mkdocstrings_handlers.matlab.mixins import CanonicalPathMixin, PathMixin
+from mkdocstrings_handlers.matlab.mixins import PathMixin
 
+if TYPE_CHECKING:
+    from mkdocstrings_handlers.matlab.collect import PathCollection
 
 __all__ = [
     "Attribute",
     "Class",
     "Classfolder",
     "Function",
+    "MatlabObject",
     "Module",
-    "Namespace",
     "Docstring",
     "Parameters",
     "Parameter",
@@ -29,12 +31,46 @@ __all__ = [
 ]
 
 
+class _Root(Object):
+    def __init__(self) -> None:
+        super().__init__("ROOT", parent=None)
 
-class Script(CanonicalPathMixin, PathMixin, Object):
+    def __repr__(self) -> str:
+        return "MATLABROOT"
+
+
+ROOT = _Root()
+
+
+class MatlabObject(Object):
+    def __init__(
+        self,
+        *args,
+        path_collection: Optional["PathCollection"] = None,
+        **kwargs,
+    ) -> None:
+        self.path_collection = path_collection
+        lines_collection = (
+            path_collection.lines_collection if path_collection is not None else None
+        )
+        super().__init__(*args, lines_collection=lines_collection, **kwargs)
+
+    @property
+    def canonical_path(self) -> str:
+        """The full dotted path of this object.
+
+        The canonical path is the path where the object was defined (not imported).
+        """
+        if isinstance(self.parent, _Root):
+            return self.name
+        return f"{self.parent.path}.{self.name}"
+
+
+class Script(PathMixin, MatlabObject):
     pass
 
 
-class Class(CanonicalPathMixin, PathMixin, GriffeClass):
+class Class(PathMixin, GriffeClass, MatlabObject):
     def __init__(
         self,
         *args: Any,
@@ -62,6 +98,26 @@ class Class(CanonicalPathMixin, PathMixin, GriffeClass):
             return Parameters()
 
     @property
+    def inherited_members(self) -> dict[str, MatlabObject]:
+        """Members that are inherited from base classes.
+
+        This method is part of the consumer API:
+        do not use when producing Griffe trees!
+        """
+
+        inherited_members = {}
+        for base in reversed(self.bases):
+            model = self.path_collection.resolve(base)
+            if model is None:
+                # Perhaps issue a warning here?
+                continue
+
+            for name, member in model.members.items():
+                if name not in self.members:
+                    inherited_members[name] = member
+        return inherited_members
+
+    @property
     def is_private(self) -> bool:
         return self.hidden
 
@@ -81,7 +137,7 @@ class Classfolder(Class):
         return f"Classfolder({self.path!r})"
 
 
-class Property(CanonicalPathMixin, Attribute):
+class Property(Attribute, MatlabObject):
     def __init__(
         self,
         *args: Any,
@@ -125,7 +181,7 @@ class Property(CanonicalPathMixin, Attribute):
         return (set_public or get_public) and not self._hidden
 
 
-class Function(CanonicalPathMixin, PathMixin, GriffeFunction):
+class Function(PathMixin, GriffeFunction, MatlabObject):
     def __init__(
         self,
         *args: Any,
@@ -155,10 +211,10 @@ class Function(CanonicalPathMixin, PathMixin, GriffeFunction):
         return public and not self.hidden
 
 
-class Namespace(CanonicalPathMixin, PathMixin, Module):
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        super().__init__(*args, **kwargs)
-        self._access: AccessEnum = AccessEnum.PUBLIC
+# class Namespace(PathMixin, Module, MatlabObject):
+#     def __init__(self, *args: Any, **kwargs: Any) -> None:
+#         super().__init__(*args, **kwargs)
+#         self._access: AccessEnum = AccessEnum.PUBLIC
 
-    def __repr__(self) -> str:
-        return f"Namespace({self.path!r})"
+#     def __repr__(self) -> str:
+#         return f"Namespace({self.path!r})"

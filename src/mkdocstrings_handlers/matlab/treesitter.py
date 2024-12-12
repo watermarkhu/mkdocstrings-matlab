@@ -1,4 +1,4 @@
-#%%
+# %%
 from tree_sitter import Language, Parser, Node, TreeCursor
 import tree_sitter_matlab as tsmatlab
 
@@ -7,16 +7,17 @@ from pathlib import Path
 import charset_normalizer
 
 from mkdocstrings_handlers.matlab.models import (
-    Function,
+    AccessEnum,
     Class,
     Docstring,
+    Function,
     Parameters,
     Parameter,
     Property,
-    AccessEnum,
     Script,
+    ROOT,
 )
-from mkdocstrings_handlers.matlab.mixins import ROOT, PathMixin
+from mkdocstrings_handlers.matlab.mixins import PathMixin
 from mkdocstrings_handlers.matlab.enums import ParameterKind
 
 
@@ -112,12 +113,14 @@ def comment_node_docstring(node: Node, encoding: str) -> list[str]:
     return docstring
 
 
-def parse_function(cursor: TreeCursor, encoding: str, **kwargs) -> Function:
+def parse_function(
+    cursor: TreeCursor, encoding: str, filepath: Path, **kwargs
+) -> Function:
     docstring = []
     doclineno, docendlineno = 0, 0
     used_arguments = False
-    kwargs["lineno"] = cursor.node.start_point.row
-    kwargs["endlineno"] = cursor.node.end_point.row
+    kwargs["lineno"] = cursor.node.start_point.row + 1
+    kwargs["endlineno"] = cursor.node.end_point.row + 1
 
     cursor.goto_first_child()
 
@@ -235,20 +238,20 @@ def parse_function(cursor: TreeCursor, encoding: str, **kwargs) -> Function:
 
     if docstring:
         kwargs["docstring"] = Docstring(
-            "\n".join(docstring), lineno=doclineno, endlineno=docendlineno
+            "\n".join(docstring), lineno=doclineno + 1, endlineno=docendlineno + 1
         )
 
-    return Function(identifier, **kwargs)
+    return Function(identifier, filepath=filepath, **kwargs)
 
 
-def parse_class(cursor: TreeCursor, encoding: str, **kwargs) -> Class:
+def parse_class(cursor: TreeCursor, encoding: str, filepath: Path, **kwargs) -> Class:
     docstring = []
     doclineno, docendlineno = 0, 0
     comment_for_docstring = True
 
     savedKwargs = {key: value for key, value in kwargs.items()}
-    kwargs["lineno"] = cursor.node.start_point.row
-    kwargs["endlineno"] = cursor.node.end_point.row
+    kwargs["lineno"] = cursor.node.start_point.row + 1
+    kwargs["endlineno"] = cursor.node.end_point.row + 1
     methods, properties = [], []
 
     cursor.goto_first_child()
@@ -261,7 +264,6 @@ def parse_class(cursor: TreeCursor, encoding: str, **kwargs) -> Class:
                 cursor.goto_first_child()
                 while cursor.goto_next_sibling():
                     if cursor.node.type == "attribute":
-                        attribute = cursor.node
                         cursor.goto_first_child()
                         attributeIdentifier = cursor.node.text.decode(encoding)
                         if attributeIdentifier in ["Sealed", "Abstract", "Hidden"]:
@@ -333,7 +335,6 @@ def parse_class(cursor: TreeCursor, encoding: str, **kwargs) -> Class:
                         cursor.goto_first_child()
                         while cursor.goto_next_sibling():
                             if cursor.node.type == "attribute":
-                                attribute = cursor.node
                                 cursor.goto_first_child()
                                 attributeIdentifier = cursor.node.text.decode(encoding)
                                 if attributeIdentifier in [
@@ -385,7 +386,9 @@ def parse_class(cursor: TreeCursor, encoding: str, **kwargs) -> Class:
 
                 while cursor.goto_next_sibling():
                     if cursor.node.type == "function_definition":
-                        method = parse_function(cursor, encoding, **function_kwargs)
+                        method = parse_function(
+                            cursor, encoding, filepath, **function_kwargs
+                        )
 
                         if method.name != identifier and not is_abstract:
                             # Remove self from first method argument
@@ -443,10 +446,10 @@ def parse_class(cursor: TreeCursor, encoding: str, **kwargs) -> Class:
 
     if docstring:
         kwargs["docstring"] = Docstring(
-            "\n".join(docstring), lineno=doclineno, endlineno=docendlineno
+            "\n".join(docstring), lineno=doclineno + 1, endlineno=docendlineno + 1
         )
 
-    model = Class(identifier, **kwargs)
+    model = Class(identifier, filepath=filepath, **kwargs)
     for prop in properties:
         prop.parent = model
         model[prop.name] = prop
@@ -487,10 +490,14 @@ def parse_file(filepath: Path, **kwargs) -> tuple[PathMixin, str]:
 
     while True:
         if cursor.node.type == "function_definition":
-            model = parse_function(cursor, encoding, parent=parent, **kwargs)
+            model = parse_function(
+                cursor, encoding, parent=parent, filepath=filepath, **kwargs
+            )
             break
         elif cursor.node.type == "class_definition":
-            model = parse_class(cursor, encoding, parent=parent, **kwargs)
+            model = parse_class(
+                cursor, encoding, parent=parent, filepath=filepath, **kwargs
+            )
             break
         elif cursor.node.type == "comment":
             header_comment += comment_node_docstring(cursor.node, encoding)
@@ -498,7 +505,7 @@ def parse_file(filepath: Path, **kwargs) -> tuple[PathMixin, str]:
                 doclineno = cursor.node.start_point.row
             docendlineno = cursor.node.end_point.row
         else:
-            model = Script(filepath.stem, parent=parent, **kwargs)
+            model = Script(filepath.stem, parent=parent, filepath=filepath, **kwargs)
             break
 
         if not cursor.goto_next_sibling():
@@ -510,5 +517,6 @@ def parse_file(filepath: Path, **kwargs) -> tuple[PathMixin, str]:
         )
 
     return model, content.decode(encoding)
+
 
 # %%

@@ -1,15 +1,23 @@
 from collections import defaultdict, deque
 from pathlib import Path
 
-from _griffe.collections import LinesCollection, ModulesCollection
-from _griffe.models import Object
+from _griffe.collections import LinesCollection as GLC, ModulesCollection
 
 
-from mkdocstrings_handlers.matlab.mixins import PathMixin
+from mkdocstrings_handlers.matlab.models import MatlabObject
 from mkdocstrings_handlers.matlab.treesitter import parse_file
 
 
-__all__ = ["LinesCollection",  "PathCollection"]
+__all__ = ["LinesCollection", "PathCollection"]
+
+
+class LinesCollection(GLC):
+    """A simple dictionary containing the modules source code lines."""
+
+    def __init__(self) -> None:
+        """Initialize the collection."""
+        self._data: dict[str, list[str]] = {}
+
 
 class PathGlobber:
     def __init__(self, path: Path, recursive: bool = False):
@@ -19,11 +27,22 @@ class PathGlobber:
 
     def _glob(self, path: Path, recursive: bool = False):
         for member in path.iterdir():
-            if member.is_dir() and recursive and member.stem[0] not in ["+", "@"]:
+            if (
+                member.is_dir()
+                and recursive
+                and member.stem[0] not in ["+", "@"]
+                and member.stem != "private"
+            ):
                 self._glob(member, recursive=True)
             elif member.is_dir() and member.stem[0] == "+":
                 self._glob(member)
-            elif member.is_file() and member.suffix == ".m" and member.name != "Contents.m":
+            elif member.is_dir() and member.stem[0] == "@":
+                self._paths.append(member)
+            elif (
+                member.is_file()
+                and member.suffix == ".m"
+                and member.name != "Contents.m"
+            ):
                 self._paths.append(member)
 
     def max_stem_length(self) -> int:
@@ -42,57 +61,6 @@ class PathGlobber:
             raise StopIteration from err
         self._idx += 1
         return item
-
-
-class LazyModel:
-    def __init__(self, path: Path) -> Object | None:
-        self._path: Path = path
-        self._model: Object | None = None
-
-    @property
-    def is_class_folder(self) -> bool:
-        return self._path.is_dir() and self._path.name[0] == "@"
-    
-    @property
-    def is_namespace(self) -> bool:
-        return self._path.is_dir() and self._path.name[0] == "+"
-
-    @property
-    def name(self):
-        if self.is_class_folder:
-            return self._path.name[1:]
-        elif self.is_namespace:
-            parts = list(self._path.parts).reverse()
-            item = len(parts) - 1
-            namespace = []
-            while item >= 0:
-                if parts[item][0] != "+":
-                    break
-                namespace.append(parts[item][1:])
-                item -= 1
-            return ".".join(namespace)
-        else:
-            return self._path.stem
-
-    @property
-    def model(self):
-        if not self._path.exists():
-            return None
-        
-        if self._model is None:
-            if self.is_class_folder:
-                classfile = self._path / self._path.name[1:] + ".m"
-                if not classfile.exists():
-                    return None
-                self._model = parse_file(classfile)
-                for member in self._path.iterdir():
-                    if member.is_file() and member.suffix == ".m" and member.name != "Contents.m":
-                        method = parse_file(member)
-                        self._model.methods[method.name] = method
-            else:
-                self._model = parse_file(self._path)
-
-        return self._model
 
 
 class PathCollection(ModulesCollection):
@@ -121,15 +89,21 @@ class PathCollection(ModulesCollection):
         self._path: deque[Path] = deque()
         self._mapping: dict[str, deque[Path]] = defaultdict(deque)
         self._models: dict[Path, LazyModel] = {}
+        self.lines_collection = LinesCollection()
 
         for path in matlab_path:
             self.addpath(Path(path), to_end=True)
 
     @property
     def members(self):
-        return {name: self._models(paths[0]) for name, paths in self._mapping.items()}
+        return {
+            name: self._models[paths[0]].model for name, paths in self._mapping.items()
+        }
 
-    def resolve(self, name: str, ) -> PathMixin | None:
+    def resolve(
+        self,
+        name: str,
+    ) -> MatlabObject | None:
         """
         Resolves the given name to a model object.
         """
@@ -163,10 +137,9 @@ class PathCollection(ModulesCollection):
 
         members = PathGlobber(path, recursive=recursive)
         for member in members:
-            model = LazyModel(member)
+            model = LazyModel(member, self)
             self._models[member] = model
             self._mapping[model.name].append(member)
-
 
     def rm_path(self, path: str | Path, recursive: bool = False):
         """
@@ -193,9 +166,7 @@ class PathCollection(ModulesCollection):
             self._models.pop(member)
 
         if recursive:
-            for subdir in [
-                item for item in self._path if _is_subdirectory(path, item)
-            ]:
+            for subdir in [item for item in self._path if _is_subdirectory(path, item)]:
                 self.rm_path(subdir, recursive=False)
 
 
@@ -206,3 +177,76 @@ def _is_subdirectory(parent_path: Path, child_path: Path) -> bool:
         return False
     else:
         return True
+
+
+class LazyModel:
+    def __init__(
+        self, path: Path, path_collection: PathCollection
+    ) -> MatlabObject | None:
+        self._path: Path = path
+        self._model: MatlabObject | None = None
+        self._path_collection: PathCollection = path_collection
+        self._lines_collection: LinesCollection = path_collection.lines_collection
+
+    @property
+    def is_class_folder(self) -> bool:
+        return self._path.is_dir() and self._path.name[0] == "@"
+
+    @property
+    def is_in_namespace(self) -> bool:
+        return self._path.parent.name[0] == "+"
+
+    @property
+    def name(self):
+        if self.is_in_namespace:
+            parts = list(self._path.parts)
+            item = len(parts) - 2
+            nameparts = []
+            while item >= 0:
+                if parts[item][0] != "+":
+                    break
+                nameparts.append(parts[item][1:])
+                item -= 1
+            nameparts.reverse()
+            namespace = ".".join(nameparts) + "."
+        else:
+            namespace = ""
+
+        if self.is_class_folder:
+            return namespace + self._path.name[1:]
+        else:
+            return namespace + self._path.stem
+
+    @property
+    def model(self):
+        if not self._path.exists():
+            return None
+
+        if self._model is None:
+            if self.is_class_folder:
+                classfile = self._path / (self._path.name[1:] + ".m")
+                if not classfile.exists():
+                    return None
+                self._model, lines = parse_file(
+                    classfile, path_collection=self._path_collection
+                )
+                self._lines_collection[classfile] = lines.split("\n")
+
+                for member in self._path.iterdir():
+                    if (
+                        member.is_file()
+                        and member.suffix == ".m"
+                        and member.name != "Contents.m"
+                    ):
+                        method, lines = parse_file(
+                            member, path_collection=self._path_collection
+                        )
+                        self._model.members[method.name] = method
+                        self._lines_collection[method.filepath] = lines.split("\n")
+            else:
+                self._model, lines = parse_file(
+                    self._path, path_collection=self._path_collection
+                )
+                self._lines_collection[self._path] = lines.split("\n")
+
+        return self._model
