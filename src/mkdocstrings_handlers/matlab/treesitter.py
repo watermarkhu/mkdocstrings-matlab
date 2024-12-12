@@ -510,3 +510,5 @@ def parse_file(filepath: Path, **kwargs) -> tuple[PathMixin, str]:
         )
 
     return model, content.decode(encoding)
+
+# %%
