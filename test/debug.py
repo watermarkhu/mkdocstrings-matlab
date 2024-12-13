@@ -4,6 +4,7 @@ from pathlib import Path
 
 import os
 
+
 @contextmanager
 def set_directory(path: Path):
     origin = Path().absolute()
@@ -12,6 +13,7 @@ def set_directory(path: Path):
         yield
     finally:
         os.chdir(origin)
+
 
 config_path = Path(__file__).parent.resolve() / "mkdocs.yml"
 
@@ -27,5 +29,5 @@ kwargs = {
     "use_directory_urls": None,
 }
 
-with set_directory(config_path.parent): 
+with set_directory(config_path.parent):
     serve.serve(**kwargs)

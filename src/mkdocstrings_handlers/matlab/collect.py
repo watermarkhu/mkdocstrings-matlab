@@ -280,10 +280,15 @@ class LazyModel:
         else:
             namespace = ""
 
-        if self.is_class_folder:
-            return namespace + self._path.name[1:]
+        if self.is_class_folder or self.is_namespace:
+            name = namespace + self._path.name[1:]
         else:
-            return namespace + self._path.stem
+            name = namespace + self._path.stem
+
+        if self.is_namespace:
+            return "+" + name
+        else:
+            return name
 
     @property
     def model(self):
@@ -296,23 +301,19 @@ class LazyModel:
             elif self.is_namespace:
                 self._model = self._collect_namespace(self._path)
             else:
-                self._model = self._collect_path(self._path, self._path.parent)
+                self._model = self._collect_path(self._path)
+        self._model._parent = self._collect_parent(self._path.parent)
         return self._model
     
     def _collect_parent(self, path: Path):
         if self.is_in_namespace:
-            if path in self._path_collection._models:
-                parent = self._path_collection._models[path]
-            else:
-                parent = self._collect_namespace(path)
-                self._path_collection[path] = parent
+            parent = self._path_collection._models[path]
         else:
             parent = ROOT
         return parent
 
-    def _collect_path(self, path: Path, parent_path: Path) -> MatlabObject:
-        parent = self._collect_parent(parent_path)
-        model, content = parse_file(path, path_collection=self._path_collection, parent=parent)
+    def _collect_path(self, path: Path) -> MatlabObject:
+        model, content = parse_file(path, path_collection=self._path_collection)
         lines = content.split("\n")
         self._lines_collection[path] = lines
         return model
@@ -321,7 +322,7 @@ class LazyModel:
         classfile = path / (path.name[1:] + ".m")
         if not classfile.exists():
             return None
-        model = self._collect_path(classfile, path.parent)
+        model = self._collect_path(classfile)
 
         for member in path.iterdir():
             if (
@@ -330,13 +331,15 @@ class LazyModel:
                 and member.name != "Contents.m"
                 and member != classfile
             ):
-                method = self._collect_path(member, path)
+                method = self._collect_path(member)
+                method.parent = model
                 model.members[method.name] = method
         return model
 
     def _collect_namespace(self, path: Path) -> Namespace:
-        parent = self._collect_parent(path)
-        model = Namespace(self.name[1:], path_collection=self._path_collection, parent=parent)
+
+        name = self.name[1:].split(".")[-1]
+        model = Namespace(name, filepath=path, path_collection=self._path_collection)
 
         for member in path.iterdir():
             if member.is_dir() and member.name[0] in ["+", "@"]:

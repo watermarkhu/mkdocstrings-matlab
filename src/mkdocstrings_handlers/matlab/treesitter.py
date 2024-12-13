@@ -15,7 +15,6 @@ from mkdocstrings_handlers.matlab.models import (
     Parameter,
     Property,
     Script,
-    ROOT,
 )
 from mkdocstrings_handlers.matlab.models import PathMixin
 from mkdocstrings_handlers.matlab.enums import ParameterKind
@@ -357,7 +356,7 @@ def parse_class(cursor: TreeCursor, encoding: str, filepath: Path, **kwargs) -> 
                                                     cursor.node.text.decode(encoding)
                                                 )
                                             )
-                                    kwargs[attributeIdentifier] = value
+                                    property_kwargs[attributeIdentifier] = value
 
                                 elif attributeIdentifier in ["GetAccess", "SetAccess"]:
                                     cursor.goto_next_sibling()
@@ -486,17 +485,15 @@ def parse_file(filepath: Path, **kwargs) -> tuple[PathMixin, str]:
     header_comment = []
     doclineno, docendlineno = 0, 0
 
-    parent = kwargs.pop("parent", ROOT)
-
     while True:
         if cursor.node.type == "function_definition":
             model = parse_function(
-                cursor, encoding, parent=parent, filepath=filepath, **kwargs
+                cursor, encoding, filepath=filepath, **kwargs
             )
             break
         elif cursor.node.type == "class_definition":
             model = parse_class(
-                cursor, encoding, parent=parent, filepath=filepath, **kwargs
+                cursor, encoding, filepath=filepath, **kwargs
             )
             break
         elif cursor.node.type == "comment":
@@ -505,7 +502,7 @@ def parse_file(filepath: Path, **kwargs) -> tuple[PathMixin, str]:
                 doclineno = cursor.node.start_point.row
             docendlineno = cursor.node.end_point.row
         else:
-            model = Script(filepath.stem, parent=parent, filepath=filepath, **kwargs)
+            model = Script(filepath.stem, filepath=filepath, **kwargs)
             break
 
         if not cursor.goto_next_sibling():
