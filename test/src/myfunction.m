@@ -8,13 +8,13 @@ And another comment
 function [output1, output2] = myfunction(input1, input2, options)
 % Perform some operation using the input arguments.
 %
-% Parameters:
+% Args:
 %   input1 (type): Description of input1.
 %   input2 (type): Description of input2.
 %
 % Returns:
-%     output1 (type): Description of output1.
-%     output2 (type): Description of output2.
+%   output1 (type): Description of output1.
+%   output2 (type): Description of output2.
 
 arguments (Input)
     input1 (1, 1) double {mustBeNumeric} % Description of input1.

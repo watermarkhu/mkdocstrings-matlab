@@ -127,30 +127,25 @@ class PathCollection(ModulesCollection):
         if name not in self._mapping:
             return None
 
-        model = deepcopy(self._models[self._mapping[name][0]].model)
+        model = self._models[self._mapping[name][0]].model
 
-        if model.docstring is not None:
-            model.docstring.parser = config.get("docstring_style", "google")
-            model.docstring.parser_options = config.get("docstring_options", {})
-
-        match model:
-            case Script():
-                pass
-            case Function():
-                pass
-            case Class():
-                if config.get("show_inheritance_diagram"):
-                    model.docstring.parsed.append(self.get_inheritance_diagram(model))
-
-                if config.get("merge_init_into_class") and model.name in model.members:
-                    constructor = model.members.pop(model.name)
-                    model.docstring.parsed.extend(constructor.docstring.parsed)
-            case Namespace():
-                pass
-            case _:
-                return None, []
+        if isinstance(model, Class) and "Inheritance Diagram" not in model.docstring.parsed:
+            model.docstring.parsed.append(self.get_inheritance_diagram(model))
+                
+        self.update_member_docstring_attributes(model, config)
 
         return model
+    
+    def update_member_docstring_attributes(self, model: MatlabObject, config: Mapping):
+        if hasattr(model, "docstring") and model.docstring is not None:
+            model.docstring.parser = config.get("docstring_style", "google")
+            model.docstring.parser_options = config.get("docstring_options", {})
+            model.docstring.section_style = config.get("docstring_section_style", "table")
+
+        for member in getattr(model, "members", {}).values():
+            self.update_member_docstring_attributes(member, config)
+            
+
 
     def addpath(self, path: str | Path, to_end: bool = False, recursive: bool = False):
         """
@@ -213,18 +208,23 @@ class PathCollection(ModulesCollection):
             return str.replace(".", "_")
 
         def get_nodes(model: Class, nodes: set[str] = set()) -> set[str]:
-            id = get_id(model.name)
-            nodes.add(f"   {id}[{model.name}]")
-            for base in [self.resolve(base) for base in model.bases]:
-                if base is not None:
-                    get_nodes(base, nodes)
+            nodes.add(f"   {get_id(model.name)}[{model.name}]")
+            for base in model.bases:
+                super = self.resolve(base)
+                if super is None:
+                    nodes.add(f"   {get_id(base)}[{base}]")
+                else:
+                    get_nodes(super, nodes)
             return nodes
 
         def get_links(model: Class, links: set[str] = set()) -> set[str]:
-            for base in [self.resolve(base) for base in model.bases]:
-                if base is not None:
-                    links.add(f"   {get_id(model.name)} --> {get_id(base.name)}")
-                    get_links(base, links)
+            for base in model.bases:
+                super = self.resolve(base)
+                if super is None:
+                    links.add(f"   {get_id(model.name)} --> {get_id(base)}")
+                else:
+                    links.add(f"   {get_id(model.name)} --> {get_id(super.name)}")
+                    get_links(super, links)
             return links
 
         nodes_str = "\n".join(list(get_nodes(model)))

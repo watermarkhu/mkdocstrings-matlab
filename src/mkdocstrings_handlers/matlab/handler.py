@@ -78,7 +78,6 @@ class MatlabHandler(BaseHandler):
         "docstring_style": "google",
         "docstring_options": {},
         "docstring_section_style": "table",
-        "merge_init_into_class": False,
         "show_if_no_docstring": False,
         "show_docstring_attributes": True,
         "show_docstring_functions": True,
@@ -156,18 +155,6 @@ class MatlabHandler(BaseHandler):
                 "locale": self._locale,
             },
         )
-
-    # def get_anchors(self, data: CollectorItem) -> tuple[str, ...]:
-    #     """Return the possible identifiers (HTML anchors) for a collected item.
-
-    #     Arguments:
-    #         data: The collected data.
-
-    #     Returns:
-    #         The HTML anchors (without '#'), or an empty tuple if this item doesn't have an anchor.
-    #     """
-    #     anchors = [data.path]
-    #     return tuple(anchors)
 
     def update_env(self, md: Markdown, config: dict) -> None:
         """Update the Jinja environment with custom filters and tests.

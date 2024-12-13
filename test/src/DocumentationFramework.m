@@ -50,15 +50,15 @@ classdef (Hidden=true, Abstract=false, Sealed) DocumentationFramework < handle &
         function obj = DocumentationFramework(projectName)
             % DocumentationFramework - Constructor for the DocumentationFramework class.
             %
-            %   Syntax:
-            %       obj = DocumentationFramework(projectName)
+            % Args:
+            %   projectName: The name of the software project.
             %
-            %   Inputs:
-            %       - projectName: The name of the software project.
-            %
-            %   Example:
-            %       framework = DocumentationFramework('MyProject');
-            
+            % Example:
+            %   
+            %   ```matlab 
+            %   framework = DocumentationFramework('MyProject');
+            %   ```
+
             obj.projectName = projectName;
             obj.components = {};
             obj.documentation = struct();

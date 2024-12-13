@@ -115,9 +115,10 @@ def comment_node_docstring(node: Node, encoding: str) -> list[str]:
 def parse_function(
     cursor: TreeCursor, encoding: str, filepath: Path, **kwargs
 ) -> Function:
-    docstring = []
+    docstring: list[str] = []
+    docstrings: list[Docstring] = []
     doclineno, docendlineno = 0, 0
-    used_arguments = False
+    used_arguments: bool = False
     kwargs["lineno"] = cursor.node.start_point.row + 1
     kwargs["endlineno"] = cursor.node.end_point.row + 1
 
@@ -178,6 +179,7 @@ def parse_function(
                     if cursor.node.type == "attributes":
                         if "Output" in cursor.node.text.decode(encoding):
                             arguments_type = "returns"
+
                     elif cursor.node.type == "property":
                         parameters = kwargs[arguments_type]
 
@@ -224,9 +226,16 @@ def parse_function(
                                     if parameter.kind is ParameterKind.positional:
                                         parameter.kind = ParameterKind.optional
                                 case "comment":
-                                    parameter.docstring = "\n".join(
+                                    plineno = cursor.node.start_point.row + 1
+                                    plinendlineno = cursor.node.end_point.row + 1
+                                    text = "\n".join(
                                         comment_node_docstring(cursor.node, encoding)
                                     )
+                                    parameter.docstring = Docstring(
+                                        text, lineno=plineno, endlineno=plinendlineno
+                                    )
+                                    docstrings.append(parameter.docstring)
+                        
                         cursor.goto_parent()
                 cursor.goto_parent()
 
@@ -240,13 +249,19 @@ def parse_function(
             "\n".join(docstring), lineno=doclineno + 1, endlineno=docendlineno + 1
         )
 
-    return Function(identifier, filepath=filepath, **kwargs)
+    model = Function(identifier, filepath=filepath, **kwargs)
+
+    for docstring in docstrings:    
+        docstring.parent = model
+
+    return model
 
 
 def parse_class(cursor: TreeCursor, encoding: str, filepath: Path, **kwargs) -> Class:
-    docstring = []
+    docstring: list[str] = []
+    docstrings: list[Docstring] = []
     doclineno, docendlineno = 0, 0
-    comment_for_docstring = True
+    comment_for_docstring: bool = True
 
     savedKwargs = {key: value for key, value in kwargs.items()}
     kwargs["lineno"] = cursor.node.start_point.row + 1
@@ -322,9 +337,17 @@ def parse_class(cursor: TreeCursor, encoding: str, filepath: Path, **kwargs) -> 
                                         1:
                                     ].strip()
                                 case "comment":
-                                    prop.docstring = "\n".join(
+
+                                    plineno = cursor.node.start_point.row + 1
+                                    plinendlineno = cursor.node.end_point.row + 1
+                                    text = "\n".join(
                                         comment_node_docstring(cursor.node, encoding)
                                     )
+                                    prop.docstring = Docstring(
+                                        text, lineno=plineno, endlineno=plinendlineno
+                                    )
+                                    docstrings.append(prop.docstring)
+
                         properties.append(prop)
                         cursor.goto_parent()
 
@@ -449,6 +472,10 @@ def parse_class(cursor: TreeCursor, encoding: str, filepath: Path, **kwargs) -> 
         )
 
     model = Class(identifier, filepath=filepath, **kwargs)
+
+    for docstring in docstrings:
+        docstring.parent = model
+
     for prop in properties:
         prop.parent = model
         model[prop.name] = prop
@@ -456,9 +483,9 @@ def parse_class(cursor: TreeCursor, encoding: str, filepath: Path, **kwargs) -> 
     for method in methods:
         method.parent = model
         if method._is_getter or method._is_setter:
-            prop = model.members.get(
+            prop = model.all_members.get(
                 method.name.split(".")[1], None
-            )  # TODO replace with all_members
+            )
             if prop:
                 if method._is_getter:
                     prop.getter = method
@@ -510,7 +537,7 @@ def parse_file(filepath: Path, **kwargs) -> tuple[PathMixin, str]:
 
     if not model.docstring:
         model.docstring = Docstring(
-            "\n".join(header_comment), lineno=doclineno, endlineno=docendlineno
+            "\n".join(header_comment), lineno=doclineno, endlineno=docendlineno, parent=model
         )
 
     return model, content.decode(encoding)
