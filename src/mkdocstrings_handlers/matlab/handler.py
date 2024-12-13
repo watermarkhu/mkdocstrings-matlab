@@ -122,7 +122,7 @@ class MatlabHandler(BaseHandler):
             full_paths = [str((config_path / path).resolve()) for path in paths]
 
         self.paths: PathCollection = PathCollection(full_paths)
-        self.lines: LinesCollection = self.paths.LinesCollection()
+        self.lines: LinesCollection = self.paths.lines_collection
         self._locale: str = locale
 
     def get_templates_dir(self, handler: str | None = None) -> Path:
@@ -157,17 +157,17 @@ class MatlabHandler(BaseHandler):
             },
         )
 
-    def get_anchors(self, data: CollectorItem) -> tuple[str, ...]:
-        """Return the possible identifiers (HTML anchors) for a collected item.
+    # def get_anchors(self, data: CollectorItem) -> tuple[str, ...]:
+    #     """Return the possible identifiers (HTML anchors) for a collected item.
 
-        Arguments:
-            data: The collected data.
+    #     Arguments:
+    #         data: The collected data.
 
-        Returns:
-            The HTML anchors (without '#'), or an empty tuple if this item doesn't have an anchor.
-        """
-        anchors = [data.path]
-        return tuple(anchors)
+    #     Returns:
+    #         The HTML anchors (without '#'), or an empty tuple if this item doesn't have an anchor.
+    #     """
+    #     anchors = [data.path]
+    #     return tuple(anchors)
 
     def update_env(self, md: Markdown, config: dict) -> None:
         """Update the Jinja environment with custom filters and tests.
@@ -215,17 +215,7 @@ class MatlabHandler(BaseHandler):
             raise CollectionError("Empty identifier")
 
         final_config = ChainMap(config, self.default_config)  # type: ignore[arg-type]
-        model = self.paths.resolve(identifier)
-
-        match model:
-            case Function():
-                return self.collect_function(model, final_config)
-            case Class():
-                return self.collect_class(model, final_config)
-            case Script():
-                return self.collect_script(model, final_config)
-            case _:
-                return None
+        return self.paths.resolve(identifier, config=final_config)
 
 
 def get_handler(

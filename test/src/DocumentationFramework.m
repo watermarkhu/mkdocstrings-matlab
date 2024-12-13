@@ -1,34 +1,32 @@
 classdef (Hidden=true, Abstract=false, Sealed) DocumentationFramework < handle & AbstractFramework
-    % DocumentationFramework - A class that represents the state of a documentation framework.
-    %
-    %   This class provides a way to manage and organize documentation for a software project.
-    %   It allows users to create, update, and retrieve documentation for different components
-    %   of the project.
-    %
-    %   Properties:
-    %   - projectName: The name of the software project.
-    %   - components: A cell array containing the names of the components in the project.
-    %   - documentation: A struct that stores the documentation for each component.
-    %
-    %   Methods:
-    %   - addComponent: Adds a new component to the documentation framework.
-    %   - updateDocumentation: Updates the documentation for a specific component.
-    %   - getDocumentation: Retrieves the documentation for a specific component.
-    %
-    %   ## Example
-    %   
-    %   ```matlab
-    %    % Create a new documentation framework
-    %    framework = DocumentationFramework('MyProject');
-    %    % Add a component to the framework
-    %    framework.addComponent('Component1');
-    %    % Update the documentation for the component
-    %    framework.updateDocumentation('Component1', 'This is the documentation for Component1.');
-    %    % Retrieve the documentation for the component
-    %    doc = framework.getDocumentation('Component1');
-    %   ```
-    %
-    %   See also: addComponent, updateDocumentation, getDocumentation
+% DocumentationFramework - A class that represents the state of a documentation framework.
+%
+% This class provides a way to manage and organize documentation for a software project.
+% It allows users to create, update, and retrieve documentation for different components
+% of the project.
+%
+% Attributes:
+%   projectName: The name of the software project.
+%   components: A cell array containing the names of the components in the project.
+%   documentation: A struct that stores the documentation for each component.
+%
+% Methods:
+%   addComponent: Adds a new component to the documentation framework.
+%   updateDocumentation: Updates the documentation for a specific component.
+%   getDocumentation: Retrieves the documentation for a specific component.
+%
+% ## Example
+% 
+% ```matlab
+%  % Create a new documentation framework
+%  framework = DocumentationFramework('MyProject');
+%  % Add a component to the framework
+%  framework.addComponent('Component1');
+%  % Update the documentation for the component
+%  framework.updateDocumentation('Component1', 'This is the documentation for Component1.');
+%  % Retrieve the documentation for the component
+%  doc = framework.getDocumentation('Component1');
+% ```
 
     enumeration
         foo

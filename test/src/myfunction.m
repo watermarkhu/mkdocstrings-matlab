@@ -7,9 +7,10 @@ And another comment
 
 function [output1, output2] = myfunction(input1, input2, options)
 % Perform some operation using the input arguments.
+%
 % Parameters:
-%     input1 (type): Description of input1.
-%     input2 (type): Description of input2.
+%   input1 (type): Description of input1.
+%   input2 (type): Description of input2.
 %
 % Returns:
 %     output1 (type): Description of output1.

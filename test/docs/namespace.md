@@ -1,0 +1,4 @@
+# namespace
+
+::: +myNamespace
+    handler: matlab

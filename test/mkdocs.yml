@@ -1,9 +1,11 @@
-site_name: "mkdocstrings-matlab"
+site_name: "mkdocstrings-matlab-test"
 repo_name: "watermarkhu/mkdocstrings-matlab"
 site_dir: "site"
 
 nav:
   - Home: index.md
+  - api: api.md
+  - namespace: namespace.md
 
 theme:
   name: material
@@ -23,6 +25,13 @@ plugins:
       #     show_root_heading: true
       #     show_docstring_attributes: false
       matlab:
-        paths: ["/home/mahu/repositories/matlab-test-action/src"]
+        paths: ["./src"]
         options:
           show_root_heading: true
+
+markdown_extensions:
+  pymdownx.superfences:
+    custom_fences:
+      - name: mermaid
+        class: mermaid
+        format: !!python/name:pymdownx.superfences.fence_code_format

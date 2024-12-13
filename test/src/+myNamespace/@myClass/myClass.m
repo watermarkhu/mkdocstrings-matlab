@@ -2,15 +2,12 @@ classdef myClass
     % MYCLASS A class with methods for various calculations
     %
     % Methods:
-    %   calculateSumAndDifference - Calculate the sum and difference of inputs
-    %   calculateProductAndQuotient - Calculate the product and quotient of inputs
+    %   calculateSumAndDifference: Calculate the sum and difference of inputs
+    %   calculateProductAndQuotient: Calculate the product and quotient of inputs
 
     methods
         function [sumResult, diffResult] = calculateSumAndDifference(obj, num1, num2)
             % CALCULATESUMANDDIFFERENCE Calculate the sum and difference of inputs
-            %
-            % Syntax:
-            %   [sumResult, diffResult] = obj.calculateSumAndDifference(num1, num2)
             %
             % Inputs:
             %   obj - The object instance
@@ -30,9 +27,6 @@ classdef myClass
 
         function [productResult, quotientResult] = calculateProductAndQuotient(obj, numA, numB)
             % CALCULATEPRODUCTANDQUOTIENT Calculate the product and quotient of inputs
-            %
-            % Syntax:
-            %   [productResult, quotientResult] = obj.calculateProductAndQuotient(numA, numB)
             %
             % Inputs:
             %   obj - The object instance

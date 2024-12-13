@@ -1,3 +1,4 @@
+from copy import deepcopy
 from collections import defaultdict, deque
 from pathlib import Path
 from typing import Mapping
@@ -6,11 +7,14 @@ from _griffe.collections import LinesCollection as GLC, ModulesCollection
 
 
 from mkdocstrings_handlers.matlab.models import (
-    MatlabObject,
+    Class,
+    Classfolder,
     DocstringSectionText,
     Function,
-    Class,
+    MatlabObject,
+    Namespace,
     Script,
+    ROOT,
 )
 from mkdocstrings_handlers.matlab.treesitter import parse_file
 
@@ -42,6 +46,7 @@ class PathGlobber:
             ):
                 self._glob(member, recursive=True)
             elif member.is_dir() and member.stem[0] == "+":
+                self._paths.append(member)
                 self._glob(member)
             elif member.is_dir() and member.stem[0] == "@":
                 self._paths.append(member)
@@ -122,10 +127,11 @@ class PathCollection(ModulesCollection):
         if name not in self._mapping:
             return None
 
-        model = self._models[self._mapping[name][0]].model
+        model = deepcopy(self._models[self._mapping[name][0]].model)
 
-        model.docstring.parser = config.get("docstring_style", "google")
-        model.docstring.parser_options = config.get("docstring_options", {})
+        if model.docstring is not None:
+            model.docstring.parser = config.get("docstring_style", "google")
+            model.docstring.parser_options = config.get("docstring_options", {})
 
         match model:
             case Script():
@@ -139,6 +145,8 @@ class PathCollection(ModulesCollection):
                 if config.get("merge_init_into_class") and model.name in model.members:
                     constructor = model.members.pop(model.name)
                     model.docstring.parsed.extend(constructor.docstring.parsed)
+            case Namespace():
+                pass
             case _:
                 return None, []
 
@@ -221,7 +229,7 @@ class PathCollection(ModulesCollection):
 
         nodes_str = "\n".join(list(get_nodes(model)))
         links_str = "\n".join(list(get_links(model)))
-        section = f"```mermaid\nflowchart BT\n{nodes_str}\n{links_str}\n```"
+        section = f"## Inheritance Diagram\n\n```mermaid\nflowchart BT\n{nodes_str}\n{links_str}\n```"
 
         return DocstringSectionText(section, title="Inheritance Diagram")
 
@@ -248,6 +256,10 @@ class LazyModel:
     def is_class_folder(self) -> bool:
         return self._path.is_dir() and self._path.name[0] == "@"
 
+    @property
+    def is_namespace(self) -> bool:
+        return self._path.name[0] == "+"
+    
     @property
     def is_in_namespace(self) -> bool:
         return self._path.parent.name[0] == "+"
@@ -280,31 +292,64 @@ class LazyModel:
 
         if self._model is None:
             if self.is_class_folder:
-                classfile = self._path / (self._path.name[1:] + ".m")
-                if not classfile.exists():
-                    return None
-                self._model, self._lines_collection[classfile] = self.collect_path(
-                    classfile
-                )
-
-                for member in self._path.iterdir():
-                    if (
-                        member.is_file()
-                        and member.suffix == ".m"
-                        and member.name != "Contents.m"
-                        and member != classfile
-                    ):
-                        method, lines = self.collect_path(member)
-                        self._model.members[method.name] = method
-                        self._lines_collection[method.filepath] = lines
+                self._model = self._collect_classfolder(self._path)
+            elif self.is_namespace:
+                self._model = self._collect_namespace(self._path)
             else:
-                self._model, self._lines_collection[self._path] = self.collect_path(
-                    self._path
-                )
-
+                self._model = self._collect_path(self._path, self._path.parent)
         return self._model
+    
+    def _collect_parent(self, path: Path):
+        if self.is_in_namespace:
+            if path in self._path_collection._models:
+                parent = self._path_collection._models[path]
+            else:
+                parent = self._collect_namespace(path)
+                self._path_collection[path] = parent
+        else:
+            parent = ROOT
+        return parent
 
-    def collect_path(self, path: Path) -> tuple[MatlabObject, list[str]]:
-        model, content = parse_file(path, path_collection=self._path_collection)
+    def _collect_path(self, path: Path, parent_path: Path) -> MatlabObject:
+        parent = self._collect_parent(parent_path)
+        model, content = parse_file(path, path_collection=self._path_collection, parent=parent)
         lines = content.split("\n")
-        return model, lines
+        self._lines_collection[path] = lines
+        return model
+    
+    def _collect_classfolder(self, path: Path) -> Classfolder | None: 
+        classfile = path / (path.name[1:] + ".m")
+        if not classfile.exists():
+            return None
+        model = self._collect_path(classfile, path.parent)
+
+        for member in path.iterdir():
+            if (
+                member.is_file()
+                and member.suffix == ".m"
+                and member.name != "Contents.m"
+                and member != classfile
+            ):
+                method = self._collect_path(member, path)
+                model.members[method.name] = method
+        return model
+
+    def _collect_namespace(self, path: Path) -> Namespace:
+        parent = self._collect_parent(path)
+        model = Namespace(self.name[1:], path_collection=self._path_collection, parent=parent)
+
+        for member in path.iterdir():
+            if member.is_dir() and member.name[0] in ["+", "@"]:
+                submodel = self._path_collection._models[member].model
+                if submodel is not None:
+                    model.members[submodel.name] = submodel
+
+            elif member.is_file() and member.suffix == ".m":
+                if member.name == "Contents.m":
+                    contentsfile = self._collect_path(member, path)
+                    contentsfile.docstring = model.docstring
+                else:
+                    submodel = self._path_collection._models[member].model
+                    if submodel is not None:
+                        model.members[submodel.name] = submodel
+        return model

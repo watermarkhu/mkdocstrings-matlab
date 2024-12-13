@@ -26,6 +26,7 @@ __all__ = [
     "Module",
     "Docstring",
     "DocstringSectionText",
+    "Namespace",
     "PathMixin",
     "Parameters",
     "Parameter",
@@ -76,7 +77,19 @@ class MatlabObject(Object):
         """
         if isinstance(self.parent, _Root):
             return self.name
-        return f"{self.parent.path}.{self.name}"
+        
+        if isinstance(self.parent, MatlabObject):
+            parent = self.parent
+        else:
+            parent = self.parent.model
+
+        if isinstance(parent, Classfolder) and self.name == parent.name:
+            if isinstance(parent.parent, _Root):
+                return self.name
+            else:
+                return f"{parent.parent.canonical_path}.{self.name}"
+        else:
+            return f"{parent.canonical_path}.{self.name}"
 
 
 class Script(PathMixin, MatlabObject):
@@ -224,10 +237,10 @@ class Function(PathMixin, GriffeFunction, MatlabObject):
         return public and not self.hidden
 
 
-# class Namespace(PathMixin, Module, MatlabObject):
-#     def __init__(self, *args: Any, **kwargs: Any) -> None:
-#         super().__init__(*args, **kwargs)
-#         self._access: AccessEnum = AccessEnum.PUBLIC
+class Namespace(PathMixin, Module, MatlabObject):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self._access: AccessEnum = AccessEnum.PUBLIC
 
-#     def __repr__(self) -> str:
-#         return f"Namespace({self.path!r})"
+    def __repr__(self) -> str:
+        return f"Namespace({self.path!r})"

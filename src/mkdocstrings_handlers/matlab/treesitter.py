@@ -183,25 +183,25 @@ def parse_function(
                         parameters = kwargs[arguments_type]
 
                         cursor.goto_first_child()
-                        identifier = cursor.node.text.decode(encoding)
+                        argument = cursor.node.text.decode(encoding)
 
-                        if "." in identifier:
-                            kwargsvar = identifier.split(".")[0]
+                        if "." in argument:
+                            kwargsvar = argument.split(".")[0]
                             kwargsparameter = next(
                                 (p for p in parameters if p.name == kwargsvar), None
                             )
                             if kwargsparameter:
                                 parameters._params.remove(kwargsparameter)
-                            identifier = identifier.split(".")[-1]
+                            argument = argument.split(".")[-1]
                             parameter = Parameter(
-                                identifier, kind=ParameterKind.keyword_only
+                                argument, kind=ParameterKind.keyword_only
                             )
                             parameters._params.append(parameter)
                         else:
                             parameter = next(
-                                (p for p in parameters if p.name == identifier), None
+                                (p for p in parameters if p.name == argument), None
                             )
-                            if identifier == "varargin":
+                            if argument == "varargin":
                                 parameter.kind = ParameterKind.var_keyword
                             else:
                                 parameter.kind = ParameterKind.positional
@@ -486,7 +486,7 @@ def parse_file(filepath: Path, **kwargs) -> tuple[PathMixin, str]:
     header_comment = []
     doclineno, docendlineno = 0, 0
 
-    parent = kwargs.get("parent", ROOT)
+    parent = kwargs.pop("parent", ROOT)
 
     while True:
         if cursor.node.type == "function_definition":

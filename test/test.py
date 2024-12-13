@@ -9,13 +9,7 @@ path = Path(__file__).parent / "src"
 
 path_collection = PathCollection([path])
 
-path_collection.members
+print(path_collection.members)
 
 # %%
-model = path_collection.resolve("DocumentationFramework")
-# %%
-model.inherited_members
-# %%
-model = path_collection.resolve("myNamespace.myClass")
-model.members["myClass"].lines
-# %%
+model = path_collection.resolve("myfunction")
