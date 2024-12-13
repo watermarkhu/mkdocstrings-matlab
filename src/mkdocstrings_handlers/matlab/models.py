@@ -1,17 +1,18 @@
 from typing import Any, Optional, TYPE_CHECKING
+from pathlib import Path
 from griffe import (
+    Attribute,
     Function as GriffeFunction,
     Class as GriffeClass,
-    Module,
-    Attribute,
     Docstring,
+    DocstringSectionText,
+    Module,
     Object,
     Parameters,
     Parameter,
 )
 
 from mkdocstrings_handlers.matlab.enums import AccessEnum
-from mkdocstrings_handlers.matlab.mixins import PathMixin
 
 if TYPE_CHECKING:
     from mkdocstrings_handlers.matlab.collect import PathCollection
@@ -24,6 +25,8 @@ __all__ = [
     "MatlabObject",
     "Module",
     "Docstring",
+    "DocstringSectionText",
+    "PathMixin",
     "Parameters",
     "Parameter",
     "Property",
@@ -40,6 +43,16 @@ class _Root(Object):
 
 
 ROOT = _Root()
+
+
+class PathMixin:
+    def __init__(self, *args: Any, filepath: Path | None = None, **kwargs: Any) -> None:
+        self._filepath: Path | None = filepath
+        super().__init__(*args, **kwargs)
+
+    @property
+    def filepath(self) -> Path | None:
+        return self._filepath
 
 
 class MatlabObject(Object):

@@ -17,7 +17,7 @@ from mkdocstrings_handlers.matlab.models import (
     Script,
     ROOT,
 )
-from mkdocstrings_handlers.matlab.mixins import PathMixin
+from mkdocstrings_handlers.matlab.models import PathMixin
 from mkdocstrings_handlers.matlab.enums import ParameterKind
 
 

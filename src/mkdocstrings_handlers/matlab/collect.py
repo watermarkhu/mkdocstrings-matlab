@@ -1,10 +1,17 @@
 from collections import defaultdict, deque
 from pathlib import Path
+from typing import Mapping
 
 from _griffe.collections import LinesCollection as GLC, ModulesCollection
 
 
-from mkdocstrings_handlers.matlab.models import MatlabObject
+from mkdocstrings_handlers.matlab.models import (
+    MatlabObject,
+    DocstringSectionText,
+    Function,
+    Class,
+    Script,
+)
 from mkdocstrings_handlers.matlab.treesitter import parse_file
 
 
@@ -71,6 +78,7 @@ class PathCollection(ModulesCollection):
     def __init__(
         self,
         matlab_path: list[str | Path],
+        config: Mapping = {},
     ) -> None:
         """
         Initialize an instance of PathCollection.
@@ -89,6 +97,7 @@ class PathCollection(ModulesCollection):
         self._path: deque[Path] = deque()
         self._mapping: dict[str, deque[Path]] = defaultdict(deque)
         self._models: dict[Path, LazyModel] = {}
+        self.config = config
         self.lines_collection = LinesCollection()
 
         for path in matlab_path:
@@ -103,15 +112,37 @@ class PathCollection(ModulesCollection):
     def resolve(
         self,
         name: str,
+        config: Mapping = {},
     ) -> MatlabObject | None:
         """
         Resolves the given name to a model object.
         """
 
         # Find in global database
-        if name in self._mapping:
-            return self._models[self._mapping[name][0]].model
-        return None
+        if name not in self._mapping:
+            return None
+
+        model = self._models[self._mapping[name][0]].model
+
+        model.docstring.parser = config.get("docstring_style", "google")
+        model.docstring.parser_options = config.get("docstring_options", {})
+
+        match model:
+            case Script():
+                pass
+            case Function():
+                pass
+            case Class():
+                if config.get("show_inheritance_diagram"):
+                    model.docstring.parsed.append(self.get_inheritance_diagram(model))
+
+                if config.get("merge_init_into_class") and model.name in model.members:
+                    constructor = model.members.pop(model.name)
+                    model.docstring.parsed.extend(constructor.docstring.parsed)
+            case _:
+                return None, []
+
+        return model
 
     def addpath(self, path: str | Path, to_end: bool = False, recursive: bool = False):
         """
@@ -168,6 +199,31 @@ class PathCollection(ModulesCollection):
         if recursive:
             for subdir in [item for item in self._path if _is_subdirectory(path, item)]:
                 self.rm_path(subdir, recursive=False)
+
+    def get_inheritance_diagram(self, model: Class) -> DocstringSectionText:
+        def get_id(str: str) -> str:
+            return str.replace(".", "_")
+
+        def get_nodes(model: Class, nodes: set[str] = set()) -> set[str]:
+            id = get_id(model.name)
+            nodes.add(f"   {id}[{model.name}]")
+            for base in [self.resolve(base) for base in model.bases]:
+                if base is not None:
+                    get_nodes(base, nodes)
+            return nodes
+
+        def get_links(model: Class, links: set[str] = set()) -> set[str]:
+            for base in [self.resolve(base) for base in model.bases]:
+                if base is not None:
+                    links.add(f"   {get_id(model.name)} --> {get_id(base.name)}")
+                    get_links(base, links)
+            return links
+
+        nodes_str = "\n".join(list(get_nodes(model)))
+        links_str = "\n".join(list(get_links(model)))
+        section = f"```mermaid\nflowchart BT\n{nodes_str}\n{links_str}\n```"
+
+        return DocstringSectionText(section, title="Inheritance Diagram")
 
 
 def _is_subdirectory(parent_path: Path, child_path: Path) -> bool:
@@ -227,26 +283,28 @@ class LazyModel:
                 classfile = self._path / (self._path.name[1:] + ".m")
                 if not classfile.exists():
                     return None
-                self._model, lines = parse_file(
-                    classfile, path_collection=self._path_collection
+                self._model, self._lines_collection[classfile] = self.collect_path(
+                    classfile
                 )
-                self._lines_collection[classfile] = lines.split("\n")
 
                 for member in self._path.iterdir():
                     if (
                         member.is_file()
                         and member.suffix == ".m"
                         and member.name != "Contents.m"
+                        and member != classfile
                     ):
-                        method, lines = parse_file(
-                            member, path_collection=self._path_collection
-                        )
+                        method, lines = self.collect_path(member)
                         self._model.members[method.name] = method
-                        self._lines_collection[method.filepath] = lines.split("\n")
+                        self._lines_collection[method.filepath] = lines
             else:
-                self._model, lines = parse_file(
-                    self._path, path_collection=self._path_collection
+                self._model, self._lines_collection[self._path] = self.collect_path(
+                    self._path
                 )
-                self._lines_collection[self._path] = lines.split("\n")
 
         return self._model
+
+    def collect_path(self, path: Path) -> tuple[MatlabObject, list[str]]:
+        model, content = parse_file(path, path_collection=self._path_collection)
+        lines = content.split("\n")
+        return model, lines
