@@ -1,11 +1,16 @@
-from copy import deepcopy
 from collections import defaultdict, deque
 from pathlib import Path
 from typing import Mapping
 
 from _griffe.collections import LinesCollection as GLC, ModulesCollection
+from _griffe.docstrings.models import (
+    DocstringSectionParameters,
+    DocstringSectionReturns,
+    DocstringParameter,
+    DocstringReturn,
+)
 
-
+from mkdocstrings_handlers.matlab.enums import ParameterKind
 from mkdocstrings_handlers.matlab.models import (
     Class,
     Classfolder,
@@ -13,7 +18,6 @@ from mkdocstrings_handlers.matlab.models import (
     Function,
     MatlabObject,
     Namespace,
-    Script,
     ROOT,
 )
 from mkdocstrings_handlers.matlab.treesitter import parse_file
@@ -129,23 +133,104 @@ class PathCollection(ModulesCollection):
 
         model = self._models[self._mapping[name][0]].model
 
-        if isinstance(model, Class) and "Inheritance Diagram" not in model.docstring.parsed:
+        if (
+            isinstance(model, Class)
+            and "Inheritance Diagram" not in model.docstring.parsed
+        ):
             model.docstring.parsed.append(self.get_inheritance_diagram(model))
-                
-        self.update_member_docstring_attributes(model, config)
+
+        self.update_model(model, config)
 
         return model
-    
-    def update_member_docstring_attributes(self, model: MatlabObject, config: Mapping):
+
+    def update_model(self, model: MatlabObject, config: Mapping):
         if hasattr(model, "docstring") and model.docstring is not None:
             model.docstring.parser = config.get("docstring_style", "google")
             model.docstring.parser_options = config.get("docstring_options", {})
-            model.docstring.section_style = config.get("docstring_section_style", "table")
+
+        if (
+            isinstance(model, Function)
+            and model.docstring is not None
+            and config.get("create_from_argument_blocks", True)
+        ):
+            docstring_parameters = any(
+                isinstance(doc, DocstringSectionParameters)
+                for doc in model.docstring.parsed
+            )
+            docstring_returns = any(
+                isinstance(doc, DocstringSectionReturns)
+                for doc in model.docstring.parsed
+            )
+
+            if not docstring_parameters and model.parameters:
+                arguments_parameters = any(
+                    param.docstring is not None for param in model.parameters
+                )
+            else:
+                arguments_parameters = False
+
+            if not docstring_returns and model.returns:
+                arguments_returns = any(
+                    ret.docstring is not None for ret in model.returns
+                )
+            else:
+                arguments_returns = False
+
+            document_parameters = not docstring_parameters and arguments_parameters
+            document_returns = not docstring_returns and arguments_returns
+
+            if document_parameters:
+                parameters = DocstringSectionParameters(
+                    [
+                        DocstringParameter(
+                            name=param.name,
+                            value=param.default,
+                            annotation=param.annotation,
+                            description=param.docstring.value
+                            if param.docstring is not None
+                            else None,
+                        )
+                        for param in model.parameters
+                        if param.kind is not ParameterKind.keyword_only
+                    ]
+                )
+
+                keywords = DocstringSectionParameters(
+                    [
+                        DocstringParameter(
+                            name=param.name,
+                            value=param.default,
+                            annotation=param.annotation,
+                            description=param.docstring.value
+                            if param.docstring is not None
+                            else None,
+                        )
+                        for param in model.parameters
+                        if param.kind is ParameterKind.keyword_only
+                    ],
+                    title="Keyword Arguments:",
+                )
+                model.docstring._extra_sections.append(parameters)
+                model.docstring._extra_sections.append(keywords)
+
+            if document_returns:
+                returns = DocstringSectionReturns(
+                    [
+                        DocstringReturn(
+                            name=param.name,
+                            value=param.default,
+                            annotation=param.annotation,
+                            description=param.docstring.value
+                            if param.docstring is not None
+                            else None,
+                        )
+                        for param in model.returns
+                    ]
+                )
+                model.docstring._extra_sections.append(returns)
 
         for member in getattr(model, "members", {}).values():
-            self.update_member_docstring_attributes(member, config)
-            
-
+            self.update_model(member, config)
 
     def addpath(self, path: str | Path, to_end: bool = False, recursive: bool = False):
         """
@@ -259,7 +344,7 @@ class LazyModel:
     @property
     def is_namespace(self) -> bool:
         return self._path.name[0] == "+"
-    
+
     @property
     def is_in_namespace(self) -> bool:
         return self._path.parent.name[0] == "+"
@@ -304,7 +389,7 @@ class LazyModel:
                 self._model = self._collect_path(self._path)
         self._model._parent = self._collect_parent(self._path.parent)
         return self._model
-    
+
     def _collect_parent(self, path: Path):
         if self.is_in_namespace:
             parent = self._path_collection._models[path]
@@ -317,8 +402,8 @@ class LazyModel:
         lines = content.split("\n")
         self._lines_collection[path] = lines
         return model
-    
-    def _collect_classfolder(self, path: Path) -> Classfolder | None: 
+
+    def _collect_classfolder(self, path: Path) -> Classfolder | None:
         classfile = path / (path.name[1:] + ".m")
         if not classfile.exists():
             return None
@@ -337,7 +422,6 @@ class LazyModel:
         return model
 
     def _collect_namespace(self, path: Path) -> Namespace:
-
         name = self.name[1:].split(".")[-1]
         model = Namespace(name, filepath=path, path_collection=self._path_collection)
 

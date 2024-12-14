@@ -235,7 +235,7 @@ def parse_function(
                                         text, lineno=plineno, endlineno=plinendlineno
                                     )
                                     docstrings.append(parameter.docstring)
-                        
+
                         cursor.goto_parent()
                 cursor.goto_parent()
 
@@ -251,7 +251,7 @@ def parse_function(
 
     model = Function(identifier, filepath=filepath, **kwargs)
 
-    for docstring in docstrings:    
+    for docstring in docstrings:
         docstring.parent = model
 
     return model
@@ -337,7 +337,6 @@ def parse_class(cursor: TreeCursor, encoding: str, filepath: Path, **kwargs) -> 
                                         1:
                                     ].strip()
                                 case "comment":
-
                                     plineno = cursor.node.start_point.row + 1
                                     plinendlineno = cursor.node.end_point.row + 1
                                     text = "\n".join(
@@ -483,9 +482,7 @@ def parse_class(cursor: TreeCursor, encoding: str, filepath: Path, **kwargs) -> 
     for method in methods:
         method.parent = model
         if method._is_getter or method._is_setter:
-            prop = model.all_members.get(
-                method.name.split(".")[1], None
-            )
+            prop = model.all_members.get(method.name.split(".")[1], None)
             if prop:
                 if method._is_getter:
                     prop.getter = method
@@ -514,14 +511,10 @@ def parse_file(filepath: Path, **kwargs) -> tuple[PathMixin, str]:
 
     while True:
         if cursor.node.type == "function_definition":
-            model = parse_function(
-                cursor, encoding, filepath=filepath, **kwargs
-            )
+            model = parse_function(cursor, encoding, filepath=filepath, **kwargs)
             break
         elif cursor.node.type == "class_definition":
-            model = parse_class(
-                cursor, encoding, filepath=filepath, **kwargs
-            )
+            model = parse_class(cursor, encoding, filepath=filepath, **kwargs)
             break
         elif cursor.node.type == "comment":
             header_comment += comment_node_docstring(cursor.node, encoding)
@@ -537,7 +530,10 @@ def parse_file(filepath: Path, **kwargs) -> tuple[PathMixin, str]:
 
     if not model.docstring:
         model.docstring = Docstring(
-            "\n".join(header_comment), lineno=doclineno, endlineno=docendlineno, parent=model
+            "\n".join(header_comment),
+            lineno=doclineno,
+            endlineno=docendlineno,
+            parent=model,
         )
 
     return model, content.decode(encoding)

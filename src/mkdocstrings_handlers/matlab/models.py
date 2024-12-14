@@ -1,10 +1,12 @@
 from typing import Any, Optional, TYPE_CHECKING
+from functools import cached_property
 from pathlib import Path
 from griffe import (
     Attribute,
     Function as GriffeFunction,
     Class as GriffeClass,
-    Docstring,
+    Docstring as GriffeDocstring,
+    DocstringSection,
     DocstringSectionText,
     Module,
     Object,
@@ -46,7 +48,19 @@ class _Root(Object):
 ROOT = _Root()
 
 
+class Docstring(GriffeDocstring):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self._extra_sections: list[DocstringSection] = []
 
+    @property
+    def parsed(self) -> list[DocstringSection]:
+        """The docstring sections, parsed into structured data."""
+        return self._parsed + self._extra_sections
+
+    @cached_property
+    def _parsed(self) -> list[DocstringSection]:
+        return self.parse()
 
 
 class MatlabObject(Object):
@@ -56,13 +70,11 @@ class MatlabObject(Object):
         path_collection: Optional["PathCollection"] = None,
         **kwargs,
     ) -> None:
-        
         self.path_collection = path_collection
         lines_collection = (
             path_collection.lines_collection if path_collection is not None else None
         )
         super().__init__(*args, lines_collection=lines_collection, **kwargs)
-
 
     @property
     def canonical_path(self) -> str:
@@ -72,7 +84,7 @@ class MatlabObject(Object):
         """
         if isinstance(self.parent, _Root):
             return self.name
-        
+
         if isinstance(self.parent, MatlabObject):
             parent = self.parent
         else:
@@ -101,7 +113,7 @@ class PathMixin:
             return self._parent
         else:
             return self._parent.model
-        
+
     @parent.setter
     def parent(self, value):
         self._parent = value
@@ -178,6 +190,7 @@ class Class(PathMixin, GriffeClass, MatlabObject):
 
     def __repr__(self) -> str:
         return f"Class({self.path!r})"
+
 
 class Classfolder(Class):
     def __repr__(self) -> str:
@@ -259,6 +272,7 @@ class Function(PathMixin, GriffeFunction, MatlabObject):
 
     def __repr__(self) -> str:
         return f"Function({self.path!r})"
+
 
 class Namespace(PathMixin, Module, MatlabObject):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
