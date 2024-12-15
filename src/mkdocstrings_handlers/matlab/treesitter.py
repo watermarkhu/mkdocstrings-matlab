@@ -78,6 +78,9 @@ def comment_node_docstring(node: Node, encoding: str) -> list[str]:
         except StopIteration:
             break
 
+        if "--8<--" in line:
+            break
+
         if line[:2] == "%{" or line[:2] == "%%":
             if comment_lines:
                 docstring += dedent_lines(comment_lines)

@@ -79,6 +79,7 @@ class MatlabHandler(BaseHandler):
         "docstring_options": {},
         "docstring_section_style": "table",
         "create_from_argument_blocks": True,
+        "merge_constructor_into_class": False,
         "show_if_no_docstring": False,
         "show_docstring_attributes": True,
         "show_docstring_functions": True,

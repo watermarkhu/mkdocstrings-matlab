@@ -1,4 +1,5 @@
 from collections import defaultdict, deque
+from copy import deepcopy
 from pathlib import Path
 from typing import Mapping
 
@@ -9,11 +10,13 @@ from _griffe.docstrings.models import (
     DocstringParameter,
     DocstringReturn,
 )
+from _griffe.expressions import Expr
 
 from mkdocstrings_handlers.matlab.enums import ParameterKind
 from mkdocstrings_handlers.matlab.models import (
     Class,
     Classfolder,
+    Docstring,
     DocstringSectionText,
     Function,
     MatlabObject,
@@ -133,13 +136,9 @@ class PathCollection(ModulesCollection):
 
         model = self._models[self._mapping[name][0]].model
 
-        if (
-            isinstance(model, Class)
-            and "Inheritance Diagram" not in model.docstring.parsed
-        ):
-            model.docstring.parsed.append(self.get_inheritance_diagram(model))
 
-        self.update_model(model, config)
+
+        model = self.update_model(model, config)
 
         return model
 
@@ -147,6 +146,23 @@ class PathCollection(ModulesCollection):
         if hasattr(model, "docstring") and model.docstring is not None:
             model.docstring.parser = config.get("docstring_style", "google")
             model.docstring.parser_options = config.get("docstring_options", {})
+
+        # Patch returns annotation
+        # In _griffe.docstrings.<parser>.py the function _read_returns_section will enforce an annotation 
+        # on the return parameter. This annotation is grabbed from the parent. For MATLAB is is invalid.
+        # Thus the return annotation needs to be patched back to a None. 
+        if (
+            isinstance(model, Function)
+            and model.docstring is not None
+            and any(
+                isinstance(doc, DocstringSectionReturns)
+                for doc in model.docstring.parsed
+            )
+        ):
+            section = next(doc for doc in model.docstring.parsed if isinstance(doc, DocstringSectionReturns))
+            for returns in section.value:
+                if not isinstance(returns.annotation, Expr):
+                    returns.annotation = None
 
         if (
             isinstance(model, Function)
@@ -232,6 +248,29 @@ class PathCollection(ModulesCollection):
         for member in getattr(model, "members", {}).values():
             self.update_model(member, config)
 
+        if (
+            isinstance(model, Class)
+            and config.get("merge_constructor_into_class", False)
+            and model.name in model.members
+            and model.members[model.name].docstring is not None
+        ):
+            model = deepcopy(model)
+            constructor = model.members.pop(model.name)
+            if model.docstring is None:
+                model.docstring = Docstring()
+            model.docstring._extra_sections.extend(constructor.docstring.parsed)
+
+        if (
+            isinstance(model, Class)
+            and "Inheritance Diagram" not in model.docstring.parsed
+        ):  
+            diagram = self.get_inheritance_diagram(model)
+            if diagram is not None:
+                model = deepcopy(model)
+                model.docstring._extra_sections.append(diagram)
+
+        return model
+
     def addpath(self, path: str | Path, to_end: bool = False, recursive: bool = False):
         """
         Add a path to the search path.
@@ -288,7 +327,7 @@ class PathCollection(ModulesCollection):
             for subdir in [item for item in self._path if _is_subdirectory(path, item)]:
                 self.rm_path(subdir, recursive=False)
 
-    def get_inheritance_diagram(self, model: Class) -> DocstringSectionText:
+    def get_inheritance_diagram(self, model: Class) -> DocstringSectionText | None:
         def get_id(str: str) -> str:
             return str.replace(".", "_")
 
@@ -311,8 +350,12 @@ class PathCollection(ModulesCollection):
                     links.add(f"   {get_id(model.name)} --> {get_id(super.name)}")
                     get_links(super, links)
             return links
+        
+        nodes = get_nodes(model)
+        if len(nodes) == 1:
+            return None
 
-        nodes_str = "\n".join(list(get_nodes(model)))
+        nodes_str = "\n".join(list(nodes))
         links_str = "\n".join(list(get_links(model)))
         section = f"## Inheritance Diagram\n\n```mermaid\nflowchart BT\n{nodes_str}\n{links_str}\n```"
 

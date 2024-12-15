@@ -7,7 +7,14 @@ And another comment
 
 function [output1, output2] = myfunction(input1, input2, options)
 % Perform some operation using the input arguments.
-
+%
+% Args:
+%   input1: No input annotatoin
+%   input2 (string): has string annotatoin
+%
+% Returns:
+%   output1: Overruled documentation of output1
+%   output2 (double): Overruled documentation of output2
 arguments (Input)
     input1 (1, 1) double {mustBeNumeric} % Description of input1.
     input2 (1, 1) {mustBeNumeric} = 1 % Description of input2.
