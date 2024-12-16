@@ -178,6 +178,21 @@ class Class(PathMixin, GriffeClass, MatlabObject):
         return inherited_members
 
     @property
+    def labels(self) -> set[str]:
+        labels = set()
+        if self.abstract:
+            labels.add("abstract")
+        if self.hidden:
+            labels.add("hidden")
+        if self.sealed:
+            labels.add("sealed")
+        return labels
+
+    @labels.setter
+    def labels(self, *args):
+        pass
+
+    @property
     def is_private(self) -> bool:
         return self.hidden
 
@@ -239,6 +254,31 @@ class Property(Attribute, MatlabObject):
         get_public = self._access == AccessEnum.PUBLIC
         return (set_public or get_public) and not self._hidden
 
+    @property
+    def labels(self) -> set[str]:
+        labels = set()
+        for attr in [
+            "abort_set",
+            "abstract",
+            "constant",
+            "dependent",
+            "get_observable",
+            "hidden",
+            "non_copyable",
+            "set_observable",
+            "transient",
+            "weak_handle",
+        ]:
+            if getattr(self, attr):
+                labels.add(attr)
+        for attr in ["get_access", "set_access"]:
+            if getattr(self, attr) != AccessEnum.PUBLIC:
+                labels.add(f"{attr}={str(getattr(self, attr)).lower()}")
+        return labels
+
+    @labels.setter
+    def labels(self, *args):
+        pass
 
 class Function(PathMixin, GriffeFunction, MatlabObject):
     def __init__(
@@ -269,6 +309,19 @@ class Function(PathMixin, GriffeFunction, MatlabObject):
         public = self.access == AccessEnum.PUBLIC | self.access == AccessEnum.IMMUTABLE
         return public and not self.hidden
 
+    @property
+    def labels(self) -> set[str]:
+        labels = set()
+        for attr in ["abstract", "hidden", "sealed", "static"]:
+            if getattr(self, attr):
+                labels.add(attr)
+        if self.access != AccessEnum.PUBLIC:
+            labels.add(f"access={str(self.access).lower()}")
+        return labels
+
+    @labels.setter
+    def labels(self, *args):
+        pass
 
 class Namespace(PathMixin, Module, MatlabObject):
     def __init__(self, *args: Any, **kwargs: Any) -> None:

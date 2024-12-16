@@ -45,7 +45,6 @@ class MatlabHandler(BaseHandler):
         "members_order": rendering.Order.alphabetical,
         "filters": [],
         "group_by_category": True,
-        "show_submodules": False,
         "summary": False,
         "show_labels": True,
         # Docstring options
@@ -113,7 +112,6 @@ class MatlabHandler(BaseHandler):
             The `members` option takes precedence over `filters` (filters will still be applied recursively
             to lower members in the hierarchy). Default: `["!^_[^_]"]`.
         group_by_category (bool): Group the object's children by categories: attributes, classes, functions, and modules. Default: `True`.
-        show_submodules (bool): When rendering a module, show its submodules recursively. Default: `False`.
         summary (bool | dict[str, bool]): Whether to render summaries of modules, classes, functions (methods) and attributes.
         show_labels (bool): Whether to show labels of the members. Default: `True`.
 

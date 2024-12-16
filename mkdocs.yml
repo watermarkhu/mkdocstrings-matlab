@@ -134,6 +134,7 @@ plugins:
 #     - scripts/gen_ref_nav.py
 # - literate-nav:
 #     nav_file: SUMMARY.md
+- mkdocs-material-matlab
 - mkdocstrings:
     default_handler: matlab
     handlers:
