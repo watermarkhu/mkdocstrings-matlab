@@ -9,7 +9,7 @@ class MkdocsMaterialMatlabPlugin(BasePlugin):
             config['extra_css'].append(css_path)
         return config
 
-    def on_post_build(self, config):
+    def on_post_build(self, *, config):
         # Ensure the custom CSS file is copied to the output directory
         css_src_path = os.path.join(os.path.dirname(__file__), 'css', 'style.css')
         css_dest_path = os.path.join(config['site_dir'], 'css', 'style.css')
