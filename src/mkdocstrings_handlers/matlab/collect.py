@@ -90,6 +90,7 @@ class PathCollection(ModulesCollection):
     def __init__(
         self,
         matlab_path: list[str | Path],
+        recursive: bool = False,
         config: Mapping = {},
     ) -> None:
         """
@@ -113,7 +114,7 @@ class PathCollection(ModulesCollection):
         self.lines_collection = LinesCollection()
 
         for path in matlab_path:
-            self.addpath(Path(path), to_end=True)
+            self.addpath(Path(path), to_end=True, recursive=recursive)
 
     @property
     def members(self):
@@ -131,12 +132,20 @@ class PathCollection(ModulesCollection):
         """
 
         # Find in global database
-        if name not in self._mapping:
-            return None
-
-        model = self._models[self._mapping[name][0]].model
-
-        model = self.update_model(model, config)
+        if name in self._mapping:
+            model = self._models[self._mapping[name][0]].model
+            model = self.update_model(model, config)
+        else:
+            model = None
+            name_parts = name.split(".")
+            if len(name_parts) > 1:
+                base = self.resolve(".".join(name_parts[:-1]), config=config)
+                if base is None or name_parts[-1] not in base.members:
+                    model = None
+                else:
+                    model = base.members[name_parts[-1]]
+            else:
+                model = None
 
         return model
 
@@ -347,9 +356,9 @@ class PathCollection(ModulesCollection):
             for base in model.bases:
                 super = self.resolve(base)
                 if super is None:
-                    links.add(f"   {get_id(model.name)} --> {get_id(base)}")
+                    links.add(f"   {get_id(base)} --> {get_id(model.name)}")
                 else:
-                    links.add(f"   {get_id(model.name)} --> {get_id(super.name)}")
+                    links.add(f"   {get_id(super.name)} --> {get_id(model.name)}")
                     get_links(super, links)
             return links
 
@@ -359,7 +368,7 @@ class PathCollection(ModulesCollection):
 
         nodes_str = "\n".join(list(nodes))
         links_str = "\n".join(list(get_links(model)))
-        section = f"## Inheritance Diagram\n\n```mermaid\nflowchart BT\n{nodes_str}\n{links_str}\n```"
+        section = f"## Inheritance Diagram\n\n```mermaid\nflowchart TB\n{nodes_str}\n{links_str}\n```"
 
         return DocstringSectionText(section, title="Inheritance Diagram")
 

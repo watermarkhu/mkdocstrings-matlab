@@ -17,13 +17,8 @@ plugins:
 - search
 - autorefs
 - mkdocstrings:
-    default_handler: python
+    default_handler: matlab
     handlers:
-      # python:
-      #   paths: ["src"]
-      #   options:
-      #     show_root_heading: true
-      #     show_docstring_attributes: false
       matlab:
         paths: ["./src"]
         options:
