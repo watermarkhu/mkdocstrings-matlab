@@ -1,5 +1,7 @@
 # %%
 from collections import OrderedDict
+from typing import Any
+
 from tree_sitter import Language, Parser, Node, TreeCursor
 import tree_sitter_matlab as tsmatlab
 
@@ -47,7 +49,11 @@ FUNCTION_QUERY = LANGUAGE.query("""(function_definition .
             )
         ]
     )? .
-    (identifier) .
+    [
+        ("set.") @setter
+        ("get.") @getter
+    ]? .
+    (identifier) @name .
     (function_arguments .
         ((identifier) @input (",")?)*
     )? .
@@ -75,7 +81,7 @@ PROPERTY_QUERY = LANGUAGE.query("""(property .
             (identifier) @name
         )
     ] .
-    (dimensions)? @dimentions .
+    (dimensions)? @dimensions .
     (identifier)? @class .
     (validation_functions)? @validators .
     (default_value
@@ -83,6 +89,50 @@ PROPERTY_QUERY = LANGUAGE.query("""(property .
         _+ @default
     )? .
     (comment)* @comment              
+)""")
+
+
+ATTRIBUTE_QUERY = LANGUAGE.query("""(attribute
+    (identifier) @name .
+    (
+        ("=") .
+        _+ @value
+    )?
+)""")
+
+
+CLASS_QUERY = LANGUAGE.query("""("classdef" .
+    (attributes
+        (attribute) @attributes
+    )? .
+    (identifier) @name ?
+    (superclasses
+        (property_name)+ @bases             
+    )? .
+    (comment)* @docstring .
+    ("\\n")? .
+    [
+        (methods) @methods
+        (properties) @properties
+        (enumeration) @enumeration
+    ]*
+)""")
+
+
+METHODS_QUERY = LANGUAGE.query("""("methods" .
+    (attributes
+        (attribute) @attributes
+    )? .
+    ("\\n")? .
+    (function_definition)* @methods
+)""")
+
+PROPERTIES_QUERY = LANGUAGE.query("""("properties" .
+    (attributes
+        (attribute) @attributes
+    )? .
+    ("\\n")? .
+    (property)* @properties
 )""")
 
 
@@ -111,246 +161,6 @@ def _dedent(lines: list[str]) -> list[str]:
         return [line[indent:] if line.strip() else line for line in lines]
 
 
-def parse_class(cursor: TreeCursor, encoding: str, filepath: Path, **kwargs) -> Class:
-    docstring: list[str] = []
-    docstrings: list[Docstring] = []
-    doclineno, docendlineno = 0, 0
-    comment_for_docstring: bool = True
-
-    savedKwargs = {key: value for key, value in kwargs.items()}
-    kwargs["lineno"] = cursor.node.start_point.row + 1
-    kwargs["endlineno"] = cursor.node.end_point.row + 1
-    methods, properties = [], []
-
-    cursor.goto_first_child()
-
-    while cursor.goto_next_sibling():
-        match cursor.node.type:
-            case "attributes":
-                # https://mathworks.com/help/matlab/matlab_oop/class-attributes.html
-
-                cursor.goto_first_child()
-                while cursor.goto_next_sibling():
-                    if cursor.node.type == "attribute":
-                        cursor.goto_first_child()
-                        attributeIdentifier = cursor.node.text.decode(encoding)
-                        if attributeIdentifier in ["Sealed", "Abstract", "Hidden"]:
-                            value = True
-                            while cursor.goto_next_sibling():
-                                if cursor.node.type == "boolean":
-                                    value = bool(
-                                        _strtobool(cursor.node.text.decode(encoding))
-                                    )
-                            kwargs[attributeIdentifier] = value
-                        cursor.goto_parent()
-                cursor.goto_parent()
-
-            case "identifier":
-                identifier = cursor.node.text.decode(encoding)
-
-            case "superclasses":
-                cursor.goto_first_child()
-                kwargs["bases"] = []
-                while cursor.goto_next_sibling():
-                    if cursor.node.type == "property_name":
-                        kwargs["bases"].append(cursor.node.text.decode(encoding))
-                cursor.goto_parent()
-
-            case "comment":
-                if not comment_for_docstring:
-                    continue
-                if not doclineno:
-                    doclineno = cursor.node.start_point.row
-                docendlineno = cursor.node.end_point.row
-                docstring += uncommented(cursor.node, encoding)
-
-            case "properties":
-                comment_for_docstring = False
-
-                cursor.goto_first_child()
-                property_kwargs = {key: value for key, value in savedKwargs.items()}
-
-                while cursor.goto_next_sibling():
-                    if cursor.node.type == "property":
-                        cursor.goto_first_child()
-                        prop = Property(
-                            cursor.node.text.decode(encoding), **property_kwargs
-                        )
-                        while cursor.goto_next_sibling():
-                            match cursor.node.type:
-                                case "dimensions":
-                                    # Do nothing with dimensions for now
-                                    continue
-                                case "identifier":
-                                    prop.annotation = cursor.node.text.decode(encoding)
-                                case "validation_functions":
-                                    # Do nothing with validation functions for now
-                                    continue
-                                case "default_value":
-                                    prop.value = cursor.node.text.decode(encoding)[
-                                        1:
-                                    ].strip()
-                                case "comment":
-                                    plineno = cursor.node.start_point.row + 1
-                                    plinendlineno = cursor.node.end_point.row + 1
-                                    text = "\n".join(
-                                        uncommented(cursor.node, encoding)
-                                    )
-                                    prop.docstring = Docstring(
-                                        text, lineno=plineno, endlineno=plinendlineno
-                                    )
-                                    docstrings.append(prop.docstring)
-
-                        properties.append(prop)
-                        cursor.goto_parent()
-
-                    elif cursor.node.type == "attributes":
-                        # https://mathworks.com/help/matlab/matlab_oop/property-attributes.html
-
-                        cursor.goto_first_child()
-                        while cursor.goto_next_sibling():
-                            if cursor.node.type == "attribute":
-                                cursor.goto_first_child()
-                                attributeIdentifier = cursor.node.text.decode(encoding)
-                                if attributeIdentifier in [
-                                    "AbortSet",
-                                    "Abstract",
-                                    "Constant",
-                                    "Dependant",
-                                    "GetObservable",
-                                    "Hidden",
-                                    "NonCopyable",
-                                    "SetObservable",
-                                    "Transient",
-                                    "WeakHandle",
-                                ]:
-                                    value = True
-                                    while cursor.goto_next_sibling():
-                                        if cursor.node.type == "boolean":
-                                            value = bool(
-                                                _strtobool(
-                                                    cursor.node.text.decode(encoding)
-                                                )
-                                            )
-                                    property_kwargs[attributeIdentifier] = value
-
-                                elif attributeIdentifier in ["GetAccess", "SetAccess"]:
-                                    cursor.goto_next_sibling()
-                                    cursor.goto_next_sibling()
-                                    access = cursor.node.text.decode(encoding)
-                                    if access in [
-                                        "public",
-                                        "protected",
-                                        "private",
-                                        "immutable",
-                                    ]:
-                                        property_kwargs[attributeIdentifier] = (
-                                            AccessEnum(access)
-                                        )
-                                cursor.goto_parent()
-                        cursor.goto_parent()
-
-                cursor.goto_parent()
-
-            case "methods":
-                comment_for_docstring = False
-
-                cursor.goto_first_child()
-                is_abstract = False
-                function_kwargs = {key: value for key, value in savedKwargs.items()}
-
-                while cursor.goto_next_sibling():
-                    if cursor.node.type == "function_definition":
-                        method = parse_function(
-                            cursor, encoding, filepath, **function_kwargs
-                        )
-
-                        if method.name != identifier and not is_abstract:
-                            # Remove self from first method argument
-                            method.parameters._params = method.parameters._params[1:]
-                        methods.append(method)
-
-                    elif cursor.node.type == "attributes":
-                        # https://mathworks.com/help/matlab/matlab_oop/method-attributes.html
-
-                        cursor.goto_first_child()
-                        while cursor.goto_next_sibling():
-                            if cursor.node.type == "attribute":
-                                cursor.goto_first_child()
-                                attributeIdentifier = cursor.node.text.decode(encoding)
-
-                                if attributeIdentifier in [
-                                    "Abstract",
-                                    "Hidden",
-                                    "Sealed",
-                                    "Static",
-                                ]:
-                                    value = True
-                                    while cursor.goto_next_sibling():
-                                        if cursor.node.type == "boolean":
-                                            value = bool(
-                                                _strtobool(
-                                                    cursor.node.text.decode(encoding)
-                                                )
-                                            )
-                                    function_kwargs[attributeIdentifier] = value
-                                elif attributeIdentifier == "Access":
-                                    cursor.goto_next_sibling()
-                                    cursor.goto_next_sibling()
-                                    access = cursor.node.text.decode(encoding)
-                                    if access in [
-                                        "public",
-                                        "protected",
-                                        "private",
-                                        "immutable",
-                                    ]:
-                                        function_kwargs[attributeIdentifier] = (
-                                            AccessEnum(access)
-                                        )
-                                cursor.goto_parent()
-
-                        is_abstract = function_kwargs.get("abstract", False)
-                        cursor.goto_parent()
-
-                cursor.goto_parent()
-
-            case "enumeration":
-                comment_for_docstring = False
-                # Do nothing with enumerations for now
-                continue
-
-    if docstring:
-        kwargs["docstring"] = Docstring(
-            "\n".join(docstring), lineno=doclineno + 1, endlineno=docendlineno + 1
-        )
-
-    model = Class(identifier, filepath=filepath, **kwargs)
-
-    for docstring in docstrings:
-        docstring.parent = model
-
-    for prop in properties:
-        prop.parent = model
-        model[prop.name] = prop
-
-    for method in methods:
-        method.parent = model
-        if method._is_getter or method._is_setter:
-            prop = model.all_members.get(method.name.split(".")[1], None)
-            if prop:
-                if method._is_getter:
-                    prop.getter = method
-                else:
-                    prop.setter = method
-            else:
-                # Some warning needs to be issued that this getter/setter has no property to be linked to
-                pass
-        else:
-            model[method.name] = method
-
-    return model
-
-
 class FileParser(object):
     def __init__(self, filepath: Path):
         self.filepath: Path = filepath
@@ -366,31 +176,137 @@ class FileParser(object):
         tree = PARSER.parse(self._content)
         cursor = tree.walk()
 
-        captured = FILE_QUERY.captures(cursor.node)
+        captures = FILE_QUERY.captures(cursor.node)
 
-        if "function" in captured:
-            model = self._parse_function(captured["function"][0], **kwargs)
-        elif "class" in captured:
-            model = self._parse_class(captured["class"][0], **kwargs)
+        if "function" in captures:
+            model = self._parse_function(captures["function"][0], **kwargs)
+        elif "class" in captures:
+            model = self._parse_class(captures["class"][0], **kwargs)
         else:
             model = Script(self.filepath.stem, filepath=self.filepath, **kwargs)
 
         if not model.docstring:
             model.docstring = self._comment_docstring(
-                captured.get("header", None), parent=model
+                captures.get("header", None), parent=model
             )
 
         return model
-    
-    def _parse_class(self, node: Node, **kwargs) -> Class:
 
-        model = Class(self.filepath.stem)
+    def _parse_class(self, node: Node, **kwargs) -> Class:
+        saved_kwargs = {key: value for key, value in kwargs.items()}
+        captures = CLASS_QUERY.captures(node)
+
+        bases = self._decode(captures, "bases")
+        docstring = self._comment_docstring(captures.get("docstring", None))
+
+        attribute_pairs = [
+            self._parse_attribute(node) for node in captures.get("attributes", [])
+        ]
+        for key, value in attribute_pairs:
+            if key in ["Sealed", "Abstract", "Hidden"]:
+                kwargs[key] = value
+
+        model = Class(
+            self.filepath.stem,
+            bases=bases,
+            docstring=docstring,
+            filepath=self.filepath,
+            **kwargs,
+        )
+
+        for property_captures in [
+            PROPERTIES_QUERY.captures(node) for node in captures.get("properties", [])
+        ]:
+            property_kwargs = {key: value for key, value in saved_kwargs.items()}
+            attribute_pairs = [
+                self._parse_attribute(node)
+                for node in property_captures.get("attributes", [])
+            ]
+            for key, value in attribute_pairs:
+                if key in [
+                    "AbortSet",
+                    "Abstract",
+                    "Constant",
+                    "Dependant",
+                    "GetObservable",
+                    "Hidden",
+                    "NonCopyable",
+                    "SetObservable",
+                    "Transient",
+                    "WeakHandle",
+                ]:
+                    property_kwargs[key] = value
+                elif key in ["GetAccess", "SetAccess"]:
+                    if value in ["public", "protected", "private", "immutable"]:
+                        property_kwargs[key] = AccessEnum(value)
+                    else:
+                        property_kwargs[key] = AccessEnum.PRIVATE
+            for property_node in property_captures.get("properties", []):
+                property_captures = PROPERTY_QUERY.captures(property_node)
+
+                prop = Property(
+                    self._decode(property_captures, "name", True),
+                    annotation=self._decode(property_captures, "class", True),
+                    value=self._decode(property_captures, "default", True),
+                    docstring=self._comment_docstring(
+                        property_captures.get("comment", None)
+                    ),
+                    parent=model,
+                )
+                model.members[prop.name] = prop
+
+        for method_captures in [
+            METHODS_QUERY.captures(node) for node in captures.get("methods", [])
+        ]:
+            method_kwargs = {key: value for key, value in saved_kwargs.items()}
+            attribute_pairs = [
+                self._parse_attribute(node)
+                for node in method_captures.get("attributes", [])
+            ]
+            for key, value in attribute_pairs:
+                if key in [
+                    "Abstract",
+                    "Hidden",
+                    "Sealed",
+                    "Static",
+                ]:
+                    method_kwargs[key] = value
+                elif key in ["GetAccess", "SetAccess"]:
+                    if value in ["public", "protected", "private", "immutable"]:
+                        method_kwargs[key] = AccessEnum(value)
+                    else:
+                        method_kwargs[key] = AccessEnum.PRIVATE
+            for method_node in method_captures.get("methods", []):
+                method = self._parse_function(method_node, method=True, parent=model, **method_kwargs)
+                if method.name != self.filepath.stem and not method.static and method.parameters:
+                    # Remove self from first method argument
+                    method.parameters._params = method.parameters._params[1:]
+                if method._is_getter and method.name in model.members:
+                    model.members[method.name].getter = method
+                elif method._is_setter and method.name in model.members:
+                    model.members[method.name].setter = method
+                else:
+                    model.members[method.name] = method
+
         return model
 
-    def _parse_function(self, node: Node, **kwargs) -> Function:
-        captured: dict = FUNCTION_QUERY.captures(node)
+    def _parse_attribute(self, node: Node) -> tuple[str, Any]:
+        captures = ATTRIBUTE_QUERY.captures(node)
 
-        input_names = self._decode(captured, "input")
+        key = self._decode(captures, "name", True)
+        if "value" not in captures:
+            value = True
+        elif captures["value"][0].type == "boolean":
+            value = _strtobool(captures["value"][0].text.decode(self.encoding))
+        else:
+            value = captures["value"][0].text.decode(self.encoding)
+
+        return (key, value)
+
+    def _parse_function(self, node: Node, method: bool = False, **kwargs) -> Function:
+        captures: dict = FUNCTION_QUERY.captures(node)
+
+        input_names = self._decode(captures, "input")
         parameters: dict = (
             OrderedDict(
                 (name, Parameter(name, kind=ParameterKind.positional))
@@ -399,7 +315,7 @@ class FileParser(object):
             if input_names
             else {}
         )
-        output_names = self._decode(captured, "output")
+        output_names = self._decode(captures, "output")
         returns: dict = (
             OrderedDict(
                 (name, Parameter(name, kind=ParameterKind.positional))
@@ -408,26 +324,32 @@ class FileParser(object):
             if output_names
             else {}
         )
+        if method:
+            name = self._decode(captures, "name", True)
+        else:
+            name = self.filepath.stem
 
         model = Function(
-            self.filepath.stem,
+            name,
             filepath=self.filepath,
-            docstring=self._comment_docstring(captured.get("docstring", None)),
+            docstring=self._comment_docstring(captures.get("docstring", None)),
+            getter="getter" in captures,
+            setter="setter" in captures,
             **kwargs,
         )
 
-        captured_arguments = [
-            ARGUMENTS_QUERY.captures(node) for node in captured["arguments"]
+        captures_arguments = [
+            ARGUMENTS_QUERY.captures(node) for node in captures.get("arguments", [])
         ]
-        for arguments in captured_arguments:
+        for arguments in captures_arguments:
             attributes = self._decode(arguments, "attributes")
-            is_input = "Input" in attributes or "Output" not in attributes
+            is_input = attributes is None or "Input" in attributes or "Output" not in attributes
             # is_repeating = "Repeating" in attributes
 
-            captured_argument = [
+            captures_argument = [
                 PROPERTY_QUERY.captures(node) for node in arguments["arguments"]
             ]
-            for argument in captured_argument:
+            for argument in captures_argument:
                 name = self._decode(argument, "name", True)
 
                 if "options" in argument:
@@ -475,7 +397,6 @@ class FileParser(object):
     def _comment_docstring(
         self, nodes: list[Node] | Node | None, parent: MatlabObject | None = None
     ) -> Docstring | None:
-        
         if nodes is None:
             return None
         elif isinstance(nodes, list):
