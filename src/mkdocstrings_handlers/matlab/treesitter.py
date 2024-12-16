@@ -2,7 +2,7 @@
 from collections import OrderedDict
 from typing import Any
 
-from tree_sitter import Language, Parser, Node, TreeCursor
+from tree_sitter import Language, Parser, Node
 import tree_sitter_matlab as tsmatlab
 
 from pathlib import Path
@@ -277,8 +277,14 @@ class FileParser(object):
                     else:
                         method_kwargs[key] = AccessEnum.PRIVATE
             for method_node in method_captures.get("methods", []):
-                method = self._parse_function(method_node, method=True, parent=model, **method_kwargs)
-                if method.name != self.filepath.stem and not method.static and method.parameters:
+                method = self._parse_function(
+                    method_node, method=True, parent=model, **method_kwargs
+                )
+                if (
+                    method.name != self.filepath.stem
+                    and not method.static
+                    and method.parameters
+                ):
                     # Remove self from first method argument
                     method.parameters._params = method.parameters._params[1:]
                 if method._is_getter and method.name in model.members:
@@ -343,7 +349,11 @@ class FileParser(object):
         ]
         for arguments in captures_arguments:
             attributes = self._decode(arguments, "attributes")
-            is_input = attributes is None or "Input" in attributes or "Output" not in attributes
+            is_input = (
+                attributes is None
+                or "Input" in attributes
+                or "Output" not in attributes
+            )
             # is_repeating = "Repeating" in attributes
 
             captures_argument = [

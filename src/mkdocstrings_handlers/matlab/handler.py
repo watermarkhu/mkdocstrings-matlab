@@ -8,11 +8,6 @@ from pprint import pprint
 
 
 from mkdocstrings_handlers.matlab.collect import LinesCollection, PathCollection
-from mkdocstrings_handlers.matlab.models import (
-    Function,
-    Class,
-    Script,
-)
 
 
 class MatlabHandler(BaseHandler):
