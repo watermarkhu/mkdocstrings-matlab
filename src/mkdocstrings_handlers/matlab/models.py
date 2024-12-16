@@ -122,6 +122,9 @@ class PathMixin:
     def filepath(self) -> Path | None:
         return self._filepath
 
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}({self.name})"
+
 
 class Script(PathMixin, MatlabObject):
     pass
@@ -188,13 +191,9 @@ class Class(PathMixin, GriffeClass, MatlabObject):
     def get_lineno_method(self, method_name: str) -> tuple[int, int]:
         return self._method_lineno.get(method_name, (self.lineno, self.endlineno))
 
-    def __repr__(self) -> str:
-        return f"Class({self.path!r})"
-
 
 class Classfolder(Class):
-    def __repr__(self) -> str:
-        return f"Classfolder({self.path!r})"
+    pass
 
 
 class Property(Attribute, MatlabObject):
@@ -269,9 +268,6 @@ class Function(PathMixin, GriffeFunction, MatlabObject):
     def is_private(self) -> bool:
         public = self.access == AccessEnum.PUBLIC | self.access == AccessEnum.IMMUTABLE
         return public and not self.hidden
-
-    def __repr__(self) -> str:
-        return f"Function({self.path!r})"
 
 
 class Namespace(PathMixin, Module, MatlabObject):

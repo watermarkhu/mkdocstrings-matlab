@@ -1,4 +1,5 @@
 # %%
+from collections import OrderedDict
 from tree_sitter import Language, Parser, Node, TreeCursor
 import tree_sitter_matlab as tsmatlab
 
@@ -11,6 +12,7 @@ from mkdocstrings_handlers.matlab.models import (
     Class,
     Docstring,
     Function,
+    MatlabObject,
     Parameters,
     Parameter,
     Property,
@@ -20,21 +22,78 @@ from mkdocstrings_handlers.matlab.models import PathMixin
 from mkdocstrings_handlers.matlab.enums import ParameterKind
 
 
-__all__ = ["parse_file"]
+__all__ = ["FileParser"]
 
 
 LANGUAGE = Language(tsmatlab.language())
+
 PARSER = Parser(LANGUAGE)
 
+FILE_QUERY = LANGUAGE.query("""(source_file
+    (comment)* @header .
+    (function_definition)? @function .
+    (class_definition)? @class
+)
+""")
 
-def strtobool(value: str) -> bool:
+
+FUNCTION_QUERY = LANGUAGE.query("""(function_definition .
+    ("function") .
+    (function_output . 
+        [
+            (identifier) @output
+            (multioutput_variable .
+                ((identifier) @output (",")?)+
+            )
+        ]
+    )? .
+    (identifier) .
+    (function_arguments .
+        ((identifier) @input (",")?)*
+    )? .
+    (comment)* @docstring .
+    (arguments_statement)* @arguments
+)""")
+
+
+ARGUMENTS_QUERY = LANGUAGE.query("""(arguments_statement .
+    ("arguments") .
+    (attributes
+        (identifier) @attributes
+    )? .
+    ("\\n")? .
+    (property)+ @arguments
+)""")
+
+
+PROPERTY_QUERY = LANGUAGE.query("""(property . 
+    [
+        (identifier) @name
+        (property_name
+            (identifier) @options .
+            (".") .
+            (identifier) @name
+        )
+    ] .
+    (dimensions)? @dimentions .
+    (identifier)? @class .
+    (validation_functions)? @validators .
+    (default_value
+        ("=") .
+        _+ @default
+    )? .
+    (comment)* @comment              
+)""")
+
+
+def _strtobool(value: str) -> bool:
     if value.lower() in ["true", "1"]:
         return True
     else:
         return False
 
 
-def dedent_lines(lines: list[str]) -> list[str]:
+def _dedent(lines: list[str]) -> list[str]:
     """
     Dedent a list of strings by removing the minimum common leading whitespace.
 
@@ -50,214 +109,6 @@ def dedent_lines(lines: list[str]) -> list[str]:
         return lines
     else:
         return [line[indent:] if line.strip() else line for line in lines]
-
-
-def comment_node_docstring(node: Node, encoding: str) -> list[str]:
-    """
-    Extracts and processes docstring comments from a given node.
-    This function iterates over the lines of text within the provided node,
-    identifying and processing lines that are marked as docstring comments.
-    It supports both single-line and multi-line comment blocks, denoted by
-    specific markers ("%{", "%%", and "%}").
-
-    Args:
-        node (Node): The node containing the text to be processed.
-    Returns:
-        list[str]: A list of strings representing the extracted and processed
-                   docstring comments.
-    Raises:
-        LookupError: If a line does not conform to the expected comment format.
-    """
-
-    docstring, comment_lines = [], []
-
-    lines = iter(node.text.decode(encoding).splitlines())
-    while True:
-        try:
-            line = next(lines).lstrip()
-        except StopIteration:
-            break
-
-        if "--8<--" in line:
-            break
-
-        if line[:2] == "%{" or line[:2] == "%%":
-            if comment_lines:
-                docstring += dedent_lines(comment_lines)
-                comment_lines = []
-            if line[:2] == "%%":
-                docstring.append(line[2:].lstrip())
-                continue
-
-            comment_block = []
-            line = line[2:]
-            while "%}" not in line:
-                comment_block.append(line)
-                try:
-                    line = next(lines)
-                except StopIteration:
-                    break
-            else:
-                last_line = line[: line.index("%}")]
-                if last_line:
-                    comment_block.append(last_line)
-            docstring.append(comment_block[0])
-            docstring += dedent_lines(comment_block[1:])
-
-        elif line[0] == "%":
-            comment_lines.append(line[1:])
-        else:
-            raise LookupError
-
-    if comment_lines:
-        docstring += dedent_lines(comment_lines)
-
-    return docstring
-
-
-def parse_function(
-    cursor: TreeCursor, encoding: str, filepath: Path, **kwargs
-) -> Function:
-    docstring: list[str] = []
-    docstrings: list[Docstring] = []
-    doclineno, docendlineno = 0, 0
-    used_arguments: bool = False
-    kwargs["lineno"] = cursor.node.start_point.row + 1
-    kwargs["endlineno"] = cursor.node.end_point.row + 1
-
-    cursor.goto_first_child()
-
-    while cursor.goto_next_sibling():
-        match cursor.node.type:
-            case "function_output":
-                cursor.goto_first_child()
-                if cursor.node.type == "identifier":
-                    returns = [Parameter(cursor.node.text.decode(encoding))]
-                else:
-                    cursor.goto_first_child()
-                    returns = []
-                    while cursor.goto_next_sibling():
-                        if cursor.node.type == "identifier":
-                            returns.append(Parameter(cursor.node.text.decode(encoding)))
-                    cursor.goto_parent()
-                kwargs["returns"] = Parameters(*returns)
-                cursor.goto_parent()
-
-            case "set.":
-                kwargs["setter"] = True
-
-            case "get.":
-                kwargs["getter"] = True
-
-            case "identifier":
-                identifier = cursor.node.text.decode(encoding)
-                if kwargs.get("setter", False):
-                    identifier = f"set.{identifier}"
-                elif kwargs.get("getter", False):
-                    identifier = f"get.{identifier}"
-
-            case "function_arguments":
-                cursor.goto_first_child()
-                parameters = []
-                while cursor.goto_next_sibling():
-                    if cursor.node.type == "identifier":
-                        parameters.append(Parameter(cursor.node.text.decode(encoding)))
-                kwargs["parameters"] = Parameters(*parameters)
-                cursor.goto_parent()
-
-            case "comment":
-                if used_arguments:
-                    continue
-                if not doclineno:
-                    doclineno = cursor.node.start_point.row
-                docendlineno = cursor.node.end_point.row
-                docstring += comment_node_docstring(cursor.node, encoding)
-
-            case "arguments_statement":
-                used_arguments = True
-
-                arguments_type = "parameters"
-                cursor.goto_first_child()
-                while cursor.goto_next_sibling():
-                    if cursor.node.type == "attributes":
-                        if "Output" in cursor.node.text.decode(encoding):
-                            arguments_type = "returns"
-
-                    elif cursor.node.type == "property":
-                        parameters = kwargs[arguments_type]
-
-                        cursor.goto_first_child()
-                        argument = cursor.node.text.decode(encoding)
-
-                        if "." in argument:
-                            kwargsvar = argument.split(".")[0]
-                            kwargsparameter = next(
-                                (p for p in parameters if p.name == kwargsvar), None
-                            )
-                            if kwargsparameter:
-                                parameters._params.remove(kwargsparameter)
-                            argument = argument.split(".")[-1]
-                            parameter = Parameter(
-                                argument, kind=ParameterKind.keyword_only
-                            )
-                            parameters._params.append(parameter)
-                        else:
-                            parameter = next(
-                                (p for p in parameters if p.name == argument), None
-                            )
-                            if argument == "varargin":
-                                parameter.kind = ParameterKind.var_keyword
-                            else:
-                                parameter.kind = ParameterKind.positional
-
-                        while cursor.goto_next_sibling():
-                            match cursor.node.type:
-                                case "dimensions":
-                                    # Do nothing with dimensions for now
-                                    continue
-                                case "identifier":
-                                    parameter.annotation = cursor.node.text.decode(
-                                        encoding
-                                    )
-                                case "validation_functions":
-                                    # Do nothing with validation functions for now
-                                    continue
-                                case "default_value":
-                                    parameter.default = cursor.node.text.decode(
-                                        encoding
-                                    )[1:].strip()
-                                    if parameter.kind is ParameterKind.positional:
-                                        parameter.kind = ParameterKind.optional
-                                case "comment":
-                                    plineno = cursor.node.start_point.row + 1
-                                    plinendlineno = cursor.node.end_point.row + 1
-                                    text = "\n".join(
-                                        comment_node_docstring(cursor.node, encoding)
-                                    )
-                                    parameter.docstring = Docstring(
-                                        text, lineno=plineno, endlineno=plinendlineno
-                                    )
-                                    docstrings.append(parameter.docstring)
-
-                        cursor.goto_parent()
-                cursor.goto_parent()
-
-            case "end" | "block":
-                break
-
-    cursor.goto_parent()
-
-    if docstring:
-        kwargs["docstring"] = Docstring(
-            "\n".join(docstring), lineno=doclineno + 1, endlineno=docendlineno + 1
-        )
-
-    model = Function(identifier, filepath=filepath, **kwargs)
-
-    for docstring in docstrings:
-        docstring.parent = model
-
-    return model
 
 
 def parse_class(cursor: TreeCursor, encoding: str, filepath: Path, **kwargs) -> Class:
@@ -288,7 +139,7 @@ def parse_class(cursor: TreeCursor, encoding: str, filepath: Path, **kwargs) -> 
                             while cursor.goto_next_sibling():
                                 if cursor.node.type == "boolean":
                                     value = bool(
-                                        strtobool(cursor.node.text.decode(encoding))
+                                        _strtobool(cursor.node.text.decode(encoding))
                                     )
                             kwargs[attributeIdentifier] = value
                         cursor.goto_parent()
@@ -311,7 +162,7 @@ def parse_class(cursor: TreeCursor, encoding: str, filepath: Path, **kwargs) -> 
                 if not doclineno:
                     doclineno = cursor.node.start_point.row
                 docendlineno = cursor.node.end_point.row
-                docstring += comment_node_docstring(cursor.node, encoding)
+                docstring += uncommented(cursor.node, encoding)
 
             case "properties":
                 comment_for_docstring = False
@@ -343,7 +194,7 @@ def parse_class(cursor: TreeCursor, encoding: str, filepath: Path, **kwargs) -> 
                                     plineno = cursor.node.start_point.row + 1
                                     plinendlineno = cursor.node.end_point.row + 1
                                     text = "\n".join(
-                                        comment_node_docstring(cursor.node, encoding)
+                                        uncommented(cursor.node, encoding)
                                     )
                                     prop.docstring = Docstring(
                                         text, lineno=plineno, endlineno=plinendlineno
@@ -377,7 +228,7 @@ def parse_class(cursor: TreeCursor, encoding: str, filepath: Path, **kwargs) -> 
                                     while cursor.goto_next_sibling():
                                         if cursor.node.type == "boolean":
                                             value = bool(
-                                                strtobool(
+                                                _strtobool(
                                                     cursor.node.text.decode(encoding)
                                                 )
                                             )
@@ -438,7 +289,7 @@ def parse_class(cursor: TreeCursor, encoding: str, filepath: Path, **kwargs) -> 
                                     while cursor.goto_next_sibling():
                                         if cursor.node.type == "boolean":
                                             value = bool(
-                                                strtobool(
+                                                _strtobool(
                                                     cursor.node.text.decode(encoding)
                                                 )
                                             )
@@ -500,46 +351,195 @@ def parse_class(cursor: TreeCursor, encoding: str, filepath: Path, **kwargs) -> 
     return model
 
 
-def parse_file(filepath: Path, **kwargs) -> tuple[PathMixin, str]:
-    encoding = charset_normalizer.from_path(filepath).best().encoding
-    with open(filepath, "rb") as f:
-        content = f.read()
+class FileParser(object):
+    def __init__(self, filepath: Path):
+        self.filepath: Path = filepath
+        self.encoding: str = charset_normalizer.from_path(filepath).best().encoding
+        with open(filepath, "rb") as f:
+            self._content: bytes = f.read()
 
-    tree = PARSER.parse(content)
-    cursor = tree.walk()
-    cursor.goto_first_child()
+    @property
+    def content(self):
+        return self._content.decode(self.encoding)
 
-    header_comment = []
-    doclineno, docendlineno = 0, 0
+    def parse(self, **kwargs) -> PathMixin:
+        tree = PARSER.parse(self._content)
+        cursor = tree.walk()
 
-    while True:
-        if cursor.node.type == "function_definition":
-            model = parse_function(cursor, encoding, filepath=filepath, **kwargs)
-            break
-        elif cursor.node.type == "class_definition":
-            model = parse_class(cursor, encoding, filepath=filepath, **kwargs)
-            break
-        elif cursor.node.type == "comment":
-            header_comment += comment_node_docstring(cursor.node, encoding)
-            if not doclineno:
-                doclineno = cursor.node.start_point.row
-            docendlineno = cursor.node.end_point.row
+        captured = FILE_QUERY.captures(cursor.node)
+
+        if "function" in captured:
+            model = self._parse_function(captured["function"][0], **kwargs)
+        elif "class" in captured:
+            model = self._parse_class(captured["class"][0], **kwargs)
         else:
-            model = Script(filepath.stem, filepath=filepath, **kwargs)
-            break
+            model = Script(self.filepath.stem, filepath=self.filepath, **kwargs)
 
-        if not cursor.goto_next_sibling():
-            break
+        if not model.docstring:
+            model.docstring = self._comment_docstring(
+                captured.get("header", None), parent=model
+            )
 
-    if not model.docstring:
-        model.docstring = Docstring(
-            "\n".join(header_comment),
-            lineno=doclineno,
-            endlineno=docendlineno,
-            parent=model,
+        return model
+    
+    def _parse_class(self, node: Node, **kwargs) -> Class:
+
+        model = Class(self.filepath.stem)
+        return model
+
+    def _parse_function(self, node: Node, **kwargs) -> Function:
+        captured: dict = FUNCTION_QUERY.captures(node)
+
+        input_names = self._decode(captured, "input")
+        parameters: dict = (
+            OrderedDict(
+                (name, Parameter(name, kind=ParameterKind.positional))
+                for name in input_names
+            )
+            if input_names
+            else {}
+        )
+        output_names = self._decode(captured, "output")
+        returns: dict = (
+            OrderedDict(
+                (name, Parameter(name, kind=ParameterKind.positional))
+                for name in output_names
+            )
+            if output_names
+            else {}
         )
 
-    return model, content.decode(encoding)
+        model = Function(
+            self.filepath.stem,
+            filepath=self.filepath,
+            docstring=self._comment_docstring(captured.get("docstring", None)),
+            **kwargs,
+        )
 
+        captured_arguments = [
+            ARGUMENTS_QUERY.captures(node) for node in captured["arguments"]
+        ]
+        for arguments in captured_arguments:
+            attributes = self._decode(arguments, "attributes")
+            is_input = "Input" in attributes or "Output" not in attributes
+            # is_repeating = "Repeating" in attributes
 
-# %%
+            captured_argument = [
+                PROPERTY_QUERY.captures(node) for node in arguments["arguments"]
+            ]
+            for argument in captured_argument:
+                name = self._decode(argument, "name", True)
+
+                if "options" in argument:
+                    options_name = self._decode(argument, "options", True)
+                    parameters.pop(options_name, None)
+                    parameter = parameters[name] = Parameter(
+                        name, kind=ParameterKind.keyword_only
+                    )
+                else:
+                    if is_input:
+                        parameter = parameters.get(name, Parameter(name))
+                    else:
+                        parameter = returns.get(name, Parameter(name))
+
+                    if "default" in argument:
+                        parameter.kind = ParameterKind.optional
+                    else:
+                        parameter.kind = ParameterKind.positional
+
+                parameter.annotation = self._decode(argument, "class", True)
+                parameter.default = self._decode(argument, "default", True)
+                parameter.comment = self._comment_docstring(
+                    argument.get("comment", None), parent=model
+                )
+
+        model.parameters = (
+            Parameters(*list(parameters.values())) if parameters else None
+        )
+        model.returns = Parameters(*list(returns.values())) if returns else None
+
+        return model
+
+    def _decode(
+        self, capture: dict[str, list[Node]], key: str, first: bool = False
+    ) -> list[str] | str | None:
+        if key not in capture:
+            return None
+        else:
+            decoded = [element.text.decode(self.encoding) for element in capture[key]]
+            if first:
+                return decoded[0]
+            else:
+                return decoded
+
+    def _comment_docstring(
+        self, nodes: list[Node] | Node | None, parent: MatlabObject | None = None
+    ) -> Docstring | None:
+        
+        if nodes is None:
+            return None
+        elif isinstance(nodes, list):
+            lineno = nodes[0].range.start_point.row + 1
+            endlineno = nodes[-1].range.end_point.row + 1
+            lines = iter(
+                [
+                    line
+                    for lines in [
+                        node.text.decode(self.encoding).splitlines() for node in nodes
+                    ]
+                    for line in lines
+                ]
+            )
+        else:
+            lineno = nodes.range.start_point.row + 1
+            endlineno = nodes.range.end_point.row + 1
+            lines = iter(nodes.text.decode(self.encoding).splitlines())
+
+        docstring, uncommented = [], []
+
+        while True:
+            try:
+                line = next(lines).lstrip()
+            except StopIteration:
+                break
+
+            if "--8<--" in line:
+                break
+
+            if line[:2] == "%{" or line[:2] == "%%":
+                if uncommented:
+                    docstring += _dedent(uncommented)
+                    uncommented = []
+                if line[:2] == "%%":
+                    docstring.append(line[2:].lstrip())
+                    continue
+
+                comment_block = []
+                line = line[2:]
+                while "%}" not in line:
+                    comment_block.append(line)
+                    try:
+                        line = next(lines)
+                    except StopIteration:
+                        break
+                else:
+                    last_line = line[: line.index("%}")]
+                    if last_line:
+                        comment_block.append(last_line)
+                docstring.append(comment_block[0])
+                docstring += _dedent(comment_block[1:])
+
+            elif line[0] == "%":
+                uncommented.append(line[1:])
+            else:
+                raise LookupError
+
+        if uncommented:
+            docstring += _dedent(uncommented)
+
+        return Docstring(
+            "\n".join(docstring),
+            lineno=lineno,
+            endlineno=endlineno,
+            parent=parent,
+        )

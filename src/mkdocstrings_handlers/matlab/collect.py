@@ -23,7 +23,7 @@ from mkdocstrings_handlers.matlab.models import (
     Namespace,
     ROOT,
 )
-from mkdocstrings_handlers.matlab.treesitter import parse_file
+from mkdocstrings_handlers.matlab.treesitter import FileParser
 
 
 __all__ = ["LinesCollection", "PathCollection"]
@@ -136,8 +136,6 @@ class PathCollection(ModulesCollection):
 
         model = self._models[self._mapping[name][0]].model
 
-
-
         model = self.update_model(model, config)
 
         return model
@@ -148,9 +146,9 @@ class PathCollection(ModulesCollection):
             model.docstring.parser_options = config.get("docstring_options", {})
 
         # Patch returns annotation
-        # In _griffe.docstrings.<parser>.py the function _read_returns_section will enforce an annotation 
+        # In _griffe.docstrings.<parser>.py the function _read_returns_section will enforce an annotation
         # on the return parameter. This annotation is grabbed from the parent. For MATLAB is is invalid.
-        # Thus the return annotation needs to be patched back to a None. 
+        # Thus the return annotation needs to be patched back to a None.
         if (
             isinstance(model, Function)
             and model.docstring is not None
@@ -159,7 +157,11 @@ class PathCollection(ModulesCollection):
                 for doc in model.docstring.parsed
             )
         ):
-            section = next(doc for doc in model.docstring.parsed if isinstance(doc, DocstringSectionReturns))
+            section = next(
+                doc
+                for doc in model.docstring.parsed
+                if isinstance(doc, DocstringSectionReturns)
+            )
             for returns in section.value:
                 if not isinstance(returns.annotation, Expr):
                     returns.annotation = None
@@ -263,7 +265,7 @@ class PathCollection(ModulesCollection):
         if (
             isinstance(model, Class)
             and "Inheritance Diagram" not in model.docstring.parsed
-        ):  
+        ):
             diagram = self.get_inheritance_diagram(model)
             if diagram is not None:
                 model = deepcopy(model)
@@ -350,7 +352,7 @@ class PathCollection(ModulesCollection):
                     links.add(f"   {get_id(model.name)} --> {get_id(super.name)}")
                     get_links(super, links)
             return links
-        
+
         nodes = get_nodes(model)
         if len(nodes) == 1:
             return None
@@ -441,9 +443,9 @@ class LazyModel:
         return parent
 
     def _collect_path(self, path: Path) -> MatlabObject:
-        model, content = parse_file(path, path_collection=self._path_collection)
-        lines = content.split("\n")
-        self._lines_collection[path] = lines
+        file = FileParser(path)
+        model = file.parse(path_collection=self._path_collection)
+        self._lines_collection[path] = file.content.split("\n")
         return model
 
     def _collect_classfolder(self, path: Path) -> Classfolder | None:

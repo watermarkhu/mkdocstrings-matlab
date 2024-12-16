@@ -1,6 +1,11 @@
 # %%
 
-from _griffe.docstrings.google import _read_block_items_maybe, _get_name_annotation_description, parse_docstring_annotation, _annotation_from_parent 
+from _griffe.docstrings.google import (
+    _read_block_items_maybe,
+    _get_name_annotation_description,
+    parse_docstring_annotation,
+    _annotation_from_parent,
+)
 from mkdocstrings_handlers.matlab.collect import PathCollection
 from mkdocstrings_handlers.matlab.models import Docstring
 from pathlib import Path
@@ -17,13 +22,15 @@ model = path_collection.resolve("myfunction")
 docstring = model.docstring
 # %%
 
-text = '\n'.join([
-    '% Perform some operation using the input arguments.',
-    '%',
-    '% Returns:',
-    '%   output1: Overruled documentation of output1',
-    '%   output2 (double): Overruled documentation of output2',
-])
+text = "\n".join(
+    [
+        "% Perform some operation using the input arguments.",
+        "%",
+        "% Returns:",
+        "%   output1: Overruled documentation of output1",
+        "%   output2 (double): Overruled documentation of output2",
+    ]
+)
 docstring = Docstring(text)
 offset = 0
 returns_multiple_items = True
@@ -54,7 +61,9 @@ for index, (line_number, yield_lines) in enumerate(block):
         annotation = parse_docstring_annotation(annotation, docstring)
     else:
         # try to retrieve the annotation from the docstring parent
-        annotation = _annotation_from_parent(docstring, gen_index=0, multiple=len(block) > 1, index=index)
+        annotation = _annotation_from_parent(
+            docstring, gen_index=0, multiple=len(block) > 1, index=index
+        )
 
     print(annotation)
 # %%
