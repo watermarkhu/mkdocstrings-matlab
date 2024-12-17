@@ -122,27 +122,27 @@ class PathCollection(ModulesCollection):
     @property
     def members(self):
         return {
-            name: self._models[paths[0]].model()
-            for name, paths in self._mapping.items()
+            identifier: self._models[paths[0]].model()
+            for identifier, paths in self._mapping.items()
         }
 
     def resolve(
         self,
-        name: str,
+        identifier: str,
         config: Mapping = {},
     ):
         """
-        Resolves the given name to a model object.
+        Resolves the given identifier to a model object.
         """
 
         # Find in global database
-        if name in self._mapping:
-            model = self._models[self._mapping[name][0]].model()
+        if identifier in self._mapping:
+            model = self._models[self._mapping[identifier][0]].model()
             if model is not None:
                 model = self.update_model(model, config)
         else:
             model = None
-            name_parts = name.split(".")
+            name_parts = identifier.split(".")
             if len(name_parts) > 1:
                 base = self.resolve(".".join(name_parts[:-1]), config=config)
                 if base is None or name_parts[-1] not in base.members:

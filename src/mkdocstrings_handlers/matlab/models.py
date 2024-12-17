@@ -105,7 +105,7 @@ class MatlabObject(Object):
 
     @docstring.setter
     def docstring(self, value: Docstring | None):
-        if value is not None and self._docstring is not None:
+        if value is not None:
             self._docstring = value
 
     @property
@@ -119,7 +119,8 @@ class MatlabObject(Object):
 
     @parent.setter
     def parent(self, value):
-        self._parent = value
+        if value is not None:
+            self._parent = value
 
 
 class _Root(MatlabObject):
