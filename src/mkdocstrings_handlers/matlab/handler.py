@@ -4,45 +4,14 @@ from markdown import Markdown
 from mkdocstrings.handlers.base import BaseHandler, CollectorItem, CollectionError
 from mkdocstrings_handlers.python import rendering
 from typing import Any, ClassVar, Mapping
-from griffe import Docstring, Parameters, Parameter, ParameterKind
 from pprint import pprint
 
 
-import charset_normalizer
-import json
-
-
-from mkdocstrings_handlers.matlab.collections import LinesCollection, ModelsCollection
-from mkdocstrings_handlers.matlab_engine import MatlabEngine, MatlabExecutionError
-from mkdocstrings_handlers.matlab.models import (
-    Function,
-    Class,
-    Classfolder,
-    Namespace,
-    Property,
-    ROOT,
-)
-from mkdocstrings_handlers.matlab.parser import MatlabParser
+from mkdocstrings_handlers.matlab.collect import LinesCollection, PathCollection
 
 
 class MatlabHandler(BaseHandler):
-    """The `MatlabHandler` class is a handler for processing Matlab code documentation.
-
-    Attributes:
-        name (str): The handler's name.
-        domain (str): The cross-documentation domain/language for this handler.
-        enable_inventory (bool): Whether this handler is interested in enabling the creation of the `objects.inv` Sphinx inventory file.
-        fallback_theme (str): The fallback theme.
-        fallback_config (ClassVar[dict]): The configuration used to collect item during autorefs fallback.
-        default_config (ClassVar[dict]): The default configuration for the handler.
-
-    Methods:
-        __init__(self, *args, config_file_path=None, paths=None, startup_expression="", locale="en", **kwargs): Initializes a new instance of the `MatlabHandler` class.
-        get_templates_dir(self, handler=None): Returns the templates directory for the handler.
-        collect(self, identifier, config): Collects the documentation for the given identifier.
-        render(self, data, config): Renders the collected documentation data.
-        update_env(self, md, config): Updates the Jinja environment with custom filters and tests.
-    """
+    """The `MatlabHandler` class is a handler for processing Matlab code documentation."""
 
     name: str = "matlab"
     """The handler's name."""
@@ -55,18 +24,12 @@ class MatlabHandler(BaseHandler):
     fallback_config: ClassVar[dict] = {"fallback": True}
     """The configuration used to collect item during autorefs fallback."""
     default_config: ClassVar[dict] = {
-        # https://mkdocstrings.github.io/python/usage/
         # General options
-        # "find_stubs_package": False,
-        # "allow_inspection": True,
         "show_bases": True,
-        "show_inheritance_diagram": True,
-        "inheritance_diagram_show_builtin": False,
+        "show_inheritance_diagram": False,
         "show_source": True,
-        # "preload_modules": None,
         # Heading options
         "heading_level": 2,
-        "parameter_headings": False,
         "show_root_heading": False,
         "show_root_toc_entry": True,
         "show_root_full_path": True,
@@ -78,151 +41,144 @@ class MatlabHandler(BaseHandler):
         # Member options
         "inherited_members": False,
         "members": None,
-        "members_order": rendering.Order.alphabetical,
+        "members_order": rendering.Order.alphabetical,  # TODO broken
         "filters": [],
-        "group_by_category": True,
-        "show_submodules": False,
-        "summary": False,
+        "group_by_category": True,  # TODO broken
+        "summary": False,  # TODO broken
         "show_labels": True,
         # Docstring options
         "docstring_style": "google",
         "docstring_options": {},
         "docstring_section_style": "table",
-        "merge_init_into_class": False,
+        "create_from_argument_blocks": False,
+        "merge_constructor_into_class": False,
         "show_if_no_docstring": False,
         "show_docstring_attributes": True,
         "show_docstring_functions": True,
         "show_docstring_classes": True,
-        "show_docstring_modules": True,
+        "show_docstring_modules": True,  # TODO should be replaced with namespaces
         "show_docstring_description": True,
         "show_docstring_examples": True,
-        "show_docstring_other_parameters": True,
+        "show_docstring_other_parameters": True,  # TODO should be name value pairs
         "show_docstring_parameters": True,
-        "show_docstring_raises": True,
-        "show_docstring_receives": True,
+        "show_docstring_raises": True,  # TODO need to additional parsing for this
         "show_docstring_returns": True,
-        "show_docstring_warns": True,
-        "show_docstring_yields": True,
+        "show_docstring_warns": True,  # TODO need to additional parsing for this
         # Signature options
         "annotations_path": "brief",
         "line_length": 60,
         "show_signature": True,
         "show_signature_annotations": False,
-        "signature_crossrefs": False,
         "separate_signature": False,
-        "unwrap_annotated": False,
-        "modernize_annotations": False,
     }
+    """Default handler configuration.
+
+    Attributes: General options:
+        show_bases (bool): Show the base classes of a class. Default: `True`.
+        show_inheritance_diagram (bool): Show the inheritance diagram of a class using Mermaid. Default: `False`.
+        show_source (bool): Show the source code of this object. Default: `True`.
+
+
+    Attributes: Headings options:
+        heading_level (int): The initial heading level to use. Default: `2`.
+        show_root_heading (bool): Show the heading of the object at the root of the documentation tree
+            (i.e. the object referenced by the identifier after `:::`). Default: `False`.
+        show_root_toc_entry (bool): If the root heading is not shown, at least add a ToC entry for it. Default: `True`.
+        show_root_full_path (bool): Show the full path for the root object heading. Default: `True`.
+        show_root_members_full_path (bool): Show the full path of the root members. Default: `False`.
+        show_object_full_path (bool): Show the full path of every object. Default: `False`.
+        show_category_heading (bool): When grouped by categories, show a heading for each category. Default: `False`.
+        show_symbol_type_heading (bool): Show the symbol type in headings (e.g. mod, class, meth, func and attr). Default: `False`.
+        show_symbol_type_toc (bool): Show the symbol type in the Table of Contents (e.g. mod, class, methd, func and attr). Default: `False`.
+
+    Attributes: Members options:
+        inherited_members (list[str] | bool | None): A boolean, or an explicit list of inherited members to render.
+            If true, select all inherited members, which can then be filtered with `members`.
+            If false or empty list, do not select any inherited member. Default: `False`.
+        members (list[str] | bool | None): A boolean, or an explicit list of members to render.
+            If true, select all members without further filtering.
+            If false or empty list, do not render members.
+            If none, select all members and apply further filtering with filters and docstrings. Default: `None`.
+        members_order (str): The members ordering to use. Options: `alphabetical` - order by the members names,
+            `source` - order members as they appear in the source file. Default: `"alphabetical"`.
+        filters (list[str] | None): A list of filters applied to filter objects based on their name.
+            A filter starting with `!` will exclude matching objects instead of including them.
+            The `members` option takes precedence over `filters` (filters will still be applied recursively
+            to lower members in the hierarchy). Default: `["!^_[^_]"]`.
+        group_by_category (bool): Group the object's children by categories: attributes, classes, functions, and modules. Default: `True`.
+        summary (bool | dict[str, bool]): Whether to render summaries of modules, classes, functions (methods) and attributes.
+        show_labels (bool): Whether to show labels of the members. Default: `True`.
+
+    Attributes: Docstrings options:
+        docstring_style (str): The docstring style to use: `google`, `numpy`, `sphinx`, or `None`. Default: `"google"`.
+        docstring_options (dict): The options for the docstring parser. See [docstring parsers](https://mkdocstrings.github.io/griffe/reference/docstrings/) and their options in Griffe docs.
+        docstring_section_style (str): The style used to render docstring sections. Options: `table`, `list`, `spacy`. Default: `"table"`.
+        merge_constructor_into_class (bool): Whether to merge the constructor method into the class' signature and docstring. Default: `False`.
+        create_from_argument_blocks (bool): Whether to create sections for inputs and output arguments based on argument validation blocks. Default: `False`.
+        relative_crossrefs (bool): Whether to enable the relative crossref syntax. Default: `False`.
+        scoped_crossrefs (bool): Whether to enable the scoped crossref ability. Default: `False`.
+        show_if_no_docstring (bool): Show the object heading even if it has no docstring or children with docstrings. Default: `False`.
+        show_docstring_attributes (bool): Whether to display the "Attributes" section in the object's docstring. Default: `True`.
+        show_docstring_functions (bool): Whether to display the "Functions" or "Methods" sections in the object's docstring. Default: `True`.
+        show_docstring_classes (bool): Whether to display the "Classes" section in the object's docstring. Default: `True`.
+        show_docstring_modules (bool): Whether to display the "Modules" section in the object's docstring. Default: `True`.
+        show_docstring_description (bool): Whether to display the textual block (including admonitions) in the object's docstring. Default: `True`.
+        show_docstring_examples (bool): Whether to display the "Examples" section in the object's docstring. Default: `True`.
+        show_docstring_other_parameters (bool): Whether to display the "Other Parameters" section in the object's docstring. Default: `True`.
+        show_docstring_parameters (bool): Whether to display the "Parameters" section in the object's docstring. Default: `True`.
+        show_docstring_raises (bool): Whether to display the "Raises" section in the object's docstring. Default: `True`.
+        show_docstring_returns (bool): Whether to display the "Returns" section in the object's docstring. Default: `True`.
+        show_docstring_warns (bool): Whether to display the "Warns" section in the object's docstring. Default: `True`.
+
+    Attributes: Signatures/annotations options:
+        annotations_path (str): The verbosity for annotations path: `brief` (recommended), or `source` (as written in the source). Default: `"brief"`.
+        line_length (int): Maximum line length when formatting code/signatures. Default: `60`.
+        show_signature (bool): Show methods and functions signatures. Default: `True`.
+        show_signature_annotations (bool): Show the type annotations in methods and functions signatures. Default: `False`.
+        separate_signature (bool): Whether to put the whole signature in a code block below the heading.
+    """
 
     def __init__(
         self,
         *args: Any,
         config_file_path: str | None = None,
         paths: list[str] | None = None,
-        startup_expression: str = "",
+        paths_recursive: bool = False,
         locale: str = "en",
         **kwargs: Any,
     ) -> None:
+        """
+        Initialize the handler with the given configuration.
+
+        Args:
+            *args (Any): Variable length argument list.
+            config_file_path (str | None, optional): Path to the configuration file. Defaults to None.
+            paths (list[str] | None, optional): List of paths to include. Defaults to None.
+            paths_recursive (bool, optional): Whether to include paths recursively. Defaults to False.
+            locale (str, optional): Locale setting. Defaults to "en".
+            **kwargs (Any): Arbitrary keyword arguments.
+
+        Returns:
+            None
+        """
         super().__init__(*args, **kwargs)
 
-        if paths is None:
-            full_paths = ""
+        if paths is None or config_file_path is None:
+            full_paths = []
         else:
             config_path = Path(config_file_path).parent
-            full_paths = [str((config_path / path).resolve()) for path in paths]
+            full_paths = [(config_path / path).resolve() for path in paths]
 
-        self.engine = MatlabEngine()
-        self.engine.addpath(str(Path(__file__).parent / "matlab"))
-        self.engine.matlab_startup(full_paths, startup_expression)
-        self.models = ModelsCollection()
-        self.lines = LinesCollection()
-        self.parser = MatlabParser()
-        self._locale = locale
+        self.paths: PathCollection = PathCollection(
+            full_paths, recursive=paths_recursive
+        )
+        self.lines: LinesCollection = self.paths.lines_collection
+        self._locale: str = locale
 
     def get_templates_dir(self, handler: str | None = None) -> Path:
         # use the python handler templates
         # (it assumes the python handler is installed)
         return super().get_templates_dir("python")
-
-    def get_ast(self, identifier: str, config: Mapping[str, Any]) -> dict:
-        """Retrieve the Abstract Syntax Tree (AST) for a given MATLAB identifier.
-
-        This method resolves the docstring for the specified identifier and parses it into an AST.
-        If the identifier corresponds to a class, it processes its superclasses and optionally
-        includes an inheritance diagram based on the provided configuration.
-        Args:
-            identifier (str): The MATLAB identifier to resolve.
-            config (Mapping[str, Any]): Configuration options for processing the AST.
-        Returns:
-            dict: The parsed AST for the given identifier.
-        Raises:
-            MatlabExecutionError: If there is an error resolving the superclass AST.
-        """
-
-        ast_json = self.engine.docstring.resolve(identifier)
-        ast = json.loads(ast_json)
-
-        if ast["type"] == "class":
-            if isinstance(ast["superclasses"], str):
-                ast["superclasses"] = [ast["superclasses"]]
-            if isinstance(ast["properties"], dict):
-                ast["properties"] = [ast["properties"]]
-            if isinstance(ast["methods"], dict):
-                ast["methods"] = [ast["methods"]]
-
-            if config["show_inheritance_diagram"]:
-                # Check if class is builtin and skip superclasses if option is not set
-                builtin = ast.get("builtin", False) or ast["name"].startswith("matlab.")
-                resursive = not builtin or config["inheritance_diagram_show_builtin"]
-                if not resursive:
-                    ast["superclasses"] = []
-
-                # Get superclasses AST
-                for index, base in enumerate(ast["superclasses"]):
-                    try:
-                        ast["superclasses"][index] = self.get_ast(base, config)
-                        ast["superclasses"][index]["name"] = base
-                    except MatlabExecutionError:
-                        ast["superclasses"][index] = {"name": base}
-        return ast
-
-    def collect(self, identifier: str, config: Mapping[str, Any]) -> CollectorItem:
-        """Collect data given an identifier and user configuration.
-
-        In the implementation, you typically call a subprocess that returns JSON, and load that JSON again into
-        a Python dictionary for example, though the implementation is completely free.
-
-        Arguments:
-            identifier: An identifier for which to collect data.
-            config: The handler's configuration options.
-
-        Returns:
-            CollectorItem
-        """
-        if identifier == "":
-            raise CollectionError("Empty identifier")
-
-        final_config = ChainMap(config, self.default_config)  # type: ignore[arg-type]
-        if identifier in self.models:
-            return self.models[identifier]
-
-        try:
-            ast = self.get_ast(identifier, final_config)
-        except MatlabExecutionError as error:
-            raise CollectionError(error.args[0].strip()) from error
-
-        filepath = Path(ast["path"])
-        if filepath not in self.lines:
-            lines = str(charset_normalizer.from_path(filepath).best()).splitlines()
-            self.lines[filepath] = lines
-
-        match ast["type"]:
-            case "function" | "method":
-                return self.collect_function(ast, final_config)
-            case "class":
-                return self.collect_class(ast, final_config)
-            case _:
-                return None
 
     def render(self, data: CollectorItem, config: Mapping[str, Any]) -> str:
         """Render a template using provided data and configuration options.
@@ -250,18 +206,6 @@ class MatlabHandler(BaseHandler):
                 "locale": self._locale,
             },
         )
-
-    def get_anchors(self, data: CollectorItem) -> tuple[str, ...]:
-        """Return the possible identifiers (HTML anchors) for a collected item.
-
-        Arguments:
-            data: The collected data.
-
-        Returns:
-            The HTML anchors (without '#'), or an empty tuple if this item doesn't have an anchor.
-        """
-        anchors = [data.path]
-        return tuple(anchors)
 
     def update_env(self, md: Markdown, config: dict) -> None:
         """Update the Jinja environment with custom filters and tests.
@@ -292,216 +236,24 @@ class MatlabHandler(BaseHandler):
             lambda template_name: template_name in self.env.list_templates()
         )
 
-    def collect_class(self, ast: dict, config: Mapping) -> Class:
-        filepath = Path(ast["path"])
+    def collect(self, identifier: str, config: Mapping[str, Any]) -> CollectorItem:
+        """Collect data given an identifier and user configuration.
 
-        # Parse textmate object
-        if config["show_source"]:
-            tmObject = self.parser.parse_file(filepath)
-            tmClass = next(
-                child
-                for child in tmObject.children
-                if child.token == "meta.class.matlab"
-            )
-        else:
-            tmClass = None
+        In the implementation, you typically call a subprocess that returns JSON, and load that JSON again into
+        a Python dictionary for example, though the implementation is completely free.
 
-        # Get bases
-        if config["show_bases"]:
-            if config["show_inheritance_diagram"]:
-                bases = [base["name"] for base in ast["superclasses"]]
-            else:
-                bases = (
-                    ast["superclasses"]
-                    if isinstance(ast["superclasses"], list)
-                    else [ast["superclasses"]]
-                )
-        else:
-            bases = []
+        Arguments:
+            identifier: An identifier for which to collect data.
+            config: The handler's configuration options.
 
-        # Load model
-        model = Class(
-            ast["name"],
-            parent=self.get_parent(filepath.parent),
-            hidden=ast["hidden"],
-            sealed=ast["sealed"],
-            abstract=ast["abstract"],
-            enumeration=ast["enumeration"],
-            handle=ast["handle"],
-            bases=bases,
-            filepath=filepath,
-            modules_collection=self.models,
-            lines_collection=self.lines,
-            lineno=1,
-            endlineno=len(self.lines[filepath]),
-            textmate=tmClass,
-        )
-        ast["name"] = model.canonical_path
+        Returns:
+            CollectorItem
+        """
+        if identifier == "":
+            raise CollectionError("Empty identifier")
 
-        # Format mermaid inheritance diagram
-        if config["show_inheritance_diagram"] and ast["superclasses"]:
-            section = get_inheritance_diagram(ast)
-            docstring = Docstring(
-                ast["docstring"] + section, parser=config["docstring_style"]
-            )
-        elif ast["docstring"]:
-            docstring = Docstring(ast["docstring"], parser=config["docstring_style"])
-        else:
-            docstring = None
-
-        model.docstring = docstring
-
-        # Load properties
-        for property_dict in ast["properties"]:
-            name = property_dict.pop("name")
-            defining_class = property_dict.pop("class")
-            property_doc = property_dict.pop("docstring")
-            docstring = (
-                Docstring(property_doc, parser=config["docstring_style"])
-                if property_doc
-                else None
-            )
-            if (
-                defining_class != model.canonical_path
-                and not config["inherited_members"]
-            ):
-                continue
-
-            prop = Property(name, docstring=docstring, parent=model, **property_dict)
-            model.members[name] = prop
-            self.models[prop.canonical_path] = prop
-
-        # Load methods
-        for method_dict in ast["methods"]:
-            name = method_dict.pop("name")
-            defining_class = method_dict.pop("class")
-            if (
-                defining_class != model.canonical_path
-                and not config["inherited_members"]
-            ):
-                continue
-
-            method = self.collect(f"{defining_class}.{name}", config)
-            (method.lineno, method.endlineno) = model.get_lineno_method(name)
-            method.parent = model
-            method._access = method_dict["access"]
-            method._static = method_dict["static"]
-            method._abstract = method_dict["abstract"]
-            method._sealed = method_dict["sealed"]
-            method._hidden = method_dict["hidden"]
-
-            model.members[name] = method
-            self.models[method.canonical_path] = method
-
-        if config["merge_init_into_class"] and model.name in model.members:
-            constructor = model.members.pop(model.name)
-            model.members["__init__"] = constructor
-
-            if getattr(constructor.docstring, "value", "") == getattr(
-                model.docstring, "value", ""
-            ):
-                model.docstring = None
-
-        self.models[model.canonical_path] = model
-
-        return model
-
-    def collect_function(self, ast: dict, config: Mapping) -> Function:
-        parameters = []
-
-        inputs = ast["inputs"] if isinstance(ast["inputs"], list) else [ast["inputs"]]
-        for input_dict in inputs:
-            if input_dict["name"] == "varargin":
-                parameter_kind = ParameterKind.var_positional
-            elif input_dict["kind"] == "positional":
-                parameter_kind = ParameterKind.positional_only
-            else:
-                parameter_kind = ParameterKind.keyword_only
-
-            parameters.append(
-                Parameter(
-                    input_dict["name"],
-                    kind=parameter_kind,
-                    annotation=input_dict["class"],
-                    default=input_dict["default"] if input_dict["default"] else None,
-                )
-            )
-
-        filepath = Path(ast["path"])
-        model = Function(
-            ast["name"],
-            parameters=Parameters(*parameters),
-            docstring=Docstring(
-                ast["docstring"],
-                parser=config["docstring_style"],
-                parser_options=config["docstring_options"],
-            )
-            if ast["docstring"]
-            else None,
-            parent=self.get_parent(filepath.parent),
-            filepath=filepath,
-            modules_collection=self.models,
-            lines_collection=self.lines,
-            lineno=1,
-            endlineno=len(self.lines[filepath]),
-        )
-
-        self.models[model.canonical_path] = model
-        return model
-
-    def get_parent(self, path: Path) -> Namespace | Classfolder:
-        if path.stem[0] == "+":
-            parent = Namespace(
-                path.stem[1:], filepath=path, parent=self.get_parent(path.parent)
-            )
-            identifier = parent.canonical_path
-            if identifier in self.models:
-                parent = self.models[identifier]
-            else:
-                self.models[identifier] = parent
-
-        elif path.stem[0] == "@":
-            parent = Classfolder(
-                path.stem[1:], filepath=path, parent=self.get_parent(path.parent)
-            )
-            identifier = parent.canonical_path
-            if identifier in self.models:
-                parent = self.models[identifier]
-            else:
-                self.models[identifier] = parent
-
-        else:
-            parent = ROOT
-        return parent
-
-
-def get_inheritance_diagram(ast: dict) -> str:
-    def get_id(str: str) -> str:
-        return str.replace(".", "_")
-
-    def get_nodes(ast: dict, nodes: set[str] = set(), clicks: set[str] = set()) -> str:
-        id = get_id(ast["name"])
-        nodes.add(f"   {id}[{ast['name']}]")
-        if "help" in ast:
-            clicks.add(f"   click {id} \"{ast['help']}\"")
-        if "superclasses" in ast:
-            for superclass in ast["superclasses"]:
-                get_nodes(superclass, nodes)
-        return (nodes, clicks)
-
-    def get_links(ast: dict, links: set[str] = set()) -> str:
-        if "superclasses" in ast:
-            for superclass in ast["superclasses"]:
-                links.add(f"   {get_id(ast['name'])} --> {get_id(superclass['name'])}")
-                get_links(superclass, links)
-        return links
-
-    (nodes, clicks) = get_nodes(ast)
-    nodes_str = "\n".join(list(nodes))
-    clicks_str = "\n".join(list(clicks))
-    links_str = "\n".join(list(get_links(ast)))
-    section = f"\n\n## Inheritance diagram\n\n```mermaid\nflowchart BT\n{nodes_str}\n{clicks_str}\n{links_str}\n```"
-    return section
+        final_config = ChainMap(config, self.default_config)  # type: ignore[arg-type]
+        return self.paths.resolve(identifier, config=final_config)
 
 
 def get_handler(
@@ -510,22 +262,22 @@ def get_handler(
     custom_templates: str | None = None,
     config_file_path: str | None = None,
     paths: list[str] | None = None,
-    startup_expression: str = "",
+    paths_recursive: bool = False,
     **config: Any,
 ) -> MatlabHandler:
     """
-    Returns a MatlabHandler object.
+    Create and return a MatlabHandler object with the specified configuration.
 
     Parameters:
-        theme (str): The theme to use.
+        theme (str): The theme to be used by the handler.
         custom_templates (str | None, optional): Path to custom templates. Defaults to None.
-        config_file_path (str | None, optional): Path to configuration file. Defaults to None.
+        config_file_path (str | None, optional): Path to the configuration file. Defaults to None.
         paths (list[str] | None, optional): List of paths to include. Defaults to None.
-        startup_expression (str, optional): Startup expression. Defaults to "".
+        paths_recursive (bool, optional): Whether to include paths recursively. Defaults to False.
         **config (Any): Additional configuration options.
 
     Returns:
-        MatlabHandler: The created MatlabHandler object.
+        MatlabHandler: An instance of MatlabHandler configured with the provided parameters.
     """
     return MatlabHandler(
         handler="matlab",
@@ -533,7 +285,7 @@ def get_handler(
         custom_templates=custom_templates,
         config_file_path=config_file_path,
         paths=paths,
-        startup_expression=startup_expression,
+        paths_recursive=paths_recursive,
     )
 
 

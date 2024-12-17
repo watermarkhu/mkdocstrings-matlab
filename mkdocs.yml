@@ -1,28 +1,226 @@
 site_name: "mkdocstrings-matlab"
-repo_name: "watermarkhu/mkdocstrings-matlab"
+site_description: "A MATLAB handler for mkdocstrings."
+# site_url: "https://mkdocstrings.github.io/python"
+repo_url: "https://github.com/watermarkhu/mkdocstrings-matlab"
+repo_name: "watermarkhu/mkdocstrings-matlabn"
 site_dir: "site"
+watch: [mkdocs.yml, README.md, src/mkdocstrings_handlers]
+copyright: Copyright &copy; 2024 Mark Shui Hu
+edit_uri: edit/main/docs/
+
+validation:
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
 
 nav:
-  - Home: index.md
+- Home:
+  - Overview: index.md
+#   - Changelog: changelog.md
+#   - Credits: credits.md
+  - License: license.md
+- Usage:
+  - usage/index.md
+#   - Configuration options:
+#     - General: usage/configuration/general.md
+#     - Headings: usage/configuration/headings.md
+#     - Members: usage/configuration/members.md
+#     - Docstrings: usage/configuration/docstrings.md
+#     - Signatures: usage/configuration/signatures.md
+  - Docstring styles:
+    - Google: usage/docstrings/google.md
+    - Numpy: usage/docstrings/numpy.md
+    - Sphinx: usage/docstrings/sphinx.md
+# # defer to gen-files + literate-nav
+# - API reference:
+#   - mkdocstrings-python: reference/
+# - Development:
+#   - Contributing: contributing.md
+#   - Code of Conduct: code_of_conduct.md
+#   # - Coverage report: coverage.md
+# - Insiders:
+#   - insiders/index.md
+#   - Getting started:
+#     - Installation: insiders/installation.md
+#     - Changelog: insiders/changelog.md
+# - mkdocstrings: https://mkdocstrings.github.io/
 
 theme:
   name: material
+  logo: logo.png
+  features:
+  - announce.dismiss
+  - content.action.edit
+  - content.action.view
+  - content.code.annotate
+  - content.code.copy
+  - content.tooltips
+  - navigation.footer
+  - navigation.indexes
+  - navigation.sections
+  - navigation.tabs
+  - navigation.tabs.sticky
+  - navigation.top
+  - search.highlight
+  - search.suggest
+  - toc.follow
+  palette:
+  - media: "(prefers-color-scheme)"
+    toggle:
+      icon: material/brightness-auto
+      name: Switch to light mode
+  - media: "(prefers-color-scheme: light)"
+    scheme: matlab
+    toggle:
+      icon: material/weather-sunny
+      name: Switch to dark mode
+  - media: "(prefers-color-scheme: dark)"
+    scheme: slate
+    primary: black
+    accent: lime
+    toggle:
+      icon: material/weather-night
+      name: Switch to system preference
 
-watch:
-  - src
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+- abbr
+- attr_list
+- admonition
+
+- footnotes
+- md_in_html
+- pymdownx.blocks.admonition
+- pymdownx.blocks.details
+- pymdownx.blocks.tab:
+    alternate_style: true
+    slugify: !!python/object/apply:pymdownx.slugs.slugify
+      kwds:
+        case: lower
+- pymdownx.emoji:
+    emoji_index: !!python/name:material.extensions.emoji.twemoji
+    emoji_generator: !!python/name:material.extensions.emoji.to_svg
+- pymdownx.highlight:
+    pygments_lang_class: true
+- pymdownx.magiclink
+- pymdownx.snippets:
+    # auto_append: [docs/.glossary.md]
+    base_path: [!relative $config_dir]
+    check_paths: true
+- pymdownx.superfences:
+    custom_fences:
+    - name: mermaid
+      class: mermaid
+      format: !!python/name:pymdownx.superfences.fence_code_format
+- pymdownx.tabbed:
+    alternate_style: true
+    slugify: !!python/object/apply:pymdownx.slugs.slugify
+      kwds:
+        case: lower
+- pymdownx.tasklist:
+    custom_checkbox: true
+- toc:
+    permalink: "¤"
 
 plugins:
-- search
 - autorefs
+- search
+- markdown-exec
+- callouts
+# - gen-files:
+#     scripts:
+#     - scripts/gen_ref_nav.py
+# - literate-nav:
+#     nav_file: SUMMARY.md
+- mkdocs-material-matlab
 - mkdocstrings:
-    default_handler: python
+    default_handler: matlab
     handlers:
-      # python:
-      #   paths: ["src"]
-      #   options:
-      #     show_root_heading: true
-      #     show_docstring_attributes: false
       matlab:
-        paths: ["/home/mahu/repositories/matlab-test-action/src"]
+        paths: ["docs/snippets"]
         options:
+          show_inheritance_diagram: true
+          show_source: true
+          heading_level: 2
           show_root_heading: true
+          show_root_toc_entry: false
+          show_root_full_path: true
+          show_root_members_full_path: false
+          show_object_full_path: false
+          show_category_heading: false
+          show_symbol_type_heading: true
+          show_symbol_type_toc: true
+
+          inherited_members: false
+          member_order: "bysource"
+          summary: true
+          show_labels: true
+
+          docstring_style: google
+          docstring_section_style: table
+          create_from_argument_blocks: true
+          merge_constructor_into_class: true
+          show_if_no_docstring: true
+          show_docstring_attributes": true
+          show_docstring_functions": true
+          show_docstring_classes": true
+          show_docstring_modules": true 
+          show_docstring_description": true
+          show_docstring_examples": true
+          show_docstring_other_parameters": true
+          show_docstring_parameters": false
+          show_docstring_raises": true
+          show_docstring_receives": true
+          show_docstring_returns": false
+          show_docstring_warns": true
+
+          annotations_path: full
+          show_signature: true
+          show_signature_annotations: false
+          separate_signature: false 
+      python:
+        paths: [src, docs/snippets]
+        import:
+        - https://docs.python.org/3/objects.inv
+        - https://mkdocstrings.github.io/objects.inv
+        - https://mkdocstrings.github.io/autorefs/objects.inv
+        - https://mkdocstrings.github.io/griffe/objects.inv
+        - https://python-markdown.github.io/objects.inv
+        options:
+          docstring_options:
+            ignore_init_summary: true
+          docstring_section_style: list
+          filters: ["!^_"]
+          heading_level: 1
+          inherited_members: true
+          merge_init_into_class: true
+          parameter_headings: true
+          preload_modules: [mkdocstrings]
+          relative_crossrefs: true
+          scoped_crossrefs: true
+          separate_signature: true
+          show_bases: false
+          show_inheritance_diagram: true
+          show_root_heading: true
+          show_root_full_path: false
+          show_signature_annotations: true
+          show_source: false
+          show_symbol_type_heading: true
+          show_symbol_type_toc: true
+          signature_crossrefs: true
+          summary: true
+          unwrap_annotated: true
+
+- git-revision-date-localized:
+    enabled: !ENV [DEPLOY, false]
+    enable_creation_date: true
+    type: timeago
+- minify:
+    minify_html: !ENV [DEPLOY, false]
+- group:
+    enabled: !ENV [MATERIAL_INSIDERS, false]
+    plugins:
+    - typeset
+

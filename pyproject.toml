@@ -1,21 +1,39 @@
 [project]
 name = "mkdocstrings-matlab"
-version = "0.2.3"
-description = "Add your description here"
+version = "0.3.0"
+description = "A MATLAB handler for mkdocstrings"
 authors = [
     { name = "Mark Hu", email = "watermarkhu@gmail.com" }
 ]
+license =  { text = "ISC" }
+readme = "README.md"
+requires-python = ">=3.10"
 dependencies = [
     "mkdocs>=1.6.0",
-    "mkdocstrings>=0.25.2",
     "mkdocstrings[python]>=0.18",
-    "griffe>=1.2.0",
-    "mkdocs-material>=9.5.33",
-    "markdown>=3.7",
     "charset-normalizer>=3.3.2",
-    "textmate-grammar-python>=0.6.1",
+    "griffe>=1.5.1",
+    "tree-sitter>=0.23.2",
+    "tree-sitter-matlab>=1.0.2",
 ]
-readme = "README.md"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Documentation",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+]
+
 
 [build-system]
 requires = ["hatchling"]
@@ -28,4 +46,25 @@ managed = true
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/mkdocstrings_handlers"]
+packages = ["src/mkdocstrings_handlers", "src/mkdocs_material_matlab"]
+
+[project.entry-points."mkdocs.plugins"]
+mkdocs-material-matlab = "mkdocs_material_matlab:MkdocsMaterialMatlabPlugin"
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.29.5",
+    "mkdocs-material>=9.5.33",
+    "markdown>=3.7",
+    "markdown-exec>=1.10.0",
+    "mkdocs-callouts>=1.15.0",
+    "mkdocs-with-pdf>=0.9.3",
+    "mkdocs-gen-files>=0.5.0",
+    "mkdocs-literate-nav>=0.6.1",
+    "mkdocs-git-revision-date-localized-plugin>=1.3.0",
+    "mkdocs-minify-plugin>=0.8.0",
+]
+
+[tool.pyright]
+include = ["src"]
+typeCheckingMode = "standard"
