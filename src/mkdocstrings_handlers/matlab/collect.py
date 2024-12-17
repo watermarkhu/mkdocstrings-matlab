@@ -276,43 +276,55 @@ class PathCollection(ModulesCollection):
             document_parameters = not docstring_parameters and arguments_parameters
             document_returns = not docstring_returns and arguments_returns
 
-            if document_parameters:
-                parameters = DocstringSectionParameters(
-                    [
-                        DocstringParameter(
-                            name=param.name,
-                            value=str(param.default)
-                            if param.default is not None
-                            else None,
-                            annotation=param.annotation,
-                            description=param.docstring.value
-                            if param.docstring is not None
-                            else "",
-                        )
-                        for param in model.parameters
-                        if param.kind is not ParameterKind.keyword_only
-                    ]
+            standard_parameters = [
+                param for param in model.parameters
+                if param.kind is not ParameterKind.keyword_only
+            ]
+
+            keyword_parameters = [
+                param for param in model.parameters
+                if param.kind is ParameterKind.keyword_only
+            ]
+
+            if document_parameters and standard_parameters:
+                model.docstring._extra_sections.append(
+                    DocstringSectionParameters(
+                        [
+                            DocstringParameter(
+                                name=param.name,
+                                value=str(param.default)
+                                if param.default is not None
+                                else None,
+                                annotation=param.annotation,
+                                description=param.docstring.value
+                                if param.docstring is not None
+                                else "",
+                            )
+                            for param in standard_parameters
+                        ]
+                    )
                 )
 
-                keywords = DocstringSectionParameters(
-                    [
-                        DocstringParameter(
-                            name=param.name,
-                            value=str(param.default)
-                            if param.default is not None
-                            else None,
-                            annotation=param.annotation,
-                            description=param.docstring.value
-                            if param.docstring is not None
-                            else "",
-                        )
-                        for param in model.parameters
-                        if param.kind is ParameterKind.keyword_only
-                    ],
-                    title="Keyword Arguments:",
+            if document_parameters and keyword_parameters:
+
+                model.docstring._extra_sections.append(
+                    DocstringSectionParameters(
+                        [
+                            DocstringParameter(
+                                name=param.name,
+                                value=str(param.default)
+                                if param.default is not None
+                                else None,
+                                annotation=param.annotation,
+                                description=param.docstring.value
+                                if param.docstring is not None
+                                else "",
+                            )
+                            for param in keyword_parameters
+                        ],
+                        title="Keyword Arguments:",
+                    )
                 )
-                model.docstring._extra_sections.append(parameters)
-                model.docstring._extra_sections.append(keywords)
 
             if document_returns:
                 returns = DocstringSectionReturns(
@@ -568,12 +580,17 @@ class LazyModel:
             if (
                 member.is_file()
                 and member.suffix == ".m"
-                and member.name != "Contents.m"
                 and member != classfile
             ):
-                method = self._collect_path(member)
-                method.parent = model
-                model.members[method.name] = method
+                if member.name == "Contents.m" and model.docstring is None:
+                    contentsfile = self._collect_path(member)
+                    model.docstring = contentsfile.docstring
+                else:
+                    method = self._collect_path(member)
+                    method.parent = model
+                    model.members[method.name] = method
+        if model.docstring is None:
+            model.docstring = self._collect_readme_md(path, model)
         return model
 
     def _collect_namespace(self, path: Path) -> Namespace | None:
@@ -589,9 +606,26 @@ class LazyModel:
             elif member.is_file() and member.suffix == ".m":
                 if member.name == "Contents.m":
                     contentsfile = self._collect_path(member)
-                    contentsfile.docstring = model.docstring
+                    model.docstring = contentsfile.docstring
                 else:
                     submodel = self._path_collection._models[member].model()
                     if submodel is not None:
                         model.members[submodel.name] = submodel
+
+        if model.docstring is None:
+            model.docstring = self._collect_readme_md(path, model)
+
         return model
+
+    def _collect_readme_md(self, path, parent: MatlabMixin) -> Docstring | None:
+
+        if (path / "README.md").exists():
+            readme = path / "README.md"
+        elif (path / "readme.md").exists():
+            readme = path / "readme.md"
+        else:
+            return None
+        
+        with open(readme, "r") as file:
+            content = file.read()
+        return Docstring(content, parent=parent)

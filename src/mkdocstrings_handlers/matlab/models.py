@@ -558,3 +558,7 @@ class Namespace(MatlabMixin, PathMixin, Module, MatlabObject):
 
     def __repr__(self) -> str:
         return f"Namespace({self.path!r})"
+
+    @property
+    def is_internal(self) -> bool:
+        return any(part == "+internal" for part in self.filepath.parts) if self.filepath else False
