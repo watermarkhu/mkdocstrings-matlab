@@ -15,7 +15,7 @@ from mkdocstrings_handlers.matlab.models import (
     Classfolder,
     Docstring,
     Function,
-    MatlabObject,
+    MatlabMixin,
     Parameters,
     Parameter,
     Property,
@@ -112,6 +112,7 @@ CLASS_QUERY = LANGUAGE.query("""("classdef" .
     (comment)* @docstring .
     ("\\n")? .
     [
+        (comment)
         (methods) @methods
         (properties) @properties
         (enumeration) @enumeration
@@ -180,7 +181,7 @@ class FileParser(object):
         content: Returns the decoded content of the file.
 
     Methods:
-        parse(**kwargs) -> MatlabObject: Parses the MATLAB file and returns a MatlabObject.
+        parse(**kwargs) -> MatlabMixin: Parses the MATLAB file and returns a MatlabMixin.
     """
 
     def __init__(self, filepath: Path):
@@ -206,19 +207,19 @@ class FileParser(object):
         """
         return self._content.decode(self.encoding)
 
-    def parse(self, **kwargs) -> MatlabObject:
+    def parse(self, **kwargs) -> MatlabMixin:
         """
-        Parse the content of the file and return a MatlabObject.
+        Parse the content of the file and return a MatlabMixin.
 
         This method uses a tree-sitter parser to parse the content of the file
-        and extract relevant information to create a MatlabObject. It handles
+        and extract relevant information to create a MatlabMixin. It handles
         different types of Matlab constructs such as functions and classes.
 
         Args:
             **kwargs: Additional keyword arguments to pass to the parsing methods.
 
         Returns:
-            MatlabObject: An instance of MatlabObject representing the parsed content.
+            MatlabMixin: An instance of MatlabMixin representing the parsed content.
 
         Raises:
             ValueError: If the file could not be parsed.
@@ -425,7 +426,7 @@ class FileParser(object):
             KeyError: If required captures are missing from the node.
 
         """
-        captures: dict = FUNCTION_QUERY.captures(node)
+        captures: dict = FUNCTION_QUERY.matches(node)[0][1]
 
         input_names = self._decode_from_capture(captures, "input")
         parameters: dict = (
@@ -495,11 +496,11 @@ class FileParser(object):
                         parameter.kind = ParameterKind.optional
                     else:
                         parameter.kind = ParameterKind.positional_only
-                
+
                 annotation = self._first_from_capture(argument, "class")
                 if annotation:
                     parameter.annotation = annotation
-                
+
                 default = self._first_from_capture(argument, "default")
                 if default:
                     parameter.default = default
@@ -508,7 +509,7 @@ class FileParser(object):
                     argument.get("comment", None), parent=model
                 )
                 if docstring:
-                    parameter.docstring = docstring 
+                    parameter.docstring = docstring
 
         model.parameters = Parameters(*list(parameters.values()))
         model.returns = Parameters(*list(returns.values())) if returns else None
@@ -567,7 +568,7 @@ class FileParser(object):
             return ""
 
     def _comment_docstring(
-        self, nodes: list[Node] | Node | None, parent: MatlabObject | None = None
+        self, nodes: list[Node] | Node | None, parent: MatlabMixin | None = None
     ) -> Docstring | None:
         """
         Extract and process a docstring from given nodes.
@@ -578,7 +579,7 @@ class FileParser(object):
 
         Args:
             nodes (list[Node] | Node | None): The nodes from which to extract the docstring.
-            parent (MatlabObject | None, optional): The parent MatlabObject. Defaults to None.
+            parent (MatlabMixin | None, optional): The parent MatlabMixin. Defaults to None.
 
         Returns:
             Docstring | None: The extracted and processed docstring, or None if no docstring is found.
@@ -612,7 +613,7 @@ class FileParser(object):
                 break
 
             if "--8<--" in line:
-                break
+                continue
 
             if line[:2] == "%{" or line[:2] == "%%":
                 if uncommented:

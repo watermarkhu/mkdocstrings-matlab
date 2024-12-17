@@ -20,7 +20,8 @@ from mkdocstrings_handlers.matlab.models import (
     Docstring,
     DocstringSectionText,
     Function,
-    MatlabObject,
+    MatlabMixin,
+    Object,
     Namespace,
     ROOT,
 )
@@ -104,10 +105,10 @@ class PathCollection(ModulesCollection):
         members() -> dict:
             Returns a dictionary of members with their corresponding models.
 
-        resolve(identifier: str, config: Mapping = {}) -> MatlabObject | None:
+        resolve(identifier: str, config: Mapping = {}) -> MatlabMixin | None:
             Resolves the given identifier to a model object.
 
-        update_model(model: MatlabObject, config: Mapping) -> MatlabObject:
+        update_model(model: MatlabMixin, config: Mapping) -> MatlabMixin:
             Updates the given model object with the provided configuration.
 
         addpath(path: str | Path, to_end: bool = False, recursive: bool = False) -> list[Path]:
@@ -163,10 +164,10 @@ class PathCollection(ModulesCollection):
         config: Mapping = {},
     ):
         """
-        Resolve an identifier to a MatlabObject model.
+        Resolve an identifier to a MatlabMixin model.
 
         This method attempts to resolve a given identifier to a corresponding
-        MatlabObject model using the internal mapping and models. If the identifier
+        MatlabMixin model using the internal mapping and models. If the identifier
         is not found directly, it will attempt to resolve it by breaking down the
         identifier into parts and resolving each part recursively.
 
@@ -175,7 +176,7 @@ class PathCollection(ModulesCollection):
             config (Mapping, optional): Configuration options to update the model. Defaults to an empty dictionary.
 
         Returns:
-            MatlabObject or None: The resolved MatlabObject model if found, otherwise None.
+            MatlabMixin or None: The resolved MatlabMixin model if found, otherwise None.
         """
 
         # Find in global database
@@ -195,11 +196,11 @@ class PathCollection(ModulesCollection):
             else:
                 model = None
 
-        if isinstance(model, MatlabObject):
+        if isinstance(model, MatlabMixin):
             return model
         return None
 
-    def update_model(self, model: MatlabObject, config: Mapping):
+    def update_model(self, model: MatlabMixin, config: Mapping):
         """
         Update the given model based on the provided configuration.
 
@@ -210,11 +211,11 @@ class PathCollection(ModulesCollection):
         and inheritance diagrams.
 
         Args:
-            model (MatlabObject): The model to update.
+            model (MatlabMixin): The model to update.
             config (Mapping): The configuration dictionary.
 
         Returns:
-            MatlabObject: The updated model.
+            MatlabMixin: The updated model.
         """
 
         # Update docstring parser and parser options
@@ -280,9 +281,13 @@ class PathCollection(ModulesCollection):
                     [
                         DocstringParameter(
                             name=param.name,
-                            value=str(param.default) if param.default is not None else None,
+                            value=str(param.default)
+                            if param.default is not None
+                            else None,
                             annotation=param.annotation,
-                            description=param.docstring.value if param.docstring is not None else "",
+                            description=param.docstring.value
+                            if param.docstring is not None
+                            else "",
                         )
                         for param in model.parameters
                         if param.kind is not ParameterKind.keyword_only
@@ -293,9 +298,13 @@ class PathCollection(ModulesCollection):
                     [
                         DocstringParameter(
                             name=param.name,
-                            value=str(param.default) if param.default is not None else None,
+                            value=str(param.default)
+                            if param.default is not None
+                            else None,
                             annotation=param.annotation,
-                            description=param.docstring.value if param.docstring is not None else "",
+                            description=param.docstring.value
+                            if param.docstring is not None
+                            else "",
                         )
                         for param in model.parameters
                         if param.kind is ParameterKind.keyword_only
@@ -476,7 +485,7 @@ class LazyModel:
 
     def __init__(self, path: Path, path_collection: PathCollection):
         self._path: Path = path
-        self._model: MatlabObject | None = None
+        self._model: MatlabMixin | None = None
         self._path_collection: PathCollection = path_collection
         self._lines_collection: LinesCollection = path_collection.lines_collection
 
@@ -533,7 +542,7 @@ class LazyModel:
             self._model.parent = self._collect_parent(self._path.parent)
         return self._model
 
-    def _collect_parent(self, path: Path) -> "MatlabObject | _ParentGrabber":
+    def _collect_parent(self, path: Path) -> Object | _ParentGrabber:
         if self.is_in_namespace:
             parent = _ParentGrabber(
                 lambda: self._path_collection._models[path].model() or ROOT
@@ -542,7 +551,7 @@ class LazyModel:
             parent = ROOT
         return parent
 
-    def _collect_path(self, path: Path) -> MatlabObject:
+    def _collect_path(self, path: Path) -> MatlabMixin:
         file = FileParser(path)
         model = file.parse(path_collection=self._path_collection)
         self._lines_collection[path] = file.content.split("\n")

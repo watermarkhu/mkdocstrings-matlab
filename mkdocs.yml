@@ -141,14 +141,45 @@ plugins:
       matlab:
         paths: ["docs/snippets"]
         options:
+          show_inheritance_diagram: true
+          show_source: true
+          heading_level: 2
           show_root_heading: true
-          merge_constructor_into_class: true
-          create_from_argument_blocks: true
+          show_root_toc_entry: false
+          show_root_full_path: true
+          show_root_members_full_path: false
+          show_object_full_path: false
+          show_category_heading: false
           show_symbol_type_heading: true
           show_symbol_type_toc: true
+
+          inherited_members: false
+          member_order: "bysource"
+          summary: true
+          show_labels: true
+
+          docstring_style: google
+          docstring_section_style: table
+          create_from_argument_blocks: true
+          merge_constructor_into_class: true
+          show_if_no_docstring: true
+          show_docstring_attributes": true
+          show_docstring_functions": true
+          show_docstring_classes": true
+          show_docstring_modules": true 
+          show_docstring_description": true
+          show_docstring_examples": true
+          show_docstring_other_parameters": true
+          show_docstring_parameters": false
+          show_docstring_raises": true
+          show_docstring_receives": true
+          show_docstring_returns": false
+          show_docstring_warns": true
+
+          annotations_path: full
+          show_signature: true
           show_signature_annotations: false
-          separate_signature: true 
-          signature_crossrefs: true
+          separate_signature: false 
       python:
         paths: [src, docs/snippets]
         import:

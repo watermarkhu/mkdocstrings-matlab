@@ -43,8 +43,8 @@ class MatlabHandler(BaseHandler):
         "members": None,
         "members_order": rendering.Order.alphabetical,  # TODO broken
         "filters": [],
-        "group_by_category": True, # TODO broken
-        "summary": False, # TODO broken
+        "group_by_category": True,  # TODO broken
+        "summary": False,  # TODO broken
         "show_labels": True,
         # Docstring options
         "docstring_style": "google",
@@ -56,14 +56,14 @@ class MatlabHandler(BaseHandler):
         "show_docstring_attributes": True,
         "show_docstring_functions": True,
         "show_docstring_classes": True,
-        "show_docstring_modules": True, # TODO should be replaced with namespaces
+        "show_docstring_modules": True,  # TODO should be replaced with namespaces
         "show_docstring_description": True,
         "show_docstring_examples": True,
-        "show_docstring_other_parameters": True, # TODO should be name value pairs
+        "show_docstring_other_parameters": True,  # TODO should be name value pairs
         "show_docstring_parameters": True,
         "show_docstring_raises": True,  # TODO need to additional parsing for this
-        "show_docstring_returns": True, 
-        "show_docstring_warns": True,   # TODO need to additional parsing for this
+        "show_docstring_returns": True,
+        "show_docstring_warns": True,  # TODO need to additional parsing for this
         # Signature options
         "annotations_path": "brief",
         "line_length": 60,
