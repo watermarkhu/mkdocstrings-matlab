@@ -42,6 +42,7 @@ class PathGlobber:
     """
     A class to recursively glob paths as MATLAB would do it.
     """
+
     def __init__(self, path: Path, recursive: bool = False):
         self._idx = 0
         self._paths: list[Path] = []
@@ -98,7 +99,7 @@ class PathCollection(ModulesCollection):
         matlab_path (Sequence[str | Path]): A list of strings or Path objects representing the MATLAB paths.
         recursive (bool, optional): If True, recursively adds all subdirectories of the given paths to the search path. Defaults to False.
         config (Mapping, optional): Configuration settings for the PathCollection. Defaults to {}.
-    
+
     Methods:
         members() -> dict:
             Returns a dictionary of members with their corresponding models.
@@ -118,6 +119,7 @@ class PathCollection(ModulesCollection):
         get_inheritance_diagram(model: Class) -> DocstringSectionText | None:
             Generates an inheritance diagram for the given class model.
     """
+
     def __init__(
         self,
         matlab_path: Sequence[str | Path],
@@ -240,7 +242,7 @@ class PathCollection(ModulesCollection):
             for returns in section.value:
                 if not isinstance(returns.annotation, Expr):
                     returns.annotation = None
-        
+
         # Create parameters and returns sections from argument blocks
         if (
             isinstance(model, Function)
@@ -278,13 +280,9 @@ class PathCollection(ModulesCollection):
                     [
                         DocstringParameter(
                             name=param.name,
-                            value=str(param.default)
-                            if param.default is not None
-                            else None,
+                            value=str(param.default) if param.default is not None else None,
                             annotation=param.annotation,
-                            description=param.docstring.value
-                            if param.docstring is not None
-                            else "",
+                            description=param.docstring.value if param.docstring is not None else "",
                         )
                         for param in model.parameters
                         if param.kind is not ParameterKind.keyword_only
@@ -295,13 +293,9 @@ class PathCollection(ModulesCollection):
                     [
                         DocstringParameter(
                             name=param.name,
-                            value=str(param.default)
-                            if param.default is not None
-                            else None,
+                            value=str(param.default) if param.default is not None else None,
                             annotation=param.annotation,
-                            description=param.docstring.value
-                            if param.docstring is not None
-                            else "",
+                            description=param.docstring.value if param.docstring is not None else "",
                         )
                         for param in model.parameters
                         if param.kind is ParameterKind.keyword_only
@@ -347,8 +341,14 @@ class PathCollection(ModulesCollection):
 
         if (
             isinstance(model, Class)
-            and model.docstring is not None
-            and "Inheritance Diagram" not in model.docstring.parsed
+            and config.get("show_inheritance_diagram", False)
+            and (
+                (
+                    model.docstring is not None
+                    and "Inheritance Diagram" not in model.docstring.parsed
+                )
+                or model.docstring is None
+            )
         ):
             diagram = self.get_inheritance_diagram(model)
             if diagram is not None:
@@ -473,6 +473,7 @@ class LazyModel:
         name: Returns the name of the MATLAB object, including namespace if applicable.
         model: Collects and returns the MATLAB object model..
     """
+
     def __init__(self, path: Path, path_collection: PathCollection):
         self._path: Path = path
         self._model: MatlabObject | None = None

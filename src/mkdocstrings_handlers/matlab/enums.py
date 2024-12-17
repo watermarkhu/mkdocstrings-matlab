@@ -11,7 +11,8 @@ class ParameterKind(str, Enum):
         keyword_only (str): Keyword-only parameter.
         var_keyword (str): Variadic keyword parameter.
     """
-    positional = "positional"
+
+    positional_only = "positional-only"
     optional = "optional"
     keyword_only = "keyword-only"
     var_keyword = "variadic keyword"
@@ -27,6 +28,7 @@ class AccessEnum(str, Enum):
         private (str): Represents private access level.
         immutable (str): Represents immutable access level.
     """
+
     public = "public"
     protected = "protected"
     private = "private"

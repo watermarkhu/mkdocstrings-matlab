@@ -29,7 +29,6 @@ __all__ = [
     "Docstring",
     "DocstringSectionText",
     "Namespace",
-    "PathMixin",
     "Parameters",
     "Parameter",
     "Property",
@@ -105,7 +104,6 @@ class _ParentGrabber:
         self._grabber = grabber
 
     def __call__(self) -> "MatlabObject":
-
         """
         Calls the grabber function and returns a MatlabObject.
 
@@ -122,10 +120,10 @@ class MatlabObject(Object):
     Attributes:
         path_collection (PathCollection | None): The collection of paths related to the Matlab object.
     """
+
     def __init__(
         self,
         *args,
-        docstring: Docstring | None = None,
         path_collection: "PathCollection | None" = None,
         parent: "Class | Classfolder | Namespace | _Root | None" = None,
         **kwargs,
@@ -135,19 +133,17 @@ class MatlabObject(Object):
 
         Args:
             *args: Variable length argument list.
-            docstring (Docstring | None): The docstring associated with the object.
             path_collection (PathCollection | None): The collection of paths related to the object.
             parent (Class | Classfolder | Namespace | _Root | None): The parent object.
             **kwargs: Arbitrary keyword arguments.
         """
-        self._docstring: Docstring | None = docstring
+        
         self.path_collection: "PathCollection | None" = path_collection
         self._parent: "Class | Classfolder | Namespace | _Root | _ParentGrabber | None" = parent
         lines_collection = (
             path_collection.lines_collection if path_collection is not None else None
         )
         super().__init__(*args, lines_collection=lines_collection, **kwargs)
-
 
     @property
     def canonical_path(self) -> str:
@@ -172,15 +168,7 @@ class MatlabObject(Object):
                 return f"{parent.parent.canonical_path}.{self.name}"
         else:
             return f"{parent.canonical_path}.{self.name}" if parent else self.name
-        
-    @property
-    def docstring(self) -> Docstring | None:
-        return self._docstring
 
-    @docstring.setter
-    def docstring(self, value: Docstring | None):
-        if value is not None:
-            self._docstring = value
 
     @property
     def parent(self) -> "MatlabObject":
@@ -200,9 +188,10 @@ class MatlabObject(Object):
 class _Root(MatlabObject):
     """
     A class representing the root object in a MATLAB structure.
-    All the objects that have the root object as parent are at the top level, 
+    All the objects that have the root object as parent are at the top level,
     and can be called directly.
     """
+
     def __init__(self) -> None:
         super().__init__("ROOT", parent=None)
 
@@ -213,15 +202,17 @@ class _Root(MatlabObject):
 ROOT = _Root()
 
 
-class PathMixin(Object):
+class MatlabMixin(Object):
     """
     A mixin class that provides a filepath attribute and related functionality.
 
     Attributes:
         filepath (Path | None): The file path associated with the object. It can be None if no file path is provided.
     """
-    def __init__(self, *args: Any, filepath: Path | None = None, **kwargs: Any) -> None:
+
+    def __init__(self, *args: Any, filepath: Path | None = None, docstring: Docstring | None = None, **kwargs: Any) -> None:
         self._filepath: Path | None = filepath
+        self._docstring: Docstring | None = docstring
         self._parent = ROOT
         super().__init__(*args, **kwargs)
 
@@ -232,8 +223,16 @@ class PathMixin(Object):
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.name})"
 
+    @property
+    def docstring(self) -> Docstring | None:
+        return self._docstring
 
-class Parameter(MatlabObject, GriffeParameter):
+    @docstring.setter
+    def docstring(self, value: Docstring | None):
+        if value is not None:
+            self._docstring = value
+
+class Parameter(GriffeParameter, MatlabObject):
     """
     Represents a parameter in a MATLAB object.
 
@@ -252,7 +251,7 @@ class Parameter(MatlabObject, GriffeParameter):
         self.kind: ParameterKind | None = kind
 
 
-class Parameters(MatlabObject, GriffeParameters):
+class Parameters(GriffeParameters, MatlabObject):
     """
     A class to represent a collection of parameters.
 
@@ -260,26 +259,28 @@ class Parameters(MatlabObject, GriffeParameters):
         MatlabObject: Base class for MATLAB objects.
         GriffeParameters: Base class for handling parameters.
     """
+
     def __init__(self, *parameters: Parameter) -> None:
         self._params: list[Parameter] = list(parameters)
 
 
-class Script(PathMixin, MatlabObject):
+class Script(MatlabMixin, MatlabObject):
     """
     A class representing a MATLAB script.
 
-    This class inherits from `PathMixin` and `MatlabObject` to provide
+    This class inherits from `MatlabMixin` and `MatlabObject` to provide
     functionality specific to MATLAB scripts.
     """
+
     pass
 
 
-class Class(PathMixin, MatlabObject, GriffeClass):
+class Class(MatlabMixin, GriffeClass, MatlabObject):
     """
     Represents a MATLAB class with additional properties and methods for handling
     MATLAB-specific features.
 
-    This class extends `PathMixin`, `MatlabObject`, and `GriffeClass` to provide
+    This class extends `MatlabMixin`, `MatlabObject`, and `GriffeClass` to provide
     additional functionality for handling MATLAB class properties such as
     abstract, hidden, and sealed attributes. It also provides methods to retrieve
     parameters, inherited members, and labels.
@@ -295,6 +296,7 @@ class Class(PathMixin, MatlabObject, GriffeClass):
         Hidden (bool, optional): Indicates if the class is hidden
         Sealed (bool, optional): Indicates if the class is sealed
     """
+
     def __init__(
         self,
         *args: Any,
@@ -384,10 +386,11 @@ class Classfolder(Class):
     """
     A class representing a MATLAB classfolder
     """
+
     pass
 
 
-class Property(MatlabObject, Attribute):
+class Property(Attribute, MatlabObject):
     def __init__(
         self,
         *args: Any,
@@ -456,7 +459,7 @@ class Property(MatlabObject, Attribute):
         pass
 
 
-class Function(PathMixin, MatlabObject, GriffeFunction):
+class Function(MatlabMixin, GriffeFunction, MatlabObject):
     """
     Represents a MATLAB function with various attributes and properties.
 
@@ -482,6 +485,7 @@ class Function(PathMixin, MatlabObject, GriffeFunction):
         setter (bool, optional): Indicates if the function is a setter. Defaults to False.
         getter (bool, optional): Indicates if the function is a getter. Defaults to False.
     """
+
     def __init__(
         self,
         *args: Any,
@@ -526,15 +530,16 @@ class Function(PathMixin, MatlabObject, GriffeFunction):
         pass
 
 
-class Namespace(PathMixin, MatlabObject, Module):
+class Namespace(MatlabMixin, Module, MatlabObject):
     """
     A class representing a namespace in a MATLAB project.
 
     Inherits from:
-        - PathMixin: A mixin class providing path-related functionality.
+        - MatlabMixin: A mixin class providing path-related functionality.
         - MatlabObject: A base class for MATLAB objects.
         - Module: A class representing a module.
     """
+
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self._access: AccessEnum = AccessEnum.public

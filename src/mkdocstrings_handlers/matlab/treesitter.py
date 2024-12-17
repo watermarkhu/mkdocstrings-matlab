@@ -182,6 +182,7 @@ class FileParser(object):
     Methods:
         parse(**kwargs) -> MatlabObject: Parses the MATLAB file and returns a MatlabObject.
     """
+
     def __init__(self, filepath: Path):
         """
         Initialize the object with the given file path.
@@ -392,8 +393,8 @@ class FileParser(object):
             node (Node): The node to parse the attribute from.
 
         Returns:
-            tuple[str, Any]: A tuple containing the attribute key and its value. 
-                             The value is `True` if no value is specified, 
+            tuple[str, Any]: A tuple containing the attribute key and its value.
+                             The value is `True` if no value is specified,
                              otherwise it is the parsed value which can be a boolean or a string.
         """
         captures = ATTRIBUTE_QUERY.captures(node)
@@ -429,7 +430,7 @@ class FileParser(object):
         input_names = self._decode_from_capture(captures, "input")
         parameters: dict = (
             OrderedDict(
-                (name, Parameter(name, kind=ParameterKind.positional))
+                (name, Parameter(name, kind=ParameterKind.positional_only))
                 for name in input_names
             )
             if input_names
@@ -438,7 +439,7 @@ class FileParser(object):
         output_names = self._decode_from_capture(captures, "output")
         returns: dict = (
             OrderedDict(
-                (name, Parameter(name, kind=ParameterKind.positional))
+                (name, Parameter(name, kind=ParameterKind.positional_only))
                 for name in output_names
             )
             if output_names
@@ -493,13 +494,21 @@ class FileParser(object):
                     if "default" in argument:
                         parameter.kind = ParameterKind.optional
                     else:
-                        parameter.kind = ParameterKind.positional
+                        parameter.kind = ParameterKind.positional_only
+                
+                annotation = self._first_from_capture(argument, "class")
+                if annotation:
+                    parameter.annotation = annotation
+                
+                default = self._first_from_capture(argument, "default")
+                if default:
+                    parameter.default = default
 
-                parameter.annotation = self._first_from_capture(argument, "class")
-                parameter.default = self._first_from_capture(argument, "default")
-                parameter.docstring = self._comment_docstring(
+                docstring = self._comment_docstring(
                     argument.get("comment", None), parent=model
                 )
+                if docstring:
+                    parameter.docstring = docstring 
 
         model.parameters = Parameters(*list(parameters.values()))
         model.returns = Parameters(*list(returns.values())) if returns else None

@@ -26,7 +26,7 @@ class MatlabHandler(BaseHandler):
     default_config: ClassVar[dict] = {
         # General options
         "show_bases": True,
-        "show_inheritance_diagram": True,
+        "show_inheritance_diagram": False,
         "show_source": True,
         # Heading options
         "heading_level": 2,
