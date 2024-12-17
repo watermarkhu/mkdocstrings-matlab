@@ -30,7 +30,6 @@ class MatlabHandler(BaseHandler):
         "show_source": True,
         # Heading options
         "heading_level": 2,
-        "parameter_headings": False,
         "show_root_heading": False,
         "show_root_toc_entry": True,
         "show_root_full_path": True,
@@ -42,10 +41,10 @@ class MatlabHandler(BaseHandler):
         # Member options
         "inherited_members": False,
         "members": None,
-        "members_order": rendering.Order.alphabetical,
+        "members_order": rendering.Order.alphabetical,  # TODO broken
         "filters": [],
-        "group_by_category": True,
-        "summary": False,
+        "group_by_category": True, # TODO broken
+        "summary": False, # TODO broken
         "show_labels": True,
         # Docstring options
         "docstring_style": "google",
@@ -57,24 +56,20 @@ class MatlabHandler(BaseHandler):
         "show_docstring_attributes": True,
         "show_docstring_functions": True,
         "show_docstring_classes": True,
-        "show_docstring_modules": True,
+        "show_docstring_modules": True, # TODO should be replaced with namespaces
         "show_docstring_description": True,
         "show_docstring_examples": True,
-        "show_docstring_other_parameters": True,
+        "show_docstring_other_parameters": True, # TODO should be name value pairs
         "show_docstring_parameters": True,
-        "show_docstring_raises": True,
-        "show_docstring_receives": True,
-        "show_docstring_returns": True,
-        "show_docstring_warns": True,
+        "show_docstring_raises": True,  # TODO need to additional parsing for this
+        "show_docstring_returns": True, 
+        "show_docstring_warns": True,   # TODO need to additional parsing for this
         # Signature options
         "annotations_path": "brief",
         "line_length": 60,
         "show_signature": True,
         "show_signature_annotations": False,
-        "signature_crossrefs": False,
         "separate_signature": False,
-        "unwrap_annotated": False,
-        "modernize_annotations": False,
     }
     """Default handler configuration.
 
@@ -86,13 +81,12 @@ class MatlabHandler(BaseHandler):
 
     Attributes: Headings options:
         heading_level (int): The initial heading level to use. Default: `2`.
-        parameter_headings (bool): Whether to render headings for parameters (therefore showing parameters in the ToC). Default: `False`.
         show_root_heading (bool): Show the heading of the object at the root of the documentation tree
             (i.e. the object referenced by the identifier after `:::`). Default: `False`.
         show_root_toc_entry (bool): If the root heading is not shown, at least add a ToC entry for it. Default: `True`.
-        show_root_full_path (bool): Show the full Python path for the root object heading. Default: `True`.
-        show_root_members_full_path (bool): Show the full Python path of the root members. Default: `False`.
-        show_object_full_path (bool): Show the full Python path of every object. Default: `False`.
+        show_root_full_path (bool): Show the full path for the root object heading. Default: `True`.
+        show_root_members_full_path (bool): Show the full path of the root members. Default: `False`.
+        show_object_full_path (bool): Show the full path of every object. Default: `False`.
         show_category_heading (bool): When grouped by categories, show a heading for each category. Default: `False`.
         show_symbol_type_heading (bool): Show the symbol type in headings (e.g. mod, class, meth, func and attr). Default: `False`.
         show_symbol_type_toc (bool): Show the symbol type in the Table of Contents (e.g. mod, class, methd, func and attr). Default: `False`.
@@ -133,7 +127,6 @@ class MatlabHandler(BaseHandler):
         show_docstring_other_parameters (bool): Whether to display the "Other Parameters" section in the object's docstring. Default: `True`.
         show_docstring_parameters (bool): Whether to display the "Parameters" section in the object's docstring. Default: `True`.
         show_docstring_raises (bool): Whether to display the "Raises" section in the object's docstring. Default: `True`.
-        show_docstring_receives (bool): Whether to display the "Receives" section in the object's docstring. Default: `True`.
         show_docstring_returns (bool): Whether to display the "Returns" section in the object's docstring. Default: `True`.
         show_docstring_warns (bool): Whether to display the "Warns" section in the object's docstring. Default: `True`.
 
@@ -142,11 +135,7 @@ class MatlabHandler(BaseHandler):
         line_length (int): Maximum line length when formatting code/signatures. Default: `60`.
         show_signature (bool): Show methods and functions signatures. Default: `True`.
         show_signature_annotations (bool): Show the type annotations in methods and functions signatures. Default: `False`.
-        signature_crossrefs (bool): Whether to render cross-references for type annotations in signatures. Default: `False`.
         separate_signature (bool): Whether to put the whole signature in a code block below the heading.
-            If Black is installed, the signature is also formatted using it. Default: `False`.
-        unwrap_annotated (bool): Whether to unwrap `Annotated` types to show only the type without the annotations. Default: `False`.
-        modernize_annotations (bool): Whether to modernize annotations, for example `Optional[str]` into `str | None`. Default: `False`.
     """
 
     def __init__(
