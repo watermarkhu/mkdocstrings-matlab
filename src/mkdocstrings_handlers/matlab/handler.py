@@ -160,11 +160,11 @@ class MatlabHandler(BaseHandler):
     ) -> None:
         super().__init__(*args, **kwargs)
 
-        if paths is None:
-            full_paths = ""
+        if paths is None or config_file_path is None:
+            full_paths = []
         else:
             config_path = Path(config_file_path).parent
-            full_paths = [str((config_path / path).resolve()) for path in paths]
+            full_paths = [(config_path / path).resolve() for path in paths]
 
         self.paths: PathCollection = PathCollection(
             full_paths, recursive=paths_recursive

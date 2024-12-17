@@ -12,6 +12,7 @@ import charset_normalizer
 from mkdocstrings_handlers.matlab.models import (
     AccessEnum,
     Class,
+    Classfolder,
     Docstring,
     Function,
     MatlabObject,
@@ -20,7 +21,6 @@ from mkdocstrings_handlers.matlab.models import (
     Property,
     Script,
 )
-from mkdocstrings_handlers.matlab.models import PathMixin
 from mkdocstrings_handlers.matlab.enums import ParameterKind
 
 
@@ -164,7 +164,8 @@ def _dedent(lines: list[str]) -> list[str]:
 class FileParser(object):
     def __init__(self, filepath: Path):
         self.filepath: Path = filepath
-        self.encoding: str = charset_normalizer.from_path(filepath).best().encoding
+        result = charset_normalizer.from_path(filepath).best()
+        self.encoding: str = result.encoding if result else "utf-8"
         with open(filepath, "rb") as f:
             self._content: bytes = f.read()
 
@@ -172,10 +173,12 @@ class FileParser(object):
     def content(self):
         return self._content.decode(self.encoding)
 
-    def parse(self, **kwargs) -> PathMixin:
+    def parse(self, **kwargs) -> MatlabObject:
         tree = PARSER.parse(self._content)
         cursor = tree.walk()
 
+        if cursor.node is None:
+            raise ValueError(f"The file {self.filepath} could not be parsed.")
         captures = FILE_QUERY.captures(cursor.node)
 
         if "function" in captures:
@@ -196,7 +199,7 @@ class FileParser(object):
         saved_kwargs = {key: value for key, value in kwargs.items()}
         captures = CLASS_QUERY.captures(node)
 
-        bases = self._decode(captures, "bases")
+        bases = self._decode_from_capture(captures, "bases")
         docstring = self._comment_docstring(captures.get("docstring", None))
 
         attribute_pairs = [
@@ -206,13 +209,22 @@ class FileParser(object):
             if key in ["Sealed", "Abstract", "Hidden"]:
                 kwargs[key] = value
 
-        model = Class(
-            self.filepath.stem,
-            bases=bases,
-            docstring=docstring,
-            filepath=self.filepath,
-            **kwargs,
-        )
+        if self.filepath.parent.stem[0] == "@":
+            model = Classfolder(
+                self.filepath.stem,
+                bases=bases,
+                docstring=docstring,
+                filepath=self.filepath,
+                **kwargs,
+            )
+        else:
+            model = Class(
+                self.filepath.stem,
+                bases=bases,
+                docstring=docstring,
+                filepath=self.filepath,
+                **kwargs,
+            )
 
         for property_captures in [
             PROPERTIES_QUERY.captures(node) for node in captures.get("properties", [])
@@ -245,9 +257,9 @@ class FileParser(object):
                 property_captures = PROPERTY_QUERY.captures(property_node)
 
                 prop = Property(
-                    self._decode(property_captures, "name", True),
-                    annotation=self._decode(property_captures, "class", True),
-                    value=self._decode(property_captures, "default", True),
+                    self._first_from_capture(property_captures, "name"),
+                    annotation=self._first_from_capture(property_captures, "class"),
+                    value=self._decode_from_capture(property_captures, "default"),
                     docstring=self._comment_docstring(
                         property_captures.get("comment", None)
                     ),
@@ -288,9 +300,19 @@ class FileParser(object):
                     # Remove self from first method argument
                     method.parameters._params = method.parameters._params[1:]
                 if method._is_getter and method.name in model.members:
-                    model.members[method.name].getter = method
+                    prop = model.members[method.name]
+                    if isinstance(prop, Property):
+                        prop.getter = method
+                    else:
+                        # This can be either an error or that it is a getter in an inherited class
+                        pass
                 elif method._is_setter and method.name in model.members:
-                    model.members[method.name].setter = method
+                    prop = model.members[method.name]
+                    if isinstance(prop, Property):
+                        prop.setter = method
+                    else:
+                        # This can be either an error or that it is a setter in an inherited class
+                        pass
                 else:
                     model.members[method.name] = method
 
@@ -299,20 +321,20 @@ class FileParser(object):
     def _parse_attribute(self, node: Node) -> tuple[str, Any]:
         captures = ATTRIBUTE_QUERY.captures(node)
 
-        key = self._decode(captures, "name", True)
+        key = self._first_from_capture(captures, "name")
         if "value" not in captures:
             value = True
         elif captures["value"][0].type == "boolean":
-            value = _strtobool(captures["value"][0].text.decode(self.encoding))
+            value = _strtobool(self._first_from_capture(captures, "value"))
         else:
-            value = captures["value"][0].text.decode(self.encoding)
+            value = self._first_from_capture(captures, "value")
 
         return (key, value)
 
     def _parse_function(self, node: Node, method: bool = False, **kwargs) -> Function:
         captures: dict = FUNCTION_QUERY.captures(node)
 
-        input_names = self._decode(captures, "input")
+        input_names = self._decode_from_capture(captures, "input")
         parameters: dict = (
             OrderedDict(
                 (name, Parameter(name, kind=ParameterKind.positional))
@@ -321,7 +343,7 @@ class FileParser(object):
             if input_names
             else {}
         )
-        output_names = self._decode(captures, "output")
+        output_names = self._decode_from_capture(captures, "output")
         returns: dict = (
             OrderedDict(
                 (name, Parameter(name, kind=ParameterKind.positional))
@@ -331,7 +353,7 @@ class FileParser(object):
             else {}
         )
         if method:
-            name = self._decode(captures, "name", True)
+            name = self._first_from_capture(captures, "name")
         else:
             name = self.filepath.stem
 
@@ -348,7 +370,7 @@ class FileParser(object):
             ARGUMENTS_QUERY.captures(node) for node in captures.get("arguments", [])
         ]
         for arguments in captures_arguments:
-            attributes = self._decode(arguments, "attributes")
+            attributes = self._decode_from_capture(arguments, "attributes")
             is_input = (
                 attributes is None
                 or "Input" in attributes
@@ -360,10 +382,10 @@ class FileParser(object):
                 PROPERTY_QUERY.captures(node) for node in arguments["arguments"]
             ]
             for argument in captures_argument:
-                name = self._decode(argument, "name", True)
+                name = self._first_from_capture(argument, "name")
 
                 if "options" in argument:
-                    options_name = self._decode(argument, "options", True)
+                    options_name = self._first_from_capture(argument, "options")
                     parameters.pop(options_name, None)
                     parameter = parameters[name] = Parameter(
                         name, kind=ParameterKind.keyword_only
@@ -379,30 +401,38 @@ class FileParser(object):
                     else:
                         parameter.kind = ParameterKind.positional
 
-                parameter.annotation = self._decode(argument, "class", True)
-                parameter.default = self._decode(argument, "default", True)
-                parameter.comment = self._comment_docstring(
+                parameter.annotation = self._first_from_capture(argument, "class")
+                parameter.default = self._first_from_capture(argument, "default")
+                parameter.docstring = self._comment_docstring(
                     argument.get("comment", None), parent=model
                 )
 
-        model.parameters = (
-            Parameters(*list(parameters.values())) if parameters else None
-        )
+        model.parameters = Parameters(*list(parameters.values()))
         model.returns = Parameters(*list(returns.values())) if returns else None
 
         return model
 
-    def _decode(
-        self, capture: dict[str, list[Node]], key: str, first: bool = False
-    ) -> list[str] | str | None:
+    def _decode(self, node: Node) -> str:
+        return (
+            node.text.decode(self.encoding)
+            if node is not None and node.text is not None
+            else ""
+        )
+
+    def _decode_from_capture(
+        self, capture: dict[str, list[Node]], key: str
+    ) -> list[str]:
         if key not in capture:
-            return None
+            return []
         else:
-            decoded = [element.text.decode(self.encoding) for element in capture[key]]
-            if first:
-                return decoded[0]
-            else:
-                return decoded
+            return [self._decode(element) for element in capture[key]]
+
+    def _first_from_capture(self, capture: dict[str, list[Node]], key: str) -> str:
+        decoded = self._decode_from_capture(capture, key)
+        if decoded:
+            return decoded[0]
+        else:
+            return ""
 
     def _comment_docstring(
         self, nodes: list[Node] | Node | None, parent: MatlabObject | None = None
@@ -415,16 +445,14 @@ class FileParser(object):
             lines = iter(
                 [
                     line
-                    for lines in [
-                        node.text.decode(self.encoding).splitlines() for node in nodes
-                    ]
+                    for lines in [self._decode(node).splitlines() for node in nodes]
                     for line in lines
                 ]
             )
         else:
             lineno = nodes.range.start_point.row + 1
             endlineno = nodes.range.end_point.row + 1
-            lines = iter(nodes.text.decode(self.encoding).splitlines())
+            lines = iter(self._decode(nodes).splitlines())
 
         docstring, uncommented = [], []
 

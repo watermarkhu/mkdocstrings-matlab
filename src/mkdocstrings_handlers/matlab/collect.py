@@ -1,7 +1,7 @@
 from collections import defaultdict, deque
 from copy import deepcopy
 from pathlib import Path
-from typing import Mapping
+from typing import Mapping, Sequence
 
 from _griffe.collections import LinesCollection as GLC, ModulesCollection
 from _griffe.docstrings.models import (
@@ -14,6 +14,7 @@ from _griffe.expressions import Expr
 
 from mkdocstrings_handlers.matlab.enums import ParameterKind
 from mkdocstrings_handlers.matlab.models import (
+    _ParentGrabber,
     Class,
     Classfolder,
     Docstring,
@@ -89,7 +90,7 @@ class PathCollection(ModulesCollection):
 
     def __init__(
         self,
-        matlab_path: list[str | Path],
+        matlab_path: Sequence[str | Path],
         recursive: bool = False,
         config: Mapping = {},
     ) -> None:
@@ -110,6 +111,8 @@ class PathCollection(ModulesCollection):
         self._path: deque[Path] = deque()
         self._mapping: dict[str, deque[Path]] = defaultdict(deque)
         self._models: dict[Path, LazyModel] = {}
+        self._members: dict[Path, list[tuple[str, Path]]] = defaultdict(list)
+
         self.config = config
         self.lines_collection = LinesCollection()
 
@@ -119,22 +122,24 @@ class PathCollection(ModulesCollection):
     @property
     def members(self):
         return {
-            name: self._models[paths[0]].model for name, paths in self._mapping.items()
+            name: self._models[paths[0]].model()
+            for name, paths in self._mapping.items()
         }
 
     def resolve(
         self,
         name: str,
         config: Mapping = {},
-    ) -> MatlabObject | None:
+    ):
         """
         Resolves the given name to a model object.
         """
 
         # Find in global database
         if name in self._mapping:
-            model = self._models[self._mapping[name][0]].model
-            model = self.update_model(model, config)
+            model = self._models[self._mapping[name][0]].model()
+            if model is not None:
+                model = self.update_model(model, config)
         else:
             model = None
             name_parts = name.split(".")
@@ -147,7 +152,9 @@ class PathCollection(ModulesCollection):
             else:
                 model = None
 
-        return model
+        if isinstance(model, MatlabObject):
+            return model
+        return None
 
     def update_model(self, model: MatlabObject, config: Mapping):
         if hasattr(model, "docstring") and model.docstring is not None:
@@ -211,11 +218,13 @@ class PathCollection(ModulesCollection):
                     [
                         DocstringParameter(
                             name=param.name,
-                            value=param.default,
+                            value=str(param.default)
+                            if param.default is not None
+                            else None,
                             annotation=param.annotation,
                             description=param.docstring.value
                             if param.docstring is not None
-                            else None,
+                            else "",
                         )
                         for param in model.parameters
                         if param.kind is not ParameterKind.keyword_only
@@ -226,11 +235,13 @@ class PathCollection(ModulesCollection):
                     [
                         DocstringParameter(
                             name=param.name,
-                            value=param.default,
+                            value=str(param.default)
+                            if param.default is not None
+                            else None,
                             annotation=param.annotation,
                             description=param.docstring.value
                             if param.docstring is not None
-                            else None,
+                            else "",
                         )
                         for param in model.parameters
                         if param.kind is ParameterKind.keyword_only
@@ -245,13 +256,15 @@ class PathCollection(ModulesCollection):
                     [
                         DocstringReturn(
                             name=param.name,
-                            value=param.default,
+                            value=str(param.default)
+                            if param.default is not None
+                            else None,
                             annotation=param.annotation,
                             description=param.docstring.value
                             if param.docstring is not None
-                            else None,
+                            else "",
                         )
-                        for param in model.returns
+                        for param in model.returns or []
                     ]
                 )
                 model.docstring._extra_sections.append(returns)
@@ -267,18 +280,26 @@ class PathCollection(ModulesCollection):
         ):
             model = deepcopy(model)
             constructor = model.members.pop(model.name)
-            if model.docstring is None:
-                model.docstring = Docstring()
-            model.docstring._extra_sections.extend(constructor.docstring.parsed)
+            if constructor.docstring is not None:
+                if model.docstring is None:
+                    model.docstring = Docstring(
+                        constructor.docstring.parsed, parent=model
+                    )
+                else:
+                    model.docstring._extra_sections.extend(constructor.docstring.parsed)
 
         if (
             isinstance(model, Class)
+            and model.docstring is not None
             and "Inheritance Diagram" not in model.docstring.parsed
         ):
             diagram = self.get_inheritance_diagram(model)
             if diagram is not None:
                 model = deepcopy(model)
-                model.docstring._extra_sections.append(diagram)
+                if model.docstring is None:
+                    model.docstring = Docstring(diagram, parent=model)
+                else:
+                    model.docstring._extra_sections.append(diagram)
 
         return model
 
@@ -309,6 +330,7 @@ class PathCollection(ModulesCollection):
             model = LazyModel(member, self)
             self._models[member] = model
             self._mapping[model.name].append(member)
+            self._members[path].append((model.name, member))
 
     def rm_path(self, path: str | Path, recursive: bool = False):
         """
@@ -330,7 +352,7 @@ class PathCollection(ModulesCollection):
 
         self._path.remove(path)
 
-        for name, member in self._path_members.pop(path):
+        for name, member in self._members.pop(path):
             self._mapping[name].remove(member)
             self._models.pop(member)
 
@@ -344,22 +366,24 @@ class PathCollection(ModulesCollection):
 
         def get_nodes(model: Class, nodes: set[str] = set()) -> set[str]:
             nodes.add(f"   {get_id(model.name)}[{model.name}]")
-            for base in model.bases:
+            for base in [str(base) for base in model.bases]:
                 super = self.resolve(base)
                 if super is None:
                     nodes.add(f"   {get_id(base)}[{base}]")
                 else:
-                    get_nodes(super, nodes)
+                    if isinstance(super, Class):
+                        get_nodes(super, nodes)
             return nodes
 
         def get_links(model: Class, links: set[str] = set()) -> set[str]:
-            for base in model.bases:
+            for base in [str(base) for base in model.bases]:
                 super = self.resolve(base)
                 if super is None:
                     links.add(f"   {get_id(base)} --> {get_id(model.name)}")
                 else:
                     links.add(f"   {get_id(super.name)} --> {get_id(model.name)}")
-                    get_links(super, links)
+                    if isinstance(super, Class):
+                        get_links(super, links)
             return links
 
         nodes = get_nodes(model)
@@ -383,9 +407,7 @@ def _is_subdirectory(parent_path: Path, child_path: Path) -> bool:
 
 
 class LazyModel:
-    def __init__(
-        self, path: Path, path_collection: PathCollection
-    ) -> MatlabObject | None:
+    def __init__(self, path: Path, path_collection: PathCollection):
         self._path: Path = path
         self._model: MatlabObject | None = None
         self._path_collection: PathCollection = path_collection
@@ -429,7 +451,6 @@ class LazyModel:
         else:
             return name
 
-    @property
     def model(self):
         if not self._path.exists():
             return None
@@ -441,12 +462,15 @@ class LazyModel:
                 self._model = self._collect_namespace(self._path)
             else:
                 self._model = self._collect_path(self._path)
-        self._model._parent = self._collect_parent(self._path.parent)
+        if self._model is not None:
+            self._model.parent = self._collect_parent(self._path.parent)
         return self._model
 
-    def _collect_parent(self, path: Path):
+    def _collect_parent(self, path: Path) -> "MatlabObject | _ParentGrabber":
         if self.is_in_namespace:
-            parent = self._path_collection._models[path]
+            parent = _ParentGrabber(
+                lambda: self._path_collection._models[path].model() or ROOT
+            )
         else:
             parent = ROOT
         return parent
@@ -462,7 +486,8 @@ class LazyModel:
         if not classfile.exists():
             return None
         model = self._collect_path(classfile)
-
+        if not isinstance(model, Classfolder):
+            return None
         for member in path.iterdir():
             if (
                 member.is_file()
@@ -475,22 +500,22 @@ class LazyModel:
                 model.members[method.name] = method
         return model
 
-    def _collect_namespace(self, path: Path) -> Namespace:
+    def _collect_namespace(self, path: Path) -> Namespace | None:
         name = self.name[1:].split(".")[-1]
         model = Namespace(name, filepath=path, path_collection=self._path_collection)
 
         for member in path.iterdir():
             if member.is_dir() and member.name[0] in ["+", "@"]:
-                submodel = self._path_collection._models[member].model
+                submodel = self._path_collection._models[member].model()
                 if submodel is not None:
                     model.members[submodel.name] = submodel
 
             elif member.is_file() and member.suffix == ".m":
                 if member.name == "Contents.m":
-                    contentsfile = self._collect_path(member, path)
+                    contentsfile = self._collect_path(member)
                     contentsfile.docstring = model.docstring
                 else:
-                    submodel = self._path_collection._models[member].model
+                    submodel = self._path_collection._models[member].model()
                     if submodel is not None:
                         model.members[submodel.name] = submodel
         return model

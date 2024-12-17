@@ -1,4 +1,4 @@
-from typing import Any, Optional, TYPE_CHECKING
+from typing import Any, TYPE_CHECKING, Callable
 from functools import cached_property
 from pathlib import Path
 from griffe import (
@@ -10,11 +10,11 @@ from griffe import (
     DocstringSectionText,
     Module,
     Object,
-    Parameters,
-    Parameter,
+    Parameters as GriffeParameters,
+    Parameter as GriffeParameter,
 )
 
-from mkdocstrings_handlers.matlab.enums import AccessEnum
+from mkdocstrings_handlers.matlab.enums import AccessEnum, ParameterKind
 
 if TYPE_CHECKING:
     from mkdocstrings_handlers.matlab.collect import PathCollection
@@ -37,17 +37,6 @@ __all__ = [
 ]
 
 
-class _Root(Object):
-    def __init__(self) -> None:
-        super().__init__("ROOT", parent=None)
-
-    def __repr__(self) -> str:
-        return "MATLABROOT"
-
-
-ROOT = _Root()
-
-
 class Docstring(GriffeDocstring):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
@@ -63,14 +52,26 @@ class Docstring(GriffeDocstring):
         return self.parse()
 
 
+class _ParentGrabber:
+    def __init__(self, grabber: "Callable[[], MatlabObject]") -> None:
+        self._grabber = grabber
+
+    def __call__(self) -> "MatlabObject":
+        return self._grabber()
+
+
 class MatlabObject(Object):
     def __init__(
         self,
         *args,
-        path_collection: Optional["PathCollection"] = None,
+        docstring: Docstring | None = None,
+        path_collection: "PathCollection | None" = None,
+        parent: "Class | Classfolder | Namespace | _Root | None" = None,
         **kwargs,
     ) -> None:
-        self.path_collection = path_collection
+        self._docstring: Docstring | None = docstring
+        self.path_collection: "PathCollection | None" = path_collection
+        self._parent: "Class | Classfolder | Namespace | _Root | _ParentGrabber | None" = parent
         lines_collection = (
             path_collection.lines_collection if path_collection is not None else None
         )
@@ -88,7 +89,7 @@ class MatlabObject(Object):
         if isinstance(self.parent, MatlabObject):
             parent = self.parent
         else:
-            parent = self.parent.model
+            parent = getattr(self.parent, "model", self.parent)
 
         if isinstance(parent, Classfolder) and self.name == parent.name:
             if isinstance(parent.parent, _Root):
@@ -96,27 +97,47 @@ class MatlabObject(Object):
             else:
                 return f"{parent.parent.canonical_path}.{self.name}"
         else:
-            return f"{parent.canonical_path}.{self.name}"
-
-
-class PathMixin:
-    def __init__(self, *args: Any, filepath: Path | None = None, **kwargs: Any) -> None:
-        self._filepath: Path | None = filepath
-        self._parent = ROOT
-        super().__init__(*args, **kwargs)
+            return f"{parent.canonical_path}.{self.name}" if parent else self.name
 
     @property
-    def parent(self) -> MatlabObject:
-        if isinstance(self._parent, _Root):
+    def docstring(self) -> Docstring | None:
+        return self._docstring
+
+    @docstring.setter
+    def docstring(self, value: Docstring | None):
+        if value is not None and self._docstring is not None:
+            self._docstring = value
+
+    @property
+    def parent(self) -> "MatlabObject":
+        if isinstance(self._parent, MatlabObject):
             return self._parent
-        elif isinstance(self._parent, MatlabObject):
-            return self._parent
+        elif isinstance(self._parent, _ParentGrabber):
+            return self._parent()
         else:
-            return self._parent.model
+            return ROOT
 
     @parent.setter
     def parent(self, value):
         self._parent = value
+
+
+class _Root(MatlabObject):
+    def __init__(self) -> None:
+        super().__init__("ROOT", parent=None)
+
+    def __repr__(self) -> str:
+        return "MATLABROOT"
+
+
+ROOT = _Root()
+
+
+class PathMixin(Object):
+    def __init__(self, *args: Any, filepath: Path | None = None, **kwargs: Any) -> None:
+        self._filepath: Path | None = filepath
+        self._parent = ROOT
+        super().__init__(*args, **kwargs)
 
     @property
     def filepath(self) -> Path | None:
@@ -126,11 +147,24 @@ class PathMixin:
         return f"{self.__class__.__name__}({self.name})"
 
 
+class Parameter(MatlabObject, GriffeParameter):
+    def __init__(
+        self, *args: Any, kind: ParameterKind | None = None, **kwargs: Any
+    ) -> None:
+        super().__init__(*args, **kwargs)
+        self.kind: ParameterKind | None = kind
+
+
+class Parameters(MatlabObject, GriffeParameters):
+    def __init__(self, *parameters: Parameter) -> None:
+        self._params: list[Parameter] = list(parameters)
+
+
 class Script(PathMixin, MatlabObject):
     pass
 
 
-class Class(PathMixin, GriffeClass, MatlabObject):
+class Class(PathMixin, MatlabObject, GriffeClass):
     def __init__(
         self,
         *args: Any,
@@ -167,9 +201,13 @@ class Class(PathMixin, GriffeClass, MatlabObject):
 
         inherited_members = {}
         for base in reversed(self.bases):
-            model = self.path_collection.resolve(base)
+            model = (
+                self.path_collection.resolve(str(base))
+                if self.path_collection
+                else None
+            )
             if model is None:
-                # Perhaps issue a warning here?
+                # TODO Perhaps issue a warning here?
                 continue
 
             for name, member in model.members.items():
@@ -203,15 +241,12 @@ class Class(PathMixin, GriffeClass, MatlabObject):
         else:
             return super().canonical_path
 
-    def get_lineno_method(self, method_name: str) -> tuple[int, int]:
-        return self._method_lineno.get(method_name, (self.lineno, self.endlineno))
-
 
 class Classfolder(Class):
     pass
 
 
-class Property(Attribute, MatlabObject):
+class Property(MatlabObject, Attribute):
     def __init__(
         self,
         *args: Any,
@@ -249,10 +284,11 @@ class Property(Attribute, MatlabObject):
     @property
     def is_private(self) -> bool:
         set_public = (
-            self._access == AccessEnum.PUBLIC | self._access == AccessEnum.IMMUTABLE
+            self.set_access == AccessEnum.PUBLIC
+            or self.set_access == AccessEnum.IMMUTABLE
         )
-        get_public = self._access == AccessEnum.PUBLIC
-        return (set_public or get_public) and not self._hidden
+        get_public = self.get_access == AccessEnum.PUBLIC
+        return (set_public or get_public) and not self.hidden
 
     @property
     def labels(self) -> set[str]:
@@ -280,7 +316,8 @@ class Property(Attribute, MatlabObject):
     def labels(self, *args):
         pass
 
-class Function(PathMixin, GriffeFunction, MatlabObject):
+
+class Function(PathMixin, MatlabObject, GriffeFunction):
     def __init__(
         self,
         *args: Any,
@@ -306,7 +343,7 @@ class Function(PathMixin, GriffeFunction, MatlabObject):
 
     @property
     def is_private(self) -> bool:
-        public = self.access == AccessEnum.PUBLIC | self.access == AccessEnum.IMMUTABLE
+        public = self.access == AccessEnum.PUBLIC or self.access == AccessEnum.IMMUTABLE
         return public and not self.hidden
 
     @property
@@ -323,7 +360,8 @@ class Function(PathMixin, GriffeFunction, MatlabObject):
     def labels(self, *args):
         pass
 
-class Namespace(PathMixin, Module, MatlabObject):
+
+class Namespace(PathMixin, MatlabObject, Module):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self._access: AccessEnum = AccessEnum.PUBLIC
