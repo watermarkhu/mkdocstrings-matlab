@@ -2,25 +2,32 @@ from enum import Enum
 
 
 class ParameterKind(str, Enum):
-    """Enumeration of the different parameter kinds."""
+    """
+    An enumeration representing different kinds of function parameters.
 
+    Attributes:
+        positional (str): Positional-only parameter.
+        optional (str): Optional parameter.
+        keyword_only (str): Keyword-only parameter.
+        var_keyword (str): Variadic keyword parameter.
+    """
     positional = "positional"
-    """Positional-only parameter."""
-    # positional_or_keyword: str = "positional or keyword"
-    # """Positional or keyword parameter."""
-    # var_positional: str = "variadic positional"
-    # """Variadic positional parameter."""
-
     optional = "optional"
-    """Optional parameter."""
     keyword_only = "keyword-only"
-    """Keyword-only parameter."""
     var_keyword = "variadic keyword"
-    """Variadic keyword parameter."""
 
 
 class AccessEnum(str, Enum):
-    PUBLIC = "public"
-    PROTECTED = "protected"
-    PRIVATE = "private"
-    IMMUTABLE = "immutable"
+    """
+    An enumeration representing different access levels for MATLAB code elements.
+
+    Attributes:
+        public (str): Represents public access level.
+        protected (str): Represents protected access level.
+        private (str): Represents private access level.
+        immutable (str): Represents immutable access level.
+    """
+    public = "public"
+    protected = "protected"
+    private = "private"
+    immutable = "immutable"

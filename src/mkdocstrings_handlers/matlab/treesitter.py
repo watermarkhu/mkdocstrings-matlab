@@ -137,6 +137,15 @@ PROPERTIES_QUERY = LANGUAGE.query("""("properties" .
 
 
 def _strtobool(value: str) -> bool:
+    """
+    Convert a string representation of truth to boolean.
+
+    Args:
+        value (str): The string to convert. Expected values are "true", "1" for True, and any other value for False.
+
+    Returns:
+        bool: True if the input string is "true" or "1" (case insensitive), otherwise False.
+    """
     if value.lower() in ["true", "1"]:
         return True
     else:
@@ -145,13 +154,13 @@ def _strtobool(value: str) -> bool:
 
 def _dedent(lines: list[str]) -> list[str]:
     """
-    Dedent a list of strings by removing the minimum common leading whitespace.
+    Remove the common leading whitespace from each line in the given list of lines.
 
     Args:
-        lines (list[str]): A list of strings to be dedented.
+        lines (list[str]): A list of strings where each string represents a line of text.
 
     Returns:
-        list[str]: A list of strings with the common leading whitespace removed.
+        list[str]: A list of strings with the common leading whitespace removed from each line.
     """
     indents = [len(line) - len(line.lstrip()) for line in lines if line.strip()]
     indent = min(indents)
@@ -162,7 +171,24 @@ def _dedent(lines: list[str]) -> list[str]:
 
 
 class FileParser(object):
+    """
+    A class to parse MATLAB files using Tree-sitter.
+
+    Attributes:
+        filepath (Path): The path to the MATLAB file.
+        encoding (str): The encoding of the file content.
+        content: Returns the decoded content of the file.
+
+    Methods:
+        parse(**kwargs) -> MatlabObject: Parses the MATLAB file and returns a MatlabObject.
+    """
     def __init__(self, filepath: Path):
+        """
+        Initialize the object with the given file path.
+
+        Args:
+            filepath (Path): The path to the file to be processed.
+        """
         self.filepath: Path = filepath
         result = charset_normalizer.from_path(filepath).best()
         self.encoding: str = result.encoding if result else "utf-8"
@@ -171,9 +197,31 @@ class FileParser(object):
 
     @property
     def content(self):
+        """
+        Property that decodes and returns the content using the specified encoding.
+
+        Returns:
+            str: The decoded content.
+        """
         return self._content.decode(self.encoding)
 
     def parse(self, **kwargs) -> MatlabObject:
+        """
+        Parse the content of the file and return a MatlabObject.
+
+        This method uses a tree-sitter parser to parse the content of the file
+        and extract relevant information to create a MatlabObject. It handles
+        different types of Matlab constructs such as functions and classes.
+
+        Args:
+            **kwargs: Additional keyword arguments to pass to the parsing methods.
+
+        Returns:
+            MatlabObject: An instance of MatlabObject representing the parsed content.
+
+        Raises:
+            ValueError: If the file could not be parsed.
+        """
         tree = PARSER.parse(self._content)
         cursor = tree.walk()
 
@@ -196,6 +244,20 @@ class FileParser(object):
         return model
 
     def _parse_class(self, node: Node, **kwargs) -> Class:
+        """
+        Parse a class node and return a Class or Classfolder model.
+
+        This method processes a class node captured by the CLASS_QUERY and extracts
+        its bases, docstring, attributes, properties, and methods. It constructs
+        and returns a Class or Classfolder model based on the parsed information.
+
+        Args:
+            node (Node): The class node to parse.
+            **kwargs: Additional keyword arguments to pass to the Class or Classfolder model.
+
+        Returns:
+            Class: The parsed Class or Classfolder model.
+        """
         saved_kwargs = {key: value for key, value in kwargs.items()}
         captures = CLASS_QUERY.captures(node)
 
@@ -212,6 +274,8 @@ class FileParser(object):
         if self.filepath.parent.stem[0] == "@":
             model = Classfolder(
                 self.filepath.stem,
+                lineno=node.range.start_point.row + 1,
+                endlineno=node.range.end_point.row + 1,
                 bases=bases,
                 docstring=docstring,
                 filepath=self.filepath,
@@ -220,6 +284,8 @@ class FileParser(object):
         else:
             model = Class(
                 self.filepath.stem,
+                lineno=node.range.start_point.row + 1,
+                endlineno=node.range.end_point.row + 1,
                 bases=bases,
                 docstring=docstring,
                 filepath=self.filepath,
@@ -252,7 +318,7 @@ class FileParser(object):
                     if value in ["public", "protected", "private", "immutable"]:
                         property_kwargs[key] = AccessEnum(value)
                     else:
-                        property_kwargs[key] = AccessEnum.PRIVATE
+                        property_kwargs[key] = AccessEnum.private
             for property_node in property_captures.get("properties", []):
                 property_captures = PROPERTY_QUERY.captures(property_node)
 
@@ -287,7 +353,7 @@ class FileParser(object):
                     if value in ["public", "protected", "private", "immutable"]:
                         method_kwargs[key] = AccessEnum(value)
                     else:
-                        method_kwargs[key] = AccessEnum.PRIVATE
+                        method_kwargs[key] = AccessEnum.private
             for method_node in method_captures.get("methods", []):
                 method = self._parse_function(
                     method_node, method=True, parent=model, **method_kwargs
@@ -319,6 +385,17 @@ class FileParser(object):
         return model
 
     def _parse_attribute(self, node: Node) -> tuple[str, Any]:
+        """
+        Parse an attribute from a given node.
+
+        Args:
+            node (Node): The node to parse the attribute from.
+
+        Returns:
+            tuple[str, Any]: A tuple containing the attribute key and its value. 
+                             The value is `True` if no value is specified, 
+                             otherwise it is the parsed value which can be a boolean or a string.
+        """
         captures = ATTRIBUTE_QUERY.captures(node)
 
         key = self._first_from_capture(captures, "name")
@@ -332,6 +409,21 @@ class FileParser(object):
         return (key, value)
 
     def _parse_function(self, node: Node, method: bool = False, **kwargs) -> Function:
+        """
+        Parse a function node and return a Function model.
+
+        Args:
+            node (Node): The node representing the function in the syntax tree.
+            method (bool, optional): Whether the function is a method. Defaults to False.
+            **kwargs: Additional keyword arguments to pass to the Function model.
+
+        Returns:
+            Function: The parsed function model.
+
+        Raises:
+            KeyError: If required captures are missing from the node.
+
+        """
         captures: dict = FUNCTION_QUERY.captures(node)
 
         input_names = self._decode_from_capture(captures, "input")
@@ -359,6 +451,8 @@ class FileParser(object):
 
         model = Function(
             name,
+            lineno=node.range.start_point.row + 1,
+            endlineno=node.range.end_point.row + 1,
             filepath=self.filepath,
             docstring=self._comment_docstring(captures.get("docstring", None)),
             getter="getter" in captures,
@@ -413,6 +507,15 @@ class FileParser(object):
         return model
 
     def _decode(self, node: Node) -> str:
+        """
+        Decode the text of a given node using the specified encoding.
+
+        Args:
+            node (Node): The node whose text needs to be decoded.
+
+        Returns:
+            str: The decoded text of the node. If the node or its text is None, returns an empty string.
+        """
         return (
             node.text.decode(self.encoding)
             if node is not None and node.text is not None
@@ -422,12 +525,32 @@ class FileParser(object):
     def _decode_from_capture(
         self, capture: dict[str, list[Node]], key: str
     ) -> list[str]:
+        """
+        Decode elements from a capture dictionary based on a specified key.
+
+        Args:
+            capture (dict[str, list[Node]]): A dictionary where the keys are strings and the values are lists of Node objects.
+            key (str): The key to look for in the capture dictionary.
+
+        Returns:
+            list[str]: A list of decoded strings corresponding to the elements associated with the specified key in the capture dictionary.
+        """
         if key not in capture:
             return []
         else:
             return [self._decode(element) for element in capture[key]]
 
     def _first_from_capture(self, capture: dict[str, list[Node]], key: str) -> str:
+        """
+        Retrieve the first decoded string from a capture dictionary for a given key.
+
+        Args:
+            capture (dict[str, list[Node]]): A dictionary where the key is a string and the value is a list of Node objects.
+            key (str): The key to look up in the capture dictionary.
+
+        Returns:
+            str: The first decoded string if available, otherwise an empty string.
+        """
         decoded = self._decode_from_capture(capture, key)
         if decoded:
             return decoded[0]
@@ -437,6 +560,23 @@ class FileParser(object):
     def _comment_docstring(
         self, nodes: list[Node] | Node | None, parent: MatlabObject | None = None
     ) -> Docstring | None:
+        """
+        Extract and process a docstring from given nodes.
+
+        This method processes nodes to extract a docstring, handling different
+        comment styles and blocks. It supports both single-line and multi-line
+        comments, as well as special comment blocks delimited by `%{` and `%}`.
+
+        Args:
+            nodes (list[Node] | Node | None): The nodes from which to extract the docstring.
+            parent (MatlabObject | None, optional): The parent MatlabObject. Defaults to None.
+
+        Returns:
+            Docstring | None: The extracted and processed docstring, or None if no docstring is found.
+
+        Raises:
+            LookupError: If a line does not start with a comment character.
+        """
         if nodes is None:
             return None
         elif isinstance(nodes, list):

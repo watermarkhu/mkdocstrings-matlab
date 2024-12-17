@@ -39,6 +39,9 @@ class LinesCollection(GLC):
 
 
 class PathGlobber:
+    """
+    A class to recursively glob paths as MATLAB would do it.
+    """
     def __init__(self, path: Path, recursive: bool = False):
         self._idx = 0
         self._paths: list[Path] = []
@@ -85,9 +88,36 @@ class PathGlobber:
 
 class PathCollection(ModulesCollection):
     """
-    Represents a search path for MATLAB paths.
-    """
+    PathCollection is a class that manages a collection of MATLAB paths and their corresponding models.
 
+    Attributes:
+        config (Mapping): Configuration settings for the PathCollection.
+        lines_collection (LinesCollection): An instance of LinesCollection for managing lines.
+
+    Args:
+        matlab_path (Sequence[str | Path]): A list of strings or Path objects representing the MATLAB paths.
+        recursive (bool, optional): If True, recursively adds all subdirectories of the given paths to the search path. Defaults to False.
+        config (Mapping, optional): Configuration settings for the PathCollection. Defaults to {}.
+    
+    Methods:
+        members() -> dict:
+            Returns a dictionary of members with their corresponding models.
+
+        resolve(identifier: str, config: Mapping = {}) -> MatlabObject | None:
+            Resolves the given identifier to a model object.
+
+        update_model(model: MatlabObject, config: Mapping) -> MatlabObject:
+            Updates the given model object with the provided configuration.
+
+        addpath(path: str | Path, to_end: bool = False, recursive: bool = False) -> list[Path]:
+            Adds a path to the search path.
+
+        rm_path(path: str | Path, recursive: bool = False) -> list[Path]:
+            Removes a path from the search path and updates the namespace and database accordingly.
+
+        get_inheritance_diagram(model: Class) -> DocstringSectionText | None:
+            Generates an inheritance diagram for the given class model.
+    """
     def __init__(
         self,
         matlab_path: Sequence[str | Path],
@@ -102,7 +132,6 @@ class PathCollection(ModulesCollection):
 
         Raises:
             TypeError: If any element in matlab_path is not a string or Path object.
-
         """
         for path in matlab_path:
             if not isinstance(path, (str, Path)):
@@ -132,7 +161,19 @@ class PathCollection(ModulesCollection):
         config: Mapping = {},
     ):
         """
-        Resolves the given identifier to a model object.
+        Resolve an identifier to a MatlabObject model.
+
+        This method attempts to resolve a given identifier to a corresponding
+        MatlabObject model using the internal mapping and models. If the identifier
+        is not found directly, it will attempt to resolve it by breaking down the
+        identifier into parts and resolving each part recursively.
+
+        Args:
+            identifier (str): The identifier to resolve.
+            config (Mapping, optional): Configuration options to update the model. Defaults to an empty dictionary.
+
+        Returns:
+            MatlabObject or None: The resolved MatlabObject model if found, otherwise None.
         """
 
         # Find in global database
@@ -157,6 +198,24 @@ class PathCollection(ModulesCollection):
         return None
 
     def update_model(self, model: MatlabObject, config: Mapping):
+        """
+        Update the given model based on the provided configuration.
+
+        This method updates the docstring parser and parser options for the model,
+        patches return annotations for MATLAB functions, and optionally creates
+        docstring sections from argument blocks. It also recursively updates
+        members of the model and handles special cases for class constructors
+        and inheritance diagrams.
+
+        Args:
+            model (MatlabObject): The model to update.
+            config (Mapping): The configuration dictionary.
+
+        Returns:
+            MatlabObject: The updated model.
+        """
+
+        # Update docstring parser and parser options
         if hasattr(model, "docstring") and model.docstring is not None:
             model.docstring.parser = config.get("docstring_style", "google")
             model.docstring.parser_options = config.get("docstring_options", {})
@@ -181,7 +240,8 @@ class PathCollection(ModulesCollection):
             for returns in section.value:
                 if not isinstance(returns.annotation, Expr):
                     returns.annotation = None
-
+        
+        # Create parameters and returns sections from argument blocks
         if (
             isinstance(model, Function)
             and model.docstring is not None
@@ -282,11 +342,8 @@ class PathCollection(ModulesCollection):
             constructor = model.members.pop(model.name)
             if constructor.docstring is not None:
                 if model.docstring is None:
-                    model.docstring = Docstring(
-                        constructor.docstring.parsed, parent=model
-                    )
-                else:
-                    model.docstring._extra_sections.extend(constructor.docstring.parsed)
+                    model.docstring = Docstring("", parent=model)
+                model.docstring._extra_sections.extend(constructor.docstring.parsed)
 
         if (
             isinstance(model, Class)
@@ -297,9 +354,8 @@ class PathCollection(ModulesCollection):
             if diagram is not None:
                 model = deepcopy(model)
                 if model.docstring is None:
-                    model.docstring = Docstring(diagram, parent=model)
-                else:
-                    model.docstring._extra_sections.append(diagram)
+                    model.docstring = Docstring("", parent=model)
+                model.docstring._extra_sections.append(diagram)
 
         return model
 
@@ -407,6 +463,16 @@ def _is_subdirectory(parent_path: Path, child_path: Path) -> bool:
 
 
 class LazyModel:
+    """
+    A class to lazily collect and model MATLAB objects from a given path.
+
+    Methods:
+        is_class_folder: Checks if the path is a class folder.
+        is_namespace: Checks if the path is a namespace.
+        is_in_namespace: Checks if the path is within a namespace.
+        name: Returns the name of the MATLAB object, including namespace if applicable.
+        model: Collects and returns the MATLAB object model..
+    """
     def __init__(self, path: Path, path_collection: PathCollection):
         self._path: Path = path
         self._model: MatlabObject | None = None

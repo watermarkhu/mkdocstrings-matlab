@@ -158,6 +158,20 @@ class MatlabHandler(BaseHandler):
         locale: str = "en",
         **kwargs: Any,
     ) -> None:
+        """
+        Initialize the handler with the given configuration.
+
+        Args:
+            *args (Any): Variable length argument list.
+            config_file_path (str | None, optional): Path to the configuration file. Defaults to None.
+            paths (list[str] | None, optional): List of paths to include. Defaults to None.
+            paths_recursive (bool, optional): Whether to include paths recursively. Defaults to False.
+            locale (str, optional): Locale setting. Defaults to "en".
+            **kwargs (Any): Arbitrary keyword arguments.
+
+        Returns:
+            None
+        """
         super().__init__(*args, **kwargs)
 
         if paths is None or config_file_path is None:
@@ -263,7 +277,18 @@ def get_handler(
     **config: Any,
 ) -> MatlabHandler:
     """
-    Returns a MatlabHandler object.
+    Create and return a MatlabHandler object with the specified configuration.
+
+    Parameters:
+        theme (str): The theme to be used by the handler.
+        custom_templates (str | None, optional): Path to custom templates. Defaults to None.
+        config_file_path (str | None, optional): Path to the configuration file. Defaults to None.
+        paths (list[str] | None, optional): List of paths to include. Defaults to None.
+        paths_recursive (bool, optional): Whether to include paths recursively. Defaults to False.
+        **config (Any): Additional configuration options.
+
+    Returns:
+        MatlabHandler: An instance of MatlabHandler configured with the provided parameters.
     """
     return MatlabHandler(
         handler="matlab",

@@ -68,4 +68,3 @@ dev = [
 [tool.pyright]
 include = ["src"]
 typeCheckingMode = "standard"
-reportIncompatibleVariableOverride = "none"
