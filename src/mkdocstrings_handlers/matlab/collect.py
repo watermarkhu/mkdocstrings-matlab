@@ -200,7 +200,7 @@ class PathCollection(ModulesCollection):
             return model
         return None
 
-    def update_model(self, model: MatlabMixin, config: Mapping):
+    def update_model(self, model: MatlabMixin, config: Mapping) -> MatlabMixin:
         """
         Update the given model based on the provided configuration.
 

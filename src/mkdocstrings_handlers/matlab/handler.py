@@ -21,7 +21,10 @@ class MatlabHandler(BaseHandler):
     """Whether this handler is interested in enabling the creation of the `objects.inv` Sphinx inventory file."""
     fallback_theme = "material"
     """The fallback theme."""
-    fallback_config: ClassVar[dict] = {"fallback": True}
+    fallback_config: ClassVar[dict] = {
+        "fallback": True,
+        "merge_constructor_into_class": True,
+    }
     """The configuration used to collect item during autorefs fallback."""
     default_config: ClassVar[dict] = {
         # General options
@@ -51,7 +54,7 @@ class MatlabHandler(BaseHandler):
         "docstring_options": {},
         "docstring_section_style": "table",
         "create_from_argument_blocks": False,
-        "merge_constructor_into_class": False,
+        "merge_constructor_into_class": True,
         "show_if_no_docstring": False,
         "show_docstring_attributes": True,
         "show_docstring_functions": True,
