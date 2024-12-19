@@ -1,6 +1,6 @@
 [project]
 name = "mkdocstrings-matlab"
-version = "0.3.2"
+version = "0.3.3"
 description = "A MATLAB handler for mkdocstrings"
 authors = [
     { name = "Mark Hu", email = "watermarkhu@gmail.com" }
@@ -9,8 +9,9 @@ license =  { text = "ISC" }
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "mkdocs>=1.6.0",
-    "mkdocstrings[python]>=0.18",
+    "mkdocs==1.6.1",
+    "mkdocstrings==0.27.0",
+    "mkdocstrings-python==1.10.9",  # Later versions will currently break 
     "charset-normalizer>=3.3.2",
     "griffe>=1.5.1",
     "tree-sitter>=0.23.2",
