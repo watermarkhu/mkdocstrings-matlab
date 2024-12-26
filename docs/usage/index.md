@@ -25,21 +25,38 @@ plugins:
 
 ## Injecting documentation
 
-With the MATLAB handler installed and configured as default handler,
-you can inject documentation for a module, class, function, or any other MATLAB object
-with *mkdocstrings*' [autodoc syntax], in your Markdown pages:
+With the MATLAB handler installed and configured as default handler, you can inject documentation for a module, class, function, or any other MATLAB object with *mkdocstrings*' [autodoc syntax], in your Markdown pages:
 
 ```md
 ::: path.to.object
 ```
 
-If another handler was defined as default handler, 
-you can explicitely ask for the MATLAB handler to be used when injecting documentation
-with the `handler` option:
+If another handler was defined as default handler, you can explicitely ask for the MATLAB handler to be used when injecting documentation with the `handler` option:
 
 ```md
 ::: path.to.object
     handler: matlab
+```
+
+Entire [namespaces](https://mathworks.com/help/matlab/matlab_oop/namespaces.html) can be fully documented by prefixing the `+` character to the namespace that is to be documented. E.g. the following namespace 
+
+```
++mynamespace
+|- myclass.m
+|- +subnamespace
+|  |- mfunction.m
+```
+
+is documented with. 
+
+```md
+::: +mynamespace
+```
+
+Documenting a nested namesapace requires only a single prefixed `+` at the start of the fully resolved path, e.g. 
+
+```md
+::: +mynamespace.subnamespace
 ```
 
 ## Configuration
@@ -80,7 +97,7 @@ plugins:
 ```
 
 
-#### `load_external_modules`
+#### `paths_recursive`
 
 This option allows you to specify whether the handler should recursively search through the directories specified in the `paths` option. When set to `true`, the handler will look for MATLAB files in all subdirectories of the specified paths.
 
@@ -94,8 +111,6 @@ plugins:
         paths: [src]  # search files in the src folder
         paths_recursive: true  # search recursively in subfolders
 ```
-
-
 
 ### Global/local options
 

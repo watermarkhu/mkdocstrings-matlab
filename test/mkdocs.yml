@@ -23,6 +23,7 @@ plugins:
         paths: ["./src"]
         options:
           show_root_heading: true
+          show_inheritance_diagram: true
 
 markdown_extensions:
   pymdownx.superfences:

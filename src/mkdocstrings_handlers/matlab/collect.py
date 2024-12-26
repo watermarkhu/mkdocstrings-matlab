@@ -287,7 +287,7 @@ class PathCollection(ModulesCollection):
             ]
 
             if document_parameters and standard_parameters:
-                model.docstring._extra_sections.append(
+                model.docstring._suffixes.append(
                     DocstringSectionParameters(
                         [
                             DocstringParameter(
@@ -307,7 +307,7 @@ class PathCollection(ModulesCollection):
 
             if document_parameters and keyword_parameters:
 
-                model.docstring._extra_sections.append(
+                model.docstring._suffixes.append(
                     DocstringSectionParameters(
                         [
                             DocstringParameter(
@@ -342,7 +342,7 @@ class PathCollection(ModulesCollection):
                         for param in model.returns or []
                     ]
                 )
-                model.docstring._extra_sections.append(returns)
+                model.docstring._suffixes.append(returns)
 
         for member in getattr(model, "members", {}).values():
             self.update_model(member, config)
@@ -358,7 +358,7 @@ class PathCollection(ModulesCollection):
             if constructor.docstring is not None:
                 if model.docstring is None:
                     model.docstring = Docstring("", parent=model)
-                model.docstring._extra_sections.extend(constructor.docstring.parsed)
+                model.docstring._suffixes.extend(constructor.docstring.parsed)
 
         if (
             isinstance(model, Class)
@@ -376,7 +376,7 @@ class PathCollection(ModulesCollection):
                 model = deepcopy(model)
                 if model.docstring is None:
                     model.docstring = Docstring("", parent=model)
-                model.docstring._extra_sections.append(diagram)
+                model.docstring._prefixes.append(diagram)
 
         return model
 
@@ -469,7 +469,7 @@ class PathCollection(ModulesCollection):
 
         nodes_str = "\n".join(list(nodes))
         links_str = "\n".join(list(get_links(model)))
-        section = f"## Inheritance Diagram\n\n```mermaid\nflowchart TB\n{nodes_str}\n{links_str}\n```"
+        section = f"```mermaid\nflowchart TB\n{nodes_str}\n{links_str}\n```"
 
         return DocstringSectionText(section, title="Inheritance Diagram")
 

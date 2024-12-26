@@ -45,7 +45,7 @@ class Docstring(GriffeDocstring):
     that can be added to the parsed docstring.
 
     Attributes:
-        _extra_sections (list[DocstringSection]): A list to store additional docstring sections.
+        _suffixes (list[DocstringSection]): A list to store additional docstring sections.
 
     Methods:
         parsed: Returns the parsed docstring sections combined with extra sections.
@@ -61,7 +61,8 @@ class Docstring(GriffeDocstring):
             **kwargs (Any): Arbitrary keyword arguments.
         """
         super().__init__(*args, **kwargs)
-        self._extra_sections: list[DocstringSection] = []
+        self._prefixes: list[DocstringSection] = []
+        self._suffixes: list[DocstringSection] = []
 
     @property
     def parsed(self) -> list[DocstringSection]:
@@ -71,7 +72,7 @@ class Docstring(GriffeDocstring):
         Returns:
             list[DocstringSection]: The combined list of parsed and extra docstring sections.
         """
-        return self._parsed + self._extra_sections
+        return self._prefixes + self._parsed + self._suffixes
 
     @cached_property
     def _parsed(self) -> list[DocstringSection]:

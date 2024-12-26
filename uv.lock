@@ -272,7 +272,7 @@ name = "click"
 version = "8.1.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "platform_system == 'Windows'" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz", hash = "sha256:ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de", size = 336121 }
 wheels = [
@@ -489,7 +489,7 @@ name = "ipykernel"
 version = "6.29.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "appnope", marker = "platform_system == 'Darwin'" },
+    { name = "appnope", marker = "sys_platform == 'darwin'" },
     { name = "comm" },
     { name = "debugpy" },
     { name = "ipython" },
@@ -709,7 +709,7 @@ version = "1.6.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
-    { name = "colorama", marker = "platform_system == 'Windows'" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
     { name = "ghp-import" },
     { name = "jinja2" },
     { name = "markdown" },
@@ -886,20 +886,16 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/cd/10/4c27c3063c2b3681a4b7942f8dbdeb4fa34fecb2c19b594e7345ebf4f86f/mkdocstrings-0.27.0-py3-none-any.whl", hash = "sha256:6ceaa7ea830770959b55a16203ac63da24badd71325b96af950e59fd37366332", size = 30658 },
 ]
 
-[package.optional-dependencies]
-python = [
-    { name = "mkdocstrings-python" },
-]
-
 [[package]]
 name = "mkdocstrings-matlab"
-version = "0.3.0"
+version = "0.3.3"
 source = { editable = "." }
 dependencies = [
     { name = "charset-normalizer" },
     { name = "griffe" },
     { name = "mkdocs" },
-    { name = "mkdocstrings", extra = ["python"] },
+    { name = "mkdocstrings" },
+    { name = "mkdocstrings-python" },
     { name = "tree-sitter" },
     { name = "tree-sitter-matlab" },
 ]
@@ -922,8 +918,9 @@ dev = [
 requires-dist = [
     { name = "charset-normalizer", specifier = ">=3.3.2" },
     { name = "griffe", specifier = ">=1.5.1" },
-    { name = "mkdocs", specifier = ">=1.6.0" },
-    { name = "mkdocstrings", extras = ["python"], specifier = ">=0.18" },
+    { name = "mkdocs", specifier = "==1.6.1" },
+    { name = "mkdocstrings", specifier = "==0.27.0" },
+    { name = "mkdocstrings-python", specifier = "==1.10.9" },
     { name = "tree-sitter", specifier = ">=0.23.2" },
     { name = "tree-sitter-matlab", specifier = ">=1.0.2" },
 ]
@@ -944,16 +941,16 @@ dev = [
 
 [[package]]
 name = "mkdocstrings-python"
-version = "1.12.2"
+version = "1.10.9"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "griffe" },
     { name = "mkdocs-autorefs" },
     { name = "mkdocstrings" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/23/ec/cb6debe2db77f1ef42b25b21d93b5021474de3037cd82385e586aee72545/mkdocstrings_python-1.12.2.tar.gz", hash = "sha256:7a1760941c0b52a2cd87b960a9e21112ffe52e7df9d0b9583d04d47ed2e186f3", size = 168207 }
+sdist = { url = "https://files.pythonhosted.org/packages/d8/df/c0c09bf79f1329da2422b5d1d2d4d84070aee7cf7f99df98d7b78be066a9/mkdocstrings_python-1.10.9.tar.gz", hash = "sha256:f344aaa47e727d8a2dc911e063025e58e2b7fb31a41110ccc3902aa6be7ca196", size = 162070 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/5b/c1/ac524e1026d9580cbc654b5d19f5843c8b364a66d30f956372cd09fd2f92/mkdocstrings_python-1.12.2-py3-none-any.whl", hash = "sha256:7f7d40d6db3cb1f5d19dbcd80e3efe4d0ba32b073272c0c0de9de2e604eda62a", size = 111759 },
+    { url = "https://files.pythonhosted.org/packages/87/45/35c2ade06b6dfd383795008260405a47e10aba74e2c9594741a1a1f034b0/mkdocstrings_python-1.10.9-py3-none-any.whl", hash = "sha256:cbe98710a6757dfd4dff79bf36cb9731908fb4c69dd2736b15270ae7a488243d", size = 108360 },
 ]
 
 [[package]]

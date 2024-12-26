@@ -105,9 +105,9 @@ CLASS_QUERY = LANGUAGE.query("""("classdef" .
     (attributes
         (attribute) @attributes
     )? .
-    (identifier) @name ?
+    (identifier) @name .
     (superclasses
-        (property_name)+ @bases             
+        (property_name) @bases             
     )? .
     (comment)* @docstring .
     ("\\n")? .
