@@ -248,7 +248,7 @@ class PathCollection(ModulesCollection):
         if (
             isinstance(model, Function)
             and model.docstring is not None
-            and config.get("create_from_argument_blocks", True)
+            and config.get("parameters_from_arguments", True)
         ):
             docstring_parameters = any(
                 isinstance(doc, DocstringSectionParameters)

@@ -33,6 +33,8 @@ class MatlabHandler(BaseHandler):
         "show_source": True,
         # Heading options
         "heading_level": 2,
+        "parameter_headings": False,
+        "parameters_from_arguments": True,
         "show_root_heading": False,
         "show_root_toc_entry": True,
         "show_root_full_path": True,
@@ -53,7 +55,6 @@ class MatlabHandler(BaseHandler):
         "docstring_style": "google",
         "docstring_options": {},
         "docstring_section_style": "table",
-        "create_from_argument_blocks": False,
         "merge_constructor_into_class": True,
         "show_if_no_docstring": False,
         "show_docstring_attributes": True,
@@ -84,6 +85,8 @@ class MatlabHandler(BaseHandler):
 
     Attributes: Headings options:
         heading_level (int): The initial heading level to use. Default: `2`.
+        parameter_headings (bool): Whether to render headings for parameters (therefore showing parameters in the ToC). Default: `False`.
+        parameters_from_arguments (bool): Whether to load inputs and output parameters based on argument validation blocks. Default: `True`.
         show_root_heading (bool): Show the heading of the object at the root of the documentation tree
             (i.e. the object referenced by the identifier after `:::`). Default: `False`.
         show_root_toc_entry (bool): If the root heading is not shown, at least add a ToC entry for it. Default: `True`.
@@ -117,7 +120,6 @@ class MatlabHandler(BaseHandler):
         docstring_options (dict): The options for the docstring parser. See [docstring parsers](https://mkdocstrings.github.io/griffe/reference/docstrings/) and their options in Griffe docs.
         docstring_section_style (str): The style used to render docstring sections. Options: `table`, `list`, `spacy`. Default: `"table"`.
         merge_constructor_into_class (bool): Whether to merge the constructor method into the class' signature and docstring. Default: `False`.
-        create_from_argument_blocks (bool): Whether to create sections for inputs and output arguments based on argument validation blocks. Default: `False`.
         relative_crossrefs (bool): Whether to enable the relative crossref syntax. Default: `False`.
         scoped_crossrefs (bool): Whether to enable the scoped crossref ability. Default: `False`.
         show_if_no_docstring (bool): Show the object heading even if it has no docstring or children with docstrings. Default: `False`.
