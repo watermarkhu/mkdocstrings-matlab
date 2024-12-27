@@ -35,7 +35,7 @@ plugins:
         ::: myClass
             options:
                 show_bases: false
-                
+
     === ":octicons-code-16: source"
 
         ```matlab
@@ -71,7 +71,7 @@ plugins:
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
     options:
-      show_inheritance_diagram: false
+        show_inheritance_diagram: false
 ```
 
 !!! Preview
@@ -82,6 +82,9 @@ plugins:
             options:
                 show_bases: false
                 show_inheritance_diagram: true
+                show_root_heading: false
+                show_root_toc_entry: false
+
 
     === ":octicons-code-16: source"
 
