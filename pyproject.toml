@@ -11,7 +11,7 @@ requires-python = ">=3.10"
 dependencies = [
     "mkdocs==1.6.1",
     "mkdocstrings==0.27.0",
-    "mkdocstrings-python==1.10.9",  # Later versions will currently break 
+    "mkdocstrings-python==1.13.0",  # Later versions will currently break 
     "charset-normalizer>=3.3.2",
     "griffe>=1.5.1",
     "tree-sitter>=0.23.2",

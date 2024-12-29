@@ -20,7 +20,15 @@
             "program": "test/debug.py",
             "console": "integratedTerminal",
             "justMyCode": false,
-            "jinja": true
+            "jinja": true,
+            "subProcess": true,
+            "showReturnValue": true
         }
-    ]
+    ],
+    "exceptionBreakpoint": {
+        "filters": [
+            "raised",
+            "uncaught"
+        ]
+    }
 }
