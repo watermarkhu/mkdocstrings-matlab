@@ -5,6 +5,7 @@ from typing import Mapping, Sequence
 
 from _griffe.collections import LinesCollection as GLC, ModulesCollection
 from _griffe.docstrings.models import (
+    DocstringSectionOtherParameters,
     DocstringSectionParameters,
     DocstringSectionReturns,
     DocstringParameter,
@@ -225,7 +226,7 @@ class PathCollection(ModulesCollection):
 
         # Patch returns annotation
         # In _griffe.docstrings.<parser>.py the function _read_returns_section will enforce an annotation
-        # on the return parameter. This annotation is grabbed from the parent. For MATLAB is is invalid.
+        # on the return parameter. This annotation is grabbed from the parent. For MATLAB this is invalid.
         # Thus the return annotation needs to be patched back to a None.
         if (
             isinstance(model, Function)
@@ -244,11 +245,25 @@ class PathCollection(ModulesCollection):
                 if not isinstance(returns.annotation, Expr):
                     returns.annotation = None
 
+        for member in getattr(model, "members", {}).values():
+            self.update_model(member, config)
+
+        # previous updates do not edit the model attributes persistently
+        # However, the following updates do edit the model attributes persistently
+        # such as adding new sections to the docstring or editing its members.abs
+        # Thus, we need to deepcopy the model to avoid editing the original model
+        model = deepcopy(model)
+
         # Create parameters and returns sections from argument blocks
         if (
             isinstance(model, Function)
             and model.docstring is not None
             and config.get("parameters_from_arguments", True)
+            and (
+                config.get("show_docstring_parameters", True)
+                or config.get("show_docstring_other_parameters", True)
+                or config.get("show_docstring_returns", True)
+            )
         ):
             docstring_parameters = any(
                 isinstance(doc, DocstringSectionParameters)
@@ -288,7 +303,11 @@ class PathCollection(ModulesCollection):
                 if param.kind is ParameterKind.keyword_only
             ]
 
-            if document_parameters and standard_parameters:
+            if (
+                config.get("show_docstring_parameters", True)
+                and document_parameters
+                and standard_parameters
+            ):
                 model.docstring._suffixes.append(
                     DocstringSectionParameters(
                         [
@@ -307,9 +326,13 @@ class PathCollection(ModulesCollection):
                     )
                 )
 
-            if document_parameters and keyword_parameters:
+            if (
+                config.get("show_docstring_other_parameters", True)
+                and document_parameters
+                and keyword_parameters
+            ):
                 model.docstring._suffixes.append(
-                    DocstringSectionParameters(
+                    DocstringSectionOtherParameters(
                         [
                             DocstringParameter(
                                 name=param.name,
@@ -323,11 +346,11 @@ class PathCollection(ModulesCollection):
                             )
                             for param in keyword_parameters
                         ],
-                        title="Keyword Arguments:",
+                        title="Name-Value Arguments:",
                     )
                 )
 
-            if document_returns:
+            if config.get("show_docstring_returns", True) and document_returns:
                 returns = DocstringSectionReturns(
                     [
                         DocstringReturn(
@@ -345,22 +368,20 @@ class PathCollection(ModulesCollection):
                 )
                 model.docstring._suffixes.append(returns)
 
-        for member in getattr(model, "members", {}).values():
-            self.update_model(member, config)
-
+        # Merge constructor docstring into class
         if (
             isinstance(model, Class)
             and config.get("merge_constructor_into_class", False)
             and model.name in model.members
             and model.members[model.name].docstring is not None
         ):
-            model = deepcopy(model)
             constructor = model.members.pop(model.name)
             if constructor.docstring is not None:
                 if model.docstring is None:
                     model.docstring = Docstring("", parent=model)
                 model.docstring._suffixes.extend(constructor.docstring.parsed)
 
+        # Add inheritance diagram to class docstring
         if (
             isinstance(model, Class)
             and config.get("show_inheritance_diagram", False)
@@ -374,7 +395,6 @@ class PathCollection(ModulesCollection):
         ):
             diagram = self.get_inheritance_diagram(model)
             if diagram is not None:
-                model = deepcopy(model)
                 if model.docstring is None:
                     model.docstring = Docstring("", parent=model)
                 model.docstring._prefixes.append(diagram)

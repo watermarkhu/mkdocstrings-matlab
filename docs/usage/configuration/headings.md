@@ -98,8 +98,6 @@ plugins:
         ::: mynamespace.typed_function
             options:
               parameter_headings: true
-              show_root_toc_entry: false
-              parameters_from_arguments: true
               docstring_section_style: list
 
     === "Without parameter headings"
@@ -107,7 +105,6 @@ plugins:
         ::: mynamespace.typed_function
             options:
               parameter_headings: false
-              parameters_from_arguments: true
               docstring_section_style: list
 
 !!! preview "Preview: Parameter sections"
@@ -119,7 +116,6 @@ plugins:
               show_root_heading: false
               show_root_toc_entry: false
               parameter_headings: true
-              parameters_from_arguments: true
               docstring_section_style: table
               show_docstring_returns: false
               show_docstring_description: false
@@ -131,7 +127,6 @@ plugins:
               show_root_heading: false
               show_root_toc_entry: false
               parameter_headings: true
-              parameters_from_arguments: true
               docstring_section_style: list
               show_docstring_returns: false
               show_docstring_description: false
@@ -143,7 +138,6 @@ plugins:
               show_root_heading: false
               show_root_toc_entry: false
               parameter_headings: true
-              parameters_from_arguments: true
               docstring_section_style: spacy
               show_docstring_returns: false
               show_docstring_description: false
@@ -152,8 +146,6 @@ plugins:
 
     <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code> typed_function<br>
     <code class="doc-symbol doc-symbol-toc doc-symbol-parameter" style="margin-left: 16px;"></code> input
-
-    To customize symbols, see [Customizing symbol types](../customization.md/#symbol-types).
 
 
 ## `show_root_heading`

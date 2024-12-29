@@ -36,7 +36,6 @@ class MatlabHandler(BaseHandler):
         # Heading options
         "heading_level": 2,
         "parameter_headings": True,
-        "parameters_from_arguments": True,
         "show_root_heading": False,
         "show_root_toc_entry": True,
         "show_root_full_path": True,
@@ -65,10 +64,11 @@ class MatlabHandler(BaseHandler):
         "show_docstring_modules": True,  # TODO should be replaced with namespaces
         "show_docstring_description": True,
         "show_docstring_examples": True,
-        "show_docstring_other_parameters": True,  # TODO should be name value pairs
+        "parameters_from_arguments": False,
+        "show_docstring_other_parameters": True,
         "show_docstring_parameters": True,
-        "show_docstring_raises": True,  # TODO need to additional parsing for this
         "show_docstring_returns": True,
+        "show_docstring_raises": True,  # TODO need to additional parsing for this
         "show_docstring_warns": True,  # TODO need to additional parsing for this
         # Signature options
         "annotations_path": "brief",

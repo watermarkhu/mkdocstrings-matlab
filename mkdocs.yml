@@ -159,7 +159,6 @@ plugins:
 
           docstring_style: google
           docstring_section_style: table
-          parameters_from_arguments: true
           merge_constructor_into_class: true
           show_if_no_docstring: true
           show_docstring_attributes": true
@@ -168,11 +167,12 @@ plugins:
           show_docstring_modules": true 
           show_docstring_description": true
           show_docstring_examples": true
+          parameters_from_arguments: true
           show_docstring_other_parameters": true
-          show_docstring_parameters": false
+          show_docstring_parameters": true
           show_docstring_raises": true
+          show_docstring_returns": true
           show_docstring_receives": true
-          show_docstring_returns": false
           show_docstring_warns": true
 
           annotations_path: full
