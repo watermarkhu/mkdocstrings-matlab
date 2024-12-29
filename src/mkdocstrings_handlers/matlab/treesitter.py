@@ -332,6 +332,7 @@ class FileParser(object):
                         property_captures.get("comment", None)
                     ),
                     parent=model,
+                    **property_kwargs
                 )
                 model.members[prop.name] = prop
 
@@ -351,7 +352,7 @@ class FileParser(object):
                     "Static",
                 ]:
                     method_kwargs[key] = value
-                elif key in ["GetAccess", "SetAccess"]:
+                elif key == "Access":
                     if value in ["public", "protected", "private", "immutable"]:
                         method_kwargs[key] = AccessEnum(value)
                     else:
@@ -362,7 +363,7 @@ class FileParser(object):
                 )
                 if (
                     method.name != self.filepath.stem
-                    and not method.static
+                    and not method.Static
                     and method.parameters
                 ):
                     # Remove self from first method argument

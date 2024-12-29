@@ -226,3 +226,77 @@ plugins:
             options:
               members: true
               members_order: source
+
+## `members_hide_hidden`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+## `members_hide_private`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+
+## `filters`
+
+- **:octicons-package-24: Type <code><autoref identifier="list" optional>list</autoref>[<autoref identifier="str" optional>str</autoref>] | None</code>  :material-equal: `["!^delete$|^disp$"]`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+A list of filters applied to filter objects based on their name.
+
+Filters are regular expressions. These regular expressions are evaluated by Python and so must match the syntax supported by the [`re`][] module. A filter starting with `!` (negative filter) will exclude matching objects instead of including them.
+
+The default value (`[!^delete$|^disp$]`) means: *render every object, except for members that are named [`delete`](https://mathworks.com/help/matlab/matlab_oop/handle-class-destructors.html) or [`disp`](https://mathworks.com/help/matlab/matlab_oop/displaying-objects-in-the-command-window.html), which are two of MATLAB classes' built-in methods. 
+
+Each filter takes precedence over the previous one. This allows for fine-grain selection of objects by adding more specific filters. For example, you can start by unselecting objects that start with `_`, and add a second filter
+that re-select objects that start with `__`. The default filters can therefore be rewritten like this:
+
+```yaml
+filters:
+- "!^_"
+- "^__"
+```
+
+If there are no negative filters, the handler considers that everything is **unselected** first, and then selects things based on your positive filters. If there is at least one negative filter, the handler considers that everything is **selected** first, and then re-selects/unselects things based on your other filters. In short, `filters: ["a"]` means *"keep ***nothing*** except names containing `a`"*, while `filters: ["!a"]` means *"keep ***everything*** except names containing `a`"*.
+
+An empty list of filters tells the MATLAB handler to render every object. The [`members`][] option takes precedence over filters (filters will still be applied recursively to lower members in the hierarchy).
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          filters:
+          - "!^delete$|^disp$"
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: matlab_callable
+    options:
+      filters: []
+```
+
+--8<-- "docs/snippets/+mymembers/mymembers.md"
+
+!!! preview
+
+    === "With `filters: []`"
+
+        ::: mymembers.ThisClass
+            options:
+              filters: []
+
+    === "With `filters: ["method"]`"
+
+        ::: mymembers.ThisClass
+            options:
+              filters: ["method"]
+
+    === "With `filters: ["!method"]`"
+
+        ::: mymembers.ThisClass
+            options:
+              filters: ["!method"]
+

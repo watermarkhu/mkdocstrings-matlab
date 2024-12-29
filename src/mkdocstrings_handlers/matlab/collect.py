@@ -254,6 +254,32 @@ class PathCollection(ModulesCollection):
         # Thus, we need to deepcopy the model to avoid editing the original model
         model = deepcopy(model)
 
+        # Hide hidden members (methods and properties)
+        if isinstance(model, Class) and config.get("members_hide_hidden", True):
+            model.members = {
+                key: value
+                for key, value in model.members.items()
+                if (not hasattr(value, "hidden") or getattr(value, "hidden") is False)
+            }
+            model._inherited_members = {
+                key: value
+                for key, value in model.inherited_members.items()
+                if (not hasattr(value, "hidden") or getattr(value, "hidden") is False)
+            }
+
+        # Hide private members (methods and properties)
+        if isinstance(model, Class) and config.get("members_hide_private", True):
+            model.members = {
+                key: value
+                for key, value in model.members.items()
+                if (not hasattr(value, "is_private") or getattr(value, "is_private") is False)
+            }
+            model._inherited_members = {
+                key: value
+                for key, value in model.inherited_members.items()
+                if (not hasattr(value, "is_private") or getattr(value, "is_private") is False)
+            }
+
         # Create parameters and returns sections from argument blocks
         if (
             isinstance(model, Function)

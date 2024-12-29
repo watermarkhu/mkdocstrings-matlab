@@ -48,7 +48,9 @@ class MatlabHandler(BaseHandler):
         "inherited_members": False,
         "members": None,
         "members_order": rendering.Order.alphabetical.value,
-        "filters": [],
+        "members_hide_hidden": True,
+        "members_hide_private": True,
+        "filters": ["!^delete$|^disp$"],
         "group_by_category": True,  # TODO broken
         "summary": False,  # TODO broken
         "show_labels": True,
@@ -109,10 +111,13 @@ class MatlabHandler(BaseHandler):
             If none, select all members and apply further filtering with filters and docstrings. Default: `None`.
         members_order (str): The members ordering to use. Options: `alphabetical` - order by the members names,
             `source` - order members as they appear in the source file. Default: `"alphabetical"`.
+        members_hide_hidden (bool): Hide hidden members. Default: `True`.
+        members_hide_private (bool): Hide private members. Any method that has Access set to anything other than public and 
+            any property that has GetAccess set to anything but *public* is considered private. Default: `True`.
         filters (list[str] | None): A list of filters applied to filter objects based on their name.
             A filter starting with `!` will exclude matching objects instead of including them.
             The `members` option takes precedence over `filters` (filters will still be applied recursively
-            to lower members in the hierarchy). Default: `["!^_[^_]"]`.
+            to lower members in the hierarchy). Default: `["!^delete$|^disp$"]`.
         group_by_category (bool): Group the object's children by categories: attributes, classes, functions, and modules. Default: `True`.
         summary (bool | dict[str, bool]): Whether to render summaries of modules, classes, functions (methods) and attributes.
         show_labels (bool): Whether to show labels of the members. Default: `True`.
