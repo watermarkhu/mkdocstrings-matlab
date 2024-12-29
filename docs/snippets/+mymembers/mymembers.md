@@ -5,6 +5,7 @@
         ```
         +mymembers
         |-- Contents.m
+        |-- BaseClass.m
         |-- ThisClass.m
         |-- this_function.m
         ```

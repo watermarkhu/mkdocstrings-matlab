@@ -12,7 +12,7 @@ Only members declared in this list will be rendered. A member without a docstrin
 
 The members will be rendered in the specified order, regardless of the value of [`members_order`][]. **Note that members will still be grouped by category, according to the [`group_by_category`][] option.**
 
-Passing a falsy value (`no`, `false` in YAML) or an empty list (`[]`) will tell the Python handler not to render any member. Passing a truthy value (`yes`, `true` in YAML) will tell the Python handler to render every member.
+Passing a falsy value (`no`, `false` in YAML) or an empty list (`[]`) will tell the MATLAB handler not to render any member. Passing a truthy value (`yes`, `true` in YAML) will tell the MATLAB handler to render every member.
 
 Any given value, except for an explicit `None` (`null` in YAML) will tell the handler to ignore [`filters`][] for the object's members. Filters will still be applied to the next layers of members (grand-children).
 
@@ -74,7 +74,7 @@ An explicit list of inherited members (for classes) to render.
 
 Inherited members are always fetched from classes that are in the same namespace as the currently rendered class. Otherwise, it must be ensured that the paths to the parent is included in [paths](../index.md#paths). This is also the case for MATLAB built-in classes. 
 
-Passing a falsy value (`no`, `false` in YAML) or an empty list (`[]`) will tell the Python handler not to render any inherited member. Passing a truthy value (`yes`, `true` in YAML) will tell the Python handler to render every inherited member.
+Passing a falsy value (`no`, `false` in YAML) or an empty list (`[]`) will tell the MATLAB handler not to render any inherited member. Passing a truthy value (`yes`, `true` in YAML) will tell the MATLAB handler to render every inherited member.
 
 When all inherited members are selected with `inherited_members: true`, it is possible to specify both members and inherited members in the `members` list:
 
