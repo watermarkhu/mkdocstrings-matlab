@@ -15,17 +15,16 @@ def set_directory(path: Path):
         os.chdir(origin)
 
 
-config_path = Path(__file__).parent.resolve() / "mkdocs.yml"
+config_path = Path(__file__).parent.parent.resolve() / "mkdocs.yml"
 
 kwargs = {
     "dev_addr": None,
     "open_in_browser": False,
-    "livereload": True,
+    "livereload": False,
     "build_type": None,
     "watch_theme": True,
     "config_file": str(config_path),
     "strict": None,
-    "theme": None,
     "use_directory_urls": None,
 }
 

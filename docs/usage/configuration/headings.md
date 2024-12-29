@@ -97,8 +97,8 @@ plugins:
 
         ::: mynamespace.typed_function
             options:
-              heading_level: 3
               parameter_headings: true
+              show_root_toc_entry: false
               parameters_from_arguments: true
               docstring_section_style: list
 
@@ -106,7 +106,6 @@ plugins:
 
         ::: mynamespace.typed_function
             options:
-              heading_level: 3
               parameter_headings: false
               parameters_from_arguments: true
               docstring_section_style: list
@@ -117,7 +116,6 @@ plugins:
 
         ::: mynamespace.typed_function
             options:
-              heading_level: 3
               show_root_heading: false
               show_root_toc_entry: false
               parameter_headings: true
@@ -130,7 +128,6 @@ plugins:
 
         ::: mynamespace.typed_function
             options:
-              heading_level: 3
               show_root_heading: false
               show_root_toc_entry: false
               parameter_headings: true
@@ -143,7 +140,6 @@ plugins:
 
         ::: mynamespace.typed_function
             options:
-              heading_level: 3
               show_root_heading: false
               show_root_toc_entry: false
               parameter_headings: true

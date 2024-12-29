@@ -153,7 +153,7 @@ plugins:
           show_symbol_type_toc: false
 
           inherited_members: false
-          member_order: "bysource"
+          members_order: "source"
           summary: true
           show_labels: true
 

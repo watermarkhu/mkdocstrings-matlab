@@ -277,12 +277,14 @@ class PathCollection(ModulesCollection):
             document_returns = not docstring_returns and arguments_returns
 
             standard_parameters = [
-                param for param in model.parameters
+                param
+                for param in model.parameters
                 if param.kind is not ParameterKind.keyword_only
             ]
 
             keyword_parameters = [
-                param for param in model.parameters
+                param
+                for param in model.parameters
                 if param.kind is ParameterKind.keyword_only
             ]
 
@@ -306,7 +308,6 @@ class PathCollection(ModulesCollection):
                 )
 
             if document_parameters and keyword_parameters:
-
                 model.docstring._suffixes.append(
                     DocstringSectionParameters(
                         [
@@ -577,11 +578,7 @@ class LazyModel:
         if not isinstance(model, Classfolder):
             return None
         for member in path.iterdir():
-            if (
-                member.is_file()
-                and member.suffix == ".m"
-                and member != classfile
-            ):
+            if member.is_file() and member.suffix == ".m" and member != classfile:
                 if member.name == "Contents.m" and model.docstring is None:
                     contentsfile = self._collect_path(member)
                     model.docstring = contentsfile.docstring
@@ -618,14 +615,13 @@ class LazyModel:
         return model
 
     def _collect_readme_md(self, path, parent: MatlabMixin) -> Docstring | None:
-
         if (path / "README.md").exists():
             readme = path / "README.md"
         elif (path / "readme.md").exists():
             readme = path / "readme.md"
         else:
             return None
-        
+
         with open(readme, "r") as file:
             content = file.read()
         return Docstring(content, parent=parent)

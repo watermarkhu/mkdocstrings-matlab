@@ -2,6 +2,7 @@ from typing import Any, TYPE_CHECKING, Callable
 from functools import cached_property
 from pathlib import Path
 from griffe import (
+    Alias,
     Attribute,
     Function as GriffeFunction,
     Class as GriffeClass,
@@ -365,7 +366,9 @@ class Class(MatlabMixin, PathMixin, GriffeClass, MatlabObject):
 
             for name, member in model.members.items():
                 if name not in self.members:
-                    inherited_members[name] = member
+                    inherited_members[name] = Alias(
+                        name, target=member, parent=self, inherited=True
+                    )
         return inherited_members
 
     @property
@@ -562,4 +565,8 @@ class Namespace(MatlabMixin, PathMixin, Module, MatlabObject):
 
     @property
     def is_internal(self) -> bool:
-        return any(part == "+internal" for part in self.filepath.parts) if self.filepath else False
+        return (
+            any(part == "+internal" for part in self.filepath.parts)
+            if self.filepath
+            else False
+        )

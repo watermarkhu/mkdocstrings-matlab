@@ -1,11 +1,13 @@
 from pathlib import Path
 from collections import ChainMap
 from markdown import Markdown
+from mkdocstrings.extension import PluginError
 from mkdocstrings.handlers.base import BaseHandler, CollectorItem, CollectionError
 from mkdocstrings_handlers.python import rendering
 from typing import Any, ClassVar, Mapping
 from pprint import pprint
 
+import re
 
 from mkdocstrings_handlers.matlab.collect import LinesCollection, PathCollection
 
@@ -46,7 +48,7 @@ class MatlabHandler(BaseHandler):
         # Member options
         "inherited_members": False,
         "members": None,
-        "members_order": rendering.Order.alphabetical,  # TODO broken
+        "members_order": rendering.Order.alphabetical.value,
         "filters": [],
         "group_by_category": True,  # TODO broken
         "summary": False,  # TODO broken
@@ -201,6 +203,22 @@ class MatlabHandler(BaseHandler):
         template = self.env.get_template(template_name)
 
         heading_level = final_config["heading_level"]
+
+        try:
+            final_config["members_order"] = rendering.Order(
+                final_config["members_order"]
+            )
+        except ValueError as error:
+            choices = "', '".join(item.value for item in rendering.Order)
+            raise PluginError(
+                f"Unknown members_order '{final_config['members_order']}', choose between '{choices}'.",
+            ) from error
+
+        if final_config["filters"]:
+            final_config["filters"] = [
+                (re.compile(filtr.lstrip("!")), filtr.startswith("!"))
+                for filtr in final_config["filters"]
+            ]
 
         return template.render(
             **{

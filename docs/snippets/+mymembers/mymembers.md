@@ -21,6 +21,12 @@
         --8<-- "docs/snippets/+mymembers/ThisClass.m"
         ```
 
+    === ":material-file-code: `BaseClass.m`"
+
+        ```matlab
+        --8<-- "docs/snippets/+mymembers/BaseClass.m"
+        ```
+
     === ":material-file-code: `this_function.m`"
 
         ```matlab
