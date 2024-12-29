@@ -42,18 +42,23 @@ Entire [namespaces](https://mathworks.com/help/matlab/matlab_oop/namespaces.html
 
 ```
 +mynamespace
+|- Contents.m
+|- readme.md
 |- myclass.m
 |- +subnamespace
 |  |- mfunction.m
 ```
 
-is documented with. 
+is documented with:
 
 ```md
 ::: +mynamespace
 ```
 
-Documenting a nested namesapace requires only a single prefixed `+` at the start of the fully resolved path, e.g. 
+The docstring of the namespace is taken from either the [`Contents.m`](https://mathworks.com/help/matlab/matlab_prog/create-a-help-summary-contents-m.html) or a `readme.md` that resides at the root level of the namespace, with `Contents.m` taking precedence over `readme.md`. 
+
+
+Documenting a nested namespace requires only a single prefixed `+` at the start of the fully resolved path, e.g. 
 
 ```md
 ::: +mynamespace.subnamespace
@@ -61,30 +66,23 @@ Documenting a nested namesapace requires only a single prefixed `+` at the start
 
 ## Configuration
 
-When installed, the MATLAB handler becomes the default *mkdocstrings* handler.
-You can configure it in `mkdocs.yml`:
+When installed, the MATLAB handler becomes the default *mkdocstrings* handler. You can configure it in `mkdocs.yml`:
 
 ```yaml title="mkdocs.yml"
 plugins:
 - mkdocstrings:
     handlers:
-      python:
-        ...  # the Python handler configuration
+      matlab:
+        ...  # the MATLAB handler configuration
 ```
 
 ### Global-only options
 
 Some options are **global only**, and go directly under the handler's name.
 
-
-
 #### `paths`
 
-This option is used to set the [MATLAB search path](https://mathworks.com/help/matlab/matlab_env/what-is-the-matlab-search-path.html). 
-The MATLAB search path is a subset of all the folders in the file system.
-The order of folders on the search path is important. 
-When files with the same name appear in multiple folders on the search path, 
-MATLAB uses the one found in the folder nearest to the top of the search path.
+This option is used to set the [MATLAB search path](https://mathworks.com/help/matlab/matlab_env/what-is-the-matlab-search-path.html).  The MATLAB search path is a subset of all the folders in the file system. The order of folders on the search path is important.  When files with the same name appear in multiple folders on the search path,  MATLAB uses the one found in the folder nearest to the top of the search path.
 
 Non-absolute paths are computed as relative to MkDocs configuration file. Example:
 
@@ -121,7 +119,7 @@ For example, globally:
 plugins:
 - mkdocstrings:
     handlers:
-      python:
+      matlab:
         options:
           do_something: true
 ```

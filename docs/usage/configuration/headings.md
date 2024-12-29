@@ -28,20 +28,13 @@ plugins:
       heading_level: 3
 ```
 
+--8<-- "docs/snippets/+mynamespace/mynamespace.md"
+
 !!! preview 
-
-    === ":material-file-tree: tree"
-
-        ```
-        +mypackage
-        |-- ClassA.m
-        |-- ClassB.m
-        |-- myfunction.m
-        ```
 
     === "With level 3 and root heading"
 
-        <h3><code>mypackage</code> (3)</h3>
+        <h3><code>mynamespace</code> (3)</h3>
         <p>Docstring of the package namespace.</p>
         <h4><code>ClassA</code> (4)</h4>
         <p>Docstring of class A.</p>
@@ -96,20 +89,33 @@ plugins:
       parameter_headings: true
 ```
 
+--8<-- "docs/snippets/+mynamespace/mynamespace.md"
+
 !!! preview "Preview: Cross-references"
 
-    ::: typedFunction
-        options:
-          heading_level: 3
-          parameter_headings: true
-          parameters_from_arguments: true
-          docstring_section_style: list
+    === "With parameter headings"
+
+        ::: mynamespace.typed_function
+            options:
+              heading_level: 3
+              parameter_headings: true
+              parameters_from_arguments: true
+              docstring_section_style: list
+
+    === "Without parameter headings"
+
+        ::: mynamespace.typed_function
+            options:
+              heading_level: 3
+              parameter_headings: false
+              parameters_from_arguments: true
+              docstring_section_style: list
 
 !!! preview "Preview: Parameter sections"
 
     === "Table style"
 
-        ::: typedFunction
+        ::: mynamespace.typed_function
             options:
               heading_level: 3
               show_root_heading: false
@@ -122,7 +128,7 @@ plugins:
 
     === "List style"
 
-        ::: typedFunction
+        ::: mynamespace.typed_function
             options:
               heading_level: 3
               show_root_heading: false
@@ -135,7 +141,7 @@ plugins:
 
     === "Spacy style"
 
-        ::: typedFunction
+        ::: mynamespace.typed_function
             options:
               heading_level: 3
               show_root_heading: false
@@ -148,9 +154,421 @@ plugins:
 
 !!! preview "Preview: Table of contents (with symbol types)"
 
-    <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code> typedFunction<br>
+    <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code> typed_function<br>
     <code class="doc-symbol doc-symbol-toc doc-symbol-parameter" style="margin-left: 16px;"></code> input
 
     To customize symbols, see [Customizing symbol types](../customization.md/#symbol-types).
 
 
+## `show_root_heading`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+Show the heading of the object at the root of the documentation tree (i.e. the object referenced by the identifier after `:::`).
+
+It is pretty common to inject documentation for one module per page, especially when following our [automatic reference pages recipe][autopages recipe]. Since each page already has a title, usually being the module's name, we can spare one heading level by not showing the heading for the module itself (heading levels are limited to 6 by the HTML specification).
+
+Sparing that extra level can be helpful when your objects tree is deeply nested (e.g. method in a class in a class in a module). If your objects tree is not deeply nested, and you are injecting documentation for many different objects on a single page, it might be preferable to render the heading of each object.
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          show_root_heading: false
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: mynamespace.ClassA
+    options:
+      show_root_heading: true
+
+::: mynamespace.ClassB
+    options:
+      show_root_heading: true
+```
+
+--8<-- "docs/snippets/+mynamespace/mynamespace.md"
+
+!!! preview
+
+    === "With root heading"
+    
+        ::: mynamespace.classA
+            options:
+              show_root_heading: true
+
+        ::: mynamespace.classB
+            options:
+              show_root_heading: true
+              members: true
+
+    === "Without root heading"
+    
+        ::: mynamespace.classA
+            options:
+              show_root_heading: false
+
+        ::: mynamespace.classB
+            options:
+              show_root_heading: false
+
+    === ":octicons-code-16: source"
+
+        ```matlab
+        --8<-- "docs/snippets/+mynamespace/classA.m"
+        ```
+
+        ```matlab
+        --8<-- "docs/snippets/+mynamespace/classB.m"
+        ```
+
+## `show_root_toc_entry`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+If the root heading is not shown, at least add a ToC entry for it.
+
+If you inject documentation for an object in the middle of a page, after long paragraphs, and without showing the [root heading][show_root_heading], then you will not be able to link to this particular object as it won't have a permalink and will be "lost" in the middle of text. In that case, it is useful to add a hidden anchor to the document, which will also appear in the table of contents.
+
+In other cases, you might want to disable the entry to avoid polluting the ToC. It is not possible to show the root heading *and* hide the ToC entry.
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          show_root_toc_entry: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+## Some heading
+
+Lots of text.
+
+::: matlab_callable
+    options:
+      show_root_toc_entry: false
+
+## Other heading.
+
+More text.
+```
+
+!!! preview
+
+    === "With ToC entry"
+
+        **Table of contents**  
+        [Some heading](#permalink-to-some-heading){ title="#permalink-to-some-heading" }  
+        [`matlab_callable`](#permalink-to-object){ title="#permalink-to-object" }   
+        [Other heading](#permalink-to-other-heading){ title="#permalink-to-other-heading" } 
+
+    === "Without ToC entry"
+
+        **Table of contents**  
+        [Some heading](#permalink-to-some-heading){ title="#permalink-to-some-heading" }  
+        [Other heading](#permalink-to-other-heading){ title="#permalink-to-other-heading" }
+
+## `show_root_full_path`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+Show the full namespace path for the root object heading.
+
+The namespace path of a MATLAB object is the dot-separated list of names under which it is accessible, for example `namespace.Class.method`.
+
+With this option you can choose to show the full path of the object you inject documentation for, or just its name. This option impacts only the object you specify, not its members. For members, see the two other options [`show_root_members_full_path`][] and [`show_object_full_path`][].
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          show_root_full_path: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: mynamespace.classA
+    options:
+      show_root_full_path: false
+```
+
+--8<-- "docs/snippets/+mynamespace/mynamespace.md"
+
+!!! preview
+
+    === "With root full path"
+
+        ::: mynamespace.classA
+            options:
+              show_root_full_path: true
+
+    === "Without root full path"
+
+        ::: mynamespace.classA
+            options:
+              show_root_full_path: false
+
+## `show_root_members_full_path`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+Show the full namespace path of the root members.
+
+This option does the same thing as [`show_root_full_path`][], but for direct members  of the root object instead of the root object itself.
+
+To show the full path for every member recursively, see [`show_object_full_path`][].
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          show_root_members_full_path: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: mynamespace.classA
+    options:
+      show_root_members_full_path: false
+```
+
+--8<-- "docs/snippets/+mynamespace/mynamespace.md"
+
+!!! preview
+
+    === "With root members full path"
+
+        ::: mynamespace.classA
+            options:
+              show_root_members_full_path: true
+
+    === "Without root members full path"
+
+        ::: mynamespace.classA
+            options:
+              show_root_members_full_path: false
+
+## `show_object_full_path`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+Show the full namespace path of every object.
+
+Same as for [`show_root_members_full_path`][], but for every member, recursively. This option takes precedence over [`show_root_members_full_path`][]:
+
+`show_root_members_full_path` | `show_object_full_path` | Direct root members path
+----------------------------- | ----------------------- | ------------------------
+False                         | False                   | Name only
+False                         | True                    | Full
+True                          | False                   | Full
+True                          | True                    | Full
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          show_object_full_path: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: +mynamespace
+    options:
+      show_object_full_path: false
+```
+
+!!! preview
+
+    === "With object full path"
+
+        ::: +mynamespace
+            options:
+              show_object_full_path: true
+              show_docstring_parameters: false
+              show_docstring_returns: false
+
+    === "Without object full path"
+
+        ::: +mynamespace
+            options:
+              show_object_full_path: false
+              show_docstring_parameters: false
+              show_docstring_returns: false
+
+## `show_category_heading`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+When [grouped by categories][group_by_category], show a heading for each category.
+These category headings will appear in the table of contents,
+allowing you to link to them using their permalinks.
+
+!!! warning "Not recommended with deeply nested object"
+
+    When injecting documentation for deeply nested objects, you'll quickly run out of heading levels, and the objects at the bottom of the tree risk all getting documented using H6 headings, which might decrease the readability of your API docs. 
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          group_by_category: true
+          show_category_heading: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: matlab_callable
+    options:
+      group_by_category: true
+      show_category_heading: false
+```
+
+--8<-- "docs/snippets/+mynamespace/mynamespace.md"
+
+!!! preview
+
+    === "With category headings"
+
+        ::: +mynamespace
+            options:
+              group_by_category: true
+              show_category_heading: true
+              show_docstring_parameters: false
+              show_docstring_returns: false
+
+    === "Without category headings"
+
+        ::: +mynamespace
+            options:
+              group_by_category: true
+              show_category_heading: false
+              show_docstring_parameters: false
+              show_docstring_returns: false
+
+## `show_symbol_type_heading`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+Show the symbol type in headings.
+
+This option will prefix headings with
+<code class="doc-symbol doc-symbol-attribute"></code>,
+<code class="doc-symbol doc-symbol-function"></code>,
+<code class="doc-symbol doc-symbol-method"></code>,
+<code class="doc-symbol doc-symbol-class"></code> or
+<code class="doc-symbol doc-symbol-module"></code> types.
+See also [`show_symbol_type_toc`][show_symbol_type_toc].
+
+When using material theme, make sure to also enable the plugin `mkdocs-material-matlab` such that the right heading types are displayed. Otherwise, <code class="doc-symbol doc-symbol-attribute"></code> will be shown as `attr` and <code class="doc-symbol doc-symbol-module"></code> will be shown as `mod`, as the mkdocstrings-matlab plugin is reusing assets from mkdocstrings-python. 
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocs-material-matlab
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          show_symbol_type_heading: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: matlab_callable
+    options:
+      show_symbol_type_heading: false
+```
+
+--8<-- "docs/snippets/+mynamespace/mynamespace.md"
+
+!!! preview
+
+    === "With symbol type in headings"
+
+        ::: +mynamespace
+            options:
+              show_symbol_type_heading: true
+              show_docstring_parameters: false
+              show_docstring_returns: false
+
+    === "Without symbol type in headings"
+
+        ::: +mynamespace
+            options:
+              show_symbol_type_heading: false
+              show_docstring_parameters: false
+              show_docstring_returns: false
+
+## `show_symbol_type_toc`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+Show the symbol type in the Table of Contents.
+
+This option will prefix items in the ToC with
+<code class="doc-symbol doc-symbol-attribute"></code>,
+<code class="doc-symbol doc-symbol-function"></code>,
+<code class="doc-symbol doc-symbol-method"></code>,
+<code class="doc-symbol doc-symbol-class"></code> or
+<code class="doc-symbol doc-symbol-module"></code> types.
+See also [`show_symbol_type_heading`][show_symbol_type_heading].
+
+When using material theme, make sure to also enable the plugin `mkdocs-material-matlab` such that the right heading types are displayed. Otherwise, <code class="doc-symbol doc-symbol-attribute"></code> will be shown as `attr` and <code class="doc-symbol doc-symbol-module"></code> will be shown as `mod`, as the mkdocstrings-matlab plugin is reusing assets from mkdocstrings-python. 
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocs-material-matlab
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          show_symbol_type_toc: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: matlab_callable
+    options:
+      show_symbol_type_toc: false
+```
+
+!!! preview
+
+    === "With symbol type in ToC"
+
+        <ul style="list-style: none;">
+          <li><code class="doc-symbol doc-symbol-module"></code> namespace</li>
+          <li><code class="doc-symbol doc-symbol-function"></code> function</li>
+          <li><code class="doc-symbol doc-symbol-class"></code> Class
+            <ul style="list-style: none;">
+              <li><code class="doc-symbol doc-symbol-method"></code> method</li>
+              <li><code class="doc-symbol doc-symbol-attribute"></code> property</li>
+            </ul>
+          </li>
+        </ul>
+
+    === "Without symbol type in ToC"
+
+        <ul style="list-style: none;">
+          <li>namespace</li>
+          <li>function</li>
+          <li>Class
+            <ul style="list-style: none;">
+              <li>method</li>
+              <li>property</li>
+            </ul>
+          </li>
+        </ul>

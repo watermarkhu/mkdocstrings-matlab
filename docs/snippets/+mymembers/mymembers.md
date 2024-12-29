@@ -1,0 +1,28 @@
+??? code "Source files"
+
+    === ":material-file-tree: tree"
+
+        ```
+        +mymembers
+        |-- Contents.m
+        |-- ThisClass.m
+        |-- this_function.m
+        ```
+
+    === ":material-file-code: `Contents.m`"
+
+        ```matlab
+        --8<-- "docs/snippets/+mymembers/Contents.m"
+        ```
+    
+    === ":material-file-code: `ThisClass.m`"
+
+        ```matlab
+        --8<-- "docs/snippets/+mymembers/ThisClass.m"
+        ```
+
+    === ":material-file-code: `this_function.m`"
+
+        ```matlab
+        --8<-- "docs/snippets/+mymembers/this_function.m"
+        ```
