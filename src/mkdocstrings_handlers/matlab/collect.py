@@ -1,5 +1,5 @@
 from collections import defaultdict, deque
-from copy import deepcopy
+from copy import copy
 from pathlib import Path
 from typing import Mapping, Sequence
 
@@ -245,30 +245,29 @@ class PathCollection(ModulesCollection):
                 if not isinstance(returns.annotation, Expr):
                     returns.annotation = None
 
-        for member in getattr(model, "members", {}).values():
-            self.update_model(member, config)
-
         # previous updates do not edit the model attributes persistently
         # However, the following updates do edit the model attributes persistently
         # such as adding new sections to the docstring or editing its members.abs
-        # Thus, we need to deepcopy the model to avoid editing the original model
-        model = deepcopy(model)
+        # Thus, we need to copy the model to avoid editing the original model
+        model = copy(model)
+        for name, member in getattr(model, "members", {}).items():
+            model.members[name] = self.update_model(member, config)
 
         # Hide hidden members (methods and properties)
-        if isinstance(model, Class) and config.get("members_hide_hidden", True):
+        if isinstance(model, Class) and not config.get("hidden_members", False):
             model.members = {
                 key: value
                 for key, value in model.members.items()
-                if (not hasattr(value, "hidden") or getattr(value, "hidden") is False)
+                if (not hasattr(value, "Hidden") or getattr(value, "Hidden") is False)
             }
             model._inherited_members = {
                 key: value
                 for key, value in model.inherited_members.items()
-                if (not hasattr(value, "hidden") or getattr(value, "hidden") is False)
+                if (not hasattr(value, "Hidden") or getattr(value, "Hidden") is False)
             }
 
         # Hide private members (methods and properties)
-        if isinstance(model, Class) and config.get("members_hide_private", True):
+        if isinstance(model, Class) and not config.get("private_members", False):
             model.members = {
                 key: value
                 for key, value in model.members.items()

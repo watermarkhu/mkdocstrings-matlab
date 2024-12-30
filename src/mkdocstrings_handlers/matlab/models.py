@@ -322,7 +322,7 @@ class Class(MatlabMixin, PathMixin, GriffeClass, MatlabObject):
         super().__init__(*args, **kwargs)
         self.Abstract: bool = Abstract
         self.Hidden: bool = Hidden
-        self.sealed: bool = Sealed
+        self.Sealed: bool = Sealed
         self._inherited_members: dict[str, MatlabObject] | None = None
 
     @property
@@ -383,17 +383,13 @@ class Class(MatlabMixin, PathMixin, GriffeClass, MatlabObject):
             labels.add("Abstract")
         if self.Hidden:
             labels.add("Hidden")
-        if self.sealed:
+        if self.Sealed:
             labels.add("Sealed")
         return labels
 
     @labels.setter
     def labels(self, *args):
         pass
-
-    @property
-    def is_private(self) -> bool:
-        return self.Hidden
 
     @property
     def canonical_path(self) -> str:
@@ -425,6 +421,7 @@ class Property(MatlabMixin, Attribute, MatlabObject):
         SetObservable: bool = False,
         Transient: bool = False,
         WeakHandle: bool = False,
+        Access: AccessEnum = AccessEnum.public,
         GetAccess: AccessEnum = AccessEnum.public,
         SetAccess: AccessEnum = AccessEnum.public,
         **kwargs: Any,
@@ -440,18 +437,21 @@ class Property(MatlabMixin, Attribute, MatlabObject):
         self.SetObservable: bool = SetObservable
         self.Transient: bool = Transient
         self.WeakHandle: bool = WeakHandle
+        self.Access = Access
         self.GetAccess: AccessEnum = GetAccess
         self.SetAccess: AccessEnum = SetAccess
         self.getter: Function | None = None
 
     @property
     def is_private(self) -> bool:
-        set_public = (
-            self.SetAccess == AccessEnum.public
-            or self.SetAccess == AccessEnum.immutable
+        if self.Access != AccessEnum.public:
+            return True
+        set_private = (
+            self.SetAccess != AccessEnum.public
+            or self.SetAccess != AccessEnum.immutable
         )
-        get_public = self.GetAccess == AccessEnum.public
-        return not (set_public and get_public)
+        get_private = self.GetAccess != AccessEnum.public
+        return set_private or get_private
 
     @property
     def labels(self) -> set[str]:
@@ -462,7 +462,7 @@ class Property(MatlabMixin, Attribute, MatlabObject):
             "Constant",
             "Dependent",
             "GetObservable",
-            "Didden",
+            "Hidden",
             "NonCopyable",
             "SetObservable",
             "Transient",
@@ -470,7 +470,7 @@ class Property(MatlabMixin, Attribute, MatlabObject):
         ]:
             if getattr(self, attr):
                 labels.add(attr)
-        for attr in ["GetAccess", "SetAccess"]:
+        for attr in ["Access", "GetAccess", "SetAccess"]:
             if getattr(self, attr) != AccessEnum.public:
                 labels.add(f"{attr}={getattr(self, attr).value}")
         return labels

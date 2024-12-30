@@ -153,9 +153,9 @@ plugins:
           show_symbol_type_heading: false
           show_symbol_type_toc: false
 
+          hidden_members: false
+          private_members: false
           inherited_members: false
-          members_hide_hidden: true
-          members_hide_private: true
           filters: ["!^delete$|^disp$"]
           members_order: "source"
           summary: true

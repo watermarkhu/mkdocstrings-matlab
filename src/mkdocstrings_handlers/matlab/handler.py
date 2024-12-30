@@ -45,11 +45,11 @@ class MatlabHandler(BaseHandler):
         "show_symbol_type_heading": False,
         "show_symbol_type_toc": False,
         # Member options
-        "inherited_members": False,
         "members": None,
+        "hidden_members": False,
+        "private_members": False,
+        "inherited_members": False,
         "members_order": rendering.Order.alphabetical.value,
-        "members_hide_hidden": True,
-        "members_hide_private": True,
         "filters": ["!^delete$|^disp$"],
         "group_by_category": True,  # TODO broken
         "summary": False,  # TODO broken
@@ -102,18 +102,18 @@ class MatlabHandler(BaseHandler):
         show_symbol_type_toc (bool): Show the symbol type in the Table of Contents (e.g. mod, class, methd, func and attr). Default: `False`.
 
     Attributes: Members options:
-        inherited_members (list[str] | bool | None): A boolean, or an explicit list of inherited members to render.
-            If true, select all inherited members, which can then be filtered with `members`.
-            If false or empty list, do not select any inherited member. Default: `False`.
         members (list[str] | bool | None): A boolean, or an explicit list of members to render.
             If true, select all members without further filtering.
             If false or empty list, do not render members.
             If none, select all members and apply further filtering with filters and docstrings. Default: `None`.
+        hidden_members (bool): Show hidden members. Default: `False`.
+        private_members (bool): Show private members. Any method that has Access set to anything other than public and 
+            any property that has GetAccess set to anything but *public* is considered private. Default: `False`.
+        inherited_members (list[str] | bool | None): A boolean, or an explicit list of inherited members to render.
+            If true, select all inherited members, which can then be filtered with `members`.
+            If false or empty list, do not select any inherited member. Default: `False`.
         members_order (str): The members ordering to use. Options: `alphabetical` - order by the members names,
             `source` - order members as they appear in the source file. Default: `"alphabetical"`.
-        members_hide_hidden (bool): Hide hidden members. Default: `True`.
-        members_hide_private (bool): Hide private members. Any method that has Access set to anything other than public and 
-            any property that has GetAccess set to anything but *public* is considered private. Default: `True`.
         filters (list[str] | None): A list of filters applied to filter objects based on their name.
             A filter starting with `!` will exclude matching objects instead of including them.
             The `members` option takes precedence over `filters` (filters will still be applied recursively

@@ -63,6 +63,109 @@ plugins:
 
     The default behavior (with unspecified `members` or `members: null`) is to use [`filters`][].
 
+## `hidden_members`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+MATLAB's [classes](https://mathworks.com/help/matlab/matlab_oop/class-attributes.html), [methods](https://mathworks.com/help/matlab/matlab_oop/method-attributes.html) and [properties](https://mathworks.com/help/matlab/matlab_oop/property-attributes.html) can be hidden by setting its attributes to `Hidden` or `Hidden=true`. By default, members that are specified as hidden will not be documented. 
+
+This takes precedence over [`members`][] and [`filters`][], and also applies for [`inherited_members`][]. This means that for any hidden member to be shown, `hidden_members` must be enabled, and further selection is possible via [`members`][] and [`filters`][]. Hidden members will be labeled `Hidden`, this can be disabled in [`show_labels`][]. 
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          hidden_members: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: mymembers.ThisClass
+    options:
+      hidden_members: true
+```
+
+--8<-- "docs/snippets/+mymembers/mymembers.md"
+
+!!! prevew
+
+    === "With hidden members"
+
+        ::: mymembers.ThisClass
+            options:
+              hidden_members: true
+
+    === "Without hidden members"
+
+        ::: mymembers.ThisClass
+            options:
+              hidden_members: false
+
+## `private_members`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+MATLAB's [methods](https://mathworks.com/help/matlab/matlab_oop/method-attributes.html) and [properties](https://mathworks.com/help/matlab/matlab_oop/property-attributes.html) can be set to private via the `Access` attribute, and additionally via the `SetAccess` and `GetAccess` attributes for properties. The possible settings for these attributes are 
+
+1. *public*
+2. *protected*
+3. *private*
+4. *immutable* (only for `SetAccess`)
+5. List of classes that have access to the current method or property. 
+
+To simplify the definition here, any property or method that do not have attribute `Access` set to *public* is considered a private member. If the `GetAccess` and/or `SetAccess` attribute is set in stead of `Access` for a property, it is consisered a private member if either the `SetAccess` attribute is not *public* or *immutable* or if the `GetAccess` attribute is not *public*. 
+
+```mermaid 
+flowchart TD
+a[Access=public]
+sg[SetAccess=public/immutable and GetAccess=public]
+
+public[not private member]
+private[private member]
+a -- yes --> public 
+a -- no --> private
+a -- "not specified" --> sg
+sg -- no --> private
+sg -- yes --> public
+
+```
+
+This takes precedence over [`members`][] and [`filters`][], and also applies for [`inherited_members`][]. This means that for any private member to be shown, `private_members` must be enabled, and further selection is possible via [`members`][] and [`filters`][]. Private members will be labeled with it access attribute setting, this can be disabled in [`show_labels`][]. 
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          private_members: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: mymembers.ThisClass
+    options:
+      private_members: true
+```
+
+--8<-- "docs/snippets/+mymembers/mymembers.md"
+
+!!! prevew
+
+    === "With private members"
+
+        ::: mymembers.ThisClass
+            options:
+              private_members: true
+
+    === "Without private members"
+
+        ::: mymembers.ThisClass
+            options:
+              private_members: false
+
 
 ## `inherited_members`
 
@@ -215,28 +318,15 @@ plugins:
 
     === "With alphabetical order"
 
-        ::: +mymembers.ThisClass
+        ::: mymembers.ThisClass
             options:
-              members: true
               members_order: alphabetical
 
     === "With source order"
 
-        ::: +mymembers.ThisClass
+        ::: mymembers.ThisClass
             options:
-              members: true
               members_order: source
-
-## `members_hide_hidden`
-
-- **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
-<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
-
-## `members_hide_private`
-
-- **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
-<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
-
 
 ## `filters`
 
@@ -300,3 +390,47 @@ plugins:
             options:
               filters: ["!method"]
 
+
+
+
+
+
+## `show_labels`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+Whether to show labels of the members.
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          show_labels: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: mymembers.ThisClass
+    options:
+      show_labels: false
+```
+
+--8<-- "docs/snippets/+mymembers/mymembers.md"
+
+!!! prevew
+
+    === "With show labels"
+
+        ::: mymembers.ThisClass
+            options:
+              private_members: true
+              show_labels: true
+
+    === "Without show labels"
+
+        ::: mymembers.ThisClass
+            options:
+              private_members: true
+              show_labels: false
