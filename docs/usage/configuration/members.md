@@ -449,9 +449,9 @@ plugins:
 - **:octicons-package-24: Type <code><autoref identifier="bool" optional>bool</autoref> | <autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="bool" optional>bool</autoref>]</code>  :material-equal: `False`{ title="default value" }**
 <!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
 
-Whether to render summaries of modules, classes, functions (methods) and attributes.
+Whether to render summaries of namespaces, classes, functions (methods) and properties.
 
-This option accepts a boolean (`yes`, `true`, `no`, `false` in YAML) or a dictionary with one or more of the following keys: `attributes`, `functions`, `classes`, `modules`, with booleans as values. Class methods summary is (de)activated with the `functions` key. By default, `summary` is false, and by extension all values are false.
+This option accepts a boolean (`yes`, `true`, `no`, `false` in YAML) or a dictionary with one or more of the following keys: `namespaces`, `functions`, `classes`, `properties`, with booleans as values. Class methods summary is (de)activated with the `functions` key. By default, `summary` is false, and by extension all values are false.
 
 Examples:
 
@@ -465,9 +465,9 @@ summary: false
 
 ```yaml
 summary:
-  attributes: false
+  properties: false
   functions: true
-  modules: false
+  namespaces: false
 ```
 
 Summaries will be rendered as the corresponding docstring sections. For example, the summary for attributes will be rendered as an Attributes docstring section. The section will be rendered in accordance with the [`docstring_section_style`][] option. If the objects appearing in the summary are also rendered on the page (or somewhere else on the site), their name will automatically link to their rendered documentation.
@@ -496,11 +496,15 @@ plugins:
         ```markdown
         ::: mymembers.ThisClass
             options:
+              hidden_members: true
+              private_members: true
               summary: false
         ```
 
         ::: mymembers.ThisClass
             options:
+              hidden_members: true
+              private_members: true
               summary: false
 
     === "With all summaries"
@@ -508,11 +512,15 @@ plugins:
         ```markdown
         ::: mymembers.ThisClass
             options:
+              hidden_members: true
+              private_members: true
               summary: true
         ```
 
         ::: mymembers.ThisClass
             options:
+              hidden_members: true
+              private_members: true
               summary: true
 
     === "With methods summary only"
@@ -520,14 +528,18 @@ plugins:
         ```markdown
         ::: mymembers.ThisClass
             options:
+              hidden_members: true
+              private_members: true
               summary:
-                methods: true
+                functions: true
         ```
 
         ::: mymembers.ThisClass
             options:
+              hidden_members: true
+              private_members: true
               summary:
-                methods: true
+                functions: true
 
 
 ## `show_labels`

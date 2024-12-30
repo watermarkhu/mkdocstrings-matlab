@@ -52,7 +52,7 @@ class MatlabHandler(BaseHandler):
         "members_order": rendering.Order.alphabetical.value,
         "filters": ["!^delete$|^disp$"],
         "group_by_category": True,
-        "summary": False,  # TODO broken
+        "summary": False,
         "show_labels": True,
         # Docstring options
         "docstring_style": "google",
@@ -121,8 +121,8 @@ class MatlabHandler(BaseHandler):
             A filter starting with `!` will exclude matching objects instead of including them.
             The `members` option takes precedence over `filters` (filters will still be applied recursively
             to lower members in the hierarchy). Default: `["!^delete$|^disp$"]`.
-        group_by_category (bool): Group the object's children by categories: attributes, classes, functions, and modules. Default: `True`.
-        summary (bool | dict[str, bool]): Whether to render summaries of modules, classes, functions (methods) and attributes.
+        group_by_category (bool): Group the object's children by categories: properties, classes, functions, and namespaces. Default: `True`.
+        summary (bool | dict[str, bool]): Whether to render summaries of namespaces, classes, functions (methods) and properties. Default: `False`.
         show_labels (bool): Whether to show labels of the members. Default: `True`.
 
     Attributes: Docstrings options:
@@ -227,6 +227,31 @@ class MatlabHandler(BaseHandler):
                 (re.compile(filtr.lstrip("!")), filtr.startswith("!"))
                 for filtr in final_config["filters"]
             ]
+
+        summary = final_config["summary"]
+        if summary is True:
+            final_config["summary"] = {
+                "attributes": True,
+                "functions": True,
+                "classes": True,
+                "modules": True,
+            }
+        elif summary is False:
+            final_config["summary"] = {
+                "attributes": False,
+                "functions": False,
+                "classes": False,
+                "modules": False,
+            }
+        else:
+            final_config["summary"] = {
+                "attributes": summary.get("properties", False),
+                "functions": summary.get("functions", False),
+                "classes": summary.get("classes", False),
+                "modules": summary.get("namespaces", False),
+            }
+
+        final_config["merge_init_into_class"] = False
 
         return template.render(
             **{

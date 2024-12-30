@@ -158,7 +158,7 @@ plugins:
           inherited_members: false
           filters: ["!^delete$|^disp$"]
           members_order: "source"
-          summary: true
+          summary: false
           show_labels: true
 
           docstring_style: google
