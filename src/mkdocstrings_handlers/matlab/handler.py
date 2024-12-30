@@ -106,9 +106,12 @@ class MatlabHandler(BaseHandler):
             If true, select all members without further filtering.
             If false or empty list, do not render members.
             If none, select all members and apply further filtering with filters and docstrings. Default: `None`.
-        hidden_members (bool): Show hidden members. Default: `False`.
-        private_members (bool): Show private members. Any method that has Access set to anything other than public and 
-            any property that has GetAccess set to anything but *public* is considered private. Default: `False`.
+        hidden_members (list[str] | bool | None): A boolean, or an explicit list of hidden members to render. 
+            If true, select all inherited members, which can then be filtered with `members`.
+            If false or empty list, do not select any hidden member. Default: `False`.
+        private_members (list[str] | bool | None): A boolean, or an explicit list of private members to render. 
+            If true, select all inherited members, which can then be filtered with `members`.
+            If false or empty list,  do not select any private member.  Default: `False`.
         inherited_members (list[str] | bool | None): A boolean, or an explicit list of inherited members to render.
             If true, select all inherited members, which can then be filtered with `members`.
             If false or empty list, do not select any inherited member. Default: `False`.

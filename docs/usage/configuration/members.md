@@ -38,7 +38,7 @@ plugins:
 
 --8<-- "docs/snippets/+mymembers/mymembers.md"
 
-!!! prevew
+!!! preview
 
     === "With `members: true`"
 
@@ -65,7 +65,8 @@ plugins:
 
 ## `hidden_members`
 
-- **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
+- **:octicons-package-24: Type <code><autoref identifier="list" optional>list</autoref>[<autoref identifier="str" optional>str</autoref>] |
+    <autoref identifier="bool" optional>bool</autoref></code>  :material-equal: `False`{ title="default value" }**
 <!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
 
 MATLAB's [classes](https://mathworks.com/help/matlab/matlab_oop/class-attributes.html), [methods](https://mathworks.com/help/matlab/matlab_oop/method-attributes.html) and [properties](https://mathworks.com/help/matlab/matlab_oop/property-attributes.html) can be hidden by setting its attributes to `Hidden` or `Hidden=true`. By default, members that are specified as hidden will not be documented. 
@@ -89,23 +90,30 @@ plugins:
 
 --8<-- "docs/snippets/+mymembers/mymembers.md"
 
-!!! prevew
+!!! preview
 
-    === "With hidden members"
+    === "With `hidden_members: true`"
 
         ::: mymembers.ThisClass
             options:
               hidden_members: true
 
-    === "Without hidden members"
+    === "With `hidden_members: false` or `hidden_members: []`"
 
         ::: mymembers.ThisClass
             options:
               hidden_members: false
 
+    === "With `hidden_members: ['hidden_method']`"
+
+        ::: mymembers.ThisClass
+            options:
+              hidden_members: ['hidden_method']
+
 ## `private_members`
 
-- **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
+- **:octicons-package-24: Type <code><autoref identifier="list" optional>list</autoref>[<autoref identifier="str" optional>str</autoref>] |
+    <autoref identifier="bool" optional>bool</autoref></code>  :material-equal: `False`{ title="default value" }**
 <!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
 
 MATLAB's [methods](https://mathworks.com/help/matlab/matlab_oop/method-attributes.html) and [properties](https://mathworks.com/help/matlab/matlab_oop/property-attributes.html) can be set to private via the `Access` attribute, and additionally via the `SetAccess` and `GetAccess` attributes for properties. The possible settings for these attributes are 
@@ -152,20 +160,25 @@ plugins:
 
 --8<-- "docs/snippets/+mymembers/mymembers.md"
 
-!!! prevew
+!!! preview
 
-    === "With private members"
+    === "With `private_members: true`"
 
         ::: mymembers.ThisClass
             options:
               private_members: true
 
-    === "Without private members"
+    === "With `private_members: false` or `private_members: []`"
 
         ::: mymembers.ThisClass
             options:
               private_members: false
 
+    === "With `private_members: ['private_property']`"
+
+        ::: mymembers.ThisClass
+            options:
+              private_members: ['private_property']
 
 ## `inherited_members`
 
@@ -314,7 +327,7 @@ plugins:
 
 --8<-- "docs/snippets/+mymembers/mymembers.md"
 
-!!! prevew
+!!! preview
 
     === "With alphabetical order"
 
@@ -419,7 +432,7 @@ plugins:
 
 --8<-- "docs/snippets/+mymembers/mymembers.md"
 
-!!! prevew
+!!! preview
 
     === "With show labels"
 

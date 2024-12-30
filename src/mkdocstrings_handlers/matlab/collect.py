@@ -254,29 +254,47 @@ class PathCollection(ModulesCollection):
             model.members[name] = self.update_model(member, config)
 
         # Hide hidden members (methods and properties)
-        if isinstance(model, Class) and not config.get("hidden_members", False):
+        hidden_members = config.get("hidden_members", False)
+        if isinstance(hidden_members, bool):
+            filter_hidden = not hidden_members
+            show_hidden = []
+        else:
+            filter_hidden = True
+            show_hidden: list[str] = hidden_members
+        if isinstance(model, Class) and filter_hidden:
             model.members = {
                 key: value
                 for key, value in model.members.items()
-                if (not hasattr(value, "Hidden") or getattr(value, "Hidden") is False)
+                if not getattr(value, "Hidden", False)
+                or (show_hidden and getattr(value, "Hidden", False) and key in show_hidden)
             }
             model._inherited_members = {
                 key: value
                 for key, value in model.inherited_members.items()
-                if (not hasattr(value, "Hidden") or getattr(value, "Hidden") is False)
+                if not getattr(value, "Hidden", False)
+                or (show_hidden and getattr(value, "Hidden", False) and key in show_hidden)
             }
 
         # Hide private members (methods and properties)
-        if isinstance(model, Class) and not config.get("private_members", False):
+        private_members = config.get("private_members", False)
+        if isinstance(private_members, bool):
+            filter_private = not private_members
+            show_private = []
+        else:
+            filter_private = True
+            show_private: list[str] = private_members
+        if isinstance(model, Class) and filter_private:
             model.members = {
                 key: value
                 for key, value in model.members.items()
-                if (not hasattr(value, "is_private") or getattr(value, "is_private") is False)
+                if not getattr(value, "is_private", False)
+                or (show_private and getattr(value, "is_private", False) and key in show_private)
             }
             model._inherited_members = {
                 key: value
                 for key, value in model.inherited_members.items()
-                if (not hasattr(value, "is_private") or getattr(value, "is_private") is False)
+                if not getattr(value, "is_private", False)
+                or (show_private and getattr(value, "is_private", False) and key in show_private)
             }
 
         # Create parameters and returns sections from argument blocks
