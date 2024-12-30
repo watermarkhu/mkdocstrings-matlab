@@ -245,13 +245,13 @@ class MatlabHandler(BaseHandler):
             }
         else:
             final_config["summary"] = {
-                "attributes": summary.get("properties", False),
+                "attributes": summary.get("properties", False), # Map properties (MATLAB) to attributes (Python)
                 "functions": summary.get("functions", False),
                 "classes": summary.get("classes", False),
-                "modules": summary.get("namespaces", False),
+                "modules": summary.get("namespaces", False), # Map namespaces (MATLAB) to modules (Python)
             }
 
-        final_config["merge_init_into_class"] = False
+        final_config["merge_init_into_class"] = False # This settings must be present to avoid errors
 
         return template.render(
             **{
