@@ -404,8 +404,130 @@ plugins:
               filters: ["!method"]
 
 
+## `group_by_category`
 
+- **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
 
+Group the object members by categories: properties, classes, functions, and namespaces.
+
+Members within a same category will be ordered according to the [`members_order`][] option. You can use the [`show_category_heading`][] option to also render a heading for each category.
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          group_by_category: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: +mymembers
+    options:
+      group_by_category: false
+```
+
+--8<-- "docs/snippets/+mymembers/mymembers.md"
+
+!!! preview
+
+    === "With category grouping"
+
+        ::: +mymembers
+            options:
+              group_by_category: true
+
+    === "Without category grouping"
+
+        ::: +mymembers
+            options:
+              group_by_category: False
+
+## `summary`
+
+- **:octicons-package-24: Type <code><autoref identifier="bool" optional>bool</autoref> | <autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="bool" optional>bool</autoref>]</code>  :material-equal: `False`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+Whether to render summaries of modules, classes, functions (methods) and attributes.
+
+This option accepts a boolean (`yes`, `true`, `no`, `false` in YAML) or a dictionary with one or more of the following keys: `attributes`, `functions`, `classes`, `modules`, with booleans as values. Class methods summary is (de)activated with the `functions` key. By default, `summary` is false, and by extension all values are false.
+
+Examples:
+
+```yaml
+summary: true
+```
+
+```yaml
+summary: false
+```
+
+```yaml
+summary:
+  attributes: false
+  functions: true
+  modules: false
+```
+
+Summaries will be rendered as the corresponding docstring sections. For example, the summary for attributes will be rendered as an Attributes docstring section. The section will be rendered in accordance with the [`docstring_section_style`][] option. If the objects appearing in the summary are also rendered on the page (or somewhere else on the site), their name will automatically link to their rendered documentation.
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          summary: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: mymembers.ThisClass
+    options:
+      summary: false
+```
+
+--8<-- "docs/snippets/+mymembers/mymembers.md"
+
+!!! preview
+
+    === "Without summary"
+
+        ```markdown
+        ::: mymembers.ThisClass
+            options:
+              summary: false
+        ```
+
+        ::: mymembers.ThisClass
+            options:
+              summary: false
+
+    === "With all summaries"
+
+        ```markdown
+        ::: mymembers.ThisClass
+            options:
+              summary: true
+        ```
+
+        ::: mymembers.ThisClass
+            options:
+              summary: true
+
+    === "With methods summary only"
+
+        ```markdown
+        ::: mymembers.ThisClass
+            options:
+              summary:
+                methods: true
+        ```
+
+        ::: mymembers.ThisClass
+            options:
+              summary:
+                methods: true
 
 
 ## `show_labels`

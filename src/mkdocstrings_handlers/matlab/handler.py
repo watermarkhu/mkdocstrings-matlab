@@ -51,7 +51,7 @@ class MatlabHandler(BaseHandler):
         "inherited_members": False,
         "members_order": rendering.Order.alphabetical.value,
         "filters": ["!^delete$|^disp$"],
-        "group_by_category": True,  # TODO broken
+        "group_by_category": True,
         "summary": False,  # TODO broken
         "show_labels": True,
         # Docstring options
