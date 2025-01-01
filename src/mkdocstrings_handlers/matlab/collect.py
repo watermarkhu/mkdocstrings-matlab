@@ -1,5 +1,5 @@
 from collections import defaultdict, deque
-from copy import copy
+from copy import copy, deepcopy
 from pathlib import Path
 from typing import Mapping, Sequence
 
@@ -249,9 +249,31 @@ class PathCollection(ModulesCollection):
         # However, the following updates do edit the model attributes persistently
         # such as adding new sections to the docstring or editing its members.abs
         # Thus, we need to copy the model to avoid editing the original model
-        model = copy(model)
-        for name, member in getattr(model, "members", {}).items():
-            model.members[name] = self.update_model(member, config)
+        alias = copy(model)
+        alias.docstring = deepcopy(model.docstring) if model.docstring is not None else None
+        alias.members = {key: value for key, value in model.members.items()}
+        if isinstance(alias, Class):
+            alias._inherited_members = None
+
+        for name, member in getattr(alias, "members", {}).items():
+            alias.members[name] = self.update_model(member, config)
+
+        # Merge constructor docstring into class
+        if (
+            isinstance(alias, Class)
+            and config.get("merge_constructor_into_class", False)
+            and alias.name in alias.members
+            and alias.members[alias.name].docstring is not None
+        ):
+            constructor = alias.members.pop(alias.name)
+            if constructor.docstring is not None:
+                if alias.docstring is None:
+                    alias.docstring = Docstring("", parent=alias)
+
+                if config.get('merge_constructor_ignore_summary', False):
+                    alias.docstring._suffixes.extend(constructor.docstring.parsed[1:])
+                else:
+                    alias.docstring._suffixes.extend(constructor.docstring.parsed)
 
         # Hide hidden members (methods and properties)
         hidden_members = config.get("hidden_members", False)
@@ -261,16 +283,16 @@ class PathCollection(ModulesCollection):
         else:
             filter_hidden = True
             show_hidden: list[str] = hidden_members
-        if isinstance(model, Class) and filter_hidden:
-            model.members = {
+        if isinstance(alias, Class) and filter_hidden:
+            alias.members = {
                 key: value
-                for key, value in model.members.items()
+                for key, value in alias.members.items()
                 if not getattr(value, "Hidden", False)
                 or (show_hidden and getattr(value, "Hidden", False) and key in show_hidden)
             }
-            model._inherited_members = {
+            alias._inherited_members = {
                 key: value
-                for key, value in model.inherited_members.items()
+                for key, value in alias.inherited_members.items()
                 if not getattr(value, "Hidden", False)
                 or (show_hidden and getattr(value, "Hidden", False) and key in show_hidden)
             }
@@ -283,24 +305,24 @@ class PathCollection(ModulesCollection):
         else:
             filter_private = True
             show_private: list[str] = private_members
-        if isinstance(model, Class) and filter_private:
-            model.members = {
+        if isinstance(alias, Class) and filter_private:
+            alias.members = {
                 key: value
-                for key, value in model.members.items()
+                for key, value in alias.members.items()
                 if not getattr(value, "Private", False)
                 or (show_private and getattr(value, "Private", False) and key in show_private)
             }
-            model._inherited_members = {
+            alias._inherited_members = {
                 key: value
-                for key, value in model.inherited_members.items()
+                for key, value in alias.inherited_members.items()
                 if not getattr(value, "Private", False)
                 or (show_private and getattr(value, "Private", False) and key in show_private)
             }
 
         # Create parameters and returns sections from argument blocks
         if (
-            isinstance(model, Function)
-            and model.docstring is not None
+            isinstance(alias, Function)
+            and alias.docstring is not None
             and config.get("parameters_from_arguments", True)
             and (
                 config.get("show_docstring_parameters", True)
@@ -310,23 +332,23 @@ class PathCollection(ModulesCollection):
         ):
             docstring_parameters = any(
                 isinstance(doc, DocstringSectionParameters)
-                for doc in model.docstring.parsed
+                for doc in alias.docstring.parsed
             )
             docstring_returns = any(
                 isinstance(doc, DocstringSectionReturns)
-                for doc in model.docstring.parsed
+                for doc in alias.docstring.parsed
             )
 
-            if not docstring_parameters and model.parameters:
+            if not docstring_parameters and alias.parameters:
                 arguments_parameters = any(
-                    param.docstring is not None for param in model.parameters
+                    param.docstring is not None for param in alias.parameters
                 )
             else:
                 arguments_parameters = False
 
-            if not docstring_returns and model.returns:
+            if not docstring_returns and alias.returns:
                 arguments_returns = any(
-                    ret.docstring is not None for ret in model.returns
+                    ret.docstring is not None for ret in alias.returns
                 )
             else:
                 arguments_returns = False
@@ -336,13 +358,13 @@ class PathCollection(ModulesCollection):
 
             standard_parameters = [
                 param
-                for param in model.parameters
+                for param in alias.parameters
                 if param.kind is not ParameterKind.keyword_only
             ]
 
             keyword_parameters = [
                 param
-                for param in model.parameters
+                for param in alias.parameters
                 if param.kind is ParameterKind.keyword_only
             ]
 
@@ -351,7 +373,7 @@ class PathCollection(ModulesCollection):
                 and document_parameters
                 and standard_parameters
             ):
-                model.docstring._suffixes.append(
+                alias.docstring._suffixes.append(
                     DocstringSectionParameters(
                         [
                             DocstringParameter(
@@ -374,7 +396,7 @@ class PathCollection(ModulesCollection):
                 and document_parameters
                 and keyword_parameters
             ):
-                model.docstring._suffixes.append(
+                alias.docstring._suffixes.append(
                     DocstringSectionOtherParameters(
                         [
                             DocstringParameter(
@@ -406,43 +428,30 @@ class PathCollection(ModulesCollection):
                             if param.docstring is not None
                             else "",
                         )
-                        for param in model.returns or []
+                        for param in alias.returns or []
                     ]
                 )
-                model.docstring._suffixes.append(returns)
-
-        # Merge constructor docstring into class
-        if (
-            isinstance(model, Class)
-            and config.get("merge_constructor_into_class", False)
-            and model.name in model.members
-            and model.members[model.name].docstring is not None
-        ):
-            constructor = model.members.pop(model.name)
-            if constructor.docstring is not None:
-                if model.docstring is None:
-                    model.docstring = Docstring("", parent=model)
-                model.docstring._suffixes.extend(constructor.docstring.parsed)
+                alias.docstring._suffixes.append(returns)
 
         # Add inheritance diagram to class docstring
         if (
-            isinstance(model, Class)
+            isinstance(alias, Class)
             and config.get("show_inheritance_diagram", False)
             and (
                 (
-                    model.docstring is not None
-                    and "Inheritance Diagram" not in model.docstring.parsed
+                    alias.docstring is not None
+                    and "Inheritance Diagram" not in alias.docstring.parsed
                 )
-                or model.docstring is None
+                or alias.docstring is None
             )
         ):
-            diagram = self.get_inheritance_diagram(model)
+            diagram = self.get_inheritance_diagram(alias)
             if diagram is not None:
-                if model.docstring is None:
-                    model.docstring = Docstring("", parent=model)
-                model.docstring._prefixes.append(diagram)
+                if alias.docstring is None:
+                    alias.docstring = Docstring("", parent=alias)
+                alias.docstring._prefixes.append(diagram)
 
-        return model
+        return alias
 
     def addpath(self, path: str | Path, to_end: bool = False, recursive: bool = False):
         """

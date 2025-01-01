@@ -25,7 +25,6 @@ class MatlabHandler(BaseHandler):
     """The fallback theme."""
     fallback_config: ClassVar[dict] = {
         "fallback": True,
-        "merge_constructor_into_class": True,
     }
     """The configuration used to collect item during autorefs fallback."""
     default_config: ClassVar[dict] = {
@@ -58,7 +57,8 @@ class MatlabHandler(BaseHandler):
         "docstring_style": "google",
         "docstring_options": {},
         "docstring_section_style": "table",
-        "merge_constructor_into_class": True,
+        "merge_constructor_into_class": False,
+        "merge_constructor_ignore_summary": False,
         "show_if_no_docstring": False,
         "show_docstring_attributes": True,
         "show_docstring_functions": True,
@@ -130,6 +130,7 @@ class MatlabHandler(BaseHandler):
         docstring_options (dict): The options for the docstring parser. See [docstring parsers](https://mkdocstrings.github.io/griffe/reference/docstrings/) and their options in Griffe docs.
         docstring_section_style (str): The style used to render docstring sections. Options: `table`, `list`, `spacy`. Default: `"table"`.
         merge_constructor_into_class (bool): Whether to merge the constructor method into the class' signature and docstring. Default: `False`.
+        merge_constructor_ignore_summary (bool): Whether to ignore the constructor summary when merging it into the class. Default: `False`.
         relative_crossrefs (bool): Whether to enable the relative crossref syntax. Default: `False`.
         scoped_crossrefs (bool): Whether to enable the scoped crossref ability. Default: `False`.
         show_if_no_docstring (bool): Show the object heading even if it has no docstring or children with docstrings. Default: `False`.

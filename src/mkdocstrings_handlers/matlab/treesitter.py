@@ -316,7 +316,7 @@ class FileParser(object):
                     "WeakHandle",
                 ]:
                     property_kwargs[key] = value
-                elif key in ["GetAccess", "SetAccess"]:
+                elif key in ["Access", "GetAccess", "SetAccess"]:
                     if value in ["public", "protected", "private", "immutable"]:
                         property_kwargs[key] = AccessEnum(value)
                     else:
