@@ -29,7 +29,7 @@ plugins:
       docstring_style: numpy
 ```
 
-!!! preview
+??? preview
 
     Every style gets rendered the same way. Here are some docstring examples.
 
@@ -143,7 +143,7 @@ plugins:
       docstring_section_style: list
 ```
 
-!!! preview
+??? preview
 
 
     === "Table"
@@ -238,7 +238,7 @@ plugins:
 
 --8<-- "docs/snippets/+mynamespace/mynamespace.md"
 
-!!! preview "Preview: Cross-references"
+??? preview "Preview: Cross-references"
 
     === "Parse argument validation"
 
@@ -300,7 +300,7 @@ plugins:
     --8<-- "docs/snippets/Thing.m"
     ```
 
-!!! preview
+??? preview
 
     === "Merged, summary discarded"
 
@@ -372,7 +372,7 @@ plugins:
 
 --8<-- "docs/snippets/+undocumented/undocumented.md"
 
-!!! preview
+??? preview
 
     === "Show"
 
@@ -397,3 +397,115 @@ plugins:
         ::: +undocumented
             options:
               show_if_no_docstring: false
+
+
+## `show_docstring_description`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+Whether to render the textual blocks (including admonitions) of docstrings.
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          show_docstring_description: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: path.to.module
+    options:
+      show_docstring_description: false
+```
+
+## `show_docstring_examples`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+Whether to render the "Examples" sections of docstrings.
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          show_docstring_examples: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: path.to.module
+    options:
+      show_docstring_examples: false
+```
+
+## `show_docstring_parameters`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+Whether to render the "Parameters" sections of docstrings. 
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          show_docstring_parameters: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: path.to.module
+    options:
+      show_docstring_parameters: false
+```
+
+## `show_docstring_name_value_pairs`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+Whether to render the "Name-value pairs" sections of docstrings.
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          show_docstring_name_value_pairs: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: path.to.module
+    options:
+      show_docstring_name_value_pairs: false
+```
+
+## `show_docstring_returns`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+Whether to render the "Returns" sections of docstrings.
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          show_docstring_returns: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: path.to.module
+    options:
+      show_docstring_returns: false
+```
+

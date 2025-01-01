@@ -61,16 +61,11 @@ class MatlabHandler(BaseHandler):
         "merge_constructor_into_class": False,
         "merge_constructor_ignore_summary": False,
         "show_if_no_docstring": False,
-        "show_docstring_properties": True,
-        "show_docstring_functions": True,
-        "show_docstring_classes": True,
-        "show_docstring_namespaces": True,
         "show_docstring_description": True,
         "show_docstring_examples": True,
         "show_docstring_name_value_pairs": True,
         "show_docstring_parameters": True,
         "show_docstring_returns": True,
-
         # Signature options
         "annotations_path": "brief",
         "line_length": 60,
@@ -131,10 +126,6 @@ class MatlabHandler(BaseHandler):
         merge_constructor_into_class (bool): Whether to merge the constructor method into the class' signature and docstring. Default: `False`.
         merge_constructor_ignore_summary (bool): Whether to ignore the constructor summary when merging it into the class. Default: `False`.
         show_if_no_docstring (bool): Show the object heading even if it has no docstring or children with docstrings. Default: `False`.
-        show_docstring_properties (bool): Whether to display the "Properties" section in the object's docstring. Default: `True`.
-        show_docstring_functions (bool): Whether to display the "Functions" or "Methods" sections in the object's docstring. Default: `True`.
-        show_docstring_classes (bool): Whether to display the "Classes" section in the object's docstring. Default: `True`.
-        show_docstring_namespaces (bool): Whether to display the "Namespaces" section in the object's docstring. Default: `True`.
         show_docstring_description (bool): Whether to display the textual block (including admonitions) in the object's docstring. Default: `True`.
         show_docstring_examples (bool): Whether to display the "Examples" section in the object's docstring. Default: `True`.
         show_docstring_name_value_pairs (bool): Whether to display the "Name-value pairs" section in the object's docstring. Default: `True`.
@@ -241,16 +232,33 @@ class MatlabHandler(BaseHandler):
             }
         else:
             final_config["summary"] = {
-                "attributes": summary.get("properties", False), # Map properties (MATLAB) to attributes (Python)
+                "attributes": summary.get(
+                    "properties", False
+                ),  # Map properties (MATLAB) to attributes (Python)
                 "functions": summary.get("functions", False),
                 "classes": summary.get("classes", False),
-                "modules": summary.get("namespaces", False), # Map namespaces (MATLAB) to modules (Python)
+                "modules": summary.get(
+                    "namespaces", False
+                ),  # Map namespaces (MATLAB) to modules (Python)
             }
 
-        final_config["show_docstring_attributes"] = final_config.pop("show_docstring_properties", True)
-        final_config["show_docstring_modules"] = final_config.pop("show_docstring_namespaces", True)
-        final_config["show_docstring_other_parameters"] = final_config.pop("show_docstring_name_value_pairs", True)
-        final_config["merge_init_into_class"] = False # This settings must be present to avoid errors
+        final_config["show_docstring_other_parameters"] = config.get(
+            "show_docstring_name_value_pairs", True
+        )
+
+        # These settings must be present to avoid errors
+        for setting in [
+            "merge_init_into_class",
+            "show_docstring_attributes",
+            "show_docstring_functions",
+            "show_docstring_classes",
+            "show_docstring_modules",
+            "show_docstring_raises",
+            "show_docstring_receives",
+            "show_docstring_yields",
+            "show_docstring_warns",
+        ]:
+            final_config[setting] = False
 
         return template.render(
             **{

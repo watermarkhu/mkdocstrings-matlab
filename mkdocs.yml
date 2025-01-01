@@ -167,10 +167,6 @@ plugins:
           merge_constructor_into_class: false
           merge_constructor_ignore_summary: false
           show_if_no_docstring: false
-          show_docstring_properties: true
-          show_docstring_functions: true
-          show_docstring_classes: true
-          show_docstring_namespaces: true 
           show_docstring_description: true
           show_docstring_examples: true
           show_docstring_parameters: true

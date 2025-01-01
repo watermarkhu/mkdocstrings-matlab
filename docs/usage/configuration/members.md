@@ -38,7 +38,7 @@ plugins:
 
 --8<-- "docs/snippets/+mymembers/mymembers.md"
 
-!!! preview
+??? preview
 
     === "With `members: true`"
 
@@ -108,7 +108,7 @@ plugins:
 
 --8<-- "docs/snippets/+mymembers/mymembers.md"
 
-!!! preview
+??? preview
 
     === "With `hidden_members: true`"
 
@@ -196,7 +196,7 @@ plugins:
 
 --8<-- "docs/snippets/+mymembers/mymembers.md"
 
-!!! preview
+??? preview
 
     === "With `private_members: true`"
 
@@ -335,7 +335,7 @@ plugins:
 
 --8<-- "docs/snippets/+mymembers/mymembers.md"
 
-!!! preview
+??? preview
 
     === "With inherited members"
 
@@ -393,7 +393,7 @@ plugins:
 
 --8<-- "docs/snippets/+mymembers/mymembers.md"
 
-!!! preview
+??? preview
 
     === "With alphabetical order"
 
@@ -461,7 +461,7 @@ plugins:
 
 --8<-- "docs/snippets/+mymembers/mymembers.md"
 
-!!! preview
+??? preview
 
     === "With `filters: []`"
 
@@ -526,7 +526,7 @@ plugins:
 
 --8<-- "docs/snippets/+mymembers/mymembers.md"
 
-!!! preview
+??? preview
 
     === "With category grouping"
         
@@ -599,7 +599,7 @@ plugins:
 
 --8<-- "docs/snippets/+mymembers/mymembers.md"
 
-!!! preview
+??? preview
 
     === "Without summary"
 
@@ -668,7 +668,7 @@ plugins:
 
 --8<-- "docs/snippets/+mymembers/mymembers.md"
 
-!!! preview
+??? preview
 
     === "With show labels"
         

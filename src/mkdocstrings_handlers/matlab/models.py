@@ -372,7 +372,7 @@ class Class(MatlabMixin, PathMixin, GriffeClass, MatlabObject):
                     inherited_members[name] = Alias(
                         name, target=member, parent=self, inherited=True
                     )
-        
+
         self._inherited_members = inherited_members
         return inherited_members
 
@@ -450,7 +450,7 @@ class Property(MatlabMixin, Attribute, MatlabObject):
             and self.SetAccess != AccessEnum.immutable
         )
         get_private = self.GetAccess != AccessEnum.public
-        return private or set_private or get_private 
+        return private or set_private or get_private
 
     @property
     def is_private(self) -> bool:

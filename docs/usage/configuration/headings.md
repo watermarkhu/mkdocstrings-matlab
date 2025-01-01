@@ -30,7 +30,7 @@ plugins:
 
 --8<-- "docs/snippets/+mynamespace/mynamespace.md"
 
-!!! preview 
+??? preview 
 
     === "With level 3 and root heading"
 
@@ -91,7 +91,7 @@ plugins:
 
 --8<-- "docs/snippets/+mynamespace/mynamespace.md"
 
-!!! preview "Preview: Cross-references"
+??? preview "Preview: Cross-references"
 
     === "With parameter headings"
 
@@ -119,7 +119,7 @@ plugins:
               parameter_headings: false
               docstring_section_style: list
 
-!!! preview "Preview: Parameter sections"
+??? preview "Preview: Parameter sections"
 
     === "Table style"
 
@@ -154,7 +154,7 @@ plugins:
               show_docstring_returns: false
               show_docstring_description: false
 
-!!! preview "Preview: Table of contents (with symbol types)"
+??? preview "Preview: Table of contents (with symbol types)"
 
     <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code> typed_function<br>
     <code class="doc-symbol doc-symbol-toc doc-symbol-parameter" style="margin-left: 16px;"></code> input
@@ -192,7 +192,7 @@ plugins:
 
 --8<-- "docs/snippets/+mynamespace/mynamespace.md"
 
-!!! preview
+??? preview
 
     === "With root heading"
     
@@ -249,7 +249,7 @@ Lots of text.
 More text.
 ```
 
-!!! preview
+??? preview
 
     === "With ToC entry"
 
@@ -304,7 +304,7 @@ plugins:
 
 --8<-- "docs/snippets/+mynamespace/mynamespace.md"
 
-!!! preview
+??? preview
 
     === "With root full path"
 
@@ -358,7 +358,7 @@ plugins:
 
 --8<-- "docs/snippets/+mynamespace/mynamespace.md"
 
-!!! preview
+??? preview
 
     === "With root members full path"
 
@@ -415,7 +415,7 @@ plugins:
       show_object_full_path: false
 ```
 
-!!! preview
+??? preview
 
     === "With object full path"
 
@@ -477,7 +477,7 @@ plugins:
 
 --8<-- "docs/snippets/+mynamespace/mynamespace.md"
 
-!!! preview
+??? preview
 
     === "With category headings"
 
@@ -546,7 +546,7 @@ plugins:
 
 --8<-- "docs/snippets/+mynamespace/mynamespace.md"
 
-!!! preview
+??? preview
 
     === "With symbol type in headings"
 
@@ -610,7 +610,7 @@ plugins:
       show_symbol_type_toc: false
 ```
 
-!!! preview
+??? preview
 
     === "With symbol type in ToC"
 

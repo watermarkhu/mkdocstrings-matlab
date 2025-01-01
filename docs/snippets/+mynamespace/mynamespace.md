@@ -2,12 +2,12 @@
 
     === ":material-file-tree: tree"
 
-        ```
+        ```tree
         +mynamespace
-        |-- readme.md
-        |-- classA.m
-        |-- classB.m
-        |-- typed_function.m
+            readme.md
+            classA.m
+            classB.m
+            typed_function.m
         ```
 
     === ":material-file-code: `readme.md`"

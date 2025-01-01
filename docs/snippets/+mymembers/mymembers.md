@@ -2,12 +2,12 @@
 
     === ":material-file-tree: tree"
 
-        ```
+        ```tree
         +mymembers
-        |-- Contents.m
-        |-- BaseClass.m
-        |-- ThisClass.m
-        |-- this_function.m
+            Contents.m
+            BaseClass.m
+            ThisClass.m
+            this_function.m
         ```
 
     === ":material-file-code: `Contents.m`"

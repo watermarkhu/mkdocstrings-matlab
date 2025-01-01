@@ -332,7 +332,7 @@ class FileParser(object):
                         property_captures.get("comment", None)
                     ),
                     parent=model,
-                    **property_kwargs
+                    **property_kwargs,
                 )
                 model.members[prop.name] = prop
 

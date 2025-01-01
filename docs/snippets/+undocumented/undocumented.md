@@ -2,11 +2,11 @@
 
     === ":material-file-tree: tree"
 
-        ```
+        ```tree
         +undocumented
-        |-- ClassWithoutDocstring.m
-        |-- function_with_docstring.m
-        |-- function_without_docstring.m
+            ClassWithoutDocstring.m
+            function_with_docstring.m
+            function_without_docstring.m
         ```
 
     === ":material-file-code: `ClassWithoutDocstring.m`"

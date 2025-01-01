@@ -250,7 +250,9 @@ class PathCollection(ModulesCollection):
         # such as adding new sections to the docstring or editing its members.abs
         # Thus, we need to copy the model to avoid editing the original model
         alias = copy(model)
-        alias.docstring = deepcopy(model.docstring) if model.docstring is not None else None
+        alias.docstring = (
+            deepcopy(model.docstring) if model.docstring is not None else None
+        )
         alias.members = {key: value for key, value in model.members.items()}
         if isinstance(alias, Class):
             alias._inherited_members = None
@@ -270,7 +272,7 @@ class PathCollection(ModulesCollection):
                 if alias.docstring is None:
                     alias.docstring = Docstring("", parent=alias)
 
-                if config.get('merge_constructor_ignore_summary', False):
+                if config.get("merge_constructor_ignore_summary", False):
                     alias.docstring._suffixes.extend(constructor.docstring.parsed[1:])
                 else:
                     alias.docstring._suffixes.extend(constructor.docstring.parsed)
@@ -288,13 +290,21 @@ class PathCollection(ModulesCollection):
                 key: value
                 for key, value in alias.members.items()
                 if not getattr(value, "Hidden", False)
-                or (show_hidden and getattr(value, "Hidden", False) and key in show_hidden)
+                or (
+                    show_hidden
+                    and getattr(value, "Hidden", False)
+                    and key in show_hidden
+                )
             }
             alias._inherited_members = {
                 key: value
                 for key, value in alias.inherited_members.items()
                 if not getattr(value, "Hidden", False)
-                or (show_hidden and getattr(value, "Hidden", False) and key in show_hidden)
+                or (
+                    show_hidden
+                    and getattr(value, "Hidden", False)
+                    and key in show_hidden
+                )
             }
 
         # Hide private members (methods and properties)
@@ -310,13 +320,21 @@ class PathCollection(ModulesCollection):
                 key: value
                 for key, value in alias.members.items()
                 if not getattr(value, "Private", False)
-                or (show_private and getattr(value, "Private", False) and key in show_private)
+                or (
+                    show_private
+                    and getattr(value, "Private", False)
+                    and key in show_private
+                )
             }
             alias._inherited_members = {
                 key: value
                 for key, value in alias.inherited_members.items()
                 if not getattr(value, "Private", False)
-                or (show_private and getattr(value, "Private", False) and key in show_private)
+                or (
+                    show_private
+                    and getattr(value, "Private", False)
+                    and key in show_private
+                )
             }
 
         # Create parameters and returns sections from argument blocks
