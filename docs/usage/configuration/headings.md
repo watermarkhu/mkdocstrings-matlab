@@ -95,12 +95,24 @@ plugins:
 
     === "With parameter headings"
 
+        ```markdown
+        ::: mynamespace.typed_function
+            options:
+              parameter_headings: true
+        ```
+
         ::: mynamespace.typed_function
             options:
               parameter_headings: true
               docstring_section_style: list
 
     === "Without parameter headings"
+
+        ```markdown
+        ::: mynamespace.typed_function
+            options:
+              parameter_headings: false
+        ```
 
         ::: mynamespace.typed_function
             options:
@@ -203,16 +215,6 @@ plugins:
             options:
               show_root_heading: false
 
-    === ":octicons-code-16: source"
-
-        ```matlab
-        --8<-- "docs/snippets/+mynamespace/classA.m"
-        ```
-
-        ```matlab
-        --8<-- "docs/snippets/+mynamespace/classB.m"
-        ```
-
 ## `show_root_toc_entry`
 
 - **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
@@ -251,12 +253,24 @@ More text.
 
     === "With ToC entry"
 
+        ```markdown
+        ::: matlab_callable
+            options:
+              show_root_toc_entry: true
+        ```
+
         **Table of contents**  
         [Some heading](#permalink-to-some-heading){ title="#permalink-to-some-heading" }  
         [`matlab_callable`](#permalink-to-object){ title="#permalink-to-object" }   
         [Other heading](#permalink-to-other-heading){ title="#permalink-to-other-heading" } 
 
     === "Without ToC entry"
+
+        ```markdown
+        ::: matlab_callable
+            options:
+              show_root_toc_entry: false
+        ```
 
         **Table of contents**  
         [Some heading](#permalink-to-some-heading){ title="#permalink-to-some-heading" }  
@@ -294,11 +308,23 @@ plugins:
 
     === "With root full path"
 
+        ```markdown
+        ::: mynamespace.classA
+            options:
+              show_root_full_path: true
+        ```
+
         ::: mynamespace.classA
             options:
               show_root_full_path: true
 
     === "Without root full path"
+
+        ```markdown
+        ::: mynamespace.classA
+            options:
+              show_root_full_path: false
+        ```
 
         ::: mynamespace.classA
             options:
@@ -336,11 +362,23 @@ plugins:
 
     === "With root members full path"
 
+        ```markdown
+        ::: mynamespace.classA
+            options:
+              show_root_members_full_path: true
+        ```
+
         ::: mynamespace.classA
             options:
               show_root_members_full_path: true
 
     === "Without root members full path"
+
+        ```markdown
+        ::: mynamespace.classA
+            options:
+              show_root_members_full_path: false
+        ```
 
         ::: mynamespace.classA
             options:
@@ -381,6 +419,12 @@ plugins:
 
     === "With object full path"
 
+        ```markdown
+        ::: +mynamespace
+            options:
+              show_object_full_path: true
+        ```
+
         ::: +mynamespace
             options:
               show_object_full_path: true
@@ -388,6 +432,12 @@ plugins:
               show_docstring_returns: false
 
     === "Without object full path"
+        
+        ```markdown
+        ::: +mynamespace
+            options:
+              show_object_full_path: false
+        ```
 
         ::: +mynamespace
             options:
@@ -431,6 +481,13 @@ plugins:
 
     === "With category headings"
 
+        ```markdown
+        ::: +mynamespace
+            options:
+              group_by_category: true
+              show_category_heading: true
+        ```
+        
         ::: +mynamespace
             options:
               group_by_category: true
@@ -439,6 +496,13 @@ plugins:
               show_docstring_returns: false
 
     === "Without category headings"
+
+        ```markdown
+        ::: +mynamespace
+            options:
+              group_by_category: true
+              show_category_heading: false
+        ```
 
         ::: +mynamespace
             options:
@@ -486,6 +550,12 @@ plugins:
 
     === "With symbol type in headings"
 
+        ```markdown
+        ::: +mynamespace
+            options:
+              show_symbol_type_heading: true
+        ```
+
         ::: +mynamespace
             options:
               show_symbol_type_heading: true
@@ -493,6 +563,12 @@ plugins:
               show_docstring_returns: false
 
     === "Without symbol type in headings"
+
+        ```markdown
+        ::: +mynamespace
+            options:
+              show_symbol_type_heading: false
+        ```
 
         ::: +mynamespace
             options:

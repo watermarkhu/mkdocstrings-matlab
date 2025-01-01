@@ -12,6 +12,10 @@ classdef ThisClass < mymembers.BaseClass
         end
     end
 
+    properties
+        public_property % Public property docstring
+    end
+
     methods (Hidden)
         function obj = hidden_method(obj, input)
             % Hidden method docstring

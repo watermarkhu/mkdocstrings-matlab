@@ -287,14 +287,14 @@ class PathCollection(ModulesCollection):
             model.members = {
                 key: value
                 for key, value in model.members.items()
-                if not getattr(value, "is_private", False)
-                or (show_private and getattr(value, "is_private", False) and key in show_private)
+                if not getattr(value, "Private", False)
+                or (show_private and getattr(value, "Private", False) and key in show_private)
             }
             model._inherited_members = {
                 key: value
                 for key, value in model.inherited_members.items()
-                if not getattr(value, "is_private", False)
-                or (show_private and getattr(value, "is_private", False) and key in show_private)
+                if not getattr(value, "Private", False)
+                or (show_private and getattr(value, "Private", False) and key in show_private)
             }
 
         # Create parameters and returns sections from argument blocks

@@ -443,14 +443,18 @@ class Property(MatlabMixin, Attribute, MatlabObject):
         self.getter: Function | None = None
 
     @property
-    def is_private(self) -> bool:
+    def Private(self) -> bool:
         private = self.Access != AccessEnum.public
         set_private = (
             self.SetAccess != AccessEnum.public
             and self.SetAccess != AccessEnum.immutable
         )
         get_private = self.GetAccess != AccessEnum.public
-        return private or set_private or get_private
+        return private or set_private or get_private 
+
+    @property
+    def is_private(self) -> bool:
+        return self.Private or self.Hidden
 
     @property
     def labels(self) -> set[str]:
@@ -531,9 +535,12 @@ class Function(MatlabMixin, PathMixin, GriffeFunction, MatlabObject):
         self._is_getter: bool = getter
 
     @property
+    def Private(self) -> bool:
+        return self.Access != AccessEnum.public and self.Access != AccessEnum.immutable
+
+    @property
     def is_private(self) -> bool:
-        public = self.Access == AccessEnum.public or self.Access == AccessEnum.immutable
-        return not public
+        return self.Private or self.Hidden
 
     @property
     def labels(self) -> set[str]:

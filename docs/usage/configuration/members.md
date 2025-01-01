@@ -42,17 +42,35 @@ plugins:
 
     === "With `members: true`"
 
+        ```markdown
+        ::: +mymembers
+            options:
+              members: true
+        ```
+        
         ::: +mymembers
             options:
               members: true
 
     === "With `members: false` or `members: []`"
 
+        ```markdown
+        ::: +mymembers
+            options:
+              members: false
+        ```
+
         ::: +mymembers
             options:
               members: false
 
     === "With `members: [ThisClass]`"
+
+        ```markdown
+        ::: +mymembers
+            options:
+              members: [ThisClass]
+        ```
 
         ::: +mymembers
             options:
@@ -94,17 +112,35 @@ plugins:
 
     === "With `hidden_members: true`"
 
+        ```markdown
+        ::: mymembers.ThisClass
+            options:
+              hidden_members: true
+        ```
+
         ::: mymembers.ThisClass
             options:
               hidden_members: true
 
     === "With `hidden_members: false` or `hidden_members: []`"
 
+        ```markdown
+        ::: mymembers.ThisClass
+            options:
+              hidden_members: false
+        ```
+
         ::: mymembers.ThisClass
             options:
               hidden_members: false
 
     === "With `hidden_members: ['hidden_method']`"
+
+        ```markdown
+        ::: mymembers.ThisClass
+            options:
+              hidden_members: ['hidden_method']
+        ```
 
         ::: mymembers.ThisClass
             options:
@@ -164,17 +200,35 @@ plugins:
 
     === "With `private_members: true`"
 
+        ```markdown
+        ::: mymembers.ThisClass
+            options:
+              private_members: true
+        ```
+
         ::: mymembers.ThisClass
             options:
               private_members: true
 
     === "With `private_members: false` or `private_members: []`"
 
+        ```markdown
+        ::: mymembers.ThisClass
+            options:
+              private_members: false
+        ```
+
         ::: mymembers.ThisClass
             options:
               private_members: false
 
     === "With `private_members: ['private_property']`"
+
+        ```markdown
+        ::: mymembers.ThisClass
+            options:
+              private_members: ['private_property']
+        ```
 
         ::: mymembers.ThisClass
             options:
@@ -285,11 +339,23 @@ plugins:
 
     === "With inherited members"
 
+        ```markdown
+        ::: mymembers.ThisClass
+            options:
+              inherited_members: true
+        ```
+
         ::: mymembers.ThisClass
             options:
               inherited_members: true
 
     === "Without inherited members"
+
+        ```markdown
+        ::: mymembers.ThisClass
+            options:
+              inherited_members: false
+        ```
 
         ::: mymembers.ThisClass
             options:
@@ -331,11 +397,23 @@ plugins:
 
     === "With alphabetical order"
 
+        ```markdown
+        ::: mymembers.ThisClass
+            options:
+              members_order: alphabetical
+        ```
+
         ::: mymembers.ThisClass
             options:
               members_order: alphabetical
 
     === "With source order"
+
+        ```markdown
+        ::: mymembers.ThisClass
+            options:
+              members_order: source
+        ```
 
         ::: mymembers.ThisClass
             options:
@@ -387,17 +465,35 @@ plugins:
 
     === "With `filters: []`"
 
+        ```markdown
+        ::: mymembers.ThisClass
+            options:
+              filters: []
+        ```
+
         ::: mymembers.ThisClass
             options:
               filters: []
 
     === "With `filters: ["method"]`"
 
+        ```markdown
+        ::: mymembers.ThisClass
+            options:
+              filters: ["method"]
+        ``` 
+        
         ::: mymembers.ThisClass
             options:
               filters: ["method"]
 
     === "With `filters: ["!method"]`"
+
+        ```markdown
+        ::: mymembers.ThisClass
+            options:
+              filters: ["!method"]
+        ```
 
         ::: mymembers.ThisClass
             options:
@@ -433,12 +529,24 @@ plugins:
 !!! preview
 
     === "With category grouping"
+        
+        ```markdown
+        ::: +mymembers
+            options:
+              group_by_category: true
+        ```
 
         ::: +mymembers
             options:
               group_by_category: true
 
     === "Without category grouping"
+
+        ```markdown
+        ::: +mymembers
+            options:
+              group_by_category: False
+        ```
 
         ::: +mymembers
             options:
@@ -472,6 +580,8 @@ summary:
 
 Summaries will be rendered as the corresponding docstring sections. For example, the summary for attributes will be rendered as an Attributes docstring section. The section will be rendered in accordance with the [`docstring_section_style`][] option. If the objects appearing in the summary are also rendered on the page (or somewhere else on the site), their name will automatically link to their rendered documentation.
 
+Hidden and private members will not be rendered in the summary, no matter the setting in [`hidden_members`][] and [`private_members`][].
+
 ```yaml title="in mkdocs.yml (global configuration)"
 plugins:
 - mkdocstrings:
@@ -496,15 +606,11 @@ plugins:
         ```markdown
         ::: mymembers.ThisClass
             options:
-              hidden_members: true
-              private_members: true
               summary: false
         ```
 
         ::: mymembers.ThisClass
             options:
-              hidden_members: true
-              private_members: true
               summary: false
 
     === "With all summaries"
@@ -512,15 +618,11 @@ plugins:
         ```markdown
         ::: mymembers.ThisClass
             options:
-              hidden_members: true
-              private_members: true
               summary: true
         ```
 
         ::: mymembers.ThisClass
             options:
-              hidden_members: true
-              private_members: true
               summary: true
 
     === "With methods summary only"
@@ -528,18 +630,18 @@ plugins:
         ```markdown
         ::: mymembers.ThisClass
             options:
-              hidden_members: true
-              private_members: true
               summary:
                 functions: true
         ```
 
         ::: mymembers.ThisClass
             options:
-              hidden_members: true
-              private_members: true
               summary:
                 functions: true
+
+!!! warning
+
+    In the summary, the title of the properties summary will be *attributes*, and the title of the namespaces summary will be *modules*. This is due to mkdocstrings-matlab's dependency on mkdocstrings-python. For now, mkdocstrings-matlab does not implement its own Jinja templates for rendering, leading to these summary titles. 
 
 
 ## `show_labels`
@@ -569,6 +671,13 @@ plugins:
 !!! preview
 
     === "With show labels"
+        
+        ```markdown
+        ::: mymembers.ThisClass
+            options:
+              private_members: true
+              show_labels: true
+        ```
 
         ::: mymembers.ThisClass
             options:
@@ -576,6 +685,13 @@ plugins:
               show_labels: true
 
     === "Without show labels"
+
+        ```markdown
+        ::: mymembers.ThisClass
+            options:
+              private_members: true
+              show_labels: false
+        ```
 
         ::: mymembers.ThisClass
             options:
