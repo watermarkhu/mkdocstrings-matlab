@@ -57,21 +57,20 @@ class MatlabHandler(BaseHandler):
         "docstring_style": "google",
         "docstring_options": {},
         "docstring_section_style": "table",
+        "parameters_from_arguments": False,
         "merge_constructor_into_class": False,
         "merge_constructor_ignore_summary": False,
         "show_if_no_docstring": False,
-        "show_docstring_attributes": True,
+        "show_docstring_properties": True,
         "show_docstring_functions": True,
         "show_docstring_classes": True,
-        "show_docstring_modules": True,  # TODO should be replaced with namespaces
+        "show_docstring_namespaces": True,
         "show_docstring_description": True,
         "show_docstring_examples": True,
-        "parameters_from_arguments": False,
-        "show_docstring_other_parameters": True,
+        "show_docstring_name_value_pairs": True,
         "show_docstring_parameters": True,
         "show_docstring_returns": True,
-        "show_docstring_raises": True,  # TODO need to additional parsing for this
-        "show_docstring_warns": True,  # TODO need to additional parsing for this
+
         # Signature options
         "annotations_path": "brief",
         "line_length": 60,
@@ -90,7 +89,6 @@ class MatlabHandler(BaseHandler):
     Attributes: Headings options:
         heading_level (int): The initial heading level to use. Default: `2`.
         parameter_headings (bool): Whether to render headings for parameters (therefore showing parameters in the ToC). Default: `False`.
-        parameters_from_arguments (bool): Whether to load inputs and output parameters based on argument validation blocks. Default: `True`.
         show_root_heading (bool): Show the heading of the object at the root of the documentation tree
             (i.e. the object referenced by the identifier after `:::`). Default: `False`.
         show_root_toc_entry (bool): If the root heading is not shown, at least add a ToC entry for it. Default: `True`.
@@ -129,22 +127,19 @@ class MatlabHandler(BaseHandler):
         docstring_style (str): The docstring style to use: `google`, `numpy`, `sphinx`, or `None`. Default: `"google"`.
         docstring_options (dict): The options for the docstring parser. See [docstring parsers](https://mkdocstrings.github.io/griffe/reference/docstrings/) and their options in Griffe docs.
         docstring_section_style (str): The style used to render docstring sections. Options: `table`, `list`, `spacy`. Default: `"table"`.
+        parameters_from_arguments (bool): Whether to load inputs and output parameters based on argument validation blocks. Default: `True`.
         merge_constructor_into_class (bool): Whether to merge the constructor method into the class' signature and docstring. Default: `False`.
         merge_constructor_ignore_summary (bool): Whether to ignore the constructor summary when merging it into the class. Default: `False`.
-        relative_crossrefs (bool): Whether to enable the relative crossref syntax. Default: `False`.
-        scoped_crossrefs (bool): Whether to enable the scoped crossref ability. Default: `False`.
         show_if_no_docstring (bool): Show the object heading even if it has no docstring or children with docstrings. Default: `False`.
-        show_docstring_attributes (bool): Whether to display the "Attributes" section in the object's docstring. Default: `True`.
+        show_docstring_properties (bool): Whether to display the "Properties" section in the object's docstring. Default: `True`.
         show_docstring_functions (bool): Whether to display the "Functions" or "Methods" sections in the object's docstring. Default: `True`.
         show_docstring_classes (bool): Whether to display the "Classes" section in the object's docstring. Default: `True`.
-        show_docstring_modules (bool): Whether to display the "Modules" section in the object's docstring. Default: `True`.
+        show_docstring_namespaces (bool): Whether to display the "Namespaces" section in the object's docstring. Default: `True`.
         show_docstring_description (bool): Whether to display the textual block (including admonitions) in the object's docstring. Default: `True`.
         show_docstring_examples (bool): Whether to display the "Examples" section in the object's docstring. Default: `True`.
-        show_docstring_other_parameters (bool): Whether to display the "Other Parameters" section in the object's docstring. Default: `True`.
+        show_docstring_name_value_pairs (bool): Whether to display the "Name-value pairs" section in the object's docstring. Default: `True`.
         show_docstring_parameters (bool): Whether to display the "Parameters" section in the object's docstring. Default: `True`.
-        show_docstring_raises (bool): Whether to display the "Raises" section in the object's docstring. Default: `True`.
         show_docstring_returns (bool): Whether to display the "Returns" section in the object's docstring. Default: `True`.
-        show_docstring_warns (bool): Whether to display the "Warns" section in the object's docstring. Default: `True`.
 
     Attributes: Signatures/annotations options:
         annotations_path (str): The verbosity for annotations path: `brief` (recommended), or `source` (as written in the source). Default: `"brief"`.
@@ -252,6 +247,9 @@ class MatlabHandler(BaseHandler):
                 "modules": summary.get("namespaces", False), # Map namespaces (MATLAB) to modules (Python)
             }
 
+        final_config["show_docstring_attributes"] = final_config.pop("show_docstring_properties", True)
+        final_config["show_docstring_modules"] = final_config.pop("show_docstring_namespaces", True)
+        final_config["show_docstring_other_parameters"] = final_config.pop("show_docstring_name_value_pairs", True)
         final_config["merge_init_into_class"] = False # This settings must be present to avoid errors
 
         return template.render(

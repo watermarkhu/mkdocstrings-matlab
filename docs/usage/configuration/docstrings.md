@@ -196,9 +196,81 @@ plugins:
         `gravity_forces` | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br>**TYPE:** <code><autoref identifier="list" optional>list</autoref>[<autoref identifier="int" optional>int</autoref> \| <autoref identifier="float" optional>float</autoref>]</code> <span style="float: right;"><b>DEFAULT:</b> <i>required</i></span>
         `vacuum_type` | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br>**TYPE:**<code><autoref identifier="VacuumType" optional>VacuumType</autoref> \| <autoref identifier="typing.Literal" optional>Literal</autoref>["regular"]</code> <span style="float: right;"><b>DEFAULT:</b> <code>VacuumType.PLASMA</code></span>
 
+## `parameters_from_arguments`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
+
+Whether to load inputs and output parameters based on argument validation blocks.
+
+Similarly to Python, MATLAB is by default not a typed language. Function and method arguments are dynamically typed, in most cases. This provides flexibility, but is generally bad behavior if the code is meant for production or is intended to be exposed as an API. 
+
+In MATLAB R2019b the concept of [Argument Definitions](https://mathworks.com/help/matlab/input-and-output-arguments.html) was introduced. Within an [arguments](https://mathworks.com/help/matlab/ref/arguments.html) block, the type, size, or other aspects of the inputs (and outputs since R2022b) can be verified. 
+
+```matlab
+function z = mySharedFunction(x,y,NameValueArgs)
+   arguments
+      x (1,1) double     % scalar
+      y double {mustBeVector,mustBePositive} 
+      NameValueArgs.A string
+      NameValueArgs.B string = "default"
+   end 
+...
+end
+```
+
+The mkdocstrings-matlab plugin is able to parse the argument blocks and extract the type and default information, and any comment after each Argument Definition will be parsed as the argument docstring. If if `parameters_from_arguments` is enabled, sections will be rendered for the parameters, name-value pairs and the return arguments of functions and methods. These sections can be individually toggled with [`show_docstring_parameters`][], [`show_docstring_name_value_pairs`][] and [`show_docstring_returns`][].
+
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          parameters_from_arguments: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: mynamespace.typed_function
+    options:
+      parameters_from_arguments: true
+```
+
+--8<-- "docs/snippets/+mynamespace/mynamespace.md"
+
+!!! preview "Preview: Cross-references"
+
+    === "Parse argument validation"
+
+        ```markdown
+        ::: mynamespace.typed_function
+            options:
+              parameters_from_arguments: true
+        ```
+
+        ::: mynamespace.typed_function
+            options:
+              parameters_from_arguments: true
+
+    === "Don't parse argument validation"
+
+        ```markdown
+        ::: mynamespace.typed_function
+            options:
+              parameters_from_arguments: false
+        ```
+
+        ::: mynamespace.typed_function
+            options:
+              parameters_from_arguments: false
+
+!!! note
+
+    Prior to MATLAB R2019b, the functionality of the arguments blocks was most commonly achieved through [`inputParser`](https://mathworks.com/help/matlab/ref/inputparser.html). The validations created with `inputParser` will not be parsed by mkdocstrings-matlab, since it does not have a strict syntax as opposed to Argument Definitions. 
+
 ## `merge_constructor_into_class` and `merge_constructor_ignore_summary`
 
-- **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
+- **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**, **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
 <!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
 
 Whether to merge the constructor method into the class' signature and docstring.
@@ -271,3 +343,57 @@ plugins:
               merge_constructor_into_class: false
 
 
+
+## `show_if_no_docstring`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+Show the object heading even if it has no docstring or children with docstrings.
+
+Without an explicit list of [`members`][], members are selected based on [`filters`][], and then filtered again to keep only those with docstrings. Checking if a member has a docstring is done recursively: if at least one of its direct or indirect members (lower in the tree) has a docstring, the member is rendered. If the member does not have a docstring, and none of its members have a docstring, it is excluded.
+
+With this option you can tell the Python handler to skip the docstring check.
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          show_if_no_docstring: false
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: +undocumented
+    options:
+      show_if_no_docstring: true
+```
+
+--8<-- "docs/snippets/+undocumented/undocumented.md"
+
+!!! preview
+
+    === "Show"
+
+        ```markdown
+        ::: +undocumented
+            options:
+              show_if_no_docstring: true
+        ```
+
+        ::: +undocumented
+            options:
+              show_if_no_docstring: true
+
+    === "Don't show"
+
+        ```markdown
+        ::: +undocumented
+            options:
+              show_if_no_docstring: false
+        ```
+        
+        ::: +undocumented
+            options:
+              show_if_no_docstring: false

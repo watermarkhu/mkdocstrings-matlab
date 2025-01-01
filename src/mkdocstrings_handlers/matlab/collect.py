@@ -326,7 +326,7 @@ class PathCollection(ModulesCollection):
             and config.get("parameters_from_arguments", True)
             and (
                 config.get("show_docstring_parameters", True)
-                or config.get("show_docstring_other_parameters", True)
+                or config.get("show_docstring_name_value_pairs", True)
                 or config.get("show_docstring_returns", True)
             )
         ):
@@ -392,7 +392,7 @@ class PathCollection(ModulesCollection):
                 )
 
             if (
-                config.get("show_docstring_other_parameters", True)
+                config.get("show_docstring_name_value_pairs", True)
                 and document_parameters
                 and keyword_parameters
             ):

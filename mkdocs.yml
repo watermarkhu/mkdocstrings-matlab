@@ -163,22 +163,19 @@ plugins:
 
           docstring_style: google
           docstring_section_style: table
+          parameters_from_arguments: true
           merge_constructor_into_class: false
           merge_constructor_ignore_summary: false
           show_if_no_docstring: false
-          show_docstring_attributes": true
-          show_docstring_functions": true
-          show_docstring_classes": true
-          show_docstring_modules": true 
-          show_docstring_description": true
-          show_docstring_examples": true
-          parameters_from_arguments: true
-          show_docstring_other_parameters": true
-          show_docstring_parameters": true
-          show_docstring_raises": true
-          show_docstring_returns": true
-          show_docstring_receives": true
-          show_docstring_warns": true
+          show_docstring_properties: true
+          show_docstring_functions: true
+          show_docstring_classes: true
+          show_docstring_namespaces: true 
+          show_docstring_description: true
+          show_docstring_examples: true
+          show_docstring_parameters: true
+          show_docstring_name_value_pairs: true
+          show_docstring_returns: true
 
           annotations_path: full
           show_signature: true
