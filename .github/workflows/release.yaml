@@ -11,7 +11,7 @@ on:
 
 permissions:
   contents: write
-  
+
 jobs:
 
   publish:
@@ -31,7 +31,7 @@ jobs:
 
     - name: Python semantic release
       id: release
-      uses: python-semantic-release/python-semantic-release@v9.8.91
+      uses: python-semantic-release/python-semantic-release@v9.8.9
       with: 
         build: false
         changelog: true
