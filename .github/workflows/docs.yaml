@@ -76,6 +76,6 @@ jobs:
         if: ${{ fromJson(inputs.set-default) }}
         run: >
           uv run mike set-default
-          --branch ${{ inputs.branch }}
+          --branch gh-pages
           --push
           ${{ inputs.alias }}
