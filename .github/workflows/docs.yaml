@@ -9,6 +9,11 @@ on:
           Version of the documentation to publish
         type: string
         required: true
+      alias:
+        description: >-
+          (Versioned) Alias to use when publishing the versioned documentation with mike
+        type: string
+        default: "latest"
       set-default:
         description: >-
           Set the alias as the default version
@@ -32,26 +37,33 @@ on:
         type: boolean
         default: true
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Required to push to the documentation branch
 
       - name: Install the latest version of uv
-        if: steps.release.outputs.released == 'true'
         uses: astral-sh/setup-uv@v5
         with:
           version: "latest"
   
-      - name: Publish package to PyPI with UV
-        if: steps.release.outputs.released == 'true'
+      - name: Sync dependencies
         run: |
           uv sync --no-dev --group docs
+
+      - name: Configure Git Credentials
+        run: |
+          git config --global user.name github-actions[bot]
+          git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
   
       - name: Build documentation with mike
-        if: steps.release.outputs.released == 'true'
         run: >
           uv run mike deploy 
           --branch gh-pages
@@ -64,6 +76,6 @@ jobs:
         if: ${{ fromJson(inputs.set-default) }}
         run: >
           uv run mike set-default
-          --branch ${{ inputs.branch }}
+          --branch gh-pages
           --push
           ${{ inputs.alias }}
