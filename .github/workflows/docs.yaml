@@ -47,6 +47,11 @@ jobs:
       - name: Publish package to PyPI with UV
         run: |
           uv sync --no-dev --group docs
+
+      - name: Configure Git Credentials
+        run: |
+          git config --global user.name github-actions[bot]
+          git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
   
       - name: Build documentation with mike
         run: >
