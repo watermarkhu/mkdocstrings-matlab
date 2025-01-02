@@ -47,7 +47,7 @@ nav:
 
 theme:
   name: material
-  logo: logo.png
+  logo: logo.svg
   features:
   - announce.dismiss
   - content.action.edit
