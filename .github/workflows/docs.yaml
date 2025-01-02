@@ -68,7 +68,7 @@ jobs:
         run: >
           uv run mike deploy 
           --branch gh-pages
-          --alias-type copy
+          --alias-type symlink
           --push
           ${{ inputs.version }} ${{ inputs.alias }}
       
