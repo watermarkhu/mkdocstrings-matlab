@@ -40,18 +40,15 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install the latest version of uv
-        if: steps.release.outputs.released == 'true'
         uses: astral-sh/setup-uv@v5
         with:
           version: "latest"
   
       - name: Publish package to PyPI with UV
-        if: steps.release.outputs.released == 'true'
         run: |
           uv sync --no-dev --group docs
   
       - name: Build documentation with mike
-        if: steps.release.outputs.released == 'true'
         run: >
           uv run mike deploy 
           --branch gh-pages
