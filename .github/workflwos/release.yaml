@@ -1,0 +1,62 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  publish:
+    runs-on: ubuntu-latest
+    environment: release
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        ref: ${{ github.sha }}
+
+    - name: Python semantic release
+      id: release
+      uses: python-semantic-release/python-semantic-release@v9.15.1
+      with: 
+        build: false
+        changelog: true
+        commit: true
+        push: true
+        tag: true
+        github_token: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+
+    - name: Install the latest version of uv
+      if: steps.release.outputs.released == 'true'
+      uses: astral-sh/setup-uv@v5
+      with:
+        version: "latest"
+
+    - name: Publish package to PyPI with UV
+      if: steps.release.outputs.released == 'true'
+      run: |
+        uv sync --no-dev --group docs
+        uv build
+        uv publish
+
+    - name: Publish package distributions to GitHub Releases
+      uses: python-semantic-release/upload-to-gh-release@v9.15.1
+      if: steps.release.outputs.released == 'true'
+      with:
+        github_token: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+        tag: ${{ steps.release.outputs.tag }}
+
+    # - name: Build documentation with mike
+    #   if: steps.release.outputs.released == 'true'
+    #   run: >
+    #     uv run mike deploy 
+    #     --branch gh-pages
+    #     --alias-type copy
+    #     --update-aliases
+    #     --push
+    #     ${{ steps.release.outputs.tag }} latest
+
+    #     uv run mike set-default --branch gh-pages --push latest

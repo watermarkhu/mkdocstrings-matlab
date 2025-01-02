@@ -1,15 +1,17 @@
 from collections import defaultdict, deque
-from copy import deepcopy
+from copy import copy, deepcopy
 from pathlib import Path
 from typing import Mapping, Sequence
 
 from _griffe.collections import LinesCollection as GLC, ModulesCollection
 from _griffe.docstrings.models import (
+    DocstringSectionOtherParameters,
     DocstringSectionParameters,
     DocstringSectionReturns,
     DocstringParameter,
     DocstringReturn,
 )
+from _griffe.enumerations import DocstringSectionKind
 from _griffe.expressions import Expr
 
 from mkdocstrings_handlers.matlab.enums import ParameterKind
@@ -223,9 +225,24 @@ class PathCollection(ModulesCollection):
             model.docstring.parser = config.get("docstring_style", "google")
             model.docstring.parser_options = config.get("docstring_options", {})
 
+        # Patch docstring section titles
+        if model.docstring is not None:
+            for section in model.docstring.parsed:
+                match section.kind:
+                    case DocstringSectionKind.attributes:
+                        section.title = "Properties:"
+                    case DocstringSectionKind.modules:
+                        section.title = "Namespaces:"
+                    case DocstringSectionKind.parameters:
+                        section.title = "Input arguments:"
+                    case DocstringSectionKind.returns:
+                        section.title= "Output arguments:"
+                    case DocstringSectionKind.other_parameters:
+                        section.title = "Name-Value Arguments:"
+
         # Patch returns annotation
         # In _griffe.docstrings.<parser>.py the function _read_returns_section will enforce an annotation
-        # on the return parameter. This annotation is grabbed from the parent. For MATLAB is is invalid.
+        # on the return parameter. This annotation is grabbed from the parent. For MATLAB this is invalid.
         # Thus the return annotation needs to be patched back to a None.
         if (
             isinstance(model, Function)
@@ -244,31 +261,128 @@ class PathCollection(ModulesCollection):
                 if not isinstance(returns.annotation, Expr):
                     returns.annotation = None
 
+        # previous updates do not edit the model attributes persistently
+        # However, the following updates do edit the model attributes persistently
+        # such as adding new sections to the docstring or editing its members.abs
+        # Thus, we need to copy the model to avoid editing the original model
+        alias = copy(model)
+        alias.docstring = (
+            deepcopy(model.docstring) if model.docstring is not None else None
+        )
+        alias.members = {key: value for key, value in model.members.items()}
+        if isinstance(alias, Class):
+            alias._inherited_members = None
+
+        for name, member in getattr(alias, "members", {}).items():
+            alias.members[name] = self.update_model(member, config)
+
+        # Merge constructor docstring into class
+        if (
+            isinstance(alias, Class)
+            and config.get("merge_constructor_into_class", False)
+            and alias.name in alias.members
+            and alias.members[alias.name].docstring is not None
+        ):
+            constructor = alias.members.pop(alias.name)
+            if constructor.docstring is not None:
+                if alias.docstring is None:
+                    alias.docstring = Docstring("", parent=alias)
+
+                if config.get("merge_constructor_ignore_summary", False):
+                    alias.docstring._suffixes.extend(constructor.docstring.parsed[1:])
+                else:
+                    alias.docstring._suffixes.extend(constructor.docstring.parsed)
+
+        # Hide hidden members (methods and properties)
+        hidden_members = config.get("hidden_members", False)
+        if isinstance(hidden_members, bool):
+            filter_hidden = not hidden_members
+            show_hidden = []
+        else:
+            filter_hidden = True
+            show_hidden: list[str] = hidden_members
+        if isinstance(alias, Class) and filter_hidden:
+            alias.members = {
+                key: value
+                for key, value in alias.members.items()
+                if not getattr(value, "Hidden", False)
+                or (
+                    show_hidden
+                    and getattr(value, "Hidden", False)
+                    and key in show_hidden
+                )
+            }
+            alias._inherited_members = {
+                key: value
+                for key, value in alias.inherited_members.items()
+                if not getattr(value, "Hidden", False)
+                or (
+                    show_hidden
+                    and getattr(value, "Hidden", False)
+                    and key in show_hidden
+                )
+            }
+
+        # Hide private members (methods and properties)
+        private_members = config.get("private_members", False)
+        if isinstance(private_members, bool):
+            filter_private = not private_members
+            show_private = []
+        else:
+            filter_private = True
+            show_private: list[str] = private_members
+        if isinstance(alias, Class) and filter_private:
+            alias.members = {
+                key: value
+                for key, value in alias.members.items()
+                if not getattr(value, "Private", False)
+                or (
+                    show_private
+                    and getattr(value, "Private", False)
+                    and key in show_private
+                )
+            }
+            alias._inherited_members = {
+                key: value
+                for key, value in alias.inherited_members.items()
+                if not getattr(value, "Private", False)
+                or (
+                    show_private
+                    and getattr(value, "Private", False)
+                    and key in show_private
+                )
+            }
+
         # Create parameters and returns sections from argument blocks
         if (
-            isinstance(model, Function)
-            and model.docstring is not None
-            and config.get("create_from_argument_blocks", True)
+            isinstance(alias, Function)
+            and alias.docstring is not None
+            and config.get("parse_arguments", True)
+            and (
+                config.get("show_docstring_input_arguments", True)
+                or config.get("show_docstring_name_value_arguments", True)
+                or config.get("show_docstring_output_arguments", True)
+            )
         ):
             docstring_parameters = any(
                 isinstance(doc, DocstringSectionParameters)
-                for doc in model.docstring.parsed
+                for doc in alias.docstring.parsed
             )
             docstring_returns = any(
                 isinstance(doc, DocstringSectionReturns)
-                for doc in model.docstring.parsed
+                for doc in alias.docstring.parsed
             )
 
-            if not docstring_parameters and model.parameters:
+            if not docstring_parameters and alias.parameters:
                 arguments_parameters = any(
-                    param.docstring is not None for param in model.parameters
+                    param.docstring is not None for param in alias.parameters
                 )
             else:
                 arguments_parameters = False
 
-            if not docstring_returns and model.returns:
+            if not docstring_returns and alias.returns:
                 arguments_returns = any(
-                    ret.docstring is not None for ret in model.returns
+                    ret.docstring is not None for ret in alias.returns
                 )
             else:
                 arguments_returns = False
@@ -277,17 +391,23 @@ class PathCollection(ModulesCollection):
             document_returns = not docstring_returns and arguments_returns
 
             standard_parameters = [
-                param for param in model.parameters
+                param
+                for param in alias.parameters
                 if param.kind is not ParameterKind.keyword_only
             ]
 
             keyword_parameters = [
-                param for param in model.parameters
+                param
+                for param in alias.parameters
                 if param.kind is ParameterKind.keyword_only
             ]
 
-            if document_parameters and standard_parameters:
-                model.docstring._extra_sections.append(
+            if (
+                config.get("show_docstring_input_arguments", True)
+                and document_parameters
+                and standard_parameters
+            ):
+                alias.docstring._suffixes.append(
                     DocstringSectionParameters(
                         [
                             DocstringParameter(
@@ -305,10 +425,13 @@ class PathCollection(ModulesCollection):
                     )
                 )
 
-            if document_parameters and keyword_parameters:
-
-                model.docstring._extra_sections.append(
-                    DocstringSectionParameters(
+            if (
+                config.get("show_docstring_name_value_arguments", True)
+                and document_parameters
+                and keyword_parameters
+            ):
+                alias.docstring._suffixes.append(
+                    DocstringSectionOtherParameters(
                         [
                             DocstringParameter(
                                 name=param.name,
@@ -322,11 +445,11 @@ class PathCollection(ModulesCollection):
                             )
                             for param in keyword_parameters
                         ],
-                        title="Keyword Arguments:",
+                        title="Name-Value Arguments:",
                     )
                 )
 
-            if document_returns:
+            if config.get("show_docstring_output_arguments", True) and document_returns:
                 returns = DocstringSectionReturns(
                     [
                         DocstringReturn(
@@ -339,46 +462,30 @@ class PathCollection(ModulesCollection):
                             if param.docstring is not None
                             else "",
                         )
-                        for param in model.returns or []
+                        for param in alias.returns or []
                     ]
                 )
-                model.docstring._extra_sections.append(returns)
+                alias.docstring._suffixes.append(returns)
 
-        for member in getattr(model, "members", {}).values():
-            self.update_model(member, config)
-
+        # Add inheritance diagram to class docstring
         if (
-            isinstance(model, Class)
-            and config.get("merge_constructor_into_class", False)
-            and model.name in model.members
-            and model.members[model.name].docstring is not None
-        ):
-            model = deepcopy(model)
-            constructor = model.members.pop(model.name)
-            if constructor.docstring is not None:
-                if model.docstring is None:
-                    model.docstring = Docstring("", parent=model)
-                model.docstring._extra_sections.extend(constructor.docstring.parsed)
-
-        if (
-            isinstance(model, Class)
+            isinstance(alias, Class)
             and config.get("show_inheritance_diagram", False)
             and (
                 (
-                    model.docstring is not None
-                    and "Inheritance Diagram" not in model.docstring.parsed
+                    alias.docstring is not None
+                    and "Inheritance Diagram" not in alias.docstring.parsed
                 )
-                or model.docstring is None
+                or alias.docstring is None
             )
         ):
-            diagram = self.get_inheritance_diagram(model)
+            diagram = self.get_inheritance_diagram(alias)
             if diagram is not None:
-                model = deepcopy(model)
-                if model.docstring is None:
-                    model.docstring = Docstring("", parent=model)
-                model.docstring._extra_sections.append(diagram)
+                if alias.docstring is None:
+                    alias.docstring = Docstring("", parent=alias)
+                alias.docstring._prefixes.append(diagram)
 
-        return model
+        return alias
 
     def addpath(self, path: str | Path, to_end: bool = False, recursive: bool = False):
         """
@@ -469,7 +576,7 @@ class PathCollection(ModulesCollection):
 
         nodes_str = "\n".join(list(nodes))
         links_str = "\n".join(list(get_links(model)))
-        section = f"## Inheritance Diagram\n\n```mermaid\nflowchart TB\n{nodes_str}\n{links_str}\n```"
+        section = f"```mermaid\nflowchart TB\n{nodes_str}\n{links_str}\n```"
 
         return DocstringSectionText(section, title="Inheritance Diagram")
 
@@ -577,11 +684,7 @@ class LazyModel:
         if not isinstance(model, Classfolder):
             return None
         for member in path.iterdir():
-            if (
-                member.is_file()
-                and member.suffix == ".m"
-                and member != classfile
-            ):
+            if member.is_file() and member.suffix == ".m" and member != classfile:
                 if member.name == "Contents.m" and model.docstring is None:
                     contentsfile = self._collect_path(member)
                     model.docstring = contentsfile.docstring
@@ -618,14 +721,13 @@ class LazyModel:
         return model
 
     def _collect_readme_md(self, path, parent: MatlabMixin) -> Docstring | None:
-
         if (path / "README.md").exists():
             readme = path / "README.md"
         elif (path / "readme.md").exists():
             readme = path / "readme.md"
         else:
             return None
-        
+
         with open(readme, "r") as file:
             content = file.read()
         return Docstring(content, parent=parent)

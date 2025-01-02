@@ -14,13 +14,13 @@
             "jinja": true
         },
         {
-            "name": "Python Debugger: mkdocstrings test",
+            "name": "Python Debugger: mkdocstrings debug docs",
             "type": "debugpy",
             "request": "launch",
-            "program": "test/debug.py",
+            "program": "docs/debug.py",
             "console": "integratedTerminal",
             "justMyCode": false,
-            "jinja": true
+            "jinja": true,
         }
     ]
 }

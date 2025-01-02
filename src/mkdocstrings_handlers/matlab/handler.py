@@ -1,11 +1,13 @@
 from pathlib import Path
 from collections import ChainMap
 from markdown import Markdown
+from mkdocstrings.extension import PluginError
 from mkdocstrings.handlers.base import BaseHandler, CollectorItem, CollectionError
 from mkdocstrings_handlers.python import rendering
 from typing import Any, ClassVar, Mapping
 from pprint import pprint
 
+import re
 
 from mkdocstrings_handlers.matlab.collect import LinesCollection, PathCollection
 
@@ -23,7 +25,6 @@ class MatlabHandler(BaseHandler):
     """The fallback theme."""
     fallback_config: ClassVar[dict] = {
         "fallback": True,
-        "merge_constructor_into_class": True,
     }
     """The configuration used to collect item during autorefs fallback."""
     default_config: ClassVar[dict] = {
@@ -33,6 +34,7 @@ class MatlabHandler(BaseHandler):
         "show_source": True,
         # Heading options
         "heading_level": 2,
+        "parameter_headings": True,
         "show_root_heading": False,
         "show_root_toc_entry": True,
         "show_root_full_path": True,
@@ -42,37 +44,37 @@ class MatlabHandler(BaseHandler):
         "show_symbol_type_heading": False,
         "show_symbol_type_toc": False,
         # Member options
-        "inherited_members": False,
         "members": None,
-        "members_order": rendering.Order.alphabetical,  # TODO broken
-        "filters": [],
-        "group_by_category": True,  # TODO broken
-        "summary": False,  # TODO broken
+        "hidden_members": False,
+        "private_members": False,
+        "inherited_members": False,
+        "members_order": rendering.Order.alphabetical.value,
+        "filters": ["!^delete$|^disp$"],
+        "group_by_category": True,
+        "summary": False,
         "show_labels": True,
         # Docstring options
         "docstring_style": "google",
         "docstring_options": {},
         "docstring_section_style": "table",
-        "create_from_argument_blocks": False,
-        "merge_constructor_into_class": True,
+        "parse_arguments": False,
+        "merge_constructor_into_class": False,
+        "merge_constructor_ignore_summary": False,
         "show_if_no_docstring": False,
-        "show_docstring_attributes": True,
+        "show_docstring_propeties": True,
         "show_docstring_functions": True,
         "show_docstring_classes": True,
-        "show_docstring_modules": True,  # TODO should be replaced with namespaces
+        "show_docstring_namespaces": True,
         "show_docstring_description": True,
         "show_docstring_examples": True,
-        "show_docstring_other_parameters": True,  # TODO should be name value pairs
-        "show_docstring_parameters": True,
-        "show_docstring_raises": True,  # TODO need to additional parsing for this
-        "show_docstring_returns": True,
-        "show_docstring_warns": True,  # TODO need to additional parsing for this
+        "show_docstring_input_arguments": True,
+        "show_docstring_name_value_arguments": True,
+        "show_docstring_output_arguments": True,
         # Signature options
-        "annotations_path": "brief",
-        "line_length": 60,
         "show_signature": True,
         "show_signature_annotations": False,
         "separate_signature": False,
+        "signature_crossrefs": False,
     }
     """Default handler configuration.
 
@@ -84,6 +86,7 @@ class MatlabHandler(BaseHandler):
 
     Attributes: Headings options:
         heading_level (int): The initial heading level to use. Default: `2`.
+        parameter_headings (bool): Whether to render headings for parameters (therefore showing parameters in the ToC). Default: `False`.
         show_root_heading (bool): Show the heading of the object at the root of the documentation tree
             (i.e. the object referenced by the identifier after `:::`). Default: `False`.
         show_root_toc_entry (bool): If the root heading is not shown, at least add a ToC entry for it. Default: `True`.
@@ -95,50 +98,52 @@ class MatlabHandler(BaseHandler):
         show_symbol_type_toc (bool): Show the symbol type in the Table of Contents (e.g. mod, class, methd, func and attr). Default: `False`.
 
     Attributes: Members options:
-        inherited_members (list[str] | bool | None): A boolean, or an explicit list of inherited members to render.
-            If true, select all inherited members, which can then be filtered with `members`.
-            If false or empty list, do not select any inherited member. Default: `False`.
         members (list[str] | bool | None): A boolean, or an explicit list of members to render.
             If true, select all members without further filtering.
             If false or empty list, do not render members.
             If none, select all members and apply further filtering with filters and docstrings. Default: `None`.
+        hidden_members (list[str] | bool | None): A boolean, or an explicit list of hidden members to render. 
+            If true, select all inherited members, which can then be filtered with `members`.
+            If false or empty list, do not select any hidden member. Default: `False`.
+        private_members (list[str] | bool | None): A boolean, or an explicit list of private members to render. 
+            If true, select all inherited members, which can then be filtered with `members`.
+            If false or empty list,  do not select any private member.  Default: `False`.
+        inherited_members (list[str] | bool | None): A boolean, or an explicit list of inherited members to render.
+            If true, select all inherited members, which can then be filtered with `members`.
+            If false or empty list, do not select any inherited member. Default: `False`.
         members_order (str): The members ordering to use. Options: `alphabetical` - order by the members names,
             `source` - order members as they appear in the source file. Default: `"alphabetical"`.
         filters (list[str] | None): A list of filters applied to filter objects based on their name.
             A filter starting with `!` will exclude matching objects instead of including them.
             The `members` option takes precedence over `filters` (filters will still be applied recursively
-            to lower members in the hierarchy). Default: `["!^_[^_]"]`.
-        group_by_category (bool): Group the object's children by categories: attributes, classes, functions, and modules. Default: `True`.
-        summary (bool | dict[str, bool]): Whether to render summaries of modules, classes, functions (methods) and attributes.
+            to lower members in the hierarchy). Default: `["!^delete$|^disp$"]`.
+        group_by_category (bool): Group the object's children by categories: properties, classes, functions, and namespaces. Default: `True`.
+        summary (bool | dict[str, bool]): Whether to render summaries of namespaces, classes, functions (methods) and properties. Default: `False`.
         show_labels (bool): Whether to show labels of the members. Default: `True`.
 
     Attributes: Docstrings options:
         docstring_style (str): The docstring style to use: `google`, `numpy`, `sphinx`, or `None`. Default: `"google"`.
         docstring_options (dict): The options for the docstring parser. See [docstring parsers](https://mkdocstrings.github.io/griffe/reference/docstrings/) and their options in Griffe docs.
         docstring_section_style (str): The style used to render docstring sections. Options: `table`, `list`, `spacy`. Default: `"table"`.
+        parse_arguments (bool): Whether to load inputs and output parameters based on argument validation blocks. Default: `True`.
         merge_constructor_into_class (bool): Whether to merge the constructor method into the class' signature and docstring. Default: `False`.
-        create_from_argument_blocks (bool): Whether to create sections for inputs and output arguments based on argument validation blocks. Default: `False`.
-        relative_crossrefs (bool): Whether to enable the relative crossref syntax. Default: `False`.
-        scoped_crossrefs (bool): Whether to enable the scoped crossref ability. Default: `False`.
+        merge_constructor_ignore_summary (bool): Whether to ignore the constructor summary when merging it into the class. Default: `False`.
         show_if_no_docstring (bool): Show the object heading even if it has no docstring or children with docstrings. Default: `False`.
-        show_docstring_attributes (bool): Whether to display the "Attributes" section in the object's docstring. Default: `True`.
+        show_docstring_properties (bool): Whether to display the "Properties" section in the object's docstring. Default: `True`.
         show_docstring_functions (bool): Whether to display the "Functions" or "Methods" sections in the object's docstring. Default: `True`.
         show_docstring_classes (bool): Whether to display the "Classes" section in the object's docstring. Default: `True`.
-        show_docstring_modules (bool): Whether to display the "Modules" section in the object's docstring. Default: `True`.
+        show_docstring_namespaces (bool): Whether to display the "Namespaces" section in the object's docstring. Default: `True`.
         show_docstring_description (bool): Whether to display the textual block (including admonitions) in the object's docstring. Default: `True`.
         show_docstring_examples (bool): Whether to display the "Examples" section in the object's docstring. Default: `True`.
-        show_docstring_other_parameters (bool): Whether to display the "Other Parameters" section in the object's docstring. Default: `True`.
-        show_docstring_parameters (bool): Whether to display the "Parameters" section in the object's docstring. Default: `True`.
-        show_docstring_raises (bool): Whether to display the "Raises" section in the object's docstring. Default: `True`.
-        show_docstring_returns (bool): Whether to display the "Returns" section in the object's docstring. Default: `True`.
-        show_docstring_warns (bool): Whether to display the "Warns" section in the object's docstring. Default: `True`.
+        show_docstring_input_arguments (bool): Whether to display the "Input arguments" section in the object's docstring. Default: `True`.
+        show_docstring_name_value_arguments (bool): Whether to display the "Name-value pairs" section in the object's docstring. Default: `True`.
+        show_docstring_output_arguments (bool): Whether to display the "Output arguments" section in the object's docstring. Default: `True`.
 
     Attributes: Signatures/annotations options:
-        annotations_path (str): The verbosity for annotations path: `brief` (recommended), or `source` (as written in the source). Default: `"brief"`.
-        line_length (int): Maximum line length when formatting code/signatures. Default: `60`.
         show_signature (bool): Show methods and functions signatures. Default: `True`.
         show_signature_annotations (bool): Show the type annotations in methods and functions signatures. Default: `False`.
         separate_signature (bool): Whether to put the whole signature in a code block below the heading.
+        signature_crossrefs (bool): Whether to render cross-references for type annotations in signatures. Default: `False`.
     """
 
     def __init__(
@@ -200,6 +205,77 @@ class MatlabHandler(BaseHandler):
 
         heading_level = final_config["heading_level"]
 
+        try:
+            final_config["members_order"] = rendering.Order(
+                final_config["members_order"]
+            )
+        except ValueError as error:
+            choices = "', '".join(item.value for item in rendering.Order)
+            raise PluginError(
+                f"Unknown members_order '{final_config['members_order']}', choose between '{choices}'.",
+            ) from error
+
+        if final_config["filters"]:
+            final_config["filters"] = [
+                (re.compile(filtr.lstrip("!")), filtr.startswith("!"))
+                for filtr in final_config["filters"]
+            ]
+
+        summary = final_config["summary"]
+        if summary is True:
+            final_config["summary"] = {
+                "attributes": True,
+                "functions": True,
+                "classes": True,
+                "modules": True,
+            }
+        elif summary is False:
+            final_config["summary"] = {
+                "attributes": False,
+                "functions": False,
+                "classes": False,
+                "modules": False,
+            }
+        else:
+            final_config["summary"] = {
+                "attributes": summary.get(
+                    "properties", False
+                ),  # Map properties (MATLAB) to attributes (Python)
+                "functions": summary.get("functions", False),
+                "classes": summary.get("classes", False),
+                "modules": summary.get(
+                    "namespaces", False
+                ),  # Map namespaces (MATLAB) to modules (Python)
+            }
+
+        # Map docstring options
+        final_config["show_docstring_attributes"] = config.get(
+            "show_docstring_properties", True
+        )
+        final_config["show_docstring_modules"] = config.get(
+            "show_docstring_namespaces", True
+        )
+        final_config["show_docstring_parameters"] = config.get(
+            "show_docstring_input_arguments", True
+        )
+        final_config["show_docstring_other_parameters"] = config.get(
+            "show_docstring_name_value_arguments", True
+        )
+        final_config["show_docstring_returns"] = config.get(
+            "show_docstring_output_arguments", True
+        )
+
+        # These settings must be present to avoid errors
+        for setting in [
+            "merge_init_into_class",
+            "show_docstring_raises",
+            "show_docstring_receives",
+            "show_docstring_yields",
+            "show_docstring_warns",
+        ]:
+            final_config[setting] = False
+        final_config["line_length"] = 88
+
         return template.render(
             **{
                 "config": final_config,
@@ -229,12 +305,13 @@ class MatlabHandler(BaseHandler):
         self.env.filters["format_signature"] = rendering.do_format_signature
         self.env.filters["format_attribute"] = rendering.do_format_attribute
         self.env.filters["filter_objects"] = rendering.do_filter_objects
-        self.env.filters["stash_crossref"] = lambda ref, length: ref
+        self.env.filters["stash_crossref"] = rendering.do_stash_crossref
         self.env.filters["get_template"] = rendering.do_get_template
         self.env.filters["as_attributes_section"] = rendering.do_as_attributes_section
         self.env.filters["as_functions_section"] = rendering.do_as_functions_section
         self.env.filters["as_classes_section"] = rendering.do_as_classes_section
         self.env.filters["as_modules_section"] = rendering.do_as_modules_section
+        self.env.globals["AutorefsHook"] = rendering.AutorefsHook
         self.env.tests["existing_template"] = (
             lambda template_name: template_name in self.env.list_templates()
         )
