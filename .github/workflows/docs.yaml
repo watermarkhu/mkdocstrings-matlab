@@ -1,0 +1,69 @@
+name: Docs
+
+# Controls when the workflow will run
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: >-
+          Version of the documentation to publish
+        type: string
+        required: true
+      set-default:
+        description: >-
+          Set the alias as the default version
+        type: boolean
+        default: true
+  workflow_call:
+    inputs:
+      version:
+        description: >-
+          Version of the documentation to publish
+        type: string
+        required: true
+      alias:
+        description: >-
+          (Versioned) Alias to use when publishing the versioned documentation with mike
+        type: string
+        default: "latest"
+      set-default:
+        description: >-
+          Set the alias as the default version
+        type: boolean
+        default: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install the latest version of uv
+        if: steps.release.outputs.released == 'true'
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "latest"
+  
+      - name: Publish package to PyPI with UV
+        if: steps.release.outputs.released == 'true'
+        run: |
+          uv sync --no-dev --group docs
+  
+      - name: Build documentation with mike
+        if: steps.release.outputs.released == 'true'
+        run: >
+          uv run mike deploy 
+          --branch gh-pages
+          --alias-type copy
+          --update-aliases
+          --push
+          ${{ inputs.version }} ${{ inputs.alias }}
+      
+      - name: Set default alias for mike 
+        if: ${{ fromJson(inputs.set-default) }}
+        run: >
+          uv run mike set-default
+          --branch ${{ inputs.branch }}
+          --push
+          ${{ inputs.alias }}
