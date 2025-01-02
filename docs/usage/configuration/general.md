@@ -22,25 +22,37 @@ plugins:
         show_bases: false
 ```
 
+??? code ":material-file-code: `myClass.m`"
+
+    ```matlab
+    --8<-- "docs/snippets/myClass.m"
+    ```
+
 ???+ preview
 
     === "with bases" 
+
+        ```markdown
+        ::: myClass
+            options:
+                show_bases: true
+        ```
 
         ::: myClass
             options:
                 show_bases: true
 
     === "without bases"
+        
+        ```markdown
+        ::: myClass
+            options:
+                show_bases: false
+        ```
 
         ::: myClass
             options:
                 show_bases: false
-
-    === ":octicons-code-16: source"
-
-        ```matlab
-        --8<-- "docs/snippets/myClass.m"
-        ```
 
 ## `show_inheritance_diagram`
 
@@ -74,27 +86,24 @@ plugins:
         show_inheritance_diagram: false
 ```
 
+??? code ":material-file-code: Source files"
+
+    ```matlab title='myClass.m'
+    --8<-- "docs/snippets/myClass.m"
+    ```
+
+    ```matlab title='myParent.m'
+    --8<-- "docs/snippets/myParent.m"
+    ```
+
 ???+ preview
 
-    === "output"
-
-        ::: myClass
-            options:
-                show_bases: false
-                show_inheritance_diagram: true
-                show_root_heading: false
-                show_root_toc_entry: false
-
-
-    === ":octicons-code-16: source"
-
-        ```matlab title='myClass.m'
-        --8<-- "docs/snippets/myClass.m"
-        ```
-
-        ```matlab title='myParent.m'
-        --8<-- "docs/snippets/myParent.m"
-        ```
+    ::: myClass
+        options:
+            show_bases: false
+            show_inheritance_diagram: true
+            show_root_heading: false
+            show_root_toc_entry: false
 
 ## `show_source`
 
@@ -118,9 +127,21 @@ plugins:
       show_source: false
 ```
 
+??? code ":material-file-code: `myfunction.m`"
+
+    ```matlab
+    --8<-- "docs/snippets/myfunction.m"
+    ```
+
 ???+ preview
 
     === "with source" 
+        
+        ```markdown
+        ::: myfunction
+            options:
+                show_source: true
+        ```
 
         ::: myfunction
             options:
@@ -128,12 +149,12 @@ plugins:
 
     === "without bases"
 
+        ```markdown
         ::: myfunction
             options:
                 show_source: false
-
-    === ":octicons-code-16: source"
-
-        ```matlab
-        --8<-- "docs/snippets/myfunction.m"
         ```
+
+        ::: myfunction
+            options:
+                show_source: false

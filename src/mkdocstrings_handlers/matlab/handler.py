@@ -71,11 +71,10 @@ class MatlabHandler(BaseHandler):
         "show_docstring_name_value_arguments": True,
         "show_docstring_output_arguments": True,
         # Signature options
-        "annotations_path": "brief",
-        "line_length": 60,
         "show_signature": True,
         "show_signature_annotations": False,
         "separate_signature": False,
+        "signature_crossrefs": False,
     }
     """Default handler configuration.
 
@@ -141,11 +140,10 @@ class MatlabHandler(BaseHandler):
         show_docstring_output_arguments (bool): Whether to display the "Output arguments" section in the object's docstring. Default: `True`.
 
     Attributes: Signatures/annotations options:
-        annotations_path (str): The verbosity for annotations path: `brief` (recommended), or `source` (as written in the source). Default: `"brief"`.
-        line_length (int): Maximum line length when formatting code/signatures. Default: `60`.
         show_signature (bool): Show methods and functions signatures. Default: `True`.
         show_signature_annotations (bool): Show the type annotations in methods and functions signatures. Default: `False`.
         separate_signature (bool): Whether to put the whole signature in a code block below the heading.
+        signature_crossrefs (bool): Whether to render cross-references for type annotations in signatures. Default: `False`.
     """
 
     def __init__(
@@ -276,6 +274,7 @@ class MatlabHandler(BaseHandler):
             "show_docstring_warns",
         ]:
             final_config[setting] = False
+        final_config["line_length"] = 88
 
         return template.render(
             **{
@@ -306,7 +305,7 @@ class MatlabHandler(BaseHandler):
         self.env.filters["format_signature"] = rendering.do_format_signature
         self.env.filters["format_attribute"] = rendering.do_format_attribute
         self.env.filters["filter_objects"] = rendering.do_filter_objects
-        self.env.filters["stash_crossref"] = lambda ref, length: ref
+        self.env.filters["stash_crossref"] = rendering.do_stash_crossref
         self.env.filters["get_template"] = rendering.do_get_template
         self.env.filters["as_attributes_section"] = rendering.do_as_attributes_section
         self.env.filters["as_functions_section"] = rendering.do_as_functions_section
