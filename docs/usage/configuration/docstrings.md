@@ -29,7 +29,7 @@ plugins:
       docstring_style: numpy
 ```
 
-??? preview
+???+ preview
 
     Every style gets rendered the same way. Here are some docstring examples.
 
@@ -143,7 +143,7 @@ plugins:
       docstring_section_style: list
 ```
 
-??? preview
+???+ preview
 
 
     === "Table"
@@ -196,7 +196,7 @@ plugins:
         `gravity_forces` | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br>**TYPE:** <code><autoref identifier="list" optional>list</autoref>[<autoref identifier="int" optional>int</autoref> \| <autoref identifier="float" optional>float</autoref>]</code> <span style="float: right;"><b>DEFAULT:</b> <i>required</i></span>
         `vacuum_type` | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br>**TYPE:**<code><autoref identifier="VacuumType" optional>VacuumType</autoref> \| <autoref identifier="typing.Literal" optional>Literal</autoref>["regular"]</code> <span style="float: right;"><b>DEFAULT:</b> <code>VacuumType.PLASMA</code></span>
 
-## `parameters_from_arguments`
+## `parse_arguments`
 
 - **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
 
@@ -218,7 +218,7 @@ function z = mySharedFunction(x,y,NameValueArgs)
 end
 ```
 
-The mkdocstrings-matlab plugin is able to parse the argument blocks and extract the type and default information, and any comment after each Argument Definition will be parsed as the argument docstring. If if `parameters_from_arguments` is enabled, sections will be rendered for the parameters, name-value pairs and the return arguments of functions and methods. These sections can be individually toggled with [`show_docstring_parameters`][], [`show_docstring_name_value_pairs`][] and [`show_docstring_returns`][].
+The mkdocstrings-matlab plugin is able to parse the argument blocks and extract the type and default information, and any comment after each Argument Definition will be parsed as the argument docstring. If if `parse_arguments` is enabled, sections will be rendered for the parameters, name-value pairs and the return arguments of functions and methods. These sections can be individually toggled with [`show_docstring_input_arguments`][], [`show_docstring_name_value_arguments`][] and [`show_docstring_output_arguments`][].
 
 
 ```yaml title="in mkdocs.yml (global configuration)"
@@ -227,50 +227,50 @@ plugins:
     handlers:
       matlab:
         options:
-          parameters_from_arguments: true
+          parse_arguments: true
 ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: mynamespace.typed_function
     options:
-      parameters_from_arguments: true
+      parse_arguments: true
 ```
 
 --8<-- "docs/snippets/+mynamespace/mynamespace.md"
 
-??? preview "Preview: Cross-references"
+???+ preview "Preview: Cross-references"
 
     === "Parse argument validation"
 
         ```markdown
         ::: mynamespace.typed_function
             options:
-              parameters_from_arguments: true
+              parse_arguments: true
         ```
 
         ::: mynamespace.typed_function
             options:
-              parameters_from_arguments: true
+              parse_arguments: true
 
     === "Don't parse argument validation"
 
         ```markdown
         ::: mynamespace.typed_function
             options:
-              parameters_from_arguments: false
+              parse_arguments: false
         ```
 
         ::: mynamespace.typed_function
             options:
-              parameters_from_arguments: false
+              parse_arguments: false
 
 !!! note
 
     Prior to MATLAB R2019b, the functionality of the arguments blocks was most commonly achieved through [`inputParser`](https://mathworks.com/help/matlab/ref/inputparser.html). The validations created with `inputParser` will not be parsed by mkdocstrings-matlab, since it does not have a strict syntax as opposed to Argument Definitions. 
 
-## `merge_constructor_into_class` and `merge_constructor_ignore_summary`
+## `merge_constructor_into_class`
 
-- **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**, **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
+- **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
 <!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
 
 Whether to merge the constructor method into the class' signature and docstring.
@@ -288,7 +288,7 @@ plugins:
 ```
 
 ```md title="or in docs/some_page.md (local configuration)"
-::: path.to.module
+::: matlab_callable
     options:
       merge_constructor_into_class: true
       merge_constructor_ignore_summary: true
@@ -300,7 +300,7 @@ plugins:
     --8<-- "docs/snippets/Thing.m"
     ```
 
-??? preview
+???+ preview
 
     === "Merged, summary discarded"
 
@@ -372,7 +372,7 @@ plugins:
 
 --8<-- "docs/snippets/+undocumented/undocumented.md"
 
-??? preview
+???+ preview
 
     === "Show"
 
@@ -398,6 +398,252 @@ plugins:
             options:
               show_if_no_docstring: false
 
+## `show_docstring_properties`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+Whether to render the "Properties" sections of docstrings.
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          show_docstring_properties: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: matlab_callable
+    options:
+      show_docstring_properties: false
+```
+
+??? code ":material-file-code: `Class.m`"
+
+    ```matlab
+    --8<-- "docs/snippets/Class.m"
+    ```
+
+???+ preview
+
+    === "With properties"
+
+        ```markdown
+        ::: Class
+            options:
+              show_docstring_properties: true
+        ```
+
+        ::: Class
+            options:
+              show_docstring_properties: true
+
+    === "Without properties"
+
+        ```markdown
+        ::: Class
+            options:
+              show_docstring_properties: false
+        ```
+
+        ::: Class
+            options:
+              show_docstring_properties: false
+
+## `show_docstring_functions`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+Whether to render the "Functions" or "Methods" sections of docstrings.
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      python:
+        options:
+          show_docstring_functions: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: path.to.module
+    options:
+      show_docstring_functions: false
+```
+
+--8<-- "docs/snippets/+module/module.md"
+
+???+ preview
+
+    === "With methods"
+
+        ```markdown
+        ::: module.aClass
+            options:
+              show_docstring_functions: true
+        ```
+
+        ::: module.aClass
+            options:
+              show_docstring_functions: true
+
+    === "Without methods"
+
+        ```markdown
+        ::: module.aClass
+            options:
+              show_docstring_functions: false
+        ```
+
+        ::: module.aClass
+            options:
+              show_docstring_functions: false
+
+    === "With functions"
+
+        ```markdown
+        ::: +module
+            options:
+              show_docstring_functions: true
+              members: false
+        ```
+
+        ::: +module
+            options:
+              show_docstring_functions: true
+              members: false
+
+    === "Without functions"
+
+        ```markdown
+        ::: +module
+            options:
+              show_docstring_functions: false
+              members: false
+        ```
+
+        ::: +module
+            options:
+              show_docstring_functions: false
+              members: false
+
+## `show_docstring_classes`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+Whether to render the "Classes" sections of docstrings.
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          show_docstring_classes: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: +matlab_namespace
+    options:
+      show_docstring_classes: false
+```
+
+--8<-- "docs/snippets/+module/module.md"
+
+???+ preview
+
+    === "With classes"
+
+        ```markdown
+        ::: +module
+            options:
+              show_docstring_classes: true
+              members: false
+        ```
+
+        ::: +module
+            options:
+              show_docstring_classes: true
+              members: false
+
+    === "Without classes"
+
+        ```markdown
+        ::: +module
+            options:
+              show_docstring_classes: false
+              members: false
+        ```
+
+        ::: +module
+            options:
+              show_docstring_classes: false
+              members: false
+
+
+## `show_docstring_namespaces`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+Whether to render the "Namespaces" sections of docstrings.
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          show_docstring_namespaces: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: +matlab_namespace
+    options:
+      show_docstring_namespaces: false
+```
+
+```tree
+module/
+    __init__.py
+    submodule.py
+```
+
+--8<-- "docs/snippets/+module/module.md"
+
+???+ preview
+
+    === "With namespaces"
+
+        ```markdown
+        ::: +module
+            options:
+              show_docstring_namespaces: true
+              members: false
+        ```
+
+        ::: +module
+            options:
+              show_docstring_namespaces: true
+              members: false
+
+    === "Without namespaces"
+
+        ```markdown
+        ::: +module
+            options:
+              show_docstring_namespaces: false
+              members: false
+        ```
+
+        ::: +module
+            options:
+              show_docstring_namespaces: false
+              members: false
 
 ## `show_docstring_description`
 
@@ -416,10 +662,42 @@ plugins:
 ```
 
 ```md title="or in docs/some_page.md (local configuration)"
-::: path.to.module
+::: matlab_callable
     options:
       show_docstring_description: false
 ```
+
+??? code ":material-file-code: `Class.m`"
+
+    ```matlab
+    --8<-- "docs/snippets/Class.m"
+    ```
+
+???+ preview
+
+    === "With description blocks"
+
+        ```markdown
+        ::: Class
+            options:
+              show_docstring_description: true
+        ```
+
+        ::: Class
+            options:
+              show_docstring_description: true
+
+    === "Without description blocks"
+
+        ```markdown
+        ::: Class
+            options:
+              show_docstring_description: false
+        ```
+
+        ::: Class
+            options:
+              show_docstring_description: false
 
 ## `show_docstring_examples`
 
@@ -438,17 +716,49 @@ plugins:
 ```
 
 ```md title="or in docs/some_page.md (local configuration)"
-::: path.to.module
+::: matlab_callable
     options:
       show_docstring_examples: false
 ```
 
-## `show_docstring_parameters`
+??? code ":material-file-code: `print_hello.m`"
+
+    ```matlab
+    --8<-- "docs/snippets/print_hello.m"
+    ```
+
+???+ preview
+
+    === "With examples"
+        
+        ```markdown
+        ::: print_hello
+            options:
+              show_docstring_examples: true
+        ```
+
+        ::: print_hello
+            options:
+              show_docstring_examples: true
+
+    === "Without examples"
+
+        ```markdown
+        ::: print_hello
+            options:
+              show_docstring_examples: false
+        ```
+
+        ::: print_hello
+            options:
+              show_docstring_examples: false
+
+## `show_docstring_input_arguments`
 
 - **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
 <!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
 
-Whether to render the "Parameters" sections of docstrings. 
+Whether to render the "Parameters" sections of docstrings. The accepted title headings are `inputs` or `input arguments` (case-insensitive). 
 
 ```yaml title="in mkdocs.yml (global configuration)"
 plugins:
@@ -456,21 +766,57 @@ plugins:
     handlers:
       matlab:
         options:
-          show_docstring_parameters: true
+          show_docstring_input_arguments: true
 ```
 
 ```md title="or in docs/some_page.md (local configuration)"
-::: path.to.module
+::: matlab_callable
     options:
-      show_docstring_parameters: false
+      show_docstring_input_arguments: false
 ```
 
-## `show_docstring_name_value_pairs`
+??? code ":material-file-code: `do_something.m`"
+
+    ```matlab
+    --8<-- "docs/snippets/do_something.m"
+    ```
+
+???+ preview
+
+    === "With parameters"
+
+        ```markdown
+        ::: do_something
+            options:
+              show_docstring_input_arguments: true
+        ```
+        
+        ::: do_something
+            options:
+              show_docstring_input_arguments: true
+
+    === "Without parameters"
+
+        ```markdown
+        ::: do_something
+            options:
+              show_docstring_input_arguments: false
+        ```
+
+        ::: do_something
+            options:
+              show_docstring_input_arguments: false
+
+!!! warning
+
+    If a `Input arguments` section is provided in the docstring, the description here will overule the parsed values from the argument validation block (see [`parse_arguments`][]).
+
+## `show_docstring_name_value_arguments`
 
 - **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
 <!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
 
-Whether to render the "Name-value pairs" sections of docstrings.
+Whether to render the "Name-value pairs" sections of docstrings. The accepted title headings are `name-value pairs` or `name-value arguments` (case-insensitive). 
 
 ```yaml title="in mkdocs.yml (global configuration)"
 plugins:
@@ -478,21 +824,57 @@ plugins:
     handlers:
       matlab:
         options:
-          show_docstring_name_value_pairs: true
+          show_docstring_name_value_arguments: true
 ```
 
 ```md title="or in docs/some_page.md (local configuration)"
-::: path.to.module
+::: matlab_callable
     options:
-      show_docstring_name_value_pairs: false
+      show_docstring_name_value_arguments: false
 ```
 
-## `show_docstring_returns`
+??? code ":material-file-code: `do_varargin.m`"
+
+    ```matlab
+    --8<-- "docs/snippets/do_varargin.m"
+    ```
+
+???+ preview
+
+    === "With parameters"
+
+        ```markdown
+        ::: do_varargin
+            options:
+              show_docstring_name_value_arguments: true
+        ```
+        
+        ::: do_varargin
+            options:
+              show_docstring_name_value_arguments: true
+
+    === "Without parameters"
+
+        ```markdown
+        ::: do_varargin
+            options:
+              show_docstring_name_value_arguments: false
+        ```
+
+        ::: do_varargin
+            options:
+              show_docstring_name_value_arguments: false
+
+!!! warning
+
+    If a `Name-value arguments` section is provided in the docstring, the description here will overule the parsed values from the argument validation block (see [`parse_arguments`][]).
+
+## `show_docstring_output_arguments`
 
 - **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
 <!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
 
-Whether to render the "Returns" sections of docstrings.
+Whether to render the "Returns" sections of docstrings. The accepted title headings are `outputs` or `output arguments` (case-insensitive). 
 
 ```yaml title="in mkdocs.yml (global configuration)"
 plugins:
@@ -500,12 +882,47 @@ plugins:
     handlers:
       matlab:
         options:
-          show_docstring_returns: true
+          show_docstring_output_arguments: true
 ```
 
 ```md title="or in docs/some_page.md (local configuration)"
-::: path.to.module
+::: matlab_callable
     options:
-      show_docstring_returns: false
+      show_docstring_output_arguments: false
 ```
 
+??? code ":material-file-code: `do_output.m`"
+
+    ```matlab
+    --8<-- "docs/snippets/do_output.m"
+    ```
+
+???+ preview
+
+    === "With parameters"
+
+        ```markdown
+        ::: do_output
+            options:
+              show_docstring_output_arguments: true
+        ```
+        
+        ::: do_output
+            options:
+              show_docstring_output_arguments: true
+
+    === "Without parameters"
+
+        ```markdown
+        ::: do_output
+            options:
+              show_docstring_output_arguments: false
+        ```
+
+        ::: do_output
+            options:
+              show_docstring_output_arguments: false
+
+!!! warning
+
+    If a `Output arguments` section is provided in the docstring, the description here will overule the parsed values from the argument validation block (see [`parse_arguments`][]).

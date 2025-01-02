@@ -32,7 +32,7 @@
   
 .md-typeset .code>.admonition-title,
 .md-typeset .code>summary {
-    background-color: rgb(50, 49, 91);;
+    background-color: rgb(50, 49, 91, 0.1);;
 }
   
 .md-typeset .code>.admonition-title::before,

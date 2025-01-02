@@ -30,7 +30,7 @@ plugins:
 
 --8<-- "docs/snippets/+mynamespace/mynamespace.md"
 
-??? preview 
+???+ preview 
 
     === "With level 3 and root heading"
 
@@ -60,7 +60,7 @@ plugins:
 
 Whether to render headings for function/method parameters.
 
-With this option enabled, each function/method parameter (including parameters of the constructor methods merged in their parent class with the [`merge_init_into_class`][] option) gets a permalink, an entry in the Table of Contents, and an entry in the generated objects inventory. The permalink and inventory entry allow cross-references from internal and external pages.
+With this option enabled, each function/method parameter (including parameters of the constructor methods merged in their parent class with the [`merge_constructor_into_class`][] option) gets a permalink, an entry in the Table of Contents, and an entry in the generated objects inventory. The permalink and inventory entry allow cross-references from internal and external pages.
 
 The identifier used in the permalink and inventory is of the following form: `path.to.function(param_name)`. To manually cross-reference a arameter, you can therefore use this Markdown syntax:
 
@@ -71,8 +71,6 @@ The identifier used in the permalink and inventory is of the following form: `pa
 - Variadic positional parameters: [`*args`][package.module.function(*args)]
 - Variadic keyword parameters: [`**kwargs`][package.module.function(**kwargs)]
 ```
-
-Enabling this option along with [`signature_crossrefs`][] will automatically render cross-references to parameters in class/function/method signatures and attributes values.
 
 ```yaml title="in mkdocs.yml (global configuration)"
 plugins:
@@ -91,7 +89,7 @@ plugins:
 
 --8<-- "docs/snippets/+mynamespace/mynamespace.md"
 
-??? preview "Preview: Cross-references"
+???+ preview "Preview: Cross-references"
 
     === "With parameter headings"
 
@@ -119,7 +117,7 @@ plugins:
               parameter_headings: false
               docstring_section_style: list
 
-??? preview "Preview: Parameter sections"
+???+ preview "Preview: Parameter sections"
 
     === "Table style"
 
@@ -129,7 +127,7 @@ plugins:
               show_root_toc_entry: false
               parameter_headings: true
               docstring_section_style: table
-              show_docstring_returns: false
+              show_docstring_output_arguments: false
               show_docstring_description: false
 
     === "List style"
@@ -140,7 +138,7 @@ plugins:
               show_root_toc_entry: false
               parameter_headings: true
               docstring_section_style: list
-              show_docstring_returns: false
+              show_docstring_output_arguments: false
               show_docstring_description: false
 
     === "Spacy style"
@@ -151,10 +149,10 @@ plugins:
               show_root_toc_entry: false
               parameter_headings: true
               docstring_section_style: spacy
-              show_docstring_returns: false
+              show_docstring_output_arguments: false
               show_docstring_description: false
 
-??? preview "Preview: Table of contents (with symbol types)"
+???+ preview "Preview: Table of contents (with symbol types)"
 
     <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code> typed_function<br>
     <code class="doc-symbol doc-symbol-toc doc-symbol-parameter" style="margin-left: 16px;"></code> input
@@ -167,7 +165,7 @@ plugins:
 
 Show the heading of the object at the root of the documentation tree (i.e. the object referenced by the identifier after `:::`).
 
-It is pretty common to inject documentation for one module per page, especially when following our [automatic reference pages recipe][autopages recipe]. Since each page already has a title, usually being the module's name, we can spare one heading level by not showing the heading for the module itself (heading levels are limited to 6 by the HTML specification).
+It is pretty common to inject documentation for one module per page. Since each page already has a title, usually being the module's name, we can spare one heading level by not showing the heading for the module itself (heading levels are limited to 6 by the HTML specification).
 
 Sparing that extra level can be helpful when your objects tree is deeply nested (e.g. method in a class in a class in a module). If your objects tree is not deeply nested, and you are injecting documentation for many different objects on a single page, it might be preferable to render the heading of each object.
 
@@ -192,7 +190,7 @@ plugins:
 
 --8<-- "docs/snippets/+mynamespace/mynamespace.md"
 
-??? preview
+???+ preview
 
     === "With root heading"
     
@@ -249,7 +247,7 @@ Lots of text.
 More text.
 ```
 
-??? preview
+???+ preview
 
     === "With ToC entry"
 
@@ -304,7 +302,7 @@ plugins:
 
 --8<-- "docs/snippets/+mynamespace/mynamespace.md"
 
-??? preview
+???+ preview
 
     === "With root full path"
 
@@ -358,7 +356,7 @@ plugins:
 
 --8<-- "docs/snippets/+mynamespace/mynamespace.md"
 
-??? preview
+???+ preview
 
     === "With root members full path"
 
@@ -415,7 +413,7 @@ plugins:
       show_object_full_path: false
 ```
 
-??? preview
+???+ preview
 
     === "With object full path"
 
@@ -428,8 +426,8 @@ plugins:
         ::: +mynamespace
             options:
               show_object_full_path: true
-              show_docstring_parameters: false
-              show_docstring_returns: false
+              show_docstring_input_arguments: false
+              show_docstring_output_arguments: false
 
     === "Without object full path"
         
@@ -442,8 +440,8 @@ plugins:
         ::: +mynamespace
             options:
               show_object_full_path: false
-              show_docstring_parameters: false
-              show_docstring_returns: false
+              show_docstring_input_arguments: false
+              show_docstring_output_arguments: false
 
 ## `show_category_heading`
 
@@ -477,7 +475,7 @@ plugins:
 
 --8<-- "docs/snippets/+mynamespace/mynamespace.md"
 
-??? preview
+???+ preview
 
     === "With category headings"
 
@@ -492,8 +490,8 @@ plugins:
             options:
               group_by_category: true
               show_category_heading: true
-              show_docstring_parameters: false
-              show_docstring_returns: false
+              show_docstring_input_arguments: false
+              show_docstring_output_arguments: false
 
     === "Without category headings"
 
@@ -508,8 +506,8 @@ plugins:
             options:
               group_by_category: true
               show_category_heading: false
-              show_docstring_parameters: false
-              show_docstring_returns: false
+              show_docstring_input_arguments: false
+              show_docstring_output_arguments: false
 
 ## `show_symbol_type_heading`
 
@@ -546,7 +544,7 @@ plugins:
 
 --8<-- "docs/snippets/+mynamespace/mynamespace.md"
 
-??? preview
+???+ preview
 
     === "With symbol type in headings"
 
@@ -559,8 +557,8 @@ plugins:
         ::: +mynamespace
             options:
               show_symbol_type_heading: true
-              show_docstring_parameters: false
-              show_docstring_returns: false
+              show_docstring_input_arguments: false
+              show_docstring_output_arguments: false
 
     === "Without symbol type in headings"
 
@@ -573,8 +571,8 @@ plugins:
         ::: +mynamespace
             options:
               show_symbol_type_heading: false
-              show_docstring_parameters: false
-              show_docstring_returns: false
+              show_docstring_input_arguments: false
+              show_docstring_output_arguments: false
 
 ## `show_symbol_type_toc`
 
@@ -610,7 +608,7 @@ plugins:
       show_symbol_type_toc: false
 ```
 
-??? preview
+???+ preview
 
     === "With symbol type in ToC"
 

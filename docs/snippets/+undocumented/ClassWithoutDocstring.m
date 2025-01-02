@@ -1,5 +1,4 @@
 classdef ClassWithoutDocstring
-    
     methods
         function obj = method_without_docstring(obj)
         end

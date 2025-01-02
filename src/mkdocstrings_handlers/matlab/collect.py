@@ -11,6 +11,7 @@ from _griffe.docstrings.models import (
     DocstringParameter,
     DocstringReturn,
 )
+from _griffe.enumerations import DocstringSectionKind
 from _griffe.expressions import Expr
 
 from mkdocstrings_handlers.matlab.enums import ParameterKind
@@ -224,6 +225,21 @@ class PathCollection(ModulesCollection):
             model.docstring.parser = config.get("docstring_style", "google")
             model.docstring.parser_options = config.get("docstring_options", {})
 
+        # Patch docstring section titles
+        if model.docstring is not None:
+            for section in model.docstring.parsed:
+                match section.kind:
+                    case DocstringSectionKind.attributes:
+                        section.title = "Properties:"
+                    case DocstringSectionKind.modules:
+                        section.title = "Namespaces:"
+                    case DocstringSectionKind.parameters:
+                        section.title = "Input arguments:"
+                    case DocstringSectionKind.returns:
+                        section.title= "Output arguments:"
+                    case DocstringSectionKind.other_parameters:
+                        section.title = "Name-Value Arguments:"
+
         # Patch returns annotation
         # In _griffe.docstrings.<parser>.py the function _read_returns_section will enforce an annotation
         # on the return parameter. This annotation is grabbed from the parent. For MATLAB this is invalid.
@@ -341,11 +357,11 @@ class PathCollection(ModulesCollection):
         if (
             isinstance(alias, Function)
             and alias.docstring is not None
-            and config.get("parameters_from_arguments", True)
+            and config.get("parse_arguments", True)
             and (
-                config.get("show_docstring_parameters", True)
-                or config.get("show_docstring_name_value_pairs", True)
-                or config.get("show_docstring_returns", True)
+                config.get("show_docstring_input_arguments", True)
+                or config.get("show_docstring_name_value_arguments", True)
+                or config.get("show_docstring_output_arguments", True)
             )
         ):
             docstring_parameters = any(
@@ -387,7 +403,7 @@ class PathCollection(ModulesCollection):
             ]
 
             if (
-                config.get("show_docstring_parameters", True)
+                config.get("show_docstring_input_arguments", True)
                 and document_parameters
                 and standard_parameters
             ):
@@ -410,7 +426,7 @@ class PathCollection(ModulesCollection):
                 )
 
             if (
-                config.get("show_docstring_name_value_pairs", True)
+                config.get("show_docstring_name_value_arguments", True)
                 and document_parameters
                 and keyword_parameters
             ):
@@ -433,7 +449,7 @@ class PathCollection(ModulesCollection):
                     )
                 )
 
-            if config.get("show_docstring_returns", True) and document_returns:
+            if config.get("show_docstring_output_arguments", True) and document_returns:
                 returns = DocstringSectionReturns(
                     [
                         DocstringReturn(

@@ -22,7 +22,7 @@ plugins:
         show_bases: false
 ```
 
-??? preview
+???+ preview
 
     === "with bases" 
 
@@ -74,7 +74,7 @@ plugins:
         show_inheritance_diagram: false
 ```
 
-??? preview
+???+ preview
 
     === "output"
 
@@ -118,7 +118,7 @@ plugins:
       show_source: false
 ```
 
-??? preview
+???+ preview
 
     === "with source" 
 

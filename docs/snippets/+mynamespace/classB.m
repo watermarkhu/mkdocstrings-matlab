@@ -1,5 +1,5 @@
 classdef classB
-    % Docstring of class A.
+    % Docstring of class B.
     properties
         prop_b   % Docstring of the property.
     end
