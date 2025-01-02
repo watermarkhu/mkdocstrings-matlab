@@ -47,7 +47,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          etch-depth: 0 # Required to push to the documentation branch
+          fetch-depth: 0 # Required to push to the documentation branch
 
       - name: Install the latest version of uv
         uses: astral-sh/setup-uv@v5
