@@ -14,6 +14,11 @@ on:
           Set the alias as the default version
         type: boolean
         default: true
+      set-default:
+        description: >-
+          Set the alias as the default version
+        type: boolean
+        default: true
   workflow_call:
     inputs:
       version:
