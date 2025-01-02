@@ -2,10 +2,7 @@
 
 <p align="center">A MATLAB handler for <a href="https://github.com/mkdocstrings/mkdocstrings"><i>mkdocstrings</i></a>.</p>
 
-
----
-
-<p align="center"><img src="logo.svg"></p>
+<p align="center"><img width=300px src="logo.svg"></p>
 
 The MATLAB handler uses [Tree-sitter](https://tree-sitter.github.io/tree-sitter/) and its [MATLAB parser](https://github.com/acristoffers/tree-sitter-matlab) to collect documentation from MATLAB source code. Via the python bindings the Abstract Syntax Tree (AST) of the source code is traversed to extract useful information. The imported objected are imported as custom [Griffe](https://mkdocstrings.github.io/griffe/) objects and mocked for the [python handler](https://mkdocstrings.github.io/python/). 
 
@@ -18,7 +15,7 @@ You can install this handler by specifying it as a dependency:
 # adapt to your dependencies manager
 [project]
 dependencies = [
-    "mkdocstrings-matlab>=0.3",
+    "mkdocstrings-matlab>=0.4.0",
 ]
 ```
 
