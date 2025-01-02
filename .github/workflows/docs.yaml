@@ -42,6 +42,7 @@ permissions:
 
 jobs:
   build:
+    environment: release
     runs-on: ubuntu-latest
 
     steps:
