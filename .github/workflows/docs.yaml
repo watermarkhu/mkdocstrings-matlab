@@ -52,18 +52,18 @@ jobs:
           git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
   
       - name: Build documentation with mike
+        env:
+          PUSH_DEPLOY: ${{ fromJson(inputs.push) && '--push' || '' }}
         run: >
-          uv run mike deploy 
+          uv run mike deploy ${PUSH_DEPLOY} 
           --branch gh-pages
           --alias-type symlink
-          --push
           ${{ inputs.version }} ${{ inputs.alias }}
       
       - name: Set default alias for mike 
         if: ${{ fromJson(inputs.set-default) }}
-        env:
-          PUSH_DEPLOY: ${{ fromJson(inputs.push) && '--push' || '' }}
         run: >
           uv run mike set-default
-          --branch gh-pages ${PUSH_DEPLOY} 
+          --branch gh-pages 
+          --push
           ${{ inputs.alias }}
