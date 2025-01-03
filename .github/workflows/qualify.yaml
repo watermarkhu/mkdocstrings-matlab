@@ -24,4 +24,6 @@ jobs:
     secrets: inherit
     with:
       version: __test__
+      alias: ""
       set-default: false
+      push: false
