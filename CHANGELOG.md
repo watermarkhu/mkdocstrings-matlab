@@ -5,6 +5,9 @@
 
 ### Bug Fixes
 
+- Automatic releases ([#29](https://github.com/watermarkhu/mkdocstrings-matlab/pull/29),
+  [`3d688d5`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/3d688d5ab145c6ec761f1c4830c1949974e2c20f))
+
 - Release artifact and documentation:
   ([#27](https://github.com/watermarkhu/mkdocstrings-matlab/pull/27),
   [`a0bc3ff`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/a0bc3ffb81df1af2e70e99d4d3fa62e86f9e7be8))
