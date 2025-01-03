@@ -25,7 +25,6 @@ jobs:
 
     steps:
 
-
     - uses: actions/create-github-app-token@v1
       id: app-token
       with:
@@ -62,24 +61,26 @@ jobs:
     - name: Setup environment with UV
       run: |
         uv sync --dev
+        
         CURRENT_VERSION=$(uv run semantic-release --noop version --print-last-released)
         NEXT_VERSION=$(uv run semantic-release --noop version --print)
+        TAG=$(uv run semantic-release --noop version --print-tag)
 
         if [ "$CURRENT_VERSION" = "$NEXT_VERSION" ]; then
           echo "deploy=false" >> $GITHUB_ENV
         else
           echo "deploy=true" >> $GITHUB_ENV
         fi
+        run: echo "tag=$TAG" >> $GITHUB_OUTPUT
 
     - name: Update version and changelogs
       if: env.deploy
       env:
         GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
       run: >
-        uv run semantic-release -vv version 
-        --commit --tag --changelog --push
-        --skip-build --no-vcs-release
-
+        uv run semantic-release -vv version --skip-build
+        --commit --tag --changelog --push --vcs-release
+         
     - name: Build and publish package distributions
       if: env.deploy
       run: |
