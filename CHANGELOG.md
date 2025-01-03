@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.5.0 (2025-01-03)
+
+### Features
+
+- Force minor release ([#31](https://github.com/watermarkhu/mkdocstrings-matlab/pull/31),
+  [`96278d0`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/96278d0ff1080bbb4ac102190653c0fa1a269664))
+
+
 ## v0.4.2 (2025-01-03)
 
 ### Bug Fixes
