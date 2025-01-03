@@ -1,3 +1,5 @@
+<!-- --8<-- [start:header] -->
+
 <h1 align="center">mkdocstrings-matlab</h1>
 
 <p align="center">A MATLAB handler for <a href="https://github.com/mkdocstrings/mkdocstrings"><i>mkdocstrings</i></a>.</p>
@@ -10,7 +12,6 @@
 
 The MATLAB handler uses [Tree-sitter](https://tree-sitter.github.io/tree-sitter/) and its [MATLAB parser](https://github.com/acristoffers/tree-sitter-matlab) to collect documentation from MATLAB source code. Via the python bindings the Abstract Syntax Tree (AST) of the source code is traversed to extract useful information. The imported objected are imported as custom [Griffe](https://mkdocstrings.github.io/griffe/) objects and mocked for the [python handler](https://mkdocstrings.github.io/python/). 
 
-## Installation
 
 You can install this handler by specifying it as a dependency:
 
@@ -23,6 +24,9 @@ dependencies = [
 ]
 ```
 
+<!-- --8<-- [end:header] -->
+<!-- --8<-- [start:footer] -->
+
 ## Features
 
 - **Data collection from source code**: collection of the object-tree and the docstrings is done thanks to
@@ -33,7 +37,7 @@ dependencies = [
    It is even able to automatically add cross-references o other objects from your API.
 
 - **Recursive documentation of MATLAB [namespaces](https://mathworks.com/help/matlab/matlab_oop/namespaces.html):** 
-  just add `+` to the identifer, and you get the full namespace docs. You don't need to inject documentation for each class, function, and script.
+  just add `+` to the identifer, and you get the full namespace docs. You don't need to inject documentation for each class, function, and script. Additionaly, the parent namespace documentation will be either extracted from the `Contents.m` or the `readme.md` file at the root of the namespace. 
 
 - **Support for documented properties:** properties definitions followed by a docstring will be recognized in classes. 
 
@@ -50,3 +54,5 @@ dependencies = [
   `[this object][namespace.subnamespace.object]` or directly with `[namespace.subnamespace.object][]`
 
 - **Source code display:** *mkdocstrings* can add a collapsible div containing the highlighted source code of the MATLAB object.
+
+<!-- --8<-- [end:footer] -->
