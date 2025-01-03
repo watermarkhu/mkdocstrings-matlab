@@ -1,9 +1,8 @@
 site_name: "mkdocstrings-matlab"
 site_description: "A MATLAB handler for mkdocstrings."
-# site_url: "https://mkdocstrings.github.io/python"
+site_url: "https://watermarkhu.nl/mkdocstrings-matlab"
 repo_url: "https://github.com/watermarkhu/mkdocstrings-matlab"
-repo_name: "watermarkhu/mkdocstrings-matlabn"
-site_dir: "site"
+repo_name: "watermarkhu/mkdocstrings-matlab"
 watch: [mkdocs.yml, README.md, src/mkdocstrings_handlers]
 copyright: Copyright &copy; 2024 Mark Shui Hu
 edit_uri: edit/main/docs/
@@ -48,6 +47,7 @@ nav:
 theme:
   name: material
   logo: logo.svg
+  custom_dir: docs/overrides
   features:
   - announce.dismiss
   - content.action.edit
@@ -124,6 +124,7 @@ markdown_extensions:
 - toc:
     permalink: "¤"
     toc_depth: 2
+
 plugins:
 - autorefs
 - search
@@ -134,7 +135,6 @@ plugins:
 #     - scripts/gen_ref_nav.py
 # - literate-nav:
 #     nav_file: SUMMARY.md
-- mike
 - mkdocs-material-matlab
 - mkdocstrings:
     default_handler: matlab
@@ -221,3 +221,7 @@ plugins:
     plugins:
     - typeset
 
+extra:
+  version:
+    provider: mike
+    alias: true
