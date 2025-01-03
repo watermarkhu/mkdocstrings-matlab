@@ -1,17 +1,17 @@
 name: Release
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types: [closed]
+    branches: [main]
 
 permissions:
   contents: write
   id-token: write
 
 jobs:
-
   publish:
+    if: github.event.pull_request.merged == true
     name: Semantic version release
     runs-on: ubuntu-latest
     environment: release
@@ -34,18 +34,34 @@ jobs:
       run: |
         git checkout -B ${{ github.ref_name }} ${{ github.sha }}
 
+    - uses: actions/create-github-app-token@v1
+      id: app-token
+      with:
+        app-id: ${{ vars.APP_ID }}
+        private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+    - name: Get GitHub App User ID
+      id: get-user-id
+      run: echo "user-id=$(gh api "/users/${{ steps.app-token.outputs.app-slug }}[bot]" --jq .id)" >> "$GITHUB_OUTPUT"
+      env:
+        GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        
+    - run: |
+        git config --global user.name '${{ steps.app-token.outputs.app-slug }}[bot]'
+        git config --global user.email '${{ steps.get-user-id.outputs.user-id }}+${{ steps.app-token.outputs.app-slug }}[bot]@users.noreply.github.com'
+
     - name: Python semantic release
       id: release
-      uses: python-semantic-release/python-semantic-release@v9.8.9
+      uses: python-semantic-release/python-semantic-release@v9.15.2
       with: 
         build: false
         changelog: true
         commit: true
         push: true
         tag: true
-        github_token: ${{ secrets.RELEASE_GITHUB_TOKEN }}
-        git_committer_name: "github-actions[bot]"
-        git_committer_email: "41898282+github-actions[bot]@users.noreply.github.com"
+        github_token: ${{ steps.app-token.outputs.token }}
+        git_committer_name: '${{ steps.app-token.outputs.app-slug }}[bot]'
+        git_committer_email: '${{ steps.get-user-id.outputs.user-id }}+${{ steps.app-token.outputs.app-slug }}[bot]@users.noreply.github.com'
 
     - name: Install the latest version of uv
       if: steps.release.outputs.released == 'true'
@@ -61,10 +77,10 @@ jobs:
         uv publish
 
     - name: Publish package distributions to GitHub Releases
-      uses: python-semantic-release/upload-to-gh-release@v9.8.9
+      uses: python-semantic-release/publish-action@v9.15.2
       if: steps.release.outputs.released == 'true'
       with:
-        github_token: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+        github_token: ${{ steps.app-token.outputs.token }}
         tag: ${{ steps.release.outputs.tag }}
 
   mkdocs:
