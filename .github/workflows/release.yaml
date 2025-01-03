@@ -58,24 +58,30 @@ jobs:
     - name: Setup environment with UV
       run: |
         uv sync --dev
-        OUTPUT=$(uv run semantic-release --noop version --print)
-        echo "version=$OUTPUT" >> $GITHUB_ENV
+        CURRENT_VERSION=$(uv run semantic-release --noop version --print-last-released)
+        NEXT_VERSION=$(uv run semantic-release --noop version --print)
+
+        if [ "$CURRENT_VERSION" = "$NEXT_VERSION" ]; then
+          echo "deploy=false" >> $GITHUB_ENV
+        else
+          echo "deploy=true" >> $GITHUB_ENV
+        fi
 
     - name: Update version and changelogs
-      if: env.version != ''
+      if: env.deploy
       run: >
         uv run semantic-release -vv version 
         --commit --tag --changelog --push
         --skip-build --no-vcs-release
 
     - name: Build and publish package distributions
-      if: env.version != ''
+      if: env.deploy
       run: |
         uv build
         uv publish
 
     - name: Publish package distributions to GitHub Releases
-      if: env.version != ''
+      if: env.deploy
       run: |
         uv run semantic-release -vv publish
 
