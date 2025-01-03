@@ -60,8 +60,6 @@ jobs:
         push: true
         tag: true
         github_token: ${{ steps.app-token.outputs.token }}
-        git_committer_name: '${{ steps.app-token.outputs.app-slug }}[bot]'
-        git_committer_email: '${{ steps.get-user-id.outputs.user-id }}+${{ steps.app-token.outputs.app-slug }}[bot]@users.noreply.github.com'
 
     - name: Install the latest version of uv
       if: steps.release.outputs.released == 'true'
