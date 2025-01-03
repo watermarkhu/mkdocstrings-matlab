@@ -1,0 +1,27 @@
+name: Qualify
+
+on:
+  merge_group:
+  pull_request:
+    types:
+      - opened
+      - closed
+      - reopened
+      - synchronize
+      - labeled
+      - unlabeled
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  docs:
+    if: github.event.pull_request.draft == false
+    name: Test deploy documentation
+    uses: ./.github/workflows/docs.yaml
+    secrets: inherit
+    with:
+      version: __test__
+      set-default: false
