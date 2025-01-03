@@ -1,6 +1,17 @@
 # CHANGELOG
 
 
+## v0.4.1 (2025-01-03)
+
+### Bug Fixes
+
+- Default value of parameter_headings
+  ([#11](https://github.com/watermarkhu/mkdocstrings-matlab/pull/11),
+  [`651e25d`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/651e25db05fad867d51f360ab4b1c49ececce814))
+
+* fix default value of `parameter_headings` * add qualify workflow * documentation upgrades
+
+
 ## v0.4.0 (2025-01-02)
 
 ### Features
@@ -68,5 +79,6 @@
 * forgotten input
 
 * fix
+
 
 ## v0.3.3 (2024-12-19)
