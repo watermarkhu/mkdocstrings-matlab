@@ -1,17 +1,17 @@
 name: Release
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types: [closed]
+    branches: [main]
 
 permissions:
   contents: write
   id-token: write
 
 jobs:
-
   publish:
+    if: github.event.pull_request.merged == true
     name: Semantic version release
     runs-on: ubuntu-latest
     environment: release
