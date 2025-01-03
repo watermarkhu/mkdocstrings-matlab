@@ -27,3 +27,21 @@ jobs:
       alias: ""
       set-default: false
       push: false
+
+  check-semantic-version:
+    name: Check semantic version
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install the latest version of uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        version: "latest"
+
+    - name: Publish package to PyPI with UV
+      run: |
+        uv sync --dev
+        uv run semantic-release -vv --noop version --print
