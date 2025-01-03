@@ -1,3 +1,5 @@
+"""The mkdocstrings handler for processing MATLAB code documentation."""
+
 from pathlib import Path
 from collections import ChainMap
 from markdown import Markdown
