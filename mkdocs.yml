@@ -16,8 +16,8 @@ validation:
 nav:
 - Home:
   - Overview: index.md
-#   - Changelog: changelog.md
-#   - Credits: credits.md
+  - Changelog: changelog.md
+  - Credits: credits.md
   - License: license.md
 - Usage:
   - usage/index.md
@@ -43,7 +43,7 @@ nav:
 #   - Getting started:
 #     - Installation: insiders/installation.md
 #     - Changelog: insiders/changelog.md
-# - mkdocstrings: https://mkdocstrings.github.io/
+- mkdocstrings: https://mkdocstrings.github.io/
 
 theme:
   name: material

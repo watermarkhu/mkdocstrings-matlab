@@ -2,6 +2,10 @@
 
 <p align="center">A MATLAB handler for <a href="https://github.com/mkdocstrings/mkdocstrings"><i>mkdocstrings</i></a>.</p>
 
+[![qualify](https://github.com/watermarkhu/mkdocstrings-matlab/actions/workflows/qualify.yaml/badge.svg)](https://github.com/watermarkhu/mkdocstrings-matlab/actions/workflows/qualify.yaml)
+[![documentation](https://img.shields.io/badge/docs-mkdocs-708FCC.svg?style=flat)](https://watermarkhu.nl/mkdocstrings-matlab)
+[![pypi version](https://img.shields.io/pypi/v/mkdocstrings-matlab.svg)](https://pypi.org/project/mkdocstrings-matlab/)
+
 <p align="center"><img width=300px src="logo.svg"></p>
 
 The MATLAB handler uses [Tree-sitter](https://tree-sitter.github.io/tree-sitter/) and its [MATLAB parser](https://github.com/acristoffers/tree-sitter-matlab) to collect documentation from MATLAB source code. Via the python bindings the Abstract Syntax Tree (AST) of the source code is traversed to extract useful information. The imported objected are imported as custom [Griffe](https://mkdocstrings.github.io/griffe/) objects and mocked for the [python handler](https://mkdocstrings.github.io/python/). 

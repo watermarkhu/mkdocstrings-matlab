@@ -2,23 +2,6 @@ name: Docs
 
 # Controls when the workflow will run
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: >-
-          Version of the documentation to publish
-        type: string
-        required: true
-      alias:
-        description: >-
-          (Versioned) Alias to use when publishing the versioned documentation with mike
-        type: string
-        default: "latest"
-      set-default:
-        description: >-
-          Set the alias as the default version
-        type: boolean
-        default: true
   workflow_call:
     inputs:
       version:
@@ -36,13 +19,17 @@ on:
           Set the alias as the default version
         type: boolean
         default: true
+      push:
+        description: >-
+          Push the documentation to the remote branch
+        type: boolean
+        default: true
 
 permissions:
   contents: write
 
 jobs:
   build:
-    environment: release
     runs-on: ubuntu-latest
 
     steps:
@@ -65,17 +52,18 @@ jobs:
           git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
   
       - name: Build documentation with mike
+        env:
+          PUSH_DEPLOY: ${{ fromJson(inputs.push) && '--push' || '' }}
         run: >
-          uv run mike deploy 
+          uv run mike deploy ${PUSH_DEPLOY} 
           --branch gh-pages
           --alias-type symlink
-          --push
           ${{ inputs.version }} ${{ inputs.alias }}
       
       - name: Set default alias for mike 
         if: ${{ fromJson(inputs.set-default) }}
         run: >
           uv run mike set-default
-          --branch gh-pages
+          --branch gh-pages 
           --push
           ${{ inputs.alias }}

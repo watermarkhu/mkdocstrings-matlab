@@ -34,7 +34,7 @@ class MatlabHandler(BaseHandler):
         "show_source": True,
         # Heading options
         "heading_level": 2,
-        "parameter_headings": True,
+        "parameter_headings": False,
         "show_root_heading": False,
         "show_root_toc_entry": True,
         "show_root_full_path": True,
