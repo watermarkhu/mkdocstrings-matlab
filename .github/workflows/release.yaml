@@ -68,10 +68,8 @@ jobs:
         GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
       run: >
         uv run semantic-release -vv version 
-        --commit --tag --changelog
-        --skip-build --no-push --no-vcs-release
-
-        git push --set-upstream origin ${{ github.ref_name }}
+        --commit --tag --changelog --push
+        --skip-build --no-vcs-release
 
     - name: Build and publish package distributions
       if: env.deploy
