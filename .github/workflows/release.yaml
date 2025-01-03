@@ -71,8 +71,10 @@ jobs:
       if: env.deploy
       run: >
         uv run semantic-release -vv version 
-        --commit --tag --changelog --push
-        --skip-build --no-vcs-release
+        --commit --tag --changelog
+        --skip-build --no-push --no-vcs-release
+
+        git push
 
     - name: Build and publish package distributions
       if: env.deploy
