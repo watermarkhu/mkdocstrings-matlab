@@ -15,6 +15,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   docs:
@@ -35,13 +36,53 @@ jobs:
 
     - name: Checkout repository
       uses: actions/checkout@v4
+      with: 
+        fetch-depth: 0
+        ref: ${{ github.sha }}
+
+    - name: Force correct release branch on workflow sha
+      run: |
+        git checkout -B ${{ github.ref_name }} ${{ github.sha }}
 
     - name: Install the latest version of uv
       uses: astral-sh/setup-uv@v5
       with:
         version: "latest"
 
-    - name: Publish package to PyPI with UV
+    - name: Check next semantic version
       run: |
         uv sync --dev
-        uv run semantic-release -vv --noop version --print
+        OUTPUT=$(uv run semantic-release --noop version --print)
+        echo "$OUTPUT"
+        if [ -z "$OUTPUT" ]; then
+          echo "comment=No release will be made." >> $GITHUB_ENV
+        else
+          echo "comment=The next release will be v$OUTPUT" >> $GITHUB_ENV
+        fi
+
+    - name: Find Comment
+      id: fc
+      uses: peter-evans/find-comment@v3
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-author: 'github-actions[bot]'
+        body-includes: This comment was written by a bot!
+
+    - name: Create comment
+      if: steps.fc.outputs.comment-id == ''
+      uses: peter-evans/create-or-update-comment@v4
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        body: |
+          ${{ env.comment }}
+          <!-- This comment was written by a bot! -->
+          
+    - name: Update comment
+      if: steps.fc.outputs.comment-id != ''
+      uses: peter-evans/create-or-update-comment@v4
+      with:
+        comment-id: ${{ steps.fc.outputs.comment-id }}
+        edit-mode: replace
+        body: |
+          ${{ env.comment }}
+          <!-- This comment was written by a bot! -->
