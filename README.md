@@ -19,7 +19,7 @@ You can install this handler by specifying it as a dependency:
 # adapt to your dependencies manager
 [project]
 dependencies = [
-    "mkdocstrings-matlab>=0.4.0",
+    "mkdocstrings-matlab>=0.X.Y",
 ]
 ```
 
