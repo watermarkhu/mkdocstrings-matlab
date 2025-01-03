@@ -253,6 +253,9 @@ class MatlabHandler(BaseHandler):
             }
 
         # Map docstring options
+        final_config["show_submodules"] = config.get(
+            "show_subnamespaces", False
+        )
         final_config["show_docstring_attributes"] = config.get(
             "show_docstring_properties", True
         )

@@ -295,14 +295,6 @@ class PathCollection(ModulesCollection):
                 else:
                     alias.docstring._suffixes.extend(constructor.docstring.parsed)
 
-        # Hide subnamespaces
-        if isinstance(alias, Namespace) and not config.get("show_subnamespaces", False):
-            alias.members = {
-                key: value
-                for key, value in alias.members.items()
-                if not isinstance(value, Namespace)
-            }
-
         # Hide hidden members (methods and properties)
         hidden_members = config.get("hidden_members", False)
         if isinstance(hidden_members, bool):
