@@ -1,0 +1,7 @@
+code.doc-symbol-attribute::after {
+  content: "prop" !important;
+}
+
+code.doc-symbol-module::after {
+  content: "name" !important;
+}
