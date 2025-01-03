@@ -12,7 +12,7 @@ permissions:
 jobs:
 
   publish:
-    name: Publish package to PyPI
+    name: Semantic version release
     runs-on: ubuntu-latest
     environment: release
     outputs:
