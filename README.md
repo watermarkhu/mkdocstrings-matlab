@@ -2,7 +2,7 @@
 
 <p align="center">A MATLAB handler for <a href="https://github.com/mkdocstrings/mkdocstrings"><i>mkdocstrings</i></a>.</p>
 
-[![ci](https://github.com/watermarkhu/mkdocstrings-matlab/workflows/qualify/badge.svg)](https://github.com/watermarkhu/mkdocstrings-matlab/actions?query=workflow%3Aci)
+[![qualify](https://github.com/watermarkhu/mkdocstrings-matlab/actions/workflows/qualify.yaml/badge.svg)](https://github.com/watermarkhu/mkdocstrings-matlab/actions/workflows/qualify.yaml)
 [![documentation](https://img.shields.io/badge/docs-mkdocs-708FCC.svg?style=flat)](https://watermarkhu.nl/mkdocstrings-matlab)
 [![pypi version](https://img.shields.io/pypi/v/mkdocstrings-matlab.svg)](https://pypi.org/project/mkdocstrings-matlab/)
 
