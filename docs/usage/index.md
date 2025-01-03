@@ -59,13 +59,13 @@ If another handler was defined as default handler, you can explicitely ask for t
 
 Entire [namespaces](https://mathworks.com/help/matlab/matlab_oop/namespaces.html) can be fully documented by prefixing the `+` character to the namespace that is to be documented. E.g. the following namespace 
 
-```
+```tree
 +mynamespace
-|- Contents.m
-|- readme.md
-|- myclass.m
-|- +subnamespace
-|  |- mfunction.m
+    Contents.m
+    readme.md
+    myclass.m
+    +subnamespace
+        mfunction.m
 ```
 
 is documented with:
