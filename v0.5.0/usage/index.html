@@ -1059,16 +1059,31 @@
 <span class="c1"># adapt to your dependencies manager</span>
 <span class="k">[project]</span>
 <span class="n">dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s2">&quot;mkdocstrings-matlab&gt;=0.3&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;mkdocstrings-matlab&gt;=0.X.Y&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 </code></pre></div>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">¤</a></h2>
 <p>For <em>mkdocstrings</em> the default will be the Python handler. You can change the default handler,
 or explicitely set the MATLAB handler as default by defining the <code>default_handler</code>
 configuration option of <code>mkdocstrings</code> in <code>mkdocs.yml</code>:</p>
 <div class="language-yaml highlight"><span class="filename">mkdocs.yml</span><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mkdocstrings</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">default_handler</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">matlab</span>
+<span class="w">    </span><span class="nt">matlab</span><span class="p">:</span>
+<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w">  </span><span class="c1"># the MATLAB handler configuration</span>
 </code></pre></div>
+<p>When using the <a href="https://squidfunk.github.io/mkdocs-material">material</a> theme, it is best to also configure the <code>mkdocs_material_matlab</code> plugin. This additional plugin, which is installed together with mkdocstrings-matlab, will overrule the symbols shown with <a class="autorefs autorefs-internal" href="configuration/headings/#show_symbol_type_heading"><code>show_symbol_type_heading</code></a> and <a class="autorefs autorefs-internal" href="configuration/headings/#show_symbol_type_toc"><code>show_symbol_type_toc</code></a> to show the correct symbols as per MATLAB nomenclature. </p>
+<div class="language-yaml highlight"><span class="filename">mkdocs.yml</span><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mkdocs_material_matlab</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mkdocstrings</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">default_handler</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">matlab</span>
+<span class="w">    </span><span class="nt">matlab</span><span class="p">:</span>
+<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w">  </span><span class="c1"># the MATLAB handler configuration</span>
+</code></pre></div>
+<details class="warning">
+<summary>I want to document both MATLAB and Python</summary>
+<p>The <code>mkdocs_material_matlab</code> plugin will also change the symbols for the Python handler. This means that Python modules will not be tagged with symbol <code>mod</code> but <code>name</code> (namespace), and attributes are not tagged with symbol <code>attr</code> but <code>prop</code> (property). </p>
+</details>
 <h2 id="injecting-documentation">Injecting documentation<a class="headerlink" href="#injecting-documentation" title="Permanent link">¤</a></h2>
 <p>With the MATLAB handler installed and configured as default handler, you can inject documentation for a module, class, function, or any other MATLAB object with <em>mkdocstrings</em>' [autodoc syntax], in your Markdown pages:</p>
 <div class="language-md highlight"><pre><span></span><code>::: path.to.object
@@ -1091,14 +1106,6 @@ configuration option of <code>mkdocstrings</code> in <code>mkdocs.yml</code>:</p
 <p>The docstring of the namespace is taken from either the <a href="https://mathworks.com/help/matlab/matlab_prog/create-a-help-summary-contents-m.html"><code>Contents.m</code></a> or a <code>readme.md</code> that resides at the root level of the namespace, with <code>Contents.m</code> taking precedence over <code>readme.md</code>. </p>
 <p>Documenting a nested namespace requires only a single prefixed <code>+</code> at the start of the fully resolved path, e.g. </p>
 <div class="language-md highlight"><pre><span></span><code>::: +mynamespace.subnamespace
-</code></pre></div>
-<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">¤</a></h2>
-<p>When installed, the MATLAB handler becomes the default <em>mkdocstrings</em> handler. You can configure it in <code>mkdocs.yml</code>:</p>
-<div class="language-yaml highlight"><span class="filename">mkdocs.yml</span><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mkdocstrings</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">handlers</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">matlab</span><span class="p">:</span>
-<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w">  </span><span class="c1"># the MATLAB handler configuration</span>
 </code></pre></div>
 <h3 id="global-only-options">Global-only options<a class="headerlink" href="#global-only-options" title="Permanent link">¤</a></h3>
 <p>Some options are <strong>global only</strong>, and go directly under the handler's name.</p>

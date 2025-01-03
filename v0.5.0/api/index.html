@@ -1017,6 +1017,49 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+<a href="#mkdocstrings_handlers.matlab.handler" class="md-nav__link">
+    <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-toc doc-symbol-module"></code>&nbsp;handler
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+    <nav class="md-nav" aria-label=" handler">
+    <ul class="md-nav__list">
+        
+        
+        <li class="md-nav__item">
+<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler" class="md-nav__link">
+    <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;MatlabHandler
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+</li>
+        
+        
+        
+        <li class="md-nav__item">
+<a href="#mkdocstrings_handlers.matlab.handler.get_handler" class="md-nav__link">
+    <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;get_handler
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+</li>
+        
+        
+    </ul>
+    </nav>
+
+</li>
+      
+        <li class="md-nav__item">
 <a href="#mkdocstrings_handlers.matlab.collect" class="md-nav__link">
     <span class="md-ellipsis">
     <code class="doc-symbol doc-symbol-toc doc-symbol-module"></code>&nbsp;collect
@@ -1072,49 +1115,6 @@
 <a href="#mkdocstrings_handlers.matlab.collect.PathGlobber" class="md-nav__link">
     <span class="md-ellipsis">
     <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;PathGlobber
-    </span>
-</a>
-
-<!-- Table of contents list -->
-
-</li>
-        
-        
-    </ul>
-    </nav>
-
-</li>
-      
-        <li class="md-nav__item">
-<a href="#mkdocstrings_handlers.matlab.handler" class="md-nav__link">
-    <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-toc doc-symbol-module"></code>&nbsp;handler
-    </span>
-</a>
-
-<!-- Table of contents list -->
-
-    <nav class="md-nav" aria-label=" handler">
-    <ul class="md-nav__list">
-        
-        
-        <li class="md-nav__item">
-<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler" class="md-nav__link">
-    <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;MatlabHandler
-    </span>
-</a>
-
-<!-- Table of contents list -->
-
-</li>
-        
-        
-        
-        <li class="md-nav__item">
-<a href="#mkdocstrings_handlers.matlab.handler.get_handler" class="md-nav__link">
-    <span class="md-ellipsis">
-    <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;get_handler
     </span>
 </a>
 
@@ -1380,6 +1380,12 @@
   
 
 
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Due to that for the documentation of mkdocstrings-matlab both the MATLAB and the Python handler are loaded, the symbols shown for Python objects will be incorrect (see <a href="../usage/#configuration">Configuration</a>). </p>
+</div>
+
+
 <div class="doc doc-object doc-module">
 
 
@@ -1401,17 +1407,17 @@
 <p><span class="doc-section-title">Modules:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-          <b><code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect" href="#mkdocstrings_handlers.matlab.collect">collect</a></code></b>
-          –
-          <div class="doc-md-description">
-            <p>Functions and classes for collecting MATLAB objects from paths.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
           <b><code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.handler" href="#mkdocstrings_handlers.matlab.handler">handler</a></code></b>
           –
           <div class="doc-md-description">
             <p>The mkdocstrings handler for processing MATLAB code documentation.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect" href="#mkdocstrings_handlers.matlab.collect">collect</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Functions and classes for collecting MATLAB objects from paths.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
@@ -1448,681 +1454,6 @@
 
 
 
-
-<div class="doc doc-object doc-module">
-
-
-
-<h2 id="mkdocstrings_handlers.matlab.collect" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">collect</span>
-
-
-<a href="#mkdocstrings_handlers.matlab.collect" class="headerlink" title="Permanent link">¤</a></h2>
-
-    <div class="doc doc-contents ">
-
-        <p>Functions and classes for collecting MATLAB objects from paths.</p>
-
-
-
-
-
-
-
-<p><span class="doc-section-title">Classes:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-          <b><code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.LinesCollection" href="#mkdocstrings_handlers.matlab.collect.LinesCollection">LinesCollection</a></code></b>
-          –
-          <div class="doc-md-description">
-            <p>A simple dictionary containing the modules source code lines.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.PathCollection" href="#mkdocstrings_handlers.matlab.collect.PathCollection">PathCollection</a></code></b>
-          –
-          <div class="doc-md-description">
-            <p>PathCollection is a class that manages a collection of MATLAB paths and their corresponding models.</p>
-          </div>
-        </li>
-    </ul>
-
-
-
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-<div class="doc doc-object doc-class">
-
-
-
-<h3 id="mkdocstrings_handlers.matlab.collect.LazyModel" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">LazyModel</span>
-
-
-<a href="#mkdocstrings_handlers.matlab.collect.LazyModel" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">LazyModel</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="pathlib.Path" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path">Path</a></span><span class="p">,</span> <span class="n">path_collection</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.PathCollection" href="#mkdocstrings_handlers.matlab.collect.PathCollection">PathCollection</a></span><span class="p">)</span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-
-        <p>A class to lazily collect and model MATLAB objects from a given path.</p>
-
-
-<p><span class="doc-section-title">Methods:</span></p>
-    <ul>
-          <li class="doc-section-item field-body">
-            <b><code><span title="mkdocstrings_handlers.matlab.collect.LazyModel.is_class_folder">is_class_folder</span></code></b>
-            –
-            <div class="doc-md-description">
-              <p>Checks if the path is a class folder.</p>
-            </div>
-          </li>
-          <li class="doc-section-item field-body">
-            <b><code><span title="mkdocstrings_handlers.matlab.collect.LazyModel.is_namespace">is_namespace</span></code></b>
-            –
-            <div class="doc-md-description">
-              <p>Checks if the path is a namespace.</p>
-            </div>
-          </li>
-          <li class="doc-section-item field-body">
-            <b><code><span title="mkdocstrings_handlers.matlab.collect.LazyModel.is_in_namespace">is_in_namespace</span></code></b>
-            –
-            <div class="doc-md-description">
-              <p>Checks if the path is within a namespace.</p>
-            </div>
-          </li>
-          <li class="doc-section-item field-body">
-            <b><code><span title="mkdocstrings_handlers.matlab.collect.LazyModel.name">name</span></code></b>
-            –
-            <div class="doc-md-description">
-              <p>Returns the name of the MATLAB object, including namespace if applicable.</p>
-            </div>
-          </li>
-          <li class="doc-section-item field-body">
-            <b><code><span title="mkdocstrings_handlers.matlab.collect.LazyModel.model">model</span></code></b>
-            –
-            <div class="doc-md-description">
-              <p>Collects and returns the MATLAB object model..</p>
-            </div>
-          </li>
-    </ul>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
-<h3 id="mkdocstrings_handlers.matlab.collect.LinesCollection" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">LinesCollection</span>
-
-
-<a href="#mkdocstrings_handlers.matlab.collect.LinesCollection" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">LinesCollection</span><span class="p">()</span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-
-        <p>A simple dictionary containing the modules source code lines.</p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
-<h3 id="mkdocstrings_handlers.matlab.collect.PathCollection" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">PathCollection</span>
-
-
-<a href="#mkdocstrings_handlers.matlab.collect.PathCollection" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">PathCollection</span><span class="p">(</span><span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.collect.PathCollection(matlab_path)">matlab_path</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Sequence" href="https://docs.python.org/3/library/typing.html#typing.Sequence">Sequence</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" title="pathlib.Path" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path">Path</a></span><span class="p">],</span> <span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.collect.PathCollection(recursive)">recursive</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.collect.PathCollection(config)">config</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Mapping" href="https://docs.python.org/3/library/typing.html#typing.Mapping">Mapping</a></span> <span class="o">=</span> <span class="p">{})</span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-
-        <p>PathCollection is a class that manages a collection of MATLAB paths and their corresponding models.</p>
-
-
-<p><span class="doc-section-title">Attributes:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-          <b><code><span title="mkdocstrings_handlers.matlab.collect.PathCollection.config">config</span></code></b>
-              (<code><a class="autorefs autorefs-external" title="typing.Mapping" href="https://docs.python.org/3/library/typing.html#typing.Mapping">Mapping</a></code>)
-          –
-          <div class="doc-md-description">
-            <p>Configuration settings for the PathCollection.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-          <b><code><span title="mkdocstrings_handlers.matlab.collect.PathCollection.lines_collection">lines_collection</span></code></b>
-              (<code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.LinesCollection" href="#mkdocstrings_handlers.matlab.collect.LinesCollection">LinesCollection</a></code>)
-          –
-          <div class="doc-md-description">
-            <p>An instance of LinesCollection for managing lines.</p>
-          </div>
-        </li>
-    </ul>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-<h4 id="mkdocstrings_handlers.matlab.collect.PathCollection(matlab_path)" class="doc doc-heading doc-heading-parameter">              <b><code>matlab_path</code></b>
-<a href="#mkdocstrings_handlers.matlab.collect.PathCollection(matlab_path)" class="headerlink" title="Permanent link">¤</a></h4>              (<code><a class="autorefs autorefs-external" title="typing.Sequence" href="https://docs.python.org/3/library/typing.html#typing.Sequence">Sequence</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | <a class="autorefs autorefs-external" title="pathlib.Path" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path">Path</a>]</code>)
-          –
-          <div class="doc-md-description">
-            <p>A list of strings or Path objects representing the MATLAB paths.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-<h4 id="mkdocstrings_handlers.matlab.collect.PathCollection(recursive)" class="doc doc-heading doc-heading-parameter">              <b><code>recursive</code></b>
-<a href="#mkdocstrings_handlers.matlab.collect.PathCollection(recursive)" class="headerlink" title="Permanent link">¤</a></h4>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>, default:
-                  <code>False</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>If True, recursively adds all subdirectories of the given paths to the search path. Defaults to False.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-<h4 id="mkdocstrings_handlers.matlab.collect.PathCollection(config)" class="doc doc-heading doc-heading-parameter">              <b><code>config</code></b>
-<a href="#mkdocstrings_handlers.matlab.collect.PathCollection(config)" class="headerlink" title="Permanent link">¤</a></h4>              (<code><a class="autorefs autorefs-external" title="typing.Mapping" href="https://docs.python.org/3/library/typing.html#typing.Mapping">Mapping</a></code>, default:
-                  <code>{}</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Configuration settings for the PathCollection. Defaults to {}.</p>
-          </div>
-        </li>
-    </ul>
-
-
-<p><span class="doc-section-title">Methods:</span></p>
-    <ul>
-          <li class="doc-section-item field-body">
-            <b><code><span title="mkdocstrings_handlers.matlab.collect.PathCollection.members">members</span></code></b>
-            –
-            <div class="doc-md-description">
-              <p>Returns a dictionary of members with their corresponding models.</p>
-            </div>
-          </li>
-          <li class="doc-section-item field-body">
-            <b><code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.PathCollection.resolve" href="#mkdocstrings_handlers.matlab.collect.PathCollection.resolve">resolve</a></code></b>
-            –
-            <div class="doc-md-description">
-              <p>str, config: Mapping = {}) -&gt; MatlabMixin | None:
-Resolves the given identifier to a model object.</p>
-            </div>
-          </li>
-          <li class="doc-section-item field-body">
-            <b><code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.PathCollection.update_model" href="#mkdocstrings_handlers.matlab.collect.PathCollection.update_model">update_model</a></code></b>
-            –
-            <div class="doc-md-description">
-              <p>MatlabMixin, config: Mapping) -&gt; MatlabMixin:
-Updates the given model object with the provided configuration.</p>
-            </div>
-          </li>
-          <li class="doc-section-item field-body">
-            <b><code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.PathCollection.addpath" href="#mkdocstrings_handlers.matlab.collect.PathCollection.addpath">addpath</a></code></b>
-            –
-            <div class="doc-md-description">
-              <p>str | Path, to_end: bool = False, recursive: bool = False) -&gt; list[Path]:
-Adds a path to the search path.</p>
-            </div>
-          </li>
-          <li class="doc-section-item field-body">
-            <b><code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.PathCollection.rm_path" href="#mkdocstrings_handlers.matlab.collect.PathCollection.rm_path">rm_path</a></code></b>
-            –
-            <div class="doc-md-description">
-              <p>str | Path, recursive: bool = False) -&gt; list[Path]:
-Removes a path from the search path and updates the namespace and database accordingly.</p>
-            </div>
-          </li>
-          <li class="doc-section-item field-body">
-            <b><code><span title="mkdocstrings_handlers.matlab.collect.PathCollection.get_inheritance_diagram">get_inheritance_diagram</span></code></b>
-            –
-            <div class="doc-md-description">
-              <p>Class) -&gt; DocstringSectionText | None:
-Generates an inheritance diagram for the given class model.</p>
-            </div>
-          </li>
-    </ul>
-
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-<h4 id="mkdocstrings_handlers.matlab.collect.PathCollection(matlab_path)" class="doc doc-heading doc-heading-parameter">              <b><code>matlab_path</code></b>
-<a href="#mkdocstrings_handlers.matlab.collect.PathCollection(matlab_path)" class="headerlink" title="Permanent link">¤</a></h4>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | <a class="autorefs autorefs-external" title="pathlib.Path" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path">Path</a>]</code>)
-          –
-          <div class="doc-md-description">
-            <p>A list of strings or Path objects representing the MATLAB paths.</p>
-          </div>
-        </li>
-    </ul>
-
-
-<p><span class="doc-section-title">Raises:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/exceptions.html#TypeError">TypeError</a></code>
-            –
-          <div class="doc-md-description">
-            <p>If any element in matlab_path is not a string or Path object.</p>
-          </div>
-        </li>
-    </ul>
-
-
-
-
-
-
-
-
-
-<p><span class="doc-section-title">Methods:</span></p>
-    <ul>
-          <li class="doc-section-item field-body">
-            <b><code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.PathCollection.addpath" href="#mkdocstrings_handlers.matlab.collect.PathCollection.addpath">addpath</a></code></b>
-            –
-            <div class="doc-md-description">
-              <p>Add a path to the search path.</p>
-            </div>
-          </li>
-          <li class="doc-section-item field-body">
-            <b><code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.PathCollection.resolve" href="#mkdocstrings_handlers.matlab.collect.PathCollection.resolve">resolve</a></code></b>
-            –
-            <div class="doc-md-description">
-              <p>Resolve an identifier to a MatlabMixin model.</p>
-            </div>
-          </li>
-          <li class="doc-section-item field-body">
-            <b><code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.PathCollection.rm_path" href="#mkdocstrings_handlers.matlab.collect.PathCollection.rm_path">rm_path</a></code></b>
-            –
-            <div class="doc-md-description">
-              <p>Removes a path from the search path and updates the namespace and database accordingly.</p>
-            </div>
-          </li>
-          <li class="doc-section-item field-body">
-            <b><code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.PathCollection.update_model" href="#mkdocstrings_handlers.matlab.collect.PathCollection.update_model">update_model</a></code></b>
-            –
-            <div class="doc-md-description">
-              <p>Update the given model based on the provided configuration.</p>
-            </div>
-          </li>
-    </ul>
-
-
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="mkdocstrings_handlers.matlab.collect.PathCollection.addpath" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">addpath</span>
-
-
-<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.addpath" class="headerlink" title="Permanent link">¤</a></h4>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">addpath</span><span class="p">(</span><span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.collect.PathCollection.addpath(path)">path</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" title="pathlib.Path" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path">Path</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.collect.PathCollection.addpath(to_end)">to_end</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">recursive</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-        <p>Add a path to the search path.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-<h5 id="mkdocstrings_handlers.matlab.collect.PathCollection.addpath(path)" class="doc doc-heading doc-heading-parameter">              <b><code>path</code></b>
-<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.addpath(path)" class="headerlink" title="Permanent link">¤</a></h5>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | <a class="autorefs autorefs-external" title="pathlib.Path" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path">Path</a></code>)
-          –
-          <div class="doc-md-description">
-            <p>The path to be added.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-<h5 id="mkdocstrings_handlers.matlab.collect.PathCollection.addpath(to_end)" class="doc doc-heading doc-heading-parameter">              <b><code>to_end</code></b>
-<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.addpath(to_end)" class="headerlink" title="Permanent link">¤</a></h5>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>, default:
-                  <code>False</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Whether to add the path to the end of the search path. Defaults to False.</p>
-          </div>
-        </li>
-    </ul>
-
-
-<p><span class="doc-section-title">Returns:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-          –
-          <div class="doc-md-description">
-            <p>list[Path]: The previous search path before adding the new path.</p>
-          </div>
-        </li>
-    </ul>
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="mkdocstrings_handlers.matlab.collect.PathCollection.resolve" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">resolve</span>
-
-
-<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.resolve" class="headerlink" title="Permanent link">¤</a></h4>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">resolve</span><span class="p">(</span><span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.collect.PathCollection.resolve(identifier)">identifier</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.collect.PathCollection.resolve(config)">config</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Mapping" href="https://docs.python.org/3/library/typing.html#typing.Mapping">Mapping</a></span> <span class="o">=</span> <span class="p">{})</span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-        <p>Resolve an identifier to a MatlabMixin model.</p>
-<p>This method attempts to resolve a given identifier to a corresponding
-MatlabMixin model using the internal mapping and models. If the identifier
-is not found directly, it will attempt to resolve it by breaking down the
-identifier into parts and resolving each part recursively.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-<h5 id="mkdocstrings_handlers.matlab.collect.PathCollection.resolve(identifier)" class="doc doc-heading doc-heading-parameter">              <b><code>identifier</code></b>
-<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.resolve(identifier)" class="headerlink" title="Permanent link">¤</a></h5>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
-          –
-          <div class="doc-md-description">
-            <p>The identifier to resolve.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-<h5 id="mkdocstrings_handlers.matlab.collect.PathCollection.resolve(config)" class="doc doc-heading doc-heading-parameter">              <b><code>config</code></b>
-<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.resolve(config)" class="headerlink" title="Permanent link">¤</a></h5>              (<code><a class="autorefs autorefs-external" title="typing.Mapping" href="https://docs.python.org/3/library/typing.html#typing.Mapping">Mapping</a></code>, default:
-                  <code>{}</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Configuration options to update the model. Defaults to an empty dictionary.</p>
-          </div>
-        </li>
-    </ul>
-
-
-<p><span class="doc-section-title">Returns:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-          –
-          <div class="doc-md-description">
-            <p>MatlabMixin or None: The resolved MatlabMixin model if found, otherwise None.</p>
-          </div>
-        </li>
-    </ul>
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="mkdocstrings_handlers.matlab.collect.PathCollection.rm_path" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">rm_path</span>
-
-
-<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.rm_path" class="headerlink" title="Permanent link">¤</a></h4>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">rm_path</span><span class="p">(</span><span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.collect.PathCollection.rm_path(path)">path</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" title="pathlib.Path" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path">Path</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.collect.PathCollection.rm_path(recursive)">recursive</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-        <p>Removes a path from the search path and updates the namespace and database accordingly.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-<h5 id="mkdocstrings_handlers.matlab.collect.PathCollection.rm_path(path)" class="doc doc-heading doc-heading-parameter">              <b><code>path</code></b>
-<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.rm_path(path)" class="headerlink" title="Permanent link">¤</a></h5>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | <a class="autorefs autorefs-external" title="pathlib.Path" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path">Path</a></code>)
-          –
-          <div class="doc-md-description">
-            <p>The path to be removed from the search path.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-<h5 id="mkdocstrings_handlers.matlab.collect.PathCollection.rm_path(recursive)" class="doc doc-heading doc-heading-parameter">              <b><code>recursive</code></b>
-<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.rm_path(recursive)" class="headerlink" title="Permanent link">¤</a></h5>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>, default:
-                  <code>False</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>If True, recursively removes all subdirectories of the given path from the search path. Defaults to False.</p>
-          </div>
-        </li>
-    </ul>
-
-
-<p><span class="doc-section-title">Returns:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-          –
-          <div class="doc-md-description">
-            <p>list[Path]: The previous search path before the removal.</p>
-          </div>
-        </li>
-    </ul>
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="mkdocstrings_handlers.matlab.collect.PathCollection.update_model" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">update_model</span>
-
-
-<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.update_model" class="headerlink" title="Permanent link">¤</a></h4>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">update_model</span><span class="p">(</span><span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.collect.PathCollection.update_model(model)">model</a></span><span class="p">:</span> <span class="n"><span title="mkdocstrings_handlers.matlab.models.MatlabMixin">MatlabMixin</span></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.collect.PathCollection.update_model(config)">config</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Mapping" href="https://docs.python.org/3/library/typing.html#typing.Mapping">Mapping</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="mkdocstrings_handlers.matlab.models.MatlabMixin">MatlabMixin</span></span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-        <p>Update the given model based on the provided configuration.</p>
-<p>This method updates the docstring parser and parser options for the model,
-patches return annotations for MATLAB functions, and optionally creates
-docstring sections from argument blocks. It also recursively updates
-members of the model and handles special cases for class constructors
-and inheritance diagrams.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-<h5 id="mkdocstrings_handlers.matlab.collect.PathCollection.update_model(model)" class="doc doc-heading doc-heading-parameter">              <b><code>model</code></b>
-<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.update_model(model)" class="headerlink" title="Permanent link">¤</a></h5>              (<code><span title="mkdocstrings_handlers.matlab.models.MatlabMixin">MatlabMixin</span></code>)
-          –
-          <div class="doc-md-description">
-            <p>The model to update.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-<h5 id="mkdocstrings_handlers.matlab.collect.PathCollection.update_model(config)" class="doc doc-heading doc-heading-parameter">              <b><code>config</code></b>
-<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.update_model(config)" class="headerlink" title="Permanent link">¤</a></h5>              (<code><a class="autorefs autorefs-external" title="typing.Mapping" href="https://docs.python.org/3/library/typing.html#typing.Mapping">Mapping</a></code>)
-          –
-          <div class="doc-md-description">
-            <p>The configuration dictionary.</p>
-          </div>
-        </li>
-    </ul>
-
-
-<p><span class="doc-section-title">Returns:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-<b><code>MatlabMixin</code></b> (              <code><span title="mkdocstrings_handlers.matlab.models.MatlabMixin">MatlabMixin</span></code>
-)          –
-          <div class="doc-md-description">
-            <p>The updated model.</p>
-          </div>
-        </li>
-    </ul>
-
-    </div>
-
-</div>
-
-
-
-  </div>
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
-<h3 id="mkdocstrings_handlers.matlab.collect.PathGlobber" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">PathGlobber</span>
-
-
-<a href="#mkdocstrings_handlers.matlab.collect.PathGlobber" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">PathGlobber</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="pathlib.Path" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path">Path</a></span><span class="p">,</span> <span class="n">recursive</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-
-        <p>A class to recursively glob paths as MATLAB would do it.</p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-
-    </div>
-
-</div>
-
-
-
-
-  </div>
-
-    </div>
-
-</div>
 
 <div class="doc doc-object doc-module">
 
@@ -3142,6 +2473,681 @@ a Python dictionary for example, though the implementation is completely free.</
     </div>
 
 </div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="mkdocstrings_handlers.matlab.collect" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">collect</span>
+
+
+<a href="#mkdocstrings_handlers.matlab.collect" class="headerlink" title="Permanent link">¤</a></h2>
+
+    <div class="doc doc-contents ">
+
+        <p>Functions and classes for collecting MATLAB objects from paths.</p>
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Classes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.LinesCollection" href="#mkdocstrings_handlers.matlab.collect.LinesCollection">LinesCollection</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>A simple dictionary containing the modules source code lines.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.PathCollection" href="#mkdocstrings_handlers.matlab.collect.PathCollection">PathCollection</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>PathCollection is a class that manages a collection of MATLAB paths and their corresponding models.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="mkdocstrings_handlers.matlab.collect.LazyModel" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">LazyModel</span>
+
+
+<a href="#mkdocstrings_handlers.matlab.collect.LazyModel" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">LazyModel</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="pathlib.Path" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path">Path</a></span><span class="p">,</span> <span class="n">path_collection</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.PathCollection" href="#mkdocstrings_handlers.matlab.collect.PathCollection">PathCollection</a></span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <p>A class to lazily collect and model MATLAB objects from a given path.</p>
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><span title="mkdocstrings_handlers.matlab.collect.LazyModel.is_class_folder">is_class_folder</span></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Checks if the path is a class folder.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><span title="mkdocstrings_handlers.matlab.collect.LazyModel.is_namespace">is_namespace</span></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Checks if the path is a namespace.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><span title="mkdocstrings_handlers.matlab.collect.LazyModel.is_in_namespace">is_in_namespace</span></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Checks if the path is within a namespace.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><span title="mkdocstrings_handlers.matlab.collect.LazyModel.name">name</span></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Returns the name of the MATLAB object, including namespace if applicable.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><span title="mkdocstrings_handlers.matlab.collect.LazyModel.model">model</span></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Collects and returns the MATLAB object model..</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="mkdocstrings_handlers.matlab.collect.LinesCollection" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">LinesCollection</span>
+
+
+<a href="#mkdocstrings_handlers.matlab.collect.LinesCollection" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">LinesCollection</span><span class="p">()</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <p>A simple dictionary containing the modules source code lines.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="mkdocstrings_handlers.matlab.collect.PathCollection" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">PathCollection</span>
+
+
+<a href="#mkdocstrings_handlers.matlab.collect.PathCollection" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">PathCollection</span><span class="p">(</span><span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.collect.PathCollection(matlab_path)">matlab_path</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Sequence" href="https://docs.python.org/3/library/typing.html#typing.Sequence">Sequence</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" title="pathlib.Path" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path">Path</a></span><span class="p">],</span> <span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.collect.PathCollection(recursive)">recursive</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.collect.PathCollection(config)">config</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Mapping" href="https://docs.python.org/3/library/typing.html#typing.Mapping">Mapping</a></span> <span class="o">=</span> <span class="p">{})</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <p>PathCollection is a class that manages a collection of MATLAB paths and their corresponding models.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><span title="mkdocstrings_handlers.matlab.collect.PathCollection.config">config</span></code></b>
+              (<code><a class="autorefs autorefs-external" title="typing.Mapping" href="https://docs.python.org/3/library/typing.html#typing.Mapping">Mapping</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Configuration settings for the PathCollection.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><span title="mkdocstrings_handlers.matlab.collect.PathCollection.lines_collection">lines_collection</span></code></b>
+              (<code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.LinesCollection" href="#mkdocstrings_handlers.matlab.collect.LinesCollection">LinesCollection</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>An instance of LinesCollection for managing lines.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<h4 id="mkdocstrings_handlers.matlab.collect.PathCollection(matlab_path)" class="doc doc-heading doc-heading-parameter">              <b><code>matlab_path</code></b>
+<a href="#mkdocstrings_handlers.matlab.collect.PathCollection(matlab_path)" class="headerlink" title="Permanent link">¤</a></h4>              (<code><a class="autorefs autorefs-external" title="typing.Sequence" href="https://docs.python.org/3/library/typing.html#typing.Sequence">Sequence</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | <a class="autorefs autorefs-external" title="pathlib.Path" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path">Path</a>]</code>)
+          –
+          <div class="doc-md-description">
+            <p>A list of strings or Path objects representing the MATLAB paths.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h4 id="mkdocstrings_handlers.matlab.collect.PathCollection(recursive)" class="doc doc-heading doc-heading-parameter">              <b><code>recursive</code></b>
+<a href="#mkdocstrings_handlers.matlab.collect.PathCollection(recursive)" class="headerlink" title="Permanent link">¤</a></h4>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>, default:
+                  <code>False</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>If True, recursively adds all subdirectories of the given paths to the search path. Defaults to False.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h4 id="mkdocstrings_handlers.matlab.collect.PathCollection(config)" class="doc doc-heading doc-heading-parameter">              <b><code>config</code></b>
+<a href="#mkdocstrings_handlers.matlab.collect.PathCollection(config)" class="headerlink" title="Permanent link">¤</a></h4>              (<code><a class="autorefs autorefs-external" title="typing.Mapping" href="https://docs.python.org/3/library/typing.html#typing.Mapping">Mapping</a></code>, default:
+                  <code>{}</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Configuration settings for the PathCollection. Defaults to {}.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><span title="mkdocstrings_handlers.matlab.collect.PathCollection.members">members</span></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Returns a dictionary of members with their corresponding models.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.PathCollection.resolve" href="#mkdocstrings_handlers.matlab.collect.PathCollection.resolve">resolve</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>str, config: Mapping = {}) -&gt; MatlabMixin | None:
+Resolves the given identifier to a model object.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.PathCollection.update_model" href="#mkdocstrings_handlers.matlab.collect.PathCollection.update_model">update_model</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>MatlabMixin, config: Mapping) -&gt; MatlabMixin:
+Updates the given model object with the provided configuration.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.PathCollection.addpath" href="#mkdocstrings_handlers.matlab.collect.PathCollection.addpath">addpath</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>str | Path, to_end: bool = False, recursive: bool = False) -&gt; list[Path]:
+Adds a path to the search path.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.PathCollection.rm_path" href="#mkdocstrings_handlers.matlab.collect.PathCollection.rm_path">rm_path</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>str | Path, recursive: bool = False) -&gt; list[Path]:
+Removes a path from the search path and updates the namespace and database accordingly.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><span title="mkdocstrings_handlers.matlab.collect.PathCollection.get_inheritance_diagram">get_inheritance_diagram</span></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Class) -&gt; DocstringSectionText | None:
+Generates an inheritance diagram for the given class model.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<h4 id="mkdocstrings_handlers.matlab.collect.PathCollection(matlab_path)" class="doc doc-heading doc-heading-parameter">              <b><code>matlab_path</code></b>
+<a href="#mkdocstrings_handlers.matlab.collect.PathCollection(matlab_path)" class="headerlink" title="Permanent link">¤</a></h4>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | <a class="autorefs autorefs-external" title="pathlib.Path" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path">Path</a>]</code>)
+          –
+          <div class="doc-md-description">
+            <p>A list of strings or Path objects representing the MATLAB paths.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/exceptions.html#TypeError">TypeError</a></code>
+            –
+          <div class="doc-md-description">
+            <p>If any element in matlab_path is not a string or Path object.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.PathCollection.addpath" href="#mkdocstrings_handlers.matlab.collect.PathCollection.addpath">addpath</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Add a path to the search path.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.PathCollection.resolve" href="#mkdocstrings_handlers.matlab.collect.PathCollection.resolve">resolve</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Resolve an identifier to a MatlabMixin model.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.PathCollection.rm_path" href="#mkdocstrings_handlers.matlab.collect.PathCollection.rm_path">rm_path</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Removes a path from the search path and updates the namespace and database accordingly.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="mkdocstrings_handlers.matlab.collect.PathCollection.update_model" href="#mkdocstrings_handlers.matlab.collect.PathCollection.update_model">update_model</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Update the given model based on the provided configuration.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mkdocstrings_handlers.matlab.collect.PathCollection.addpath" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">addpath</span>
+
+
+<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.addpath" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">addpath</span><span class="p">(</span><span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.collect.PathCollection.addpath(path)">path</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" title="pathlib.Path" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path">Path</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.collect.PathCollection.addpath(to_end)">to_end</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">recursive</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Add a path to the search path.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<h5 id="mkdocstrings_handlers.matlab.collect.PathCollection.addpath(path)" class="doc doc-heading doc-heading-parameter">              <b><code>path</code></b>
+<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.addpath(path)" class="headerlink" title="Permanent link">¤</a></h5>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | <a class="autorefs autorefs-external" title="pathlib.Path" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path">Path</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The path to be added.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h5 id="mkdocstrings_handlers.matlab.collect.PathCollection.addpath(to_end)" class="doc doc-heading doc-heading-parameter">              <b><code>to_end</code></b>
+<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.addpath(to_end)" class="headerlink" title="Permanent link">¤</a></h5>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>, default:
+                  <code>False</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Whether to add the path to the end of the search path. Defaults to False.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          –
+          <div class="doc-md-description">
+            <p>list[Path]: The previous search path before adding the new path.</p>
+          </div>
+        </li>
+    </ul>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mkdocstrings_handlers.matlab.collect.PathCollection.resolve" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">resolve</span>
+
+
+<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.resolve" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">resolve</span><span class="p">(</span><span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.collect.PathCollection.resolve(identifier)">identifier</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.collect.PathCollection.resolve(config)">config</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Mapping" href="https://docs.python.org/3/library/typing.html#typing.Mapping">Mapping</a></span> <span class="o">=</span> <span class="p">{})</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Resolve an identifier to a MatlabMixin model.</p>
+<p>This method attempts to resolve a given identifier to a corresponding
+MatlabMixin model using the internal mapping and models. If the identifier
+is not found directly, it will attempt to resolve it by breaking down the
+identifier into parts and resolving each part recursively.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<h5 id="mkdocstrings_handlers.matlab.collect.PathCollection.resolve(identifier)" class="doc doc-heading doc-heading-parameter">              <b><code>identifier</code></b>
+<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.resolve(identifier)" class="headerlink" title="Permanent link">¤</a></h5>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The identifier to resolve.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h5 id="mkdocstrings_handlers.matlab.collect.PathCollection.resolve(config)" class="doc doc-heading doc-heading-parameter">              <b><code>config</code></b>
+<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.resolve(config)" class="headerlink" title="Permanent link">¤</a></h5>              (<code><a class="autorefs autorefs-external" title="typing.Mapping" href="https://docs.python.org/3/library/typing.html#typing.Mapping">Mapping</a></code>, default:
+                  <code>{}</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Configuration options to update the model. Defaults to an empty dictionary.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          –
+          <div class="doc-md-description">
+            <p>MatlabMixin or None: The resolved MatlabMixin model if found, otherwise None.</p>
+          </div>
+        </li>
+    </ul>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mkdocstrings_handlers.matlab.collect.PathCollection.rm_path" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">rm_path</span>
+
+
+<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.rm_path" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">rm_path</span><span class="p">(</span><span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.collect.PathCollection.rm_path(path)">path</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" title="pathlib.Path" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path">Path</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.collect.PathCollection.rm_path(recursive)">recursive</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Removes a path from the search path and updates the namespace and database accordingly.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<h5 id="mkdocstrings_handlers.matlab.collect.PathCollection.rm_path(path)" class="doc doc-heading doc-heading-parameter">              <b><code>path</code></b>
+<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.rm_path(path)" class="headerlink" title="Permanent link">¤</a></h5>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | <a class="autorefs autorefs-external" title="pathlib.Path" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path">Path</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The path to be removed from the search path.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h5 id="mkdocstrings_handlers.matlab.collect.PathCollection.rm_path(recursive)" class="doc doc-heading doc-heading-parameter">              <b><code>recursive</code></b>
+<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.rm_path(recursive)" class="headerlink" title="Permanent link">¤</a></h5>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>, default:
+                  <code>False</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>If True, recursively removes all subdirectories of the given path from the search path. Defaults to False.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          –
+          <div class="doc-md-description">
+            <p>list[Path]: The previous search path before the removal.</p>
+          </div>
+        </li>
+    </ul>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mkdocstrings_handlers.matlab.collect.PathCollection.update_model" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">update_model</span>
+
+
+<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.update_model" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">update_model</span><span class="p">(</span><span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.collect.PathCollection.update_model(model)">model</a></span><span class="p">:</span> <span class="n"><span title="mkdocstrings_handlers.matlab.models.MatlabMixin">MatlabMixin</span></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.collect.PathCollection.update_model(config)">config</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Mapping" href="https://docs.python.org/3/library/typing.html#typing.Mapping">Mapping</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="mkdocstrings_handlers.matlab.models.MatlabMixin">MatlabMixin</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Update the given model based on the provided configuration.</p>
+<p>This method updates the docstring parser and parser options for the model,
+patches return annotations for MATLAB functions, and optionally creates
+docstring sections from argument blocks. It also recursively updates
+members of the model and handles special cases for class constructors
+and inheritance diagrams.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<h5 id="mkdocstrings_handlers.matlab.collect.PathCollection.update_model(model)" class="doc doc-heading doc-heading-parameter">              <b><code>model</code></b>
+<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.update_model(model)" class="headerlink" title="Permanent link">¤</a></h5>              (<code><span title="mkdocstrings_handlers.matlab.models.MatlabMixin">MatlabMixin</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>The model to update.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h5 id="mkdocstrings_handlers.matlab.collect.PathCollection.update_model(config)" class="doc doc-heading doc-heading-parameter">              <b><code>config</code></b>
+<a href="#mkdocstrings_handlers.matlab.collect.PathCollection.update_model(config)" class="headerlink" title="Permanent link">¤</a></h5>              (<code><a class="autorefs autorefs-external" title="typing.Mapping" href="https://docs.python.org/3/library/typing.html#typing.Mapping">Mapping</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The configuration dictionary.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<b><code>MatlabMixin</code></b> (              <code><span title="mkdocstrings_handlers.matlab.models.MatlabMixin">MatlabMixin</span></code>
+)          –
+          <div class="doc-md-description">
+            <p>The updated model.</p>
+          </div>
+        </li>
+    </ul>
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="mkdocstrings_handlers.matlab.collect.PathGlobber" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">PathGlobber</span>
+
+
+<a href="#mkdocstrings_handlers.matlab.collect.PathGlobber" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">PathGlobber</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="pathlib.Path" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path">Path</a></span><span class="p">,</span> <span class="n">recursive</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <p>A class to recursively glob paths as MATLAB would do it.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
 
 
 
