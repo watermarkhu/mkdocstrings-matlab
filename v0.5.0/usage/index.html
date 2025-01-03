@@ -1093,12 +1093,12 @@ configuration option of <code>mkdocstrings</code> in <code>mkdocs.yml</code>:</p
     handler: matlab
 </code></pre></div>
 <p>Entire <a href="https://mathworks.com/help/matlab/matlab_oop/namespaces.html">namespaces</a> can be fully documented by prefixing the <code>+</code> character to the namespace that is to be documented. E.g. the following namespace </p>
-<div class="language-text highlight"><pre><span></span><code>+mynamespace
-|- Contents.m
-|- readme.md
-|- myclass.m
-|- +subnamespace
-|  |- mfunction.m
+<div class="language-bash highlight"><pre><span></span><code>📁<span class="w"> </span>+mynamespace
+├──<span class="w"> </span>📄<span class="w"> </span>Contents.m
+├──<span class="w"> </span>📄<span class="w"> </span>readme.md
+├──<span class="w"> </span>📄<span class="w"> </span>myclass.m
+└──<span class="w"> </span>📁<span class="w"> </span>+subnamespace
+<span class="w">    </span>└──<span class="w"> </span>📄<span class="w"> </span>mfunction.m
 </code></pre></div>
 <p>is documented with:</p>
 <div class="language-md highlight"><pre><span></span><code>::: +mynamespace
