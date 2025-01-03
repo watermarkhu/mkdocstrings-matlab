@@ -9,9 +9,11 @@ You can install this handler by specifying it as a dependency:
 # adapt to your dependencies manager
 [project]
 dependencies = [
-    "mkdocstrings-matlab>=0.3",
+    "mkdocstrings-matlab>=0.X.Y",
 ]
 ```
+
+## Configuration
 
 For *mkdocstrings* the default will be the Python handler. You can change the default handler,
 or explicitely set the MATLAB handler as default by defining the `default_handler`
@@ -21,7 +23,24 @@ configuration option of `mkdocstrings` in `mkdocs.yml`:
 plugins:
 - mkdocstrings:
     default_handler: matlab
+    matlab:
+        ...  # the MATLAB handler configuration
 ```
+
+When using the [material](https://squidfunk.github.io/mkdocs-material) theme, it is best to also configure the `mkdocs_material_matlab` plugin. This additional plugin, which is installed together with mkdocstrings-matlab, will overrule the symbols shown with [`show_symbol_type_heading`][] and [`show_symbol_type_toc`][] to show the correct symbols as per MATLAB nomenclature. 
+
+```yaml title="mkdocs.yml"
+plugins:
+- mkdocs_material_matlab
+- mkdocstrings:
+    default_handler: matlab
+    matlab:
+        ...  # the MATLAB handler configuration
+```
+
+??? warning "I want to document both MATLAB and Python"
+
+    The `mkdocs_material_matlab` plugin will also change the symbols for the Python handler. This means that Python modules will not be tagged with symbol `mod` but `name` (namespace), and attributes are not tagged with symbol `attr` but `prop` (property). 
 
 ## Injecting documentation
 
@@ -64,17 +83,6 @@ Documenting a nested namespace requires only a single prefixed `+` at the start 
 ::: +mynamespace.subnamespace
 ```
 
-## Configuration
-
-When installed, the MATLAB handler becomes the default *mkdocstrings* handler. You can configure it in `mkdocs.yml`:
-
-```yaml title="mkdocs.yml"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        ...  # the MATLAB handler configuration
-```
 
 ### Global-only options
 

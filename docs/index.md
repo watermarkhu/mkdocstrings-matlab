@@ -15,19 +15,19 @@ Let's us quickly see how auto-documentation works with mkdocstrings-matlab:
 
 <div class="result" markdown>
 
-![Image title](img/preview_dark.png#only-dark){ align=right width=400 }
+![Image title](img/preview_dark.png#only-dark){ align=left width=400 }
 
-![Image title](img/preview_light.png#only-light){ align=right width=400 }
+![Image title](img/preview_light.png#only-light){ align=left width=400 }
 
-With the following syntax in the source markdown document file,
+Given the function above, the rendered documentation here is created from the following markdown document file,
 
-```markdown title="source markdown document"
+```markdown title="docs/api.md"
 ::: mynamespace.typed_function
     options:
       parse_arguments: true
 ```
 
-The function `typed_function` will be auto-documented as displayed on the right. 
+
 
 </div>
 
