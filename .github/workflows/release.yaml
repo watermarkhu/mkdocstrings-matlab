@@ -16,8 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: release
     outputs:
-      released: ${{ steps.release.outputs.released }}
-      tag: ${{ steps.release.outputs.tag }}
+      released: ${{ steps.semantic-release.outputs.released }}
+      tag: ${{ steps.semantic-release.outputs.tag }}
     concurrency: release
     permissions:
       id-token: write
@@ -53,46 +53,38 @@ jobs:
       run: |
         git checkout -B ${{ github.ref_name }} ${{ github.sha }}
 
+    - name: Update version and changelogs
+      id: semantic-release
+      uses: python-semantic-release/python-semantic-release@v9.15.2
+      with: 
+        build: false
+        changelog: true
+        commit: true
+        push: true
+        tag: true
+        vcs-release: true
+        github-token: ${{ steps.app-token.outputs.token }}
+
     - name: Install the latest version of uv
+      if: steps.semantic-release.outputs.released == 'true'
       uses: astral-sh/setup-uv@v5
       with:
         version: "latest"
 
-    - name: Setup environment with UV
-      run: |
-        uv sync --dev
-        
-        CURRENT_VERSION=$(uv run semantic-release --noop version --print-last-released)
-        NEXT_VERSION=$(uv run semantic-release --noop version --print)
-        TAG=$(uv run semantic-release --noop version --print-tag)
-
-        if [ "$CURRENT_VERSION" = "$NEXT_VERSION" ]; then
-          echo "deploy=false" >> $GITHUB_ENV
-        else
-          echo "deploy=true" >> $GITHUB_ENV
-        fi
-        echo "tag=$TAG" >> $GITHUB_OUTPUT
-
-    - name: Update version and changelogs
-      if: env.deploy
-      env:
-        GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-      run: >
-        uv run semantic-release -vv version --skip-build
-        --commit --tag --changelog --push --vcs-release
-         
     - name: Build and publish package distributions
-      if: env.deploy
+      if: steps.semantic-release.outputs.released == 'true'
       run: |
+        uv sync --no-dev
         uv build
         uv publish
 
     - name: Publish package distributions to GitHub Releases
-      if: env.deploy
-      env:
-        GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-      run: |
-        uv run semantic-release -vv publish
+      if: steps.semantic-release.outputs.released == 'true'
+      id: publish-dist
+      uses: python-semantic-release/publish-action@v9.15.2
+      with:
+        github-token: ${{ steps.app-token.outputs.token }}
+        tag: ${{ steps.semantic-release.outputs.tag }}
 
   mkdocs:
     name: Deploy documentation
