@@ -238,7 +238,7 @@ class PathCollection(ModulesCollection):
                     case DocstringSectionKind.parameters:
                         section.title = "Input arguments:"
                     case DocstringSectionKind.returns:
-                        section.title= "Output arguments:"
+                        section.title = "Output arguments:"
                     case DocstringSectionKind.other_parameters:
                         section.title = "Name-Value Arguments:"
 
@@ -294,6 +294,14 @@ class PathCollection(ModulesCollection):
                     alias.docstring._suffixes.extend(constructor.docstring.parsed[1:])
                 else:
                     alias.docstring._suffixes.extend(constructor.docstring.parsed)
+
+        # Hide subnamespaces
+        if isinstance(alias, Namespace) and not config.get("show_subnamespaces", False):
+            alias.members = {
+                key: value
+                for key, value in alias.members.items()
+                if not isinstance(value, Namespace)
+            }
 
         # Hide hidden members (methods and properties)
         hidden_members = config.get("hidden_members", False)

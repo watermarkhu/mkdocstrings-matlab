@@ -549,12 +549,69 @@ plugins:
         ```markdown
         ::: +mymembers
             options:
-              group_by_category: False
+              group_by_category: false
         ```
 
         ::: +mymembers
             options:
-              group_by_category: False
+              group_by_category: false
+
+## `show_subnamespaces`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
+
+When rendering a namespace, show its subnamespaces recursively.
+
+This is false by default, because most of the time we render only one namespace per page, and when rendering a full package (a tree of namespaces and their members) on a single page, we quickly run out of [heading levels][heading_level].
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          show_subnamespaces: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: +matlab_namespace
+    options:
+      show_subnamespaces: false
+```
+
+--8<-- "docs/snippets/+module/module.md"
+
+???+ preview
+
+    === "With show subnamespaces"
+        
+        ```markdown
+        ::: +module
+            options:
+              show_subnamespaces: true
+        ```
+
+        ::: +module
+            options:
+              show_subnamespaces: true
+              show_docstring_namespaces: false
+              show_docstring_classes: false
+              show_docstring_functions: false
+
+    === "Without show subnamespaces"
+
+        ```markdown
+        ::: +module
+            options:
+              show_subnamespaces: false
+        ```
+
+        ::: +module
+            options:
+              show_subnamespaces: false
+              show_docstring_namespaces: false
+              show_docstring_classes: false
+              show_docstring_functions: false
 
 ## `summary`
 
