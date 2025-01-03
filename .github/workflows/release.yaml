@@ -83,7 +83,7 @@ jobs:
       id: publish-dist
       uses: python-semantic-release/publish-action@v9.15.2
       with:
-        github-token: ${{ steps.app-token.outputs.token }}
+        github_token: ${{ steps.app-token.outputs.token }}
         tag: ${{ steps.semantic-release.outputs.tag }}
 
   mkdocs:

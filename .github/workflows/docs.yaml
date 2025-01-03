@@ -55,7 +55,8 @@ jobs:
         env:
           PUSH_DEPLOY: ${{ fromJson(inputs.push) && '--push' || '' }}
         run: >
-          uv run mike deploy ${PUSH_DEPLOY} 
+          uv run mike deploy ${PUSH_DEPLOY}
+          --update-aliases
           --branch gh-pages
           --alias-type symlink
           ${{ inputs.version }} ${{ inputs.alias }}
