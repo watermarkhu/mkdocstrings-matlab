@@ -1,6 +1,15 @@
 # CHANGELOG
 
 
+## v0.4.2 (2025-01-03)
+
+### Bug Fixes
+
+- Release artifact and documentation:
+  ([#27](https://github.com/watermarkhu/mkdocstrings-matlab/pull/27),
+  [`a0bc3ff`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/a0bc3ffb81df1af2e70e99d4d3fa62e86f9e7be8))
+
+
 ## v0.4.1 (2025-01-03)
 
 ### Bug Fixes
