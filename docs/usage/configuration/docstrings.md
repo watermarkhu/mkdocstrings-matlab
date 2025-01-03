@@ -1,3 +1,7 @@
+---
+toc_depth: 2
+---
+
 # Docstrings options
 
 ## `docstring_style`

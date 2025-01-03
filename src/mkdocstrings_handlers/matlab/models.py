@@ -1,3 +1,5 @@
+"""Classes to represent MATLAB objects and their properties."""
+
 from typing import Any, TYPE_CHECKING, Callable
 from functools import cached_property
 from pathlib import Path

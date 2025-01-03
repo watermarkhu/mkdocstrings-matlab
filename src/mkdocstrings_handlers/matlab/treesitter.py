@@ -1,4 +1,5 @@
-# %%
+"""Tree-sitter queries to extract information from MATLAB files."""
+
 from collections import OrderedDict
 from typing import Any
 

@@ -1,3 +1,5 @@
+"""Functions and classes for collecting MATLAB objects from paths."""
+
 from collections import defaultdict, deque
 from copy import copy, deepcopy
 from pathlib import Path
