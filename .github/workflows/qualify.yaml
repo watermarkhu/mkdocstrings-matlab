@@ -52,12 +52,13 @@ jobs:
     - name: Check next semantic version
       run: |
         uv sync --dev
-        OUTPUT=$(uv run semantic-release --noop version --print)
-        echo "$OUTPUT"
-        if [ -z "$OUTPUT" ]; then
+        NEXT=$(uv run semantic-release --noop version --print-tag)
+        CURRENT=$(uv run semantic-release --noop version --print-last-released-tag)
+        echo "$NEXT"
+        if [ "$NEXT" = "$CURRENT" ]; then
           echo "comment=No release will be made." >> $GITHUB_ENV
         else
-          echo "comment=The next release will be v$OUTPUT" >> $GITHUB_ENV
+          echo "comment=The next release will be $NEXT" >> $GITHUB_ENV
         fi
 
     - name: Find Comment
