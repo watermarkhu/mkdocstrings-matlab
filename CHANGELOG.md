@@ -1,6 +1,29 @@
 # CHANGELOG
 
 
+## v0.6.0 (2025-01-04)
+
+### Documentation
+
+- Add api documentation ([#33](https://github.com/watermarkhu/mkdocstrings-matlab/pull/33),
+  [`62632e8`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/62632e8c5447125e5d2bfb58202d0fcd0de51ab9))
+
+- Add preview to docs index ([#32](https://github.com/watermarkhu/mkdocstrings-matlab/pull/32),
+  [`9289b11`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/9289b118c7ca78bd3372a9559d140fa76ca89977))
+
+- Better docs ([#34](https://github.com/watermarkhu/mkdocstrings-matlab/pull/34),
+  [`bf97320`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/bf973203343098a139afe571d37daa35b3b6359c))
+
+### Features
+
+- Show subnamespaces ([#36](https://github.com/watermarkhu/mkdocstrings-matlab/pull/36),
+  [`509e793`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/509e7930f52f5656c9de1089daa4c0354ea170be))
+
+* add option show_subnamespaces
+
+* forward config
+
+
 ## v0.5.0 (2025-01-03)
 
 ### Features
