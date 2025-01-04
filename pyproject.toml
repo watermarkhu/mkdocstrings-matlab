@@ -5,7 +5,7 @@ description = "A MATLAB handler for mkdocstrings"
 authors = [
     { name = "Mark Hu", email = "watermarkhu@gmail.com" }
 ]
-license =  { text = "ISC" }
+license =  { text = "MIT" }
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
