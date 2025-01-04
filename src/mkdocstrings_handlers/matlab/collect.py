@@ -238,7 +238,7 @@ class PathCollection(ModulesCollection):
                     case DocstringSectionKind.parameters:
                         section.title = "Input arguments:"
                     case DocstringSectionKind.returns:
-                        section.title= "Output arguments:"
+                        section.title = "Output arguments:"
                     case DocstringSectionKind.other_parameters:
                         section.title = "Name-Value Arguments:"
 

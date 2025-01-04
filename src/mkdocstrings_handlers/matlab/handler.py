@@ -53,6 +53,7 @@ class MatlabHandler(BaseHandler):
         "members_order": rendering.Order.alphabetical.value,
         "filters": ["!^delete$|^disp$"],
         "group_by_category": True,
+        "show_subnamespaces": False,
         "summary": False,
         "show_labels": True,
         # Docstring options
@@ -120,6 +121,7 @@ class MatlabHandler(BaseHandler):
             The `members` option takes precedence over `filters` (filters will still be applied recursively
             to lower members in the hierarchy). Default: `["!^delete$|^disp$"]`.
         group_by_category (bool): Group the object's children by categories: properties, classes, functions, and namespaces. Default: `True`.
+        show_subnamespaces (bool): When rendering a namespace, show its subnamespaces recursively. Default: `False`.
         summary (bool | dict[str, bool]): Whether to render summaries of namespaces, classes, functions (methods) and properties. Default: `False`.
         show_labels (bool): Whether to show labels of the members. Default: `True`.
 
@@ -251,6 +253,9 @@ class MatlabHandler(BaseHandler):
             }
 
         # Map docstring options
+        final_config["show_submodules"] = config.get(
+            "show_subnamespaces", False
+        )
         final_config["show_docstring_attributes"] = config.get(
             "show_docstring_properties", True
         )

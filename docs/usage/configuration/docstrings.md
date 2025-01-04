@@ -611,12 +611,6 @@ plugins:
       show_docstring_namespaces: false
 ```
 
-```tree
-module/
-    __init__.py
-    submodule.py
-```
-
 --8<-- "docs/snippets/+module/module.md"
 
 ???+ preview
