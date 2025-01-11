@@ -27,8 +27,6 @@ Given the function above, the rendered documentation here is created from the fo
       parse_arguments: true
 ```
 
-
-
 </div>
 
 --8<-- "README.md:footer"
