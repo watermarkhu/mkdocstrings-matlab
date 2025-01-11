@@ -195,7 +195,7 @@ class PathCollection(ModulesCollection):
             if model is not None:
                 model = self.update_model(model, config)
 
-        elif self._config_path is not None and '/' in identifier:
+        elif self._config_path is not None and "/" in identifier:
             absolute_path = (self._config_path / Path(identifier)).resolve()
             if absolute_path.exists():
                 path = absolute_path.relative_to(self._config_path)
@@ -543,13 +543,18 @@ class PathCollection(ModulesCollection):
             self._mapping[model.name].append(member)
             self._members[path].append((model.name, member))
 
-            if self._config_path is not None and member.parent.stem[0] not in ["+", "@"]:
+            if self._config_path is not None and member.parent.stem[0] not in [
+                "+",
+                "@",
+            ]:
                 if member.parent.is_relative_to(self._config_path):
                     relative_path = member.parent.relative_to(self._config_path)
                     if member.parent not in self._folders:
-                        self._folders[str(relative_path)] = LazyModel(member.parent, self)
+                        self._folders[str(relative_path)] = LazyModel(
+                            member.parent, self
+                        )
                 else:
-                    pass # TODO: Issue warning?
+                    pass  # TODO: Issue warning?
 
     def rm_path(self, path: str | Path, recursive: bool = False):
         """
@@ -704,7 +709,9 @@ class LazyModel:
 
     def _collect_parent(self, path: Path) -> _ParentGrabber | None:
         if self.is_in_namespace:
-            grabber: Callable[[], MatlabMixin | None] = self._path_collection._models[path].model
+            grabber: Callable[[], MatlabMixin | None] = self._path_collection._models[
+                path
+            ].model
             parent = _ParentGrabber(grabber)
         else:
             parent = None
@@ -715,7 +722,7 @@ class LazyModel:
         model = file.parse(path_collection=self._path_collection)
         self._lines_collection[path] = file.content.split("\n")
         return model
-    
+
     def _collect_directory(self, path: Path, model: PathType) -> PathType:
         for member in path.iterdir():
             if member.is_dir() and member.name[0] in ["+", "@"]:

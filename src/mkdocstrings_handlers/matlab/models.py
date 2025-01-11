@@ -173,7 +173,6 @@ class MatlabObject(Object):
             return f"{parent.canonical_path}.{self.name}" if parent else self.name
 
 
-
 class PathMixin(Object):
     """
     A mixin class that provides a filepath attribute and related functionality.
@@ -552,13 +551,13 @@ class Folder(MatlabMixin, PathMixin, Module, MatlabObject):
         - Module: A class representing a module.
         - MatlabObject: A base class for MATLAB objects.
     """
+
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
-        self.labels = {'Folder'}
-        
+        self.labels = {"Folder"}
+
     def __repr__(self) -> str:
         return f"Folder({self.path!r})"
-
 
 
 class Namespace(MatlabMixin, PathMixin, Module, MatlabObject):
