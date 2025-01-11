@@ -3,7 +3,7 @@
 from collections import defaultdict, deque
 from copy import copy, deepcopy
 from pathlib import Path
-from typing import Mapping, Sequence, Callable
+from typing import Mapping, Sequence, Callable, TypeVar
 
 from _griffe.collections import LinesCollection as GLC, ModulesCollection
 from _griffe.docstrings.models import (
@@ -24,11 +24,15 @@ from mkdocstrings_handlers.matlab.models import (
     Docstring,
     DocstringSectionText,
     Function,
+    Folder,
     MatlabMixin,
     Namespace,
+    PathMixin,
 )
 from mkdocstrings_handlers.matlab.treesitter import FileParser
 
+
+PathType = TypeVar("PathType", bound=PathMixin)
 
 __all__ = ["LinesCollection", "PathCollection"]
 
@@ -102,6 +106,7 @@ class PathCollection(ModulesCollection):
         matlab_path (Sequence[str | Path]): A list of strings or Path objects representing the MATLAB paths.
         recursive (bool, optional): If True, recursively adds all subdirectories of the given paths to the search path. Defaults to False.
         config (Mapping, optional): Configuration settings for the PathCollection. Defaults to {}.
+        config_path (Path | None, optional): The path to the configuration file. Defaults to None.
 
     Methods:
         members() -> dict:
@@ -128,6 +133,7 @@ class PathCollection(ModulesCollection):
         matlab_path: Sequence[str | Path],
         recursive: bool = False,
         config: Mapping = {},
+        config_path: Path | None = None,
     ) -> None:
         """
         Initialize an instance of PathCollection.
@@ -146,6 +152,8 @@ class PathCollection(ModulesCollection):
         self._mapping: dict[str, deque[Path]] = defaultdict(deque)
         self._models: dict[Path, LazyModel] = {}
         self._members: dict[Path, list[tuple[str, Path]]] = defaultdict(list)
+        self._folders: dict[str, LazyModel] = {}
+        self._config_path = config_path
 
         self.config = config
         self.lines_collection = LinesCollection()
@@ -186,6 +194,26 @@ class PathCollection(ModulesCollection):
             model = self._models[self._mapping[identifier][0]].model()
             if model is not None:
                 model = self.update_model(model, config)
+
+        elif self._config_path is not None and '/' in identifier:
+            absolute_path = (self._config_path / Path(identifier)).resolve()
+            if absolute_path.exists():
+                path = absolute_path.relative_to(self._config_path)
+                if path.suffix:
+                    path, member = path.parent, path.stem
+                else:
+                    member = None
+                lazymodel = self._folders.get(str(path), None)
+
+                if lazymodel is not None:
+                    model = lazymodel.model()
+                    if model is not None and member is not None:
+                        model = model.members.get(member, None)
+                else:
+                    model = None
+            else:
+                model = None
+
         else:
             model = None
             name_parts = identifier.split(".")
@@ -509,12 +537,19 @@ class PathCollection(ModulesCollection):
         else:
             self._path.appendleft(path)
 
-        members = PathGlobber(path, recursive=recursive)
-        for member in members:
+        for member in PathGlobber(path, recursive=recursive):
             model = LazyModel(member, self)
             self._models[member] = model
             self._mapping[model.name].append(member)
             self._members[path].append((model.name, member))
+
+            if self._config_path is not None and member.parent.stem[0] not in ["+", "@"]:
+                if member.parent.is_relative_to(self._config_path):
+                    relative_path = member.parent.relative_to(self._config_path)
+                    if member.parent not in self._folders:
+                        self._folders[str(relative_path)] = LazyModel(member.parent, self)
+                else:
+                    pass # TODO: Issue warning?
 
     def rm_path(self, path: str | Path, recursive: bool = False):
         """
@@ -609,6 +644,10 @@ class LazyModel:
         self._lines_collection: LinesCollection = path_collection.lines_collection
 
     @property
+    def is_folder(self) -> bool:
+        return self._path.is_dir() and self._path.name[0] not in ["+", "@"]
+
+    @property
     def is_class_folder(self) -> bool:
         return self._path.is_dir() and self._path.name[0] == "@"
 
@@ -655,6 +694,8 @@ class LazyModel:
                 self._model = self._collect_classfolder(self._path)
             elif self.is_namespace:
                 self._model = self._collect_namespace(self._path)
+            elif self.is_folder:
+                self._model = self._collect_folder(self._path)
             else:
                 self._model = self._collect_path(self._path)
         if self._model is not None:
@@ -673,6 +714,27 @@ class LazyModel:
         file = FileParser(path)
         model = file.parse(path_collection=self._path_collection)
         self._lines_collection[path] = file.content.split("\n")
+        return model
+    
+    def _collect_directory(self, path: Path, model: PathType) -> PathType:
+        for member in path.iterdir():
+            if member.is_dir() and member.name[0] in ["+", "@"]:
+                submodel = self._path_collection._models[member].model()
+                if submodel is not None:
+                    model.members[submodel.name] = submodel
+
+            elif member.is_file() and member.suffix == ".m":
+                if member.name == "Contents.m":
+                    contentsfile = self._collect_path(member)
+                    model.docstring = contentsfile.docstring
+                else:
+                    submodel = self._path_collection._models[member].model()
+                    if submodel is not None:
+                        model.members[submodel.name] = submodel
+
+        if model.docstring is None:
+            model.docstring = self._collect_readme_md(path, model)
+
         return model
 
     def _collect_classfolder(self, path: Path) -> Classfolder | None:
@@ -695,31 +757,17 @@ class LazyModel:
             model.docstring = self._collect_readme_md(path, model)
         return model
 
-    def _collect_namespace(self, path: Path) -> Namespace | None:
+    def _collect_namespace(self, path: Path) -> Namespace:
         name = self.name[1:].split(".")[-1]
         model = Namespace(name, filepath=path, path_collection=self._path_collection)
+        return self._collect_directory(path, model)
 
-        for member in path.iterdir():
-            if member.is_dir() and member.name[0] in ["+", "@"]:
-                submodel = self._path_collection._models[member].model()
-                if submodel is not None:
-                    model.members[submodel.name] = submodel
+    def _collect_folder(self, path: Path) -> Folder:
+        name = path.stem
+        model = Folder(name, filepath=path, path_collection=self._path_collection)
+        return self._collect_directory(path, model)
 
-            elif member.is_file() and member.suffix == ".m":
-                if member.name == "Contents.m":
-                    contentsfile = self._collect_path(member)
-                    model.docstring = contentsfile.docstring
-                else:
-                    submodel = self._path_collection._models[member].model()
-                    if submodel is not None:
-                        model.members[submodel.name] = submodel
-
-        if model.docstring is None:
-            model.docstring = self._collect_readme_md(path, model)
-
-        return model
-
-    def _collect_readme_md(self, path, parent: MatlabMixin) -> Docstring | None:
+    def _collect_readme_md(self, path, parent: PathMixin) -> Docstring | None:
         if (path / "README.md").exists():
             readme = path / "README.md"
         elif (path / "readme.md").exists():

@@ -184,7 +184,6 @@ class PathMixin(Object):
 
     def __init__(self, *args: Any, filepath: Path | None = None, **kwargs: Any) -> None:
         self._filepath: Path | None = filepath
-
         super().__init__(*args, **kwargs)
 
     @property
@@ -543,6 +542,23 @@ class Function(MatlabMixin, PathMixin, GriffeFunction, MatlabObject):
         pass
 
 
+class Folder(MatlabMixin, PathMixin, Module, MatlabObject):
+    """
+    A class representing a Folder in a MATLAB project.
+
+    Inherits from:
+        - MatlabMixin: A mixin class providing MATLAB-specific functionality.
+        - PathMixin: A mixin class providing path-related functionality.
+        - Module: A class representing a module.
+        - MatlabObject: A base class for MATLAB objects.
+    """
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.labels = {'Folder'}
+        
+    def __repr__(self) -> str:
+        return f"Folder({self.path!r})"
+
 
 
 class Namespace(MatlabMixin, PathMixin, Module, MatlabObject):
@@ -550,9 +566,10 @@ class Namespace(MatlabMixin, PathMixin, Module, MatlabObject):
     A class representing a namespace in a MATLAB project.
 
     Inherits from:
+        - MatlabMixin: A mixin class providing MATLAB-specific functionality.
         - PathMixin: A mixin class providing path-related functionality.
-        - MatlabObject: A base class for MATLAB objects.
         - Module: A class representing a module.
+        - MatlabObject: A base class for MATLAB objects.
     """
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:

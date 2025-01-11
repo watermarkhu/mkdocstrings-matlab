@@ -56,6 +56,7 @@ If another handler was defined as default handler, you can explicitely ask for t
 ::: path.to.object
     handler: matlab
 ```
+### Namespaces
 
 Entire [namespaces](https://mathworks.com/help/matlab/matlab_oop/namespaces.html) can be fully documented by prefixing the `+` character to the namespace that is to be documented. E.g. the following namespace 
 
@@ -74,8 +75,7 @@ is documented with:
 ::: +mynamespace
 ```
 
-The docstring of the namespace is taken from either the [`Contents.m`](https://mathworks.com/help/matlab/matlab_prog/create-a-help-summary-contents-m.html) or a `readme.md` that resides at the root level of the namespace, with `Contents.m` taking precedence over `readme.md`. 
-
+The docstring of the namespace is taken from either the [`Contents.m`](https://mathworks.com/help/matlab/matlab_prog/create-a-help-summary-contents-m.html) or a `readme.md` that resides at the root level of the namespace, with `Contents.m` taking precedence over `readme.md`.
 
 Documenting a nested namespace requires only a single prefixed `+` at the start of the fully resolved path, e.g. 
 
@@ -83,6 +83,49 @@ Documenting a nested namespace requires only a single prefixed `+` at the start 
 ::: +mynamespace.subnamespace
 ```
 
+### Folders
+
+Similarly to namepaces, all contents of a folder can be fully documented by specifying the relative path of a folder with respect to the `mkdocs.yml` config file. E.g. the following repository
+
+```tree
+src
+    module
+        myfunction.m
+        myClass.m
+        submodule
+            myfunction.m
+        +mynamespace
+            namespacefunction.m
+docs
+    index.md
+mkdocs.yml
+```
+
+is documented with:
+
+```markdown
+::: src/module
+```
+
+In the case above the function `module/submodule/myfunction.m` overshadows the function `module/myfunction.m` on the MATLAB path. This means that in the global namespace myfunction will always call `module/submodule/myfunction.m`, which is the function to be documented by `::: myfunction`. 
+
+While this kind of behavior is strictly recommended against, mkdocstrings-matlab does support documenting the shadowed function by using its path. The file extension is now stricty required. 
+
+```markdown
+::: src/module/myfunction.m
+```
+
+!!! tip
+
+    A folder identifier must strictly contain the `/` character. For a folder `foo` that is in the same directory with `mkdocs.yml`, use `::: ./foo`. 
+
+!!! tip
+
+    If the `mkdocs.yml` lives inside of a subdirectly that does not contain source code, use relative paths e.g. `../src/module`. 
+
+!!! tip
+
+    Sub-selecting folder members are possible with the [members](./configuration/members.md) options. 
 
 ### Global-only options
 

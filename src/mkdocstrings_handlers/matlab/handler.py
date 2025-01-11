@@ -176,13 +176,14 @@ class MatlabHandler(BaseHandler):
         super().__init__(*args, **kwargs)
 
         if paths is None or config_file_path is None:
+            config_path = None
             full_paths = []
         else:
             config_path = Path(config_file_path).parent
             full_paths = [(config_path / path).resolve() for path in paths]
 
         self.paths: PathCollection = PathCollection(
-            full_paths, recursive=paths_recursive
+            full_paths, recursive=paths_recursive, config_path=config_path
         )
         self.lines: LinesCollection = self.paths.lines_collection
         self._locale: str = locale
