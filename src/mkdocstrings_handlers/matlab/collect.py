@@ -3,7 +3,7 @@
 from collections import defaultdict, deque
 from copy import copy, deepcopy
 from pathlib import Path
-from typing import Mapping, Sequence
+from typing import Mapping, Sequence, Callable
 
 from _griffe.collections import LinesCollection as GLC, ModulesCollection
 from _griffe.docstrings.models import (
@@ -25,9 +25,7 @@ from mkdocstrings_handlers.matlab.models import (
     DocstringSectionText,
     Function,
     MatlabMixin,
-    Object,
     Namespace,
-    ROOT,
 )
 from mkdocstrings_handlers.matlab.treesitter import FileParser
 
@@ -648,7 +646,7 @@ class LazyModel:
         else:
             return name
 
-    def model(self):
+    def model(self) -> MatlabMixin | None:
         if not self._path.exists():
             return None
 
@@ -663,13 +661,12 @@ class LazyModel:
             self._model.parent = self._collect_parent(self._path.parent)
         return self._model
 
-    def _collect_parent(self, path: Path) -> Object | _ParentGrabber:
+    def _collect_parent(self, path: Path) -> _ParentGrabber | None:
         if self.is_in_namespace:
-            parent = _ParentGrabber(
-                lambda: self._path_collection._models[path].model() or ROOT
-            )
+            grabber: Callable[[], MatlabMixin | None] = self._path_collection._models[path].model
+            parent = _ParentGrabber(grabber)
         else:
-            parent = ROOT
+            parent = None
         return parent
 
     def _collect_path(self, path: Path) -> MatlabMixin:
