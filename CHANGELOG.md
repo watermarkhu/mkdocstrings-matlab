@@ -1,6 +1,38 @@
 # CHANGELOG
 
 
+## v0.7.0 (2025-01-12)
+
+### Chores
+
+- **deps**: Update python-semantic-release/publish-action action to v9.16.0
+  ([#38](https://github.com/watermarkhu/mkdocstrings-matlab/pull/38),
+  [`fc404c4`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/fc404c46af2830eaba288beb8635092174a21b3b))
+
+Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
+
+- **deps**: Update python-semantic-release/python-semantic-release action to v9.16.0
+  ([#39](https://github.com/watermarkhu/mkdocstrings-matlab/pull/39),
+  [`56e8f87`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/56e8f877d357deeaee3eb6cf31bee2b064ee2438))
+
+Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
+
+Co-authored-by: Mark Shui Hu <watermarkhu@gmail.com>
+
+### Features
+
+- Folder modules ([#37](https://github.com/watermarkhu/mkdocstrings-matlab/pull/37),
+  [`81b551d`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/81b551d794804212c18645926d58121cf556c79d))
+
+* remove redundant root object
+
+* feat: document folders
+
+* uv format
+
+* docs: update readme
+
+
 ## v0.6.0 (2025-01-04)
 
 ### Documentation
