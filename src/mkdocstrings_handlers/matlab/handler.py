@@ -3,7 +3,7 @@
 from pathlib import Path
 from collections import ChainMap
 from markdown import Markdown
-from mkdocstrings.extension import PluginError # type: ignore
+from mkdocstrings.extension import PluginError  # type: ignore
 from mkdocstrings.handlers.base import BaseHandler, CollectorItem, CollectionError
 from mkdocstrings_handlers.python import rendering
 from typing import Any, ClassVar, Mapping
@@ -153,7 +153,7 @@ class MatlabHandler(BaseHandler):
     def __init__(
         self,
         handler: str,
-        theme: str, 
+        theme: str,
         custom_templates: str | None = None,
         config_file_path: str | None = None,
         paths: list[str] | None = None,

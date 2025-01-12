@@ -553,13 +553,17 @@ plugins:
     === "With symbol type in headings"
 
         ```markdown
-        ::: +mynamespace
+        ::: docs/snippets
             options:
+              members:
+                - mynamespace
               show_symbol_type_heading: true
         ```
 
-        ::: +mynamespace
+        ::: docs/snippets
             options:
+              members: 
+                - mynamespace
               show_symbol_type_heading: true
               show_docstring_input_arguments: false
               show_docstring_output_arguments: false
@@ -567,13 +571,17 @@ plugins:
     === "Without symbol type in headings"
 
         ```markdown
-        ::: +mynamespace
+        ::: docs/snippets
             options:
+              members:
+                - mynamespace
               show_symbol_type_heading: false
         ```
 
-        ::: +mynamespace
+        ::: docs/snippets
             options:
+              members:
+                - mynamespace
               show_symbol_type_heading: false
               show_docstring_input_arguments: false
               show_docstring_output_arguments: false

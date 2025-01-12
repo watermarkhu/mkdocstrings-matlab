@@ -112,7 +112,7 @@ Context:
           -#}
           {% set root = False %}
           {% set heading_level = heading_level + 1 %}
-          {% include "children"|get_template with context %}
+          {% include "folder-children"|get_template with context %}
         {% endblock children %}
       {% endblock contents %}
     </div>
