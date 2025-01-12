@@ -44,10 +44,7 @@ managed = true
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/mkdocstrings_handlers", "src/mkdocs_material_matlab"]
-
-[project.entry-points."mkdocs.plugins"]
-mkdocs-material-matlab = "mkdocs_material_matlab:MkdocsMaterialMatlabPlugin"
+packages = ["src/mkdocstrings_handlers"]
 
 [dependency-groups]
 docs = [

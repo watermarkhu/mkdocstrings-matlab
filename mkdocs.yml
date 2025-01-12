@@ -131,7 +131,6 @@ plugins:
 - search
 - markdown-exec
 - callouts
-- mkdocs-material-matlab
 - mkdocstrings:
     default_handler: matlab
     handlers:

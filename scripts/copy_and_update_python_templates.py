@@ -7,7 +7,7 @@ from pathlib import Path
 # Get the templates directory of the python handler
 pythonHandler = PythonHandler('python', 'material')
 templatesDir = pythonHandler.get_templates_dir()
-targetDir = Path(__file__).parent.parent / "src" / "mkdocstrings_handlers" / "matlab" / "templates" / "matlab"
+targetDir = Path(__file__).parent.parent / "src" / "mkdocstrings_handlers" / "matlab" / "templates"
 
 # Copy the namespace and module templates
 moduleTemplate = templatesDir / "material" / "_base" / "module.html.jinja"

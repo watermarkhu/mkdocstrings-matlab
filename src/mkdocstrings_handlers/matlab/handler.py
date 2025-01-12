@@ -152,7 +152,9 @@ class MatlabHandler(BaseHandler):
 
     def __init__(
         self,
-        *args: Any,
+        handler: str,
+        theme: str, 
+        custom_templates: str | None = None,
         config_file_path: str | None = None,
         paths: list[str] | None = None,
         paths_recursive: bool = False,
@@ -163,7 +165,9 @@ class MatlabHandler(BaseHandler):
         Initialize the handler with the given configuration.
 
         Args:
-            *args (Any): Variable length argument list.
+            handler: The name of the handler.
+            theme: The name of theme to use.
+            custom_templates: Directory containing custom templates.
             config_file_path (str | None, optional): Path to the configuration file. Defaults to None.
             paths (list[str] | None, optional): List of paths to include. Defaults to None.
             paths_recursive (bool, optional): Whether to include paths recursively. Defaults to False.
@@ -173,10 +177,12 @@ class MatlabHandler(BaseHandler):
         Returns:
             None
         """
-        kwargs.pop("custom_templates")
 
-        templates = str(Path(__file__).resolve().parent / "templates")
-        super().__init__(*args, custom_templates=templates , **kwargs)
+        super().__init__(handler, theme, custom_templates=custom_templates)
+
+        css_path = Path(__file__).resolve().parent / "templates" / theme / "style.css"
+        if css_path.is_file():
+            self.extra_css += "\n" + css_path.read_text(encoding="utf-8")
 
         if paths is None or config_file_path is None:
             config_path = None
@@ -191,10 +197,15 @@ class MatlabHandler(BaseHandler):
         self.lines: LinesCollection = self.paths.lines_collection
         self._locale: str = locale
 
-    def get_templates_dir(self, handler: str | None = None) -> Path:
+    def get_templates_dir(self, *args, **kwargs) -> Path:
         # use the python handler templates
         # (it assumes the python handler is installed)
         return super().get_templates_dir("python")
+
+    def get_extended_templates_dirs(self, *args, **kwargs) -> list[Path]:
+        extendedTemplates = super().get_extended_templates_dirs("python")
+        extendedTemplates.append(Path(__file__).resolve().parent / "templates")
+        return extendedTemplates
 
     def render(self, data: CollectorItem, config: Mapping[str, Any]) -> str:
         """Render a template using provided data and configuration options.
