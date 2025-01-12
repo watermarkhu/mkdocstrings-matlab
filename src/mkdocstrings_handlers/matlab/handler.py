@@ -3,7 +3,7 @@
 from pathlib import Path
 from collections import ChainMap
 from markdown import Markdown
-from mkdocstrings.extension import PluginError
+from mkdocstrings.extension import PluginError # type: ignore
 from mkdocstrings.handlers.base import BaseHandler, CollectorItem, CollectionError
 from mkdocstrings_handlers.python import rendering
 from typing import Any, ClassVar, Mapping
@@ -173,7 +173,10 @@ class MatlabHandler(BaseHandler):
         Returns:
             None
         """
-        super().__init__(*args, **kwargs)
+        kwargs.pop("custom_templates")
+
+        templates = str(Path(__file__).resolve().parent / "templates")
+        super().__init__(*args, custom_templates=templates , **kwargs)
 
         if paths is None or config_file_path is None:
             config_path = None
@@ -339,7 +342,10 @@ class MatlabHandler(BaseHandler):
             raise CollectionError("Empty identifier")
 
         final_config = ChainMap(config, self.default_config)  # type: ignore[arg-type]
-        return self.paths.resolve(identifier, config=final_config)
+        model = self.paths.resolve(identifier, config=final_config)
+        if model is None:
+            raise CollectionError(f"Identifier '{identifier}' not found")
+        return model
 
 
 def get_handler(

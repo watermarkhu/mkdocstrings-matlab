@@ -426,6 +426,8 @@ class Property(MatlabMixin, Attribute, MatlabObject):
         self.SetAccess: AccessEnum = SetAccess
         self.getter: Function | None = None
 
+        self.extra['mkdocstrings'] = {"template": "property.html.jinja"}
+
     @property
     def Private(self) -> bool:
         private = self.Access != AccessEnum.public
@@ -555,9 +557,7 @@ class Folder(MatlabMixin, PathMixin, Module, MatlabObject):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.labels = {"Folder"}
-
-    def __repr__(self) -> str:
-        return f"Folder({self.path!r})"
+        self.extra['mkdocstrings'] = {"template": "folder.html.jinja"}
 
 
 class Namespace(MatlabMixin, PathMixin, Module, MatlabObject):
@@ -574,6 +574,7 @@ class Namespace(MatlabMixin, PathMixin, Module, MatlabObject):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self._access: AccessEnum = AccessEnum.public
+        self.extra['mkdocstrings'] = {"template": "namespace.html.jinja"}
 
     def __repr__(self) -> str:
         return f"Namespace({self.path!r})"

@@ -702,7 +702,7 @@ plugins:
 
 !!! warning
 
-    In the summary, the title of the properties summary will be *attributes*, and the title of the namespaces summary will be *modules*. This is due to mkdocstrings-matlab's dependency on mkdocstrings-python. For now, mkdocstrings-matlab does not implement its own Jinja templates for rendering, leading to these summary titles. 
+    In the summary, the title of the properties summary will be *attributes*, and the title of the namespaces summary will be *modules*. This is due to mkdocstrings-matlab's dependency on mkdocstrings-python. For now, mkdocstrings-matlab does not implement its own Jinja templates for rendering summaries, leading to these summary titles. 
 
 
 ## `show_labels`
