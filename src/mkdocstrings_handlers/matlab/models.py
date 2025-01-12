@@ -99,7 +99,7 @@ class _ParentGrabber:
         __call__(): Calls the grabber function and returns a MatlabObject.
     """
 
-    def __init__(self, grabber: "Callable[[], Object]") -> None:
+    def __init__(self, grabber: "Callable[[], MatlabMixin | None]") -> None:
         """
         Initializes the _ParentGrabber with a grabber function.
 
@@ -109,7 +109,7 @@ class _ParentGrabber:
         self._grabber = grabber
 
     @property
-    def parent(self) -> "Object":
+    def parent(self) -> "MatlabMixin | None":
         """
         Calls the grabber function and returns a MatlabObject.
 
@@ -156,7 +156,7 @@ class MatlabObject(Object):
         Returns:
             str: The canonical path of the object.
         """
-        if isinstance(self.parent, _Root):
+        if self.parent is None:
             return self.name
 
         if isinstance(self.parent, MatlabObject):
@@ -165,29 +165,12 @@ class MatlabObject(Object):
             parent = getattr(self.parent, "model", self.parent)
 
         if isinstance(parent, Classfolder) and self.name == parent.name:
-            if isinstance(parent.parent, _Root) or parent.parent is None:
+            if parent.parent is None:
                 return self.name
             else:
                 return f"{parent.parent.canonical_path}.{self.name}"
         else:
             return f"{parent.canonical_path}.{self.name}" if parent else self.name
-
-
-class _Root(MatlabObject):
-    """
-    A class representing the root object in a MATLAB structure.
-    All the objects that have the root object as parent are at the top level,
-    and can be called directly.
-    """
-
-    def __init__(self) -> None:
-        super().__init__("ROOT", parent=None)
-
-    def __repr__(self) -> str:
-        return "MATLABROOT"
-
-
-ROOT = _Root()
 
 
 class PathMixin(Object):
@@ -200,7 +183,6 @@ class PathMixin(Object):
 
     def __init__(self, *args: Any, filepath: Path | None = None, **kwargs: Any) -> None:
         self._filepath: Path | None = filepath
-
         super().__init__(*args, **kwargs)
 
     @property
@@ -215,22 +197,22 @@ class MatlabMixin(Object):
     def __init__(
         self,
         *args: Any,
-        parent: "Class | Classfolder | Namespace | _Root | None" = None,
+        parent: "Class | Classfolder | Namespace | None" = None,
         docstring: Docstring | None = None,
         **kwargs: Any,
     ):
-        self._parent: "Class | Classfolder | Namespace | _Root | _ParentGrabber | None" = parent
+        self._parent: "Class | Classfolder | Namespace | _ParentGrabber | None" = parent
         self._docstring: Docstring | None = docstring
         super().__init__(*args, **kwargs)
 
     @property
-    def parent(self) -> Object:
+    def parent(self) -> Object | None:
         if isinstance(self._parent, MatlabMixin):
             return self._parent
         elif isinstance(self._parent, _ParentGrabber):
             return self._parent.parent
         else:
-            return ROOT
+            return None
 
     @parent.setter
     def parent(self, value):
@@ -559,14 +541,34 @@ class Function(MatlabMixin, PathMixin, GriffeFunction, MatlabObject):
         pass
 
 
+class Folder(MatlabMixin, PathMixin, Module, MatlabObject):
+    """
+    A class representing a Folder in a MATLAB project.
+
+    Inherits from:
+        - MatlabMixin: A mixin class providing MATLAB-specific functionality.
+        - PathMixin: A mixin class providing path-related functionality.
+        - Module: A class representing a module.
+        - MatlabObject: A base class for MATLAB objects.
+    """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.labels = {"Folder"}
+
+    def __repr__(self) -> str:
+        return f"Folder({self.path!r})"
+
+
 class Namespace(MatlabMixin, PathMixin, Module, MatlabObject):
     """
     A class representing a namespace in a MATLAB project.
 
     Inherits from:
+        - MatlabMixin: A mixin class providing MATLAB-specific functionality.
         - PathMixin: A mixin class providing path-related functionality.
-        - MatlabObject: A base class for MATLAB objects.
         - Module: A class representing a module.
+        - MatlabObject: A base class for MATLAB objects.
     """
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:

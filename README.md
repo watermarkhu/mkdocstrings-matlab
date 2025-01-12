@@ -10,7 +10,7 @@
 [![documentation](https://img.shields.io/badge/docs-mkdocs-708FCC.svg?style=flat)](https://watermarkhu.nl/mkdocstrings-matlab)
 [![pypi version](https://img.shields.io/pypi/v/mkdocstrings-matlab.svg)](https://pypi.org/project/mkdocstrings-matlab/)
 
-The MATLAB handler uses [Tree-sitter](https://tree-sitter.github.io/tree-sitter/) and its [MATLAB parser](https://github.com/acristoffers/tree-sitter-matlab) to collect documentation from MATLAB source code. Via the python bindings the Abstract Syntax Tree (AST) of the source code is traversed to extract useful information. The imported objected are imported as custom [Griffe](https://mkdocstrings.github.io/griffe/) objects and mocked for the [python handler](https://mkdocstrings.github.io/python/). 
+The MATLAB handler uses [Tree-sitter](https://tree-sitter.github.io/tree-sitter/) and its [MATLAB parser](https://github.com/acristoffers/tree-sitter-matlab) to collect documentation from MATLAB source code. The AST information are imported as custom [Griffe](https://mkdocstrings.github.io/griffe/) objects and mocked for the [python handler](https://mkdocstrings.github.io/python/). 
 
 
 You can install this handler by specifying it as a dependency:
@@ -34,10 +34,10 @@ dependencies = [
 
 - **Support for argument validation blocks:** Tree-sitter collects your [function and method argument validation](https://mathworks.com/help/matlab/matlab_prog/function-argument-validation-1.html)
    blocks to display input and output argument types and default values. 
-   It is even able to automatically add cross-references o other objects from your API.
+   It is even able to automatically add cross-references to other objects from your API.
 
-- **Recursive documentation of MATLAB [namespaces](https://mathworks.com/help/matlab/matlab_oop/namespaces.html):** 
-  just add `+` to the identifer, and you get the full namespace docs. You don't need to inject documentation for each class, function, and script. Additionaly, the parent namespace documentation will be either extracted from the `Contents.m` or the `readme.md` file at the root of the namespace. 
+- **Recursive documentation of MATLAB [namespaces](https://mathworks.com/help/matlab/matlab_oop/namespaces.html) and folders:** 
+  just add `+` to the identifer for namespaces or the relative path for folder, and you get documentation for the entire directory. You don't need to inject documentation for each class, function, and script. Additionaly, the directory documentation will be either extracted from the `Contents.m` or the `readme.md` file at the root of the namespace or folder.
 
 - **Support for documented properties:** properties definitions followed by a docstring will be recognized in classes. 
 
