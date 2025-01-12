@@ -9,6 +9,11 @@ on:
           Version of the documentation to publish
         type: string
         required: true
+      python-version:
+        description: >-
+          Python version to use for the documentation
+        type: string
+        default: "3.13"
       alias:
         description: >-
           (Versioned) Alias to use when publishing the versioned documentation with mike
@@ -44,6 +49,7 @@ jobs:
   
       - name: Sync dependencies
         run: |
+          uv pin python ${{ inputs.python-version }}
           uv sync --no-dev --group docs
 
       - name: Configure Git Credentials

@@ -63,6 +63,7 @@ docs = [
 ]
 dev = [
     "ipykernel>=6.29.5",
+    "pytest>=8.3.4",
     "python-semantic-release>=9.15.0",
 ]
 
