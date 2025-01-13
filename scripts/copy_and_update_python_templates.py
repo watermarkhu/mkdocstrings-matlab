@@ -3,6 +3,7 @@ the python handler to the matlab handler and update the names"""
 
 from mkdocstrings_handlers.python.handler import PythonHandler
 from pathlib import Path
+import re
 
 # Get the templates directory of the python handler
 pythonHandler = PythonHandler("python", "material")
@@ -15,27 +16,106 @@ targetDir = (
     / "templates"
 )
 
+
+def copy_template(
+    sourcePath: str,
+    targetPath: str,
+    mapping: dict[str, str] = {},
+    theme: str = "material",
+):
+    sourceFile = templatesDir / theme / sourcePath
+    targetFile = targetDir / theme / targetPath
+    content = sourceFile.read_text()
+    pattern = re.compile(
+        "|".join([re.escape(k) for k in sorted(mapping, key=len, reverse=True)]),
+        flags=re.DOTALL,
+    )
+    content = pattern.sub(lambda x: mapping[x.group(0)], content)
+    targetFile.write_text(content)
+
+    return (targetFile, content)
+
+
 # Copy the namespace and module templates
-moduleTemplate = templatesDir / "material" / "_base" / "module.html.jinja"
-
-targetFile = targetDir / "material" / "folder.html.jinja"
-content = (
-    moduleTemplate.read_text()
-    .replace("doc-symbol-module", "doc-symbol-folder")
-    .replace('"children"', '"folder-children"')
+copy_template(
+    "_base/module.html.jinja",
+    "folder.html.jinja",
+    {"doc-symbol-module": "doc-symbol-folder"},
 )
-targetFile.write_text(content)
-
-targetFile = targetDir / "material" / "namespace.html.jinja"
-content = moduleTemplate.read_text().replace(
-    "doc-symbol-module", "doc-symbol-namespace"
+copy_template(
+    "_base/module.html.jinja",
+    "namespace.html.jinja",
+    {"doc-symbol-module": "doc-symbol-namespace"},
 )
-targetFile.write_text(content)
 
 # Copy the property template
-attributeTemplate = templatesDir / "material" / "_base" / "attribute.html.jinja"
-targetFile = targetDir / "material" / "property.html.jinja"
-content = attributeTemplate.read_text().replace(
-    "doc-symbol-attribute", "doc-symbol-property"
+copy_template(
+    "_base/attribute.html.jinja",
+    "property.html.jinja",
+    {"doc-symbol-attribute": "doc-symbol-property"},
 )
-targetFile.write_text(content)
+
+# Copy the summary modules template
+copy_template(
+    "_base/summary.html.jinja",
+    "summary.html.jinja",
+    {
+        "summary/modules": "summary/namespaces",
+        "summary/attributes": "summary/properties",
+    },
+)
+
+
+## Copy the summary properties template
+copy_template(
+    "_base/summary/attributes.html.jinja",
+    "summary/properties.html.jinja",
+    {
+        "docstring/attributes": "docstring/properties",
+        "Summary of attributes": "Summary of properties",
+    },
+)
+copy_template(
+    "_base/docstring/attributes.html.jinja",
+    "docstring/properties.html.jinja",
+    {
+        'lang.t("Attributes:")': '"Properties:"',
+        'lang.t("ATTRIBUTE")': '"PROPERTY:"',
+        " attributes ": " properties ",
+        '"Attributes"': '"Properties"',
+    },
+)
+
+## Copy the summary namespaces template
+copy_template(
+    "_base/summary/modules.html.jinja",
+    "summary/namespaces.html.jinja",
+    {
+        "docstring/modules": "docstring/namespaces",
+        "Summary of modules": "Summary of namespaces",
+    },
+)
+copy_template(
+    "_base/docstring/modules.html.jinja",
+    "docstring/namespaces.html.jinja",
+    {
+        'lang.t("Modules:")': '"Namespaces:"',
+        'lang.t("MODULE")': '"NAMESPACE:"',
+        " modules ": " namespaces ",
+        '"Modules"': '"Namespaces"',
+    },
+)
+
+## Copy children template
+copy_template(
+    "_base/children.html.jinja",
+    "children.html.jinja",
+    {
+        "-attributes": "-properties",
+        "Attributes": "Properties",
+        "-modules": "-namespaces",
+        "Modules": "Modules",
+        "{% if config.show_submodules %}": "{% if config.show_submodules or obj.is_folder %}",
+        "{% elif child.is_module and config.show_submodules %}": "{% elif (child.is_namespace and config.show_submodules) or obj.is_folder %}",
+    },
+)

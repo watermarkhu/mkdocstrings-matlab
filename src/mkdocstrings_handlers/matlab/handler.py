@@ -2,8 +2,9 @@
 
 from pathlib import Path
 from collections import ChainMap
+from jinja2.loaders import FileSystemLoader
 from markdown import Markdown
-from mkdocstrings.extension import PluginError  # type: ignore
+from mkdocs.exceptions import PluginError
 from mkdocstrings.handlers.base import BaseHandler, CollectorItem, CollectionError
 from mkdocstrings_handlers.python import rendering
 from typing import Any, ClassVar, Mapping
@@ -180,8 +181,12 @@ class MatlabHandler(BaseHandler):
 
         super().__init__(handler, theme, custom_templates=custom_templates)
 
-        css_path = Path(__file__).resolve().parent / "templates" / theme / "style.css"
-        if css_path.is_file():
+        theme_path = Path(__file__).resolve().parent / "templates" / theme
+        if theme_path.exists() and isinstance(self.env.loader, FileSystemLoader):
+            # Insert our templates directory at the beginning of the search path to overload the Python templates
+            self.env.loader.searchpath.insert(0, str(theme_path))
+        css_path = theme_path / "style.css"
+        if css_path.exists():
             self.extra_css += "\n" + css_path.read_text(encoding="utf-8")
 
         if paths is None or config_file_path is None:
@@ -190,6 +195,12 @@ class MatlabHandler(BaseHandler):
         else:
             config_path = Path(config_file_path).parent
             full_paths = [(config_path / path).resolve() for path in paths]
+
+        if pathIds := [str(path) for path in full_paths if not path.is_dir()]:
+            raise PluginError(
+                "The following paths do not exist or are not directories: "
+                + ", ".join(pathIds)
+            )
 
         self.paths: PathCollection = PathCollection(
             full_paths, recursive=paths_recursive, config_path=config_path
@@ -201,11 +212,6 @@ class MatlabHandler(BaseHandler):
         # use the python handler templates
         # (it assumes the python handler is installed)
         return super().get_templates_dir("python")
-
-    def get_extended_templates_dirs(self, *args, **kwargs) -> list[Path]:
-        extendedTemplates = super().get_extended_templates_dirs("python")
-        extendedTemplates.append(Path(__file__).resolve().parent / "templates")
-        return extendedTemplates
 
     def render(self, data: CollectorItem, config: Mapping[str, Any]) -> str:
         """Render a template using provided data and configuration options.
@@ -268,7 +274,6 @@ class MatlabHandler(BaseHandler):
             }
 
         # Map docstring options
-        final_config["show_submodules"] = config.get("show_subnamespaces", False)
         final_config["show_docstring_attributes"] = config.get(
             "show_docstring_properties", True
         )
