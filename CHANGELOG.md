@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.8.0 (2025-01-13)
+
+### Features
+
+- Update dependencies ([#46](https://github.com/watermarkhu/mkdocstrings-matlab/pull/46),
+  [`03229a2`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/03229a2e7ef8ee46dc680b676a796ae38c6617b7))
+
+
 ## v0.7.0 (2025-01-12)
 
 ### Chores
