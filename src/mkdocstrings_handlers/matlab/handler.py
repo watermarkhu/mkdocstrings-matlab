@@ -1,7 +1,6 @@
 """The mkdocstrings handler for processing MATLAB code documentation."""
 
 from pathlib import Path
-from collections import ChainMap
 from jinja2.loaders import FileSystemLoader
 from markdown import Markdown
 from mkdocs.exceptions import PluginError
@@ -156,8 +155,8 @@ class MatlabHandler(BaseHandler):
         handler: str,
         theme: str,
         custom_templates: str | None = None,
-        config_file_path: str | None = None,
-        paths: list[str] | None = None,
+        handler_config: Mapping = {},
+        tool_config: Mapping = {},
         paths_recursive: bool = False,
         locale: str = "en",
         **kwargs: Any,
@@ -178,8 +177,8 @@ class MatlabHandler(BaseHandler):
         Returns:
             None
         """
-
-        super().__init__(handler, theme, custom_templates=custom_templates)
+        self.config = handler_config
+        super().__init__(handler, theme, custom_templates=custom_templates, tool_config=tool_config, **kwargs)
 
         theme_path = Path(__file__).resolve().parent / "templates" / theme
         if theme_path.exists() and isinstance(self.env.loader, FileSystemLoader):
@@ -189,12 +188,12 @@ class MatlabHandler(BaseHandler):
         if css_path.exists():
             self.extra_css += "\n" + css_path.read_text(encoding="utf-8")
 
-        if paths is None or config_file_path is None:
-            config_path = None
-            full_paths = []
+        config_path = Path(tool_config.get("config_file_path", "./mkdocs.yml")).parent
+
+        if handler_config.get('paths', []):
+            full_paths = [(config_path / path).resolve() for path in handler_config.get('paths', [])]
         else:
-            config_path = Path(config_file_path).parent
-            full_paths = [(config_path / path).resolve() for path in paths]
+            full_paths = []
 
         if pathIds := [str(path) for path in full_paths if not path.is_dir()]:
             raise PluginError(
@@ -213,6 +212,9 @@ class MatlabHandler(BaseHandler):
         # (it assumes the python handler is installed)
         return super().get_templates_dir("python")
 
+    def get_options(self, local_options):
+        return {**self.default_config, **self.config["options"], **local_options}
+
     def render(self, data: CollectorItem, config: Mapping[str, Any]) -> str:
         """Render a template using provided data and configuration options.
 
@@ -223,7 +225,7 @@ class MatlabHandler(BaseHandler):
         Returns:
             The rendered template as HTML.
         """
-        final_config = ChainMap(config, self.default_config)  # type: ignore[arg-type]
+        final_config = self.get_options(config)
 
         template_name = rendering.do_get_template(self.env, data)
         template = self.env.get_template(template_name)
@@ -357,7 +359,7 @@ class MatlabHandler(BaseHandler):
         if identifier == "":
             raise CollectionError("Empty identifier")
 
-        final_config = ChainMap(config, self.default_config)  # type: ignore[arg-type]
+        final_config = self.get_options(config)
         model = self.paths.resolve(identifier, config=final_config)
         if model is None:
             raise CollectionError(f"Identifier '{identifier}' not found")
@@ -368,10 +370,10 @@ def get_handler(
     *,
     theme: str,
     custom_templates: str | None = None,
-    config_file_path: str | None = None,
-    paths: list[str] | None = None,
+    handler_config: Mapping = {},
+    tool_config: Mapping = {},
     paths_recursive: bool = False,
-    **config: Any,
+    **kwargs: Any,
 ) -> MatlabHandler:
     """
     Create and return a MatlabHandler object with the specified configuration.
@@ -391,9 +393,10 @@ def get_handler(
         handler="matlab",
         theme=theme,
         custom_templates=custom_templates,
-        config_file_path=config_file_path,
-        paths=paths,
+        handler_config=handler_config,
+        tool_config=tool_config,
         paths_recursive=paths_recursive,
+        **kwargs,
     )
 
 
