@@ -127,11 +127,10 @@ markdown_extensions:
     toc_depth: 3
 
 plugins:
+- callouts
 - autorefs
 - search
 - markdown-exec
-- callouts
-- mkdocs-material-matlab
 - mkdocstrings:
     default_handler: matlab
     handlers:
@@ -201,16 +200,13 @@ plugins:
           summary: true
           unwrap_annotated: true
 
+- minify:
+    minify_html: !ENV [DEPLOY, false]
+
 - git-revision-date-localized:
     enabled: !ENV [DEPLOY, false]
     enable_creation_date: true
     type: timeago
-- minify:
-    minify_html: !ENV [DEPLOY, false]
-- group:
-    enabled: !ENV [MATERIAL_INSIDERS, false]
-    plugins:
-    - typeset
 
 extra:
   version:

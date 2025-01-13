@@ -1,0 +1,48 @@
+name: Update template copies
+
+on:
+  pull_request:
+    types: 
+      - opened
+      - synchronize
+      - reopened
+      - edited
+
+permissions:
+  contents: write
+
+jobs:
+  update-templates:
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.title, 'mkdocstrings-python')
+
+    steps:
+    
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with: 
+          fetch-depth: 0
+          ref: ${{ github.sha }}
+
+      - name: Force correct release branch on workflow sha
+        run: |
+          git checkout -B ${{ github.ref_name }} ${{ github.sha }}
+
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "latest"
+
+      - name: Run script
+        run: |
+          uv sync 
+          uv run python scripts/copy_and_update_python_templates.py
+
+      - name: Commit changes
+        continue-on-error: true # Ignore if there are no changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .
+          git commit -m "Update templates"
+          git push origin ${{ github.ref_name }}

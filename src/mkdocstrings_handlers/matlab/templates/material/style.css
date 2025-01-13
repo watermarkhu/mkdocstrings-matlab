@@ -1,0 +1,26 @@
+code.doc-symbol-namespace {
+  color: var(--doc-symbol-module-fg-color);
+  background-color: var(--doc-symbol-module-bg-color);
+}
+
+code.doc-symbol-namespace::after {
+  content: "name";
+}
+
+code.doc-symbol-folder {
+  color: var(--doc-symbol-module-fg-color);
+  background-color: var(--doc-symbol-module-bg-color);
+}
+
+code.doc-symbol-folder::after {
+  content: "dir";
+}
+
+code.doc-symbol-property {
+  color: var(--doc-symbol-attribute-fg-color);
+  background-color: var(--doc-symbol-attribute-bg-color);
+}
+
+code.doc-symbol-property::after {
+  content: "prop";
+}

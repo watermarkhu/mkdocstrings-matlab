@@ -10,10 +10,10 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "mkdocstrings==0.27.0",
-    "mkdocstrings-python==1.13.0",  # Later versions will currently break 
-    "charset-normalizer>=3.3.2",
-    "tree-sitter>=0.23.2",
-    "tree-sitter-matlab>=1.0.2",
+    "mkdocstrings-python==1.13.0",
+    "charset-normalizer==3.3.2",
+    "tree-sitter==0.23.2",
+    "tree-sitter-matlab==1.0.3",
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -44,19 +44,13 @@ managed = true
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/mkdocstrings_handlers", "src/mkdocs_material_matlab"]
-
-[project.entry-points."mkdocs.plugins"]
-mkdocs-material-matlab = "mkdocs_material_matlab:MkdocsMaterialMatlabPlugin"
+packages = ["src/mkdocstrings_handlers"]
 
 [dependency-groups]
 docs = [
     "mkdocs-material>=9.5.33",
     "markdown-exec>=1.10.0",
     "mkdocs-callouts>=1.15.0",
-    "mkdocs-with-pdf>=0.9.3",
-    "mkdocs-gen-files>=0.5.0",
-    "mkdocs-literate-nav>=0.6.1",
     "mkdocs-git-revision-date-localized-plugin>=1.3.0",
     "mkdocs-minify-plugin>=0.8.0",
     "mike>=2.1.3",

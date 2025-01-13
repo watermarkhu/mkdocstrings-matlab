@@ -2,8 +2,9 @@
 
 from pathlib import Path
 from collections import ChainMap
+from jinja2.loaders import FileSystemLoader
 from markdown import Markdown
-from mkdocstrings.extension import PluginError
+from mkdocs.exceptions import PluginError
 from mkdocstrings.handlers.base import BaseHandler, CollectorItem, CollectionError
 from mkdocstrings_handlers.python import rendering
 from typing import Any, ClassVar, Mapping
@@ -152,7 +153,9 @@ class MatlabHandler(BaseHandler):
 
     def __init__(
         self,
-        *args: Any,
+        handler: str,
+        theme: str,
+        custom_templates: str | None = None,
         config_file_path: str | None = None,
         paths: list[str] | None = None,
         paths_recursive: bool = False,
@@ -163,7 +166,9 @@ class MatlabHandler(BaseHandler):
         Initialize the handler with the given configuration.
 
         Args:
-            *args (Any): Variable length argument list.
+            handler: The name of the handler.
+            theme: The name of theme to use.
+            custom_templates: Directory containing custom templates.
             config_file_path (str | None, optional): Path to the configuration file. Defaults to None.
             paths (list[str] | None, optional): List of paths to include. Defaults to None.
             paths_recursive (bool, optional): Whether to include paths recursively. Defaults to False.
@@ -173,7 +178,16 @@ class MatlabHandler(BaseHandler):
         Returns:
             None
         """
-        super().__init__(*args, **kwargs)
+
+        super().__init__(handler, theme, custom_templates=custom_templates)
+
+        theme_path = Path(__file__).resolve().parent / "templates" / theme
+        if theme_path.exists() and isinstance(self.env.loader, FileSystemLoader):
+            # Insert our templates directory at the beginning of the search path to overload the Python templates
+            self.env.loader.searchpath.insert(0, str(theme_path))
+        css_path = theme_path / "style.css"
+        if css_path.exists():
+            self.extra_css += "\n" + css_path.read_text(encoding="utf-8")
 
         if paths is None or config_file_path is None:
             config_path = None
@@ -182,13 +196,19 @@ class MatlabHandler(BaseHandler):
             config_path = Path(config_file_path).parent
             full_paths = [(config_path / path).resolve() for path in paths]
 
+        if pathIds := [str(path) for path in full_paths if not path.is_dir()]:
+            raise PluginError(
+                "The following paths do not exist or are not directories: "
+                + ", ".join(pathIds)
+            )
+
         self.paths: PathCollection = PathCollection(
             full_paths, recursive=paths_recursive, config_path=config_path
         )
         self.lines: LinesCollection = self.paths.lines_collection
         self._locale: str = locale
 
-    def get_templates_dir(self, handler: str | None = None) -> Path:
+    def get_templates_dir(self, *args, **kwargs) -> Path:
         # use the python handler templates
         # (it assumes the python handler is installed)
         return super().get_templates_dir("python")
@@ -254,7 +274,6 @@ class MatlabHandler(BaseHandler):
             }
 
         # Map docstring options
-        final_config["show_submodules"] = config.get("show_subnamespaces", False)
         final_config["show_docstring_attributes"] = config.get(
             "show_docstring_properties", True
         )
@@ -339,7 +358,10 @@ class MatlabHandler(BaseHandler):
             raise CollectionError("Empty identifier")
 
         final_config = ChainMap(config, self.default_config)  # type: ignore[arg-type]
-        return self.paths.resolve(identifier, config=final_config)
+        model = self.paths.resolve(identifier, config=final_config)
+        if model is None:
+            raise CollectionError(f"Identifier '{identifier}' not found")
+        return model
 
 
 def get_handler(
