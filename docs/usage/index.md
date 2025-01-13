@@ -27,20 +27,13 @@ plugins:
         ...  # the MATLAB handler configuration
 ```
 
-When using the [material](https://squidfunk.github.io/mkdocs-material) theme, it is best to also configure the `mkdocs_material_matlab` plugin. This additional plugin, which is installed together with mkdocstrings-matlab, will overrule the symbols shown with [`show_symbol_type_heading`][] and [`show_symbol_type_toc`][] to show the correct symbols as per MATLAB nomenclature. 
-
 ```yaml title="mkdocs.yml"
 plugins:
-- mkdocs_material_matlab
 - mkdocstrings:
     default_handler: matlab
     matlab:
         ...  # the MATLAB handler configuration
 ```
-
-??? warning "I want to document both MATLAB and Python"
-
-    The `mkdocs_material_matlab` plugin will also change the symbols for the Python handler. This means that Python modules will not be tagged with symbol `mod` but `name` (namespace), and attributes are not tagged with symbol `attr` but `prop` (property). 
 
 ## Injecting documentation
 

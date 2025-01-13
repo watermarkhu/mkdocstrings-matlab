@@ -553,13 +553,17 @@ plugins:
     === "With symbol type in headings"
 
         ```markdown
-        ::: +mynamespace
+        ::: docs/snippets
             options:
+              members:
+                - mynamespace
               show_symbol_type_heading: true
         ```
 
-        ::: +mynamespace
+        ::: docs/snippets
             options:
+              members: 
+                - mynamespace
               show_symbol_type_heading: true
               show_docstring_input_arguments: false
               show_docstring_output_arguments: false
@@ -567,13 +571,17 @@ plugins:
     === "Without symbol type in headings"
 
         ```markdown
-        ::: +mynamespace
+        ::: docs/snippets
             options:
+              members:
+                - mynamespace
               show_symbol_type_heading: false
         ```
 
-        ::: +mynamespace
+        ::: docs/snippets
             options:
+              members:
+                - mynamespace
               show_symbol_type_heading: false
               show_docstring_input_arguments: false
               show_docstring_output_arguments: false
@@ -586,11 +594,12 @@ plugins:
 Show the symbol type in the Table of Contents.
 
 This option will prefix items in the ToC with
-<code class="doc-symbol doc-symbol-attribute"></code>,
+<code class="doc-symbol doc-symbol-property"></code>,
 <code class="doc-symbol doc-symbol-function"></code>,
 <code class="doc-symbol doc-symbol-method"></code>,
-<code class="doc-symbol doc-symbol-class"></code> or
-<code class="doc-symbol doc-symbol-module"></code> types.
+<code class="doc-symbol doc-symbol-class"></code>,
+<code class="doc-symbol doc-symbol-namespace"></code> or.
+<code class="doc-symbol doc-symbol-folder"></code> types.
 See also [`show_symbol_type_heading`][show_symbol_type_heading].
 
 ```yaml title="in mkdocs.yml (global configuration)"
@@ -603,7 +612,7 @@ plugins:
           show_symbol_type_toc: true
 ```
 
-1. :warning: When using material theme, make sure to also enable the plugin `mkdocs-material-matlab` such that the right heading types are displayed. Otherwise, <code class="doc-symbol doc-symbol-attribute"></code> will be shown as `attr` and <code class="doc-symbol doc-symbol-module"></code> will be shown as `mod`, as the mkdocstrings-matlab plugin is reusing assets from mkdocstrings-python. 
+1. :warning: When using material theme, make sure to also enable the plugin `mkdocs-material-matlab` such that the right heading types are displayed. 
 
 
 ```md title="or in docs/some_page.md (local configuration)"
@@ -617,12 +626,13 @@ plugins:
     === "With symbol type in ToC"
 
         <ul style="list-style: none;">
-          <li><code class="doc-symbol doc-symbol-module"></code> namespace</li>
+          <li><code class="doc-symbol doc-symbol-folder"></code> folder</li>
+          <li><code class="doc-symbol doc-symbol-namespace"></code> namespace</li>
           <li><code class="doc-symbol doc-symbol-function"></code> function</li>
           <li><code class="doc-symbol doc-symbol-class"></code> Class
             <ul style="list-style: none;">
               <li><code class="doc-symbol doc-symbol-method"></code> method</li>
-              <li><code class="doc-symbol doc-symbol-attribute"></code> property</li>
+              <li><code class="doc-symbol doc-symbol-property"></code> property</li>
             </ul>
           </li>
         </ul>
@@ -630,6 +640,7 @@ plugins:
     === "Without symbol type in ToC"
 
         <ul style="list-style: none;">
+          <li>folder</li>
           <li>namespace</li>
           <li>function</li>
           <li>Class
