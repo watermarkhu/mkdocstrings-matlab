@@ -56,8 +56,6 @@
     
       <link rel="stylesheet" href="../stylesheets/extra.css">
     
-      <link rel="stylesheet" href="../css/style.css">
-    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1072,18 +1070,12 @@ configuration option of <code>mkdocstrings</code> in <code>mkdocs.yml</code>:</p
 <span class="w">    </span><span class="nt">matlab</span><span class="p">:</span>
 <span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w">  </span><span class="c1"># the MATLAB handler configuration</span>
 </code></pre></div>
-<p>When using the <a href="https://squidfunk.github.io/mkdocs-material">material</a> theme, it is best to also configure the <code>mkdocs_material_matlab</code> plugin. This additional plugin, which is installed together with mkdocstrings-matlab, will overrule the symbols shown with <a class="autorefs autorefs-internal" href="configuration/headings/#show_symbol_type_heading"><code>show_symbol_type_heading</code></a> and <a class="autorefs autorefs-internal" href="configuration/headings/#show_symbol_type_toc"><code>show_symbol_type_toc</code></a> to show the correct symbols as per MATLAB nomenclature. </p>
 <div class="language-yaml highlight"><span class="filename">mkdocs.yml</span><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mkdocs_material_matlab</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mkdocstrings</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">default_handler</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">matlab</span>
 <span class="w">    </span><span class="nt">matlab</span><span class="p">:</span>
 <span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w">  </span><span class="c1"># the MATLAB handler configuration</span>
 </code></pre></div>
-<details class="warning">
-<summary>I want to document both MATLAB and Python</summary>
-<p>The <code>mkdocs_material_matlab</code> plugin will also change the symbols for the Python handler. This means that Python modules will not be tagged with symbol <code>mod</code> but <code>name</code> (namespace), and attributes are not tagged with symbol <code>attr</code> but <code>prop</code> (property). </p>
-</details>
 <h2 id="injecting-documentation">Injecting documentation<a class="headerlink" href="#injecting-documentation" title="Permanent link">¤</a></h2>
 <p>With the MATLAB handler installed and configured as default handler, you can inject documentation for a module, class, function, or any other MATLAB object with <em>mkdocstrings</em>' [autodoc syntax], in your Markdown pages:</p>
 <div class="language-md highlight"><pre><span></span><code>::: path.to.object

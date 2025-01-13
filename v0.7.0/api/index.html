@@ -54,8 +54,6 @@
     
       <link rel="stylesheet" href="../stylesheets/extra.css">
     
-      <link rel="stylesheet" href="../css/style.css">
-    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1393,12 +1391,6 @@
   
 
 
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Due to that for the documentation of mkdocstrings-matlab both the MATLAB and the Python handler are loaded, the symbols shown for Python objects will be incorrect (see <a href="../usage/#configuration">Configuration</a>). </p>
-</div>
-
-
 <div class="doc doc-object doc-module">
 
 
@@ -1535,7 +1527,7 @@
 
 
 <a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler" class="headerlink" title="Permanent link">¤</a></h3>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">MatlabHandler</span><span class="p">(</span><span class="o">*</span><span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(*args)">args</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(config_file_path)">config_file_path</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(paths)">paths</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(paths_recursive)">paths_recursive</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(locale)">locale</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(**kwargs)">kwargs</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">)</span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">MatlabHandler</span><span class="p">(</span><span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(handler)">handler</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(theme)">theme</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(custom_templates)">custom_templates</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(config_file_path)">config_file_path</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(paths)">paths</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(paths_recursive)">paths_recursive</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(locale)">locale</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n"><a class="autorefs autorefs-internal" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(**kwargs)">kwargs</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -1548,13 +1540,29 @@
 <p><span class="doc-section-title">Parameters:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-<h4 id="mkdocstrings_handlers.matlab.handler.MatlabHandler(*args)" class="doc doc-heading doc-heading-parameter">              <b><code>*args</code></b>
-<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(*args)" class="headerlink" title="Permanent link">¤</a></h4>              (<code><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></code>, default:
-                  <code>()</code>
+<h4 id="mkdocstrings_handlers.matlab.handler.MatlabHandler(handler)" class="doc doc-heading doc-heading-parameter">              <b><code>handler</code></b>
+<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(handler)" class="headerlink" title="Permanent link">¤</a></h4>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The name of the handler.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h4 id="mkdocstrings_handlers.matlab.handler.MatlabHandler(theme)" class="doc doc-heading doc-heading-parameter">              <b><code>theme</code></b>
+<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(theme)" class="headerlink" title="Permanent link">¤</a></h4>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The name of theme to use.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h4 id="mkdocstrings_handlers.matlab.handler.MatlabHandler(custom_templates)" class="doc doc-heading doc-heading-parameter">              <b><code>custom_templates</code></b>
+<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(custom_templates)" class="headerlink" title="Permanent link">¤</a></h4>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>, default:
+                  <code>None</code>
 )
           –
           <div class="doc-md-description">
-            <p>Variable length argument list.</p>
+            <p>Directory containing custom templates.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
