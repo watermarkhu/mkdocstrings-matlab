@@ -9,12 +9,13 @@ license =  { text = "MIT" }
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "mkdocstrings==0.28.0",
+    "mkdocstrings==0.28.2",
     "mkdocstrings-python==1.13.0",
     "charset-normalizer==3.4.1",
     "tree-sitter==0.24.0",
     "tree-sitter-matlab==1.0.4",
 ]
+
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -39,6 +40,9 @@ build-backend = "hatchling.build"
 
 [tool.uv]
 managed = true
+
+[tool.uv.sources]
+mkdocstrings = { git = "https://github.com/mkdocstrings/mkdocstrings", branch = "main" }
 
 [tool.hatch.metadata]
 allow-direct-references = true
