@@ -1,5 +1,10 @@
 [
   {
+    "version": "pr-fix-docs-subdir",
+    "title": "pr-fix-docs-subdir",
+    "aliases": []
+  },
+  {
     "version": "v0.8.1",
     "title": "v0.8.1",
     "aliases": [
