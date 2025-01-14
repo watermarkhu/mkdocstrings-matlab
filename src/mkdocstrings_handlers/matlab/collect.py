@@ -766,7 +766,7 @@ class LazyModel:
 
     def _collect_namespace(self, path: Path) -> Namespace:
         name = self.name[1:].split(".")[-1]
-        model = Namespace(name + ".*", filepath=path, path_collection=self._path_collection)
+        model = Namespace(name, filepath=path, path_collection=self._path_collection)
         return self._collect_directory(path, model)
 
     def _collect_folder(self, path: Path) -> Folder:

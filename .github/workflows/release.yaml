@@ -90,7 +90,10 @@ jobs:
     name: Delete test documentation
     needs: publish
     runs-on: ubuntu-latest
-
+    concurrency:
+      group: gh-pages
+      cancel-in-progress: false
+      
     steps:
       - name: checkout repository
         uses: actions/checkout@v4

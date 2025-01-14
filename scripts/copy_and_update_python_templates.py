@@ -40,12 +40,17 @@ def copy_template(
 copy_template(
     "_base/module.html.jinja",
     "folder.html.jinja",
-    {"doc-symbol-module": "doc-symbol-folder"},
+    {
+        "doc-symbol-module": "doc-symbol-folder",
+    },
 )
 copy_template(
     "_base/module.html.jinja",
     "namespace.html.jinja",
-    {"doc-symbol-module": "doc-symbol-namespace"},
+    {
+        "doc-symbol-module": "doc-symbol-namespace",
+        "{% set module_name = module.path if show_full_path else module.name %}": '{% set module_name = module.path + ".*" if show_full_path else module.name + ".*" %}',
+    },
 )
 
 # Copy the property template
@@ -115,7 +120,7 @@ copy_template(
         "Attributes": "Properties",
         "-modules": "-namespaces",
         "Modules": "Modules",
-        "{% if config.show_submodules %}": "{% if config.show_submodules or obj.is_folder %}",
-        "{% elif child.is_module and config.show_submodules %}": "{% elif (child.is_namespace and config.show_submodules) or obj.is_folder %}",
+        "{% if config.show_submodules %}": "{% if config.show_subnamespaces or obj.is_folder %}",
+        "{% elif child.is_module and config.show_submodules %}": "{% elif (child.is_namespace and config.show_subnamespaces) or obj.is_folder %}",
     },
 )
