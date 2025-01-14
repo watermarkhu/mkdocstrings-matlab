@@ -771,7 +771,7 @@ class LazyModel:
 
     def _collect_folder(self, path: Path) -> Folder:
         name = path.stem
-        model = Folder(name, filepath=path, path_collection=self._path_collection)
+        model = Folder("/" + name, filepath=path, path_collection=self._path_collection)
         return self._collect_directory(path, model)
 
     def _collect_readme_md(self, path, parent: PathMixin) -> Docstring | None:

@@ -193,8 +193,8 @@ class PathMixin(Object):
     """
 
     def __init__(self, *args: Any, filepath: Path | None = None, **kwargs: Any) -> None:
-        self._filepath: Path | None = filepath
         super().__init__(*args, **kwargs)
+        self._filepath: Path | None = filepath
 
     @property
     def filepath(self) -> Path | None:
@@ -212,9 +212,9 @@ class MatlabMixin(Object):
         docstring: Docstring | None = None,
         **kwargs: Any,
     ):
+        super().__init__(*args, **kwargs)
         self._parent: "Class | Classfolder | Namespace | _ParentGrabber | None" = parent
         self._docstring: Docstring | None = docstring
-        super().__init__(*args, **kwargs)
 
     @property
     def parent(self) -> Object | None:
@@ -570,7 +570,7 @@ class Folder(MatlabMixin, PathMixin, Module, MatlabObject):
         self.extra["mkdocstrings"] = {"template": "folder.html.jinja"}
 
     def __repr__(self) -> str:
-        return f"Folder({self.filepath!r})"
+        return f"Folder({self.path!r})"
 
     @property
     def namespaces(self) -> dict[str, "Namespace"]:

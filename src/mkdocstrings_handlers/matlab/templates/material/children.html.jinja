@@ -99,7 +99,7 @@ Context:
           {% endif %}
         {% endwith %}
 
-        {% if config.show_submodules or obj.is_folder %}
+        {% if config.show_subnamespaces or obj.is_folder %}
           {% with modules = obj.modules|filter_objects(
               filters=config.filters,
               members_list=members_list,
@@ -153,7 +153,7 @@ Context:
                 {% include function|get_template with context %}
               {% endwith %}
 
-            {% elif (child.is_namespace and config.show_submodules) or obj.is_folder %}
+            {% elif (child.is_namespace and config.show_subnamespaces) or obj.is_folder %}
               {% with module = child %}
                 {% include module|get_template with context %}
               {% endwith %}

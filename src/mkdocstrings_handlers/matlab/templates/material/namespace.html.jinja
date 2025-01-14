@@ -30,7 +30,7 @@ Context:
       {% set show_full_path = config.show_object_full_path %}
     {% endif %}
 
-    {% set module_name = module.path if show_full_path else module.name %}
+    {% set module_name = module.path + ".*" if show_full_path else module.name + ".*" %}
 
     {% if not root or config.show_root_heading %}
       {% filter heading(
