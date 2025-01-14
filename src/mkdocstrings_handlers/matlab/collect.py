@@ -198,7 +198,6 @@ class PathCollection(ModulesCollection):
         elif self._config_path is not None and "/" in identifier:
             absolute_path = (self._config_path / Path(identifier)).resolve()
             if absolute_path.exists():
- 
                 if absolute_path.suffix:
                     path, member = absolute_path.parent, absolute_path.stem
                 else:
@@ -543,17 +542,11 @@ class PathCollection(ModulesCollection):
             self._mapping[model.name].append(member)
             self._members[path].append((model.name, member))
 
-            if self._config_path is not None and member.parent.stem[0] not in [
-                "+",
-                "@",
-            ]:
-                if member.parent.is_relative_to(self._config_path):
-                    if member.parent not in self._folders:
-                        self._folders[member.parent] = LazyModel(
-                            member.parent, self
-                        )
-                else:
-                    pass  # TODO: Issue warning?
+            if (
+                member.parent.stem[0] not in ["+", "@"]
+                and member.parent not in self._folders
+            ):
+                self._folders[member.parent] = LazyModel(member.parent, self)
 
     def rm_path(self, path: str | Path, recursive: bool = False):
         """
