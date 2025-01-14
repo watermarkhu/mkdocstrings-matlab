@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.8.2 (2025-01-14)
+
+### Bug Fixes
+
+- Allow mkdocs.yml in subdir ([#50](https://github.com/watermarkhu/mkdocstrings-matlab/pull/50),
+  [`8889349`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/88893497c7e12fdc0bb6c00798d7ed3357a881f9))
+
+
 ## v0.8.1 (2025-01-14)
 
 ### Bug Fixes
