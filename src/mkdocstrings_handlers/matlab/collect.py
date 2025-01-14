@@ -152,7 +152,7 @@ class PathCollection(ModulesCollection):
         self._mapping: dict[str, deque[Path]] = defaultdict(deque)
         self._models: dict[Path, LazyModel] = {}
         self._members: dict[Path, list[tuple[str, Path]]] = defaultdict(list)
-        self._folders: dict[str, LazyModel] = {}
+        self._folders: dict[Path, LazyModel] = {}
         self._config_path = config_path
 
         self.config = config
@@ -198,12 +198,12 @@ class PathCollection(ModulesCollection):
         elif self._config_path is not None and "/" in identifier:
             absolute_path = (self._config_path / Path(identifier)).resolve()
             if absolute_path.exists():
-                path = absolute_path.relative_to(self._config_path)
-                if path.suffix:
-                    path, member = path.parent, path.stem
+ 
+                if absolute_path.suffix:
+                    path, member = absolute_path.parent, absolute_path.stem
                 else:
-                    member = None
-                lazymodel = self._folders.get(str(path), None)
+                    path, member = absolute_path, None
+                lazymodel = self._folders.get(path, None)
 
                 if lazymodel is not None:
                     model = lazymodel.model()
@@ -548,9 +548,8 @@ class PathCollection(ModulesCollection):
                 "@",
             ]:
                 if member.parent.is_relative_to(self._config_path):
-                    relative_path = member.parent.relative_to(self._config_path)
                     if member.parent not in self._folders:
-                        self._folders[str(relative_path)] = LazyModel(
+                        self._folders[member.parent] = LazyModel(
                             member.parent, self
                         )
                 else:

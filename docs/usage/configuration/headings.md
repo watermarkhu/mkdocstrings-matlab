@@ -530,15 +530,12 @@ See also [`show_symbol_type_toc`][show_symbol_type_toc].
 
 ```yaml title="in mkdocs.yml (global configuration)"
 plugins:
-- mkdocs-material-matlab # (1)
 - mkdocstrings:
     handlers:
       matlab:
         options:
           show_symbol_type_heading: true
 ```
-
-1. :warning: When using material theme, make sure to also enable the plugin `mkdocs-material-matlab` such that the right heading types are displayed. Otherwise, <code class="doc-symbol doc-symbol-attribute"></code> will be shown as `attr` and <code class="doc-symbol doc-symbol-module"></code> will be shown as `mod`, as the mkdocstrings-matlab plugin is reusing assets from mkdocstrings-python. 
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
@@ -604,16 +601,12 @@ See also [`show_symbol_type_heading`][show_symbol_type_heading].
 
 ```yaml title="in mkdocs.yml (global configuration)"
 plugins:
-- mkdocs-material-matlab # (1)
 - mkdocstrings:
     handlers:
       matlab:
         options:
           show_symbol_type_toc: true
 ```
-
-1. :warning: When using material theme, make sure to also enable the plugin `mkdocs-material-matlab` such that the right heading types are displayed. 
-
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
