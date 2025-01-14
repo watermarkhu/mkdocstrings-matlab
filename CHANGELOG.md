@@ -1,6 +1,15 @@
 # CHANGELOG
 
 
+## v0.8.1 (2025-01-14)
+
+### Bug Fixes
+
+- Names of folder and namespace entities
+  ([#49](https://github.com/watermarkhu/mkdocstrings-matlab/pull/49),
+  [`248d389`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/248d3893b9fad1b1e9818c7b48959ca01c6f9cdf))
+
+
 ## v0.8.0 (2025-01-13)
 
 ### Features
