@@ -25,10 +25,10 @@ jobs:
     uses: ./.github/workflows/docs.yaml
     secrets: inherit
     with:
-      version: __test__
+      version: ${{ format('pr-{0}', github.head_ref) || 'test' }}
       alias: ""
       set-default: false
-      push: false
+      push: true
 
   check-semantic-version:
     name: Check semantic version

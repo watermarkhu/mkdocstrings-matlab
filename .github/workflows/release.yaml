@@ -86,9 +86,45 @@ jobs:
         github_token: ${{ steps.app-token.outputs.token }}
         tag: ${{ steps.semantic-release.outputs.tag }}
 
+  delete-test-document:
+    name: Delete test documentation
+    needs: publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+        with: 
+          fetch-depth: 0 # Required to push to the documentation branch
+
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "latest"
+
+      - name: Sync dependencies
+        run: |
+          uv sync --no-dev --group docs
+
+      - name: Configure Git Credentials
+        run: |
+          git config --global user.name github-actions[bot]
+          git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
+  
+      - name: delete testing documentation
+        continue-on-error: true
+        env:
+          VERSION: ${{ format('pr-{0}', github.head_ref) || 'test' }}
+        run: >
+          uv run mike delete 
+          --push --ignore-remote-status 
+          --config-file mkdocs.yml
+          --branch gh-pages
+          $VERSION
+
   mkdocs:
     name: Deploy documentation
-    needs: [publish]
+    needs: [publish, delete-test-document]
     uses: ./.github/workflows/docs.yaml
     secrets: inherit
     with:
