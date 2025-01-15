@@ -46,7 +46,7 @@ FUNCTION_QUERY = LANGUAGE.query("""(function_definition .
         [
             (identifier) @output
             (multioutput_variable .
-                ((identifier) @output (",")?)+
+                ((identifier) @output (",")?)*
             )
         ]
     )? .
@@ -68,6 +68,7 @@ ARGUMENTS_QUERY = LANGUAGE.query("""(arguments_statement .
     (attributes
         (identifier) @attributes
     )? .
+    (comment)? .
     ("\\n")? .
     (property)+ @arguments
 )""")
@@ -165,7 +166,7 @@ def _dedent(lines: list[str]) -> list[str]:
         list[str]: A list of strings with the common leading whitespace removed from each line.
     """
     indents = [len(line) - len(line.lstrip()) for line in lines if line.strip()]
-    indent = min(indents)
+    indent = min(indents) if indents else 0
     if indent == 0:
         return lines
     else:
