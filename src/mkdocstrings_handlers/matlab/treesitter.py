@@ -209,7 +209,7 @@ class FileParser(object):
         """
         return self._content.decode(self.encoding)
 
-    def parse(self, **kwargs) -> MatlabMixin:
+    def parse(self, **kwargs: Any) -> MatlabMixin:
         """
         Parse the content of the file and return a MatlabMixin.
 
@@ -247,7 +247,7 @@ class FileParser(object):
 
         return model
 
-    def _parse_class(self, node: Node, **kwargs) -> Class:
+    def _parse_class(self, node: Node, **kwargs: Any) -> Class:
         """
         Parse a class node and return a Class or Classfolder model.
 
@@ -413,7 +413,7 @@ class FileParser(object):
 
         return (key, value)
 
-    def _parse_function(self, node: Node, method: bool = False, **kwargs) -> Function:
+    def _parse_function(self, node: Node, method: bool = False, **kwargs: Any) -> Function:
         """
         Parse a function node and return a Function model.
 
