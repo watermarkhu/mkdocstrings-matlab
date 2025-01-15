@@ -8,6 +8,7 @@
             classA.m
             classB.m
             typed_function.m
+            myscript.m
         ```
 
     === ":material-file-code: `readme.md`"
@@ -32,4 +33,10 @@
 
         ```matlab
         --8<-- "docs/snippets/+mynamespace/typed_function.m"
+        ```
+
+    === ":material-file-code: `myscript.m`"
+
+        ```matlab
+        --8<-- "docs/snippets/+mynamespace/myscript.m"
         ```
