@@ -290,6 +290,10 @@ class Script(MatlabMixin, PathMixin, MatlabObject):
     """
     kind = Kind.SCRIPT # type: ignore
 
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.extra["mkdocstrings"] = {"template": "script.html.jinja"}
+
     @property
     def is_script(self) -> bool:
         return True

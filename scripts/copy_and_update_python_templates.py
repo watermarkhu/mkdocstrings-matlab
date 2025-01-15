@@ -112,7 +112,7 @@ copy_template(
 )
 
 ## Copy children template
-copy_template(
+(targetFile, content) = copy_template(
     "_base/children.html.jinja",
     "children.html.jinja",
     {
@@ -124,3 +124,32 @@ copy_template(
         "{% elif child.is_module and config.show_submodules %}": "{% elif (child.is_namespace and config.show_subnamespaces) or obj.is_folder %}",
     },
 )
+
+
+scripts = """{% if obj.is_module %}
+          {% with scripts = obj.scripts|filter_objects(
+              filters=config.filters,
+              members_list=members_list,
+              keep_no_docstrings=config.show_if_no_docstring,
+            ) %}
+            {% if scripts %}
+              {% if config.show_category_heading %}
+                {% filter heading(heading_level, id=html_id ~ "-scripts") %}Scripts{% endfilter %}
+              {% endif %}
+              {% with heading_level = heading_level + extra_level %}
+                {% for script in scripts|order_members(config.members_order.alphabetical, members_list) %}
+                  {% if members_list is not none or (not script.is_alias or script.is_public) %}
+                    {% include script|get_template with context %}
+                  {% endif %}
+                {% endfor %}
+              {% endwith %}
+            {% endif %}
+          {% endwith %}
+        {% endif %}
+
+        
+"""
+
+index = content.find("{% if config.show_subnamespaces or obj.is_folder %}")
+content = content[:index] + scripts[:-1] + content[index:]
+targetFile.write_text(content)

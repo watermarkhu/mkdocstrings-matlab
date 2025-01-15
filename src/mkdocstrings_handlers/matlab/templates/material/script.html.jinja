@@ -1,0 +1,137 @@
+{#- Template for MATLAB scripts.
+
+This template renders a MATLAB script.
+
+Context:
+  script (mkdocstrings_handlers.matlab.models.Script): The Script to render.
+  root (bool): Whether this is the root object, injected with `:::` in a Markdown page.
+  heading_level (int): The HTML heading level to use.
+  config (dict): The configuration options.
+-#}
+
+{% block logs scoped %}
+  {#- Logging block.
+  
+  This block can be used to log debug messages, deprecation messages, warnings, etc.
+  -#}
+  {{ log.debug("Rendering " + script.path) }}
+{% endblock logs %}
+
+<div class="doc doc-object doc-function">
+  {% with obj = script, html_id = script.path %}
+
+    {% if root %}
+      {% set show_full_path = config.show_root_full_path %}
+      {% set root_members = True %}
+    {% elif root_members %}
+      {% set show_full_path = config.show_root_members_full_path or config.show_object_full_path %}
+      {% set root_members = False %}
+    {% else %}
+      {% set show_full_path = config.show_object_full_path %}
+    {% endif %}
+
+    {% set script_name = script.path if show_full_path else script.name %}
+
+    {% if not root or config.show_root_heading %}
+      {% filter heading(
+          heading_level,
+          role="function",
+          id=html_id,
+          class="doc doc-heading",
+          toc_label=('<code class="doc-symbol doc-symbol-toc doc-symbol-script"></code>&nbsp;'|safe if config.show_symbol_type_toc else '') + script.name,
+        ) %}
+
+        {% block heading scoped %}
+          {#- Heading block.
+          
+          This block renders the heading for the function.
+          -#}
+          {% if config.show_symbol_type_heading %}<code class="doc-symbol doc-symbol-heading doc-symbol-script"></code>{% endif %}
+          {% if config.separate_signature %}
+            <span class="doc doc-object-name doc-function-name">{{ script_name }}</span>
+          {% else %}
+            {%+ filter highlight(language="matlab", inline=True) %}
+              {{ script_name }}
+            {% endfilter %}
+          {% endif %}
+        {% endblock heading %}
+
+        {% block labels scoped %}
+          {#- Labels block.
+          
+          This block renders the labels for the script.
+          -#}
+          {% with labels = script.labels %}
+            {% include "labels"|get_template with context %}
+          {% endwith %}
+        {% endblock labels %}
+
+      {% endfilter %}
+
+      {% block signature scoped %}
+        {#- Signature block.
+        
+        This block renders the signature for the script.
+        -#}
+        {% if config.separate_signature %}
+          {% filter format_signature(script, config.line_length, crossrefs=config.signature_crossrefs) %}
+            {{ script.name }}
+          {% endfilter %}
+        {% endif %}
+      {% endblock signature %}
+
+    {% else %}
+
+      {% if config.show_root_toc_entry %}
+        {% filter heading(heading_level,
+            role="function",
+            id=html_id,
+            toc_label=('<code class="doc-symbol doc-symbol-toc doc-symbol-script"></code>&nbsp;'|safe if config.show_symbol_type_toc else '') + script.name,
+            hidden=True,
+          ) %}
+        {% endfilter %}
+      {% endif %}
+      {% set heading_level = heading_level - 1 %}
+    {% endif %}
+
+    <div class="doc doc-contents {% if root %}first{% endif %}">
+      {% block contents scoped %}
+        {#- Contents block.
+        
+        This block renders the contents of the script.
+        It contains other blocks that users can override.
+        Overriding the contents block allows to rearrange the order of the blocks.
+        -#}
+        {% block docstring scoped %}
+          {#- Docstring block.
+          
+          This block renders the docstring for the script.
+          -#}
+          {% with docstring_sections = script.docstring.parsed %}
+            {% include "docstring"|get_template with context %}
+          {% endwith %}
+        {% endblock docstring %}
+
+        {% block source scoped %}
+          {#- Source block.
+          
+          This block renders the source code for the script.
+          -#}
+          {% if config.show_source and script.source %}
+            <details class="quote">
+              <summary>{{ lang.t("Source code in") }} <code>
+                {%- if script.relative_filepath.is_absolute() -%}
+                  {{ script.relative_package_filepath }}
+                {%- else -%}
+                  {{ script.relative_filepath }}
+                {%- endif -%}
+              </code></summary>
+              {{ script.source|highlight(language="python", linestart=script.lineno or 0, linenums=True) }}
+            </details>
+          {% endif %}
+        {% endblock source %}
+      {% endblock contents %}
+    </div>
+
+  {% endwith %}
+</div>

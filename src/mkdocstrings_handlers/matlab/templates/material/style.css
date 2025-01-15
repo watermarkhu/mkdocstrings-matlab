@@ -24,3 +24,12 @@ code.doc-symbol-property {
 code.doc-symbol-property::after {
   content: "prop";
 }
+
+code.doc-symbol-script {
+  color: #d0bf3d;
+  background-color: #fff8a87b;
+}
+
+code.doc-symbol-script::after {
+  content: "prog";
+}

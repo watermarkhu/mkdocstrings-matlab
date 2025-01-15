@@ -178,7 +178,6 @@ a -- no --> private
 a -- "not specified" --> ga
 ga -- no --> private
 ga -- yes --> public
-
 ```
 
 This takes precedence over [`members`][] and [`filters`][], and also applies for [`inherited_members`][]. This means that for any private member to be shown, `private_members` must be enabled, and further selection is possible via [`members`][] and [`filters`][]. Private members will be labeled with it access attribute setting, this can be disabled in [`show_labels`][]. 
