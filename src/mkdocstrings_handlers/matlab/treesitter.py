@@ -593,6 +593,12 @@ class FileParser(object):
         if nodes is None:
             return None
         elif isinstance(nodes, list):
+
+            # Ensure that if there is a gap between subsequent comment nodes, only the first block is considered
+            if gaps := (end.start_point.row - start.end_point.row for (start, end) in zip(nodes[:-1], nodes[1:])):
+                first_gap_index = next((i for i, gap in enumerate(gaps) if gap > 1), None) 
+                nodes = nodes[:first_gap_index+1] if first_gap_index is not None else nodes
+
             lineno = nodes[0].range.start_point.row + 1
             endlineno = nodes[-1].range.end_point.row + 1
             lines = iter(
