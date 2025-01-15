@@ -169,15 +169,15 @@ To simplify the definition here, any property or method that do not have attribu
 ```mermaid 
 flowchart TD
 a[Access=public]
-sg[SetAccess=public/immutable and GetAccess=public]
+ga[GetAccess=public]
 
 public[not private member]
 private[private member]
 a -- yes --> public 
 a -- no --> private
-a -- "not specified" --> sg
-sg -- no --> private
-sg -- yes --> public
+a -- "not specified" --> ga
+ga -- no --> private
+ga -- yes --> public
 
 ```
 

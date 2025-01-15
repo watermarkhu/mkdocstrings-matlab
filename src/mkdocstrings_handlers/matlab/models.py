@@ -452,13 +452,9 @@ class Property(MatlabMixin, Attribute, MatlabObject):
     @property
     def Private(self) -> bool:
         private = self.Access != AccessEnum.public
-        set_private = (
-            self.SetAccess != AccessEnum.public
-            and self.SetAccess != AccessEnum.immutable
-        )
         get_private = self.GetAccess != AccessEnum.public
-        return private or set_private or get_private
-
+        return private or get_private
+    
     @property
     def is_private(self) -> bool:
         return self.Private or self.Hidden
