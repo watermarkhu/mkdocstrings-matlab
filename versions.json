@@ -1,10 +1,5 @@
 [
   {
-    "version": "pr-fix-config-path",
-    "title": "pr-fix-config-path",
-    "aliases": []
-  },
-  {
     "version": "v0.9.0",
     "title": "v0.9.0",
     "aliases": [
