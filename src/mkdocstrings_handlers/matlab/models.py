@@ -17,7 +17,7 @@ from griffe import (
     Parameter as GriffeParameter,
 )
 
-from mkdocstrings_handlers.matlab.enums import AccessEnum, ParameterKind
+from mkdocstrings_handlers.matlab.enums import Kind, AccessEnum, ParameterKind
 
 if TYPE_CHECKING:
     from mkdocstrings_handlers.matlab.collect import PathCollection
@@ -152,6 +152,14 @@ class MatlabObject(Object):
         return {}
 
     @property
+    def scripts(self) -> dict[str, "Script"]:
+        return {name: member for name, member in self.all_members.items() if member.kind is Kind.SCRIPT} # type: ignore[misc]
+
+    @property
+    def is_script(self) -> bool:
+        return False
+    
+    @property
     def is_namespace(self) -> bool:
         return False
 
@@ -280,9 +288,15 @@ class Script(MatlabMixin, PathMixin, MatlabObject):
     This class inherits from `PathMixin` and `MatlabObject` to provide
     functionality specific to MATLAB scripts.
     """
+    kind = Kind.SCRIPT # type: ignore
 
-    pass
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.extra["mkdocstrings"] = {"template": "script.html.jinja"}
 
+    @property
+    def is_script(self) -> bool:
+        return True
 
 class Class(MatlabMixin, PathMixin, GriffeClass, MatlabObject):
     """
@@ -442,13 +456,9 @@ class Property(MatlabMixin, Attribute, MatlabObject):
     @property
     def Private(self) -> bool:
         private = self.Access != AccessEnum.public
-        set_private = (
-            self.SetAccess != AccessEnum.public
-            and self.SetAccess != AccessEnum.immutable
-        )
         get_private = self.GetAccess != AccessEnum.public
-        return private or set_private or get_private
-
+        return private or get_private
+    
     @property
     def is_private(self) -> bool:
         return self.Private or self.Hidden

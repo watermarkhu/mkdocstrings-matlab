@@ -3,7 +3,7 @@
 from collections import defaultdict, deque
 from copy import copy, deepcopy
 from pathlib import Path
-from typing import Mapping, Sequence, Callable, TypeVar
+from typing import Any, Mapping, Sequence, Callable, TypeVar
 
 from _griffe.collections import LinesCollection as GLC, ModulesCollection
 from _griffe.docstrings.models import (
@@ -716,9 +716,9 @@ class LazyModel:
             parent = None
         return parent
 
-    def _collect_path(self, path: Path) -> MatlabMixin:
+    def _collect_path(self, path: Path, **kwargs: Any) -> MatlabMixin:
         file = FileParser(path)
-        model = file.parse(path_collection=self._path_collection)
+        model = file.parse(path_collection=self._path_collection, **kwargs)
         self._lines_collection[path] = file.content.split("\n")
         return model
 

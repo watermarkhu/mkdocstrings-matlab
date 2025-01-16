@@ -46,7 +46,7 @@ FUNCTION_QUERY = LANGUAGE.query("""(function_definition .
         [
             (identifier) @output
             (multioutput_variable .
-                ((identifier) @output (",")?)+
+                ((identifier) @output (",")?)*
             )
         ]
     )? .
@@ -68,6 +68,7 @@ ARGUMENTS_QUERY = LANGUAGE.query("""(arguments_statement .
     (attributes
         (identifier) @attributes
     )? .
+    (comment)? .
     ("\\n")? .
     (property)+ @arguments
 )""")
@@ -165,7 +166,7 @@ def _dedent(lines: list[str]) -> list[str]:
         list[str]: A list of strings with the common leading whitespace removed from each line.
     """
     indents = [len(line) - len(line.lstrip()) for line in lines if line.strip()]
-    indent = min(indents)
+    indent = min(indents) if indents else 0
     if indent == 0:
         return lines
     else:
@@ -208,7 +209,7 @@ class FileParser(object):
         """
         return self._content.decode(self.encoding)
 
-    def parse(self, **kwargs) -> MatlabMixin:
+    def parse(self, **kwargs: Any) -> MatlabMixin:
         """
         Parse the content of the file and return a MatlabMixin.
 
@@ -246,7 +247,7 @@ class FileParser(object):
 
         return model
 
-    def _parse_class(self, node: Node, **kwargs) -> Class:
+    def _parse_class(self, node: Node, **kwargs: Any) -> Class:
         """
         Parse a class node and return a Class or Classfolder model.
 
@@ -412,7 +413,7 @@ class FileParser(object):
 
         return (key, value)
 
-    def _parse_function(self, node: Node, method: bool = False, **kwargs) -> Function:
+    def _parse_function(self, node: Node, method: bool = False, **kwargs: Any) -> Function:
         """
         Parse a function node and return a Function model.
 
@@ -592,6 +593,12 @@ class FileParser(object):
         if nodes is None:
             return None
         elif isinstance(nodes, list):
+
+            # Ensure that if there is a gap between subsequent comment nodes, only the first block is considered
+            if gaps := (end.start_point.row - start.end_point.row for (start, end) in zip(nodes[:-1], nodes[1:])):
+                first_gap_index = next((i for i, gap in enumerate(gaps) if gap > 1), None) 
+                nodes = nodes[:first_gap_index+1] if first_gap_index is not None else nodes
+
             lineno = nodes[0].range.start_point.row + 1
             endlineno = nodes[-1].range.end_point.row + 1
             lines = iter(

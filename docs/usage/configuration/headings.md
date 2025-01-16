@@ -595,6 +595,7 @@ This option will prefix items in the ToC with
 <code class="doc-symbol doc-symbol-function"></code>,
 <code class="doc-symbol doc-symbol-method"></code>,
 <code class="doc-symbol doc-symbol-class"></code>,
+<code class="doc-symbol doc-symbol-script"></code>,
 <code class="doc-symbol doc-symbol-namespace"></code> or.
 <code class="doc-symbol doc-symbol-folder"></code> types.
 See also [`show_symbol_type_heading`][show_symbol_type_heading].
@@ -621,6 +622,7 @@ plugins:
         <ul style="list-style: none;">
           <li><code class="doc-symbol doc-symbol-folder"></code> folder</li>
           <li><code class="doc-symbol doc-symbol-namespace"></code> namespace</li>
+          <li><code class="doc-symbol doc-symbol-script"></code> script</li>
           <li><code class="doc-symbol doc-symbol-function"></code> function</li>
           <li><code class="doc-symbol doc-symbol-class"></code> Class
             <ul style="list-style: none;">
@@ -635,6 +637,7 @@ plugins:
         <ul style="list-style: none;">
           <li>folder</li>
           <li>namespace</li>
+          <li>script</li>
           <li>function</li>
           <li>Class
             <ul style="list-style: none;">

@@ -169,16 +169,15 @@ To simplify the definition here, any property or method that do not have attribu
 ```mermaid 
 flowchart TD
 a[Access=public]
-sg[SetAccess=public/immutable and GetAccess=public]
+ga[GetAccess=public]
 
 public[not private member]
 private[private member]
 a -- yes --> public 
 a -- no --> private
-a -- "not specified" --> sg
-sg -- no --> private
-sg -- yes --> public
-
+a -- "not specified" --> ga
+ga -- no --> private
+ga -- yes --> public
 ```
 
 This takes precedence over [`members`][] and [`filters`][], and also applies for [`inherited_members`][]. This means that for any private member to be shown, `private_members` must be enabled, and further selection is possible via [`members`][] and [`filters`][]. Private members will be labeled with it access attribute setting, this can be disabled in [`show_labels`][]. 
