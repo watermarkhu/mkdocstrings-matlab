@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.9.1 (2025-01-16)
+
+### Bug Fixes
+
+- Config path resolve ([#52](https://github.com/watermarkhu/mkdocstrings-matlab/pull/52),
+  [`710832b`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/710832b12d6371d9f5bba5578c4e3a555fe8a38d))
+
+
 ## v0.9.0 (2025-01-16)
 
 ### Features
