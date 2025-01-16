@@ -27,9 +27,9 @@ code.doc-symbol-property::after {
 
 code.doc-symbol-script {
   color: #d0bf3d;
-  background-color: #fff8a87b;
+  background-color: #96862f27;
 }
 
 code.doc-symbol-script::after {
-  content: "prog";
+  content: "script";
 }

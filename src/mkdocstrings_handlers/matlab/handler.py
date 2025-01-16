@@ -193,7 +193,7 @@ class MatlabHandler(BaseHandler):
             config_path = None
             full_paths = []
         else:
-            config_path = Path(config_file_path).parent
+            config_path = Path(config_file_path).resolve().parent
             full_paths = [(config_path / path).resolve() for path in paths]
 
         if pathIds := [str(path) for path in full_paths if not path.is_dir()]:
