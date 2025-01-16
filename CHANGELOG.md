@@ -1,6 +1,18 @@
 # CHANGELOG
 
 
+## v0.9.0 (2025-01-16)
+
+### Features
+
+- Add supports for scripts ([#51](https://github.com/watermarkhu/mkdocstrings-matlab/pull/51),
+  [`ecefc80`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/ecefc801e730cf3ab1d5889ecbfc400af0591385))
+
+* fix: script does not have kind * fix: tree-sitter query fixes * fix: do not check for property
+  SetAccess for private * feat: add support for scripts * doc: update namespace contents * fix:
+  select only the first comment block as docstring
+
+
 ## v0.8.2 (2025-01-14)
 
 ### Bug Fixes
