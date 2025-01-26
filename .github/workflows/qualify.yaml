@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   docs:
-    if: github.event.pull_request.draft == false
+    if: contains(github.event.pull_request.labels.*.name, 'documentation')
     name: Test deploy documentation
     uses: ./.github/workflows/docs.yaml
     concurrency:
