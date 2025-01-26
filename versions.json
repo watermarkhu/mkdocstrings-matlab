@@ -5,6 +5,11 @@
     "aliases": []
   },
   {
+    "version": "pr-renovate-python-semantic-release-publish-action-9.x",
+    "title": "pr-renovate-python-semantic-release-publish-action-9.x",
+    "aliases": []
+  },
+  {
     "version": "v0.9.1",
     "title": "v0.9.1",
     "aliases": [
