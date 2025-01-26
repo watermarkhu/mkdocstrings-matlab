@@ -3,6 +3,7 @@
     "extends": [
         "config:recommended"
     ],
+    "branchPrefix": "renovate-", 
     "packageRules": [
         {
           "description": "Group GitHub Action updates",
