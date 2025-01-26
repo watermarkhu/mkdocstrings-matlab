@@ -134,4 +134,5 @@ jobs:
       version: ${{ needs.publish.outputs.tag }}
       alias: latest
       set-default: true
+      ref: ${{ needs.publish.outputs.tag }}
       push: true
