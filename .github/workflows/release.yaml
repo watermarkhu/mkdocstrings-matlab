@@ -81,7 +81,7 @@ jobs:
     - name: Publish package distributions to GitHub Releases
       if: steps.semantic-release.outputs.released == 'true'
       id: publish-dist
-      uses: python-semantic-release/publish-action@v9.16.1
+      uses: python-semantic-release/publish-action@v9.17.0
       with:
         github_token: ${{ steps.app-token.outputs.token }}
         tag: ${{ steps.semantic-release.outputs.tag }}
