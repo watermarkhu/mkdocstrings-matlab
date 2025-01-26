@@ -10,6 +10,11 @@
     "aliases": []
   },
   {
+    "version": "pr-devel",
+    "title": "pr-devel",
+    "aliases": []
+  },
+  {
     "version": "v0.9.1",
     "title": "v0.9.1",
     "aliases": [
