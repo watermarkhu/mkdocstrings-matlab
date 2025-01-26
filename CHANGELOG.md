@@ -1,6 +1,24 @@
 # CHANGELOG
 
 
+## v0.9.2 (2025-01-26)
+
+### Bug Fixes
+
+- **deps**: Update deps ([#59](https://github.com/watermarkhu/mkdocstrings-matlab/pull/59),
+  [`131c30c`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/131c30ca6046a85def35f37f5f2a3d48e9815f2d))
+
+* chore(deps): update python-semantic-release/python-semantic-release action to v9.17.0 (#55)
+
+Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
+
+* chore(deps): update python-semantic-release/publish-action action to v9.17.0 (#54)
+
+* fix(deps): update dependency tree-sitter to v0.24.0 (#53)
+
+---------
+
+
 ## v0.9.1 (2025-01-16)
 
 ### Bug Fixes
