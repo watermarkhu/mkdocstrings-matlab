@@ -13,6 +13,7 @@ jobs:
   delete-test-document:
     name: Delete test documentation
     runs-on: ubuntu-latest
+    if: contains( github.event.pull_request.labels.*.name, 'documentation')
     concurrency:
       group: gh-pages
       cancel-in-progress: false
@@ -128,10 +129,12 @@ jobs:
   mkdocs:
     name: Deploy documentation
     needs: [publish, delete-test-document]
+    if: ${{ always() && !failure() && !cancelled() }}
     uses: ./.github/workflows/docs.yaml
     secrets: inherit
     with:
       version: ${{ needs.publish.outputs.tag }}
       alias: latest
       set-default: true
+      ref: ${{ needs.publish.outputs.tag }}
       push: true
