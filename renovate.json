@@ -3,5 +3,10 @@
     "extends": [
         "config:recommended"
     ],
-    "matchManagers": ["github-actions"]
+    "packageRules": [
+        {
+          "description": "Group GitHub Action updates",
+          "matchManagers": ["github-actions"]
+        }
+    ]
 }
