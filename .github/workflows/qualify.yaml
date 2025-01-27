@@ -28,7 +28,7 @@ jobs:
       cancel-in-progress: false
     secrets: inherit
     with:
-      version: ${{ format('pr-{0}', github.head_ref) || 'test' }}
+      version: ${{ format('pr-{0}', github.head_ref) || 'test' | replace('/', '_') }}
       alias: ""
       set-default: false
       push: true
