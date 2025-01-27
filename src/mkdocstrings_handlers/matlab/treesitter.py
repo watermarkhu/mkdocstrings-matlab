@@ -621,7 +621,16 @@ class FileParser(object):
             except StopIteration:
                 break
 
-            if line == '%#codegen':
+            # Exclude all pragma's
+            if line in [
+                '%#codegen',
+                '%#eml',
+                '%#external',
+                '%#exclude',
+                '%#function',
+                '%#ok',
+                '%#mex',
+            ]:
                 continue
 
             if "--8<--" in line:
