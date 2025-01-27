@@ -198,6 +198,7 @@ class FileParser(object):
         self.encoding: str = result.encoding if result else "utf-8"
         with open(filepath, "rb") as f:
             self._content: bytes = f.read()
+        self._node: Node | None = None
 
     @property
     def content(self):
@@ -226,26 +227,38 @@ class FileParser(object):
         Raises:
             ValueError: If the file could not be parsed.
         """
-        tree = PARSER.parse(self._content)
-        cursor = tree.walk()
+        try:
+            tree = PARSER.parse(self._content)
+            cursor = tree.walk()
 
-        if cursor.node is None:
-            raise ValueError(f"The file {self.filepath} could not be parsed.")
-        captures = FILE_QUERY.captures(cursor.node)
+            if cursor.node is None:
+                raise ValueError(f"The file {self.filepath} could not be parsed.")
+            captures = FILE_QUERY.captures(cursor.node)
+            if "function" in captures:
+                model = self._parse_function(captures["function"][0], **kwargs)
+            elif "class" in captures:
+                model = self._parse_class(captures["class"][0], **kwargs)
+            else:
+                model = Script(self.filepath.stem, filepath=self.filepath, **kwargs)
 
-        if "function" in captures:
-            model = self._parse_function(captures["function"][0], **kwargs)
-        elif "class" in captures:
-            model = self._parse_class(captures["class"][0], **kwargs)
-        else:
-            model = Script(self.filepath.stem, filepath=self.filepath, **kwargs)
+            if not model.docstring:
+                model.docstring = self._comment_docstring(
+                    captures.get("header", None), parent=model
+                )
 
-        if not model.docstring:
-            model.docstring = self._comment_docstring(
-                captures.get("header", None), parent=model
-            )
-
-        return model
+            return model
+        except Exception as ex:
+            syntax_error = SyntaxError(f"Error parsing Matlab file")
+            syntax_error.filename = str(self.filepath)
+            if self._node is not None:
+                if self._node.text is not None:
+                    indentation = ' ' * self._node.start_point.column
+                    syntax_error.text = indentation + self._node.text.decode(self.encoding)
+                syntax_error.lineno = self._node.start_point.row + 1
+                syntax_error.offset = self._node.start_point.column + 1
+                syntax_error.end_lineno = self._node.end_point.row + 1
+                syntax_error.end_offset = self._node.end_point.column + 1
+            raise syntax_error from ex
 
     def _parse_class(self, node: Node, **kwargs: Any) -> Class:
         """
@@ -262,6 +275,7 @@ class FileParser(object):
         Returns:
             Class: The parsed Class or Classfolder model.
         """
+        self._node = node
         saved_kwargs = {key: value for key, value in kwargs.items()}
         captures = CLASS_QUERY.captures(node)
 
@@ -401,6 +415,7 @@ class FileParser(object):
                              The value is `True` if no value is specified,
                              otherwise it is the parsed value which can be a boolean or a string.
         """
+        self._node = node
         captures = ATTRIBUTE_QUERY.captures(node)
 
         key = self._first_from_capture(captures, "name")
@@ -429,6 +444,7 @@ class FileParser(object):
             KeyError: If required captures are missing from the node.
 
         """
+        self._node = node
         captures: dict = FUNCTION_QUERY.matches(node)[0][1]
 
         input_names = self._decode_from_capture(captures, "input")
@@ -529,6 +545,7 @@ class FileParser(object):
         Returns:
             str: The decoded text of the node. If the node or its text is None, returns an empty string.
         """
+        self._node = node
         return (
             node.text.decode(self.encoding)
             if node is not None and node.text is not None
