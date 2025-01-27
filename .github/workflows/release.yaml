@@ -42,7 +42,7 @@ jobs:
       - name: delete testing documentation
         continue-on-error: true
         env:
-          VERSION: ${{ format('pr-{0}', github.head_ref) || 'test' }}
+          VERSION: ${{ format('pr-{0}', github.head_ref) || 'test' | replace('/', '_') }}
         run: >
           uv run mike delete 
           --push --ignore-remote-status 
