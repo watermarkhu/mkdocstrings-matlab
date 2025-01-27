@@ -621,6 +621,9 @@ class FileParser(object):
             except StopIteration:
                 break
 
+            if line == '%#codegen':
+                continue
+
             if "--8<--" in line:
                 continue
 
