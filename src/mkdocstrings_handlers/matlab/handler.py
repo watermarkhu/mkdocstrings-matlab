@@ -358,7 +358,15 @@ class MatlabHandler(BaseHandler):
             raise CollectionError("Empty identifier")
 
         final_config = ChainMap(config, self.default_config)  # type: ignore[arg-type]
-        model = self.paths.resolve(identifier, config=final_config)
+        try:
+            model = self.paths.resolve(identifier, config=final_config)
+        except SyntaxError as ex:
+            msg = str(ex)
+            if ex.text:
+                msg += ':\n' + ex.text
+            raise CollectionError(msg) from ex
+        except Exception as ex:
+            raise CollectionError(str(ex)) from ex
         if model is None:
             raise CollectionError(f"Identifier '{identifier}' not found")
         return model
