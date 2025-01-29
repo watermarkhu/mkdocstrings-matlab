@@ -1,8 +1,8 @@
+import os
 from contextlib import contextmanager
-from mkdocs.commands import serve
 from pathlib import Path
 
-import os
+from mkdocs.commands import serve
 
 
 @contextmanager

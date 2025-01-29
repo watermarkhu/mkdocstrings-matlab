@@ -1,18 +1,18 @@
 """The mkdocstrings handler for processing MATLAB code documentation."""
 
-from pathlib import Path
+import re
 from collections import ChainMap
+from pathlib import Path
+from pprint import pprint
+from typing import Any, ClassVar, Mapping
+
 from jinja2.loaders import FileSystemLoader
 from markdown import Markdown
 from mkdocs.exceptions import PluginError
-from mkdocstrings.handlers.base import BaseHandler, CollectorItem, CollectionError
-from mkdocstrings_handlers.python import rendering
-from typing import Any, ClassVar, Mapping
-from pprint import pprint
-
-import re
+from mkdocstrings.handlers.base import BaseHandler, CollectionError, CollectorItem
 
 from mkdocstrings_handlers.matlab.collect import LinesCollection, PathCollection
+from mkdocstrings_handlers.python import rendering
 
 
 class MatlabHandler(BaseHandler):
@@ -363,7 +363,7 @@ class MatlabHandler(BaseHandler):
         except SyntaxError as ex:
             msg = str(ex)
             if ex.text:
-                msg += ':\n' + ex.text
+                msg += ":\n" + ex.text
             raise CollectionError(msg) from ex
         except Exception as ex:
             raise CollectionError(str(ex)) from ex

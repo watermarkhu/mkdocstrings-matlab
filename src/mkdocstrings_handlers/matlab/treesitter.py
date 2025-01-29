@@ -1,15 +1,15 @@
 """Tree-sitter queries to extract information from MATLAB files."""
 
+import textwrap
 from collections import OrderedDict
+from pathlib import Path
 from typing import Any
 
-from tree_sitter import Language, Parser, Node
-import tree_sitter_matlab as tsmatlab
-
-from pathlib import Path
-
 import charset_normalizer
+import tree_sitter_matlab as tsmatlab
+from tree_sitter import Language, Node, Parser
 
+from mkdocstrings_handlers.matlab.enums import ParameterKind
 from mkdocstrings_handlers.matlab.models import (
     AccessEnum,
     Class,
@@ -17,13 +17,11 @@ from mkdocstrings_handlers.matlab.models import (
     Docstring,
     Function,
     MatlabMixin,
-    Parameters,
     Parameter,
+    Parameters,
     Property,
     Script,
 )
-from mkdocstrings_handlers.matlab.enums import ParameterKind
-
 
 __all__ = ["FileParser"]
 
@@ -32,44 +30,52 @@ LANGUAGE = Language(tsmatlab.language())
 
 PARSER = Parser(LANGUAGE)
 
-FILE_QUERY = LANGUAGE.query("""(source_file
+FILE_QUERY = LANGUAGE.query("""(source_file .
     (comment)* @header .
-    (function_definition)? @function .
-    (class_definition)? @class
+    [
+        (function_definition) @function
+        (class_definition) @class
+    ]?
 )
 """)
 
 
 FUNCTION_QUERY = LANGUAGE.query("""(function_definition .
-    ("function") .
+    ("function")
     (function_output . 
         [
             (identifier) @output
             (multioutput_variable .
-                ((identifier) @output (",")?)*
+                [
+                    (identifier) @output
+                    _
+                ]*
             )
         ]
-    )? .
+    )?
     [
         ("set.") @setter
         ("get.") @getter
-    ]? .
-    (identifier) @name .
+    ]?
+    (identifier) @name
     (function_arguments .
-        ((identifier) @input (",")?)*
-    )? .
-    (comment)* @docstring .
+        [
+            (identifier) @input 
+            _
+        ]*
+    )?
+    (comment)* @docstring
     (arguments_statement)* @arguments
 )""")
 
 
 ARGUMENTS_QUERY = LANGUAGE.query("""(arguments_statement .
-    ("arguments") .
+    ("arguments")
     (attributes
         (identifier) @attributes
-    )? .
-    (comment)? .
-    ("\\n")? .
+    )?
+    (comment)?
+    ("\\n")?
     (property)+ @arguments
 )""")
 
@@ -82,22 +88,22 @@ PROPERTY_QUERY = LANGUAGE.query("""(property .
             (".") .
             (identifier) @name
         )
-    ] .
-    (dimensions)? @dimensions .
-    (identifier)? @class .
-    (validation_functions)? @validators .
+    ]
+    (dimensions)? @dimensions
+    (identifier)? @class
+    (validation_functions)? @validators
     (default_value
-        ("=") .
+        ("=")
         _+ @default
-    )? .
+    )?
     (comment)* @comment              
 )""")
 
 
 ATTRIBUTE_QUERY = LANGUAGE.query("""(attribute
-    (identifier) @name .
+    (identifier) @name
     (
-        ("=") .
+        ("=")
         _+ @value
     )?
 )""")
@@ -106,13 +112,13 @@ ATTRIBUTE_QUERY = LANGUAGE.query("""(attribute
 CLASS_QUERY = LANGUAGE.query("""("classdef" .
     (attributes
         (attribute) @attributes
-    )? .
-    (identifier) @name .
+    )?
+    (identifier) @name
     (superclasses
         (property_name) @bases             
     )? .
-    (comment)* @docstring .
-    ("\\n")? .
+    (comment)* @docstring
+    ("\\n")?
     [
         (comment)
         (methods) @methods
@@ -165,12 +171,9 @@ def _dedent(lines: list[str]) -> list[str]:
     Returns:
         list[str]: A list of strings with the common leading whitespace removed from each line.
     """
-    indents = [len(line) - len(line.lstrip()) for line in lines if line.strip()]
-    indent = min(indents) if indents else 0
-    if indent == 0:
-        return lines
-    else:
-        return [line[indent:] if line.strip() else line for line in lines]
+    text = "\n".join(lines)
+    dedented_text = textwrap.dedent(text)
+    return dedented_text.split("\n")
 
 
 class FileParser(object):
@@ -248,12 +251,14 @@ class FileParser(object):
 
             return model
         except Exception as ex:
-            syntax_error = SyntaxError(f"Error parsing Matlab file")
+            syntax_error = SyntaxError("Error parsing Matlab file")
             syntax_error.filename = str(self.filepath)
             if self._node is not None:
                 if self._node.text is not None:
-                    indentation = ' ' * self._node.start_point.column
-                    syntax_error.text = indentation + self._node.text.decode(self.encoding)
+                    indentation = " " * self._node.start_point.column
+                    syntax_error.text = indentation + self._node.text.decode(
+                        self.encoding
+                    )
                 syntax_error.lineno = self._node.start_point.row + 1
                 syntax_error.offset = self._node.start_point.column + 1
                 syntax_error.end_lineno = self._node.end_point.row + 1
@@ -428,7 +433,9 @@ class FileParser(object):
 
         return (key, value)
 
-    def _parse_function(self, node: Node, method: bool = False, **kwargs: Any) -> Function:
+    def _parse_function(
+        self, node: Node, method: bool = False, **kwargs: Any
+    ) -> Function:
         """
         Parse a function node and return a Function model.
 
@@ -610,11 +617,19 @@ class FileParser(object):
         if nodes is None:
             return None
         elif isinstance(nodes, list):
-
             # Ensure that if there is a gap between subsequent comment nodes, only the first block is considered
-            if gaps := (end.start_point.row - start.end_point.row for (start, end) in zip(nodes[:-1], nodes[1:])):
-                first_gap_index = next((i for i, gap in enumerate(gaps) if gap > 1), None) 
-                nodes = nodes[:first_gap_index+1] if first_gap_index is not None else nodes
+            if gaps := (
+                end.start_point.row - start.end_point.row
+                for (start, end) in zip(nodes[:-1], nodes[1:])
+            ):
+                first_gap_index = next(
+                    (i for i, gap in enumerate(gaps) if gap > 1), None
+                )
+                nodes = (
+                    nodes[: first_gap_index + 1]
+                    if first_gap_index is not None
+                    else nodes
+                )
 
             lineno = nodes[0].range.start_point.row + 1
             endlineno = nodes[-1].range.end_point.row + 1
@@ -640,13 +655,13 @@ class FileParser(object):
 
             # Exclude all pragma's
             if line in [
-                '%#codegen',
-                '%#eml',
-                '%#external',
-                '%#exclude',
-                '%#function',
-                '%#ok',
-                '%#mex',
+                "%#codegen",
+                "%#eml",
+                "%#external",
+                "%#exclude",
+                "%#function",
+                "%#ok",
+                "%#mex",
             ]:
                 continue
 

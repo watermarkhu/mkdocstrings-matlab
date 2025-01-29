@@ -1,9 +1,10 @@
 """A script to copy the modules and attributes templates from
 the python handler to the matlab handler and update the names"""
 
-from mkdocstrings_handlers.python.handler import PythonHandler
-from pathlib import Path
 import re
+from pathlib import Path
+
+from mkdocstrings_handlers.python.handler import PythonHandler
 
 # Get the templates directory of the python handler
 pythonHandler = PythonHandler("python", "material")
