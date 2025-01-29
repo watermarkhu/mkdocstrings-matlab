@@ -1,6 +1,35 @@
 # CHANGELOG
 
 
+## v0.9.3 (2025-01-29)
+
+### Bug Fixes
+
+- Ignore `%#codegen` compilation directive
+  ([#61](https://github.com/watermarkhu/mkdocstrings-matlab/pull/61),
+  [`7239847`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/72398479b347ed778c516e4e1fdad6ab8b6ccdc1))
+
+* fix: Ignore `%#codegen` compilation directive
+
+* Exclude all pragmas instead of only %#codegen
+
+Co-authored-by: Mark Shui Hu <watermarkhu@gmail.com>
+
+---------
+
+### Chores
+
+- Make sure that release documentation is using the new version
+  ([#60](https://github.com/watermarkhu/mkdocstrings-matlab/pull/60),
+  [`c3a9899`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/c3a9899a9b3c031a72880df1b50b09b28206890f))
+
+* Update docs.yaml
+
+* Update release.yaml
+
+* Update qualify.yaml
+
+
 ## v0.9.2 (2025-01-26)
 
 ### Bug Fixes
