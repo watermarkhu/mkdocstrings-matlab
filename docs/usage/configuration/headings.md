@@ -521,12 +521,13 @@ plugins:
 Show the symbol type in headings.
 
 This option will prefix headings with
-<code class="doc-symbol doc-symbol-attribute"></code>,
-<code class="doc-symbol doc-symbol-class"></code>, 
+<code class="doc-symbol doc-symbol-property"></code>,
 <code class="doc-symbol doc-symbol-function"></code>,
 <code class="doc-symbol doc-symbol-method"></code>,
-<code class="doc-symbol doc-symbol-namespace"></code> or 
-<code class="doc-symbol doc-symbol-script"></code> types.
+<code class="doc-symbol doc-symbol-class"></code>,
+<code class="doc-symbol doc-symbol-script"></code>,
+<code class="doc-symbol doc-symbol-namespace"></code> or.
+<code class="doc-symbol doc-symbol-folder"></code> types.
 See also [`show_symbol_type_toc`][show_symbol_type_toc].
 
 ```yaml title="in mkdocs.yml (global configuration)"
