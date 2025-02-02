@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.9.5 (2025-02-02)
+
+### Bug Fixes
+
+- Handle line continuations gracefully
+  ([#68](https://github.com/watermarkhu/mkdocstrings-matlab/pull/68),
+  [`8a32df0`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/8a32df08f7ae8c4356db186e55d1ecdd3d537850))
+
+* handle line continuations gracefully
+
+* Update headings.md
+
+
 ## v0.9.4 (2025-02-01)
 
 ### Bug Fixes
