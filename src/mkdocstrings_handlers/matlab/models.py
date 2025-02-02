@@ -153,12 +153,16 @@ class MatlabObject(Object):
 
     @property
     def scripts(self) -> dict[str, "Script"]:
-        return {name: member for name, member in self.all_members.items() if member.kind is Kind.SCRIPT} # type: ignore[misc]
+        return {
+            name: member
+            for name, member in self.all_members.items()
+            if member.kind is Kind.SCRIPT
+        }  # type: ignore[misc]
 
     @property
     def is_script(self) -> bool:
         return False
-    
+
     @property
     def is_namespace(self) -> bool:
         return False
@@ -288,7 +292,8 @@ class Script(MatlabMixin, PathMixin, MatlabObject):
     This class inherits from `PathMixin` and `MatlabObject` to provide
     functionality specific to MATLAB scripts.
     """
-    kind = Kind.SCRIPT # type: ignore
+
+    kind = Kind.SCRIPT  # type: ignore
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
@@ -297,6 +302,7 @@ class Script(MatlabMixin, PathMixin, MatlabObject):
     @property
     def is_script(self) -> bool:
         return True
+
 
 class Class(MatlabMixin, PathMixin, GriffeClass, MatlabObject):
     """
@@ -458,7 +464,7 @@ class Property(MatlabMixin, Attribute, MatlabObject):
         private = self.Access != AccessEnum.public
         get_private = self.GetAccess != AccessEnum.public
         return private or get_private
-    
+
     @property
     def is_private(self) -> bool:
         return self.Private or self.Hidden

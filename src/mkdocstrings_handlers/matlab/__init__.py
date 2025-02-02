@@ -1,9 +1,10 @@
 """MATLAB handler for mkdocstrings."""
 
-from mkdocstrings_handlers.matlab.handler import get_handler
-from mkdocstrings_handlers.matlab import collect, handler, models, treesitter
+from _griffe.docstrings import google, numpy
 from _griffe.enumerations import DocstringSectionKind
-from _griffe.docstrings import numpy, google
+
+from mkdocstrings_handlers.matlab import collect, handler, models, treesitter
+from mkdocstrings_handlers.matlab.handler import get_handler
 
 __all__ = ["get_handler", "collect", "handler", "models", "treesitter"]
 

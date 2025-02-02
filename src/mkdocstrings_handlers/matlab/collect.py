@@ -3,34 +3,34 @@
 from collections import defaultdict, deque
 from copy import copy, deepcopy
 from pathlib import Path
-from typing import Any, Mapping, Sequence, Callable, TypeVar
+from typing import Any, Callable, Mapping, Sequence, TypeVar
 
-from _griffe.collections import LinesCollection as GLC, ModulesCollection
+from _griffe.collections import LinesCollection as GLC
+from _griffe.collections import ModulesCollection
 from _griffe.docstrings.models import (
+    DocstringParameter,
+    DocstringReturn,
     DocstringSectionOtherParameters,
     DocstringSectionParameters,
     DocstringSectionReturns,
-    DocstringParameter,
-    DocstringReturn,
 )
 from _griffe.enumerations import DocstringSectionKind
 from _griffe.expressions import Expr
 
 from mkdocstrings_handlers.matlab.enums import ParameterKind
 from mkdocstrings_handlers.matlab.models import (
-    _ParentGrabber,
     Class,
     Classfolder,
     Docstring,
     DocstringSectionText,
-    Function,
     Folder,
+    Function,
     MatlabMixin,
     Namespace,
     PathMixin,
+    _ParentGrabber,
 )
 from mkdocstrings_handlers.matlab.treesitter import FileParser
-
 
 PathType = TypeVar("PathType", bound=PathMixin)
 
@@ -198,7 +198,6 @@ class PathCollection(ModulesCollection):
         elif self._config_path is not None and "/" in identifier:
             absolute_path = (self._config_path / Path(identifier)).resolve()
             if absolute_path.exists():
- 
                 if absolute_path.suffix:
                     path, member = absolute_path.parent, absolute_path.stem
                 else:
@@ -549,9 +548,7 @@ class PathCollection(ModulesCollection):
             ]:
                 if member.parent.is_relative_to(self._config_path):
                     if member.parent not in self._folders:
-                        self._folders[member.parent] = LazyModel(
-                            member.parent, self
-                        )
+                        self._folders[member.parent] = LazyModel(member.parent, self)
                 else:
                     pass  # TODO: Issue warning?
 

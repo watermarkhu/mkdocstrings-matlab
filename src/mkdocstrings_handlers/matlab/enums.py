@@ -1,5 +1,4 @@
 from enum import Enum
-from _griffe.enumerations import Kind as GriffeKind
 
 
 class Kind(str, Enum):
@@ -7,6 +6,7 @@ class Kind(str, Enum):
     An enumeration representing different kinds of MATLAB code elements.
     This enumeration is a subclass of the Griffe `Kind` enumeration, and extends it with additional values.
     """
+
     MODULE = "module"
     """Modules."""
     CLASS = "class"
