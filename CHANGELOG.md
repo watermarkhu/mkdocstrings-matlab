@@ -1,6 +1,17 @@
 # CHANGELOG
 
 
+## v0.9.4 (2025-02-01)
+
+### Bug Fixes
+
+- **deps**: Update dependency tree-sitter-matlab to v1.0.4
+  ([#69](https://github.com/watermarkhu/mkdocstrings-matlab/pull/69),
+  [`e589881`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/e5898818ab7a7da1fd8e583dcc4f490b81e8e610))
+
+Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
+
+
 ## v0.9.3 (2025-01-29)
 
 ### Bug Fixes
