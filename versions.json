@@ -1,5 +1,10 @@
 [
   {
+    "version": "pr-fix-function-header-line-continuation",
+    "title": "pr-fix-function-header-line-continuation",
+    "aliases": []
+  },
+  {
     "version": "pr-development",
     "title": "pr-development",
     "aliases": []
