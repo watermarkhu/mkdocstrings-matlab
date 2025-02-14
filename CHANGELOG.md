@@ -1,6 +1,17 @@
 # CHANGELOG
 
 
+## v0.9.6 (2025-02-14)
+
+### Bug Fixes
+
+- **deps**: Update dependency mkdocstrings to v0.28.0
+  ([#70](https://github.com/watermarkhu/mkdocstrings-matlab/pull/70),
+  [`5b512ab`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/5b512abd5656187ad888f5edf4a99aa9bff24141))
+
+Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
+
+
 ## v0.9.5 (2025-02-02)
 
 ### Bug Fixes
