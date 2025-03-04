@@ -361,7 +361,6 @@ class MatlabHandler(BaseHandler):
         if identifier == "":
             raise CollectionError("Empty identifier")
 
-<<<<<<< HEAD
         final_config = self.get_options(config)
         try:
             model = self.paths.resolve(identifier, config=final_config)
@@ -373,9 +372,6 @@ class MatlabHandler(BaseHandler):
         except Exception as ex:
             raise CollectionError(str(ex)) from ex
         
-=======
-        model = self.paths.resolve(identifier, config=config)
->>>>>>> f542269e8583e5a6d859a2bcadef4651eb387750
         if model is None:
             raise CollectionError(f"Identifier '{identifier}' not found")
         return model
