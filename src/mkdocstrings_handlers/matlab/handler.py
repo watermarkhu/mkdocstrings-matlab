@@ -2,12 +2,9 @@
 
 import re
 from pathlib import Path
-<<<<<<< HEAD
 from pprint import pprint
 from typing import Any, ClassVar, Mapping
 
-=======
->>>>>>> f542269e8583e5a6d859a2bcadef4651eb387750
 from jinja2.loaders import FileSystemLoader
 from markdown import Markdown
 from mkdocs.exceptions import PluginError
@@ -181,7 +178,13 @@ class MatlabHandler(BaseHandler):
             None
         """
         self.config = handler_config
-        super().__init__(handler, theme, custom_templates=custom_templates, tool_config=tool_config, **kwargs)
+        super().__init__(
+            handler,
+            theme,
+            custom_templates=custom_templates,
+            tool_config=tool_config,
+            **kwargs,
+        )
 
         theme_path = Path(__file__).resolve().parent / "templates" / theme
         if theme_path.exists() and isinstance(self.env.loader, FileSystemLoader):
@@ -193,8 +196,11 @@ class MatlabHandler(BaseHandler):
 
         config_path = Path(tool_config.get("config_file_path", "./mkdocs.yml")).parent
 
-        if handler_config.get('paths', []):
-            full_paths = [(config_path / path).resolve() for path in handler_config.get('paths', [])]
+        if handler_config.get("paths", []):
+            full_paths = [
+                (config_path / path).resolve()
+                for path in handler_config.get("paths", [])
+            ]
         else:
             full_paths = []
 
@@ -235,9 +241,7 @@ class MatlabHandler(BaseHandler):
         heading_level = config["heading_level"]
 
         try:
-            config["members_order"] = rendering.Order(
-                config["members_order"]
-            )
+            config["members_order"] = rendering.Order(config["members_order"])
         except ValueError as error:
             choices = "', '".join(item.value for item in rendering.Order)
             raise PluginError(
@@ -281,9 +285,7 @@ class MatlabHandler(BaseHandler):
         config["show_docstring_attributes"] = config.get(
             "show_docstring_properties", True
         )
-        config["show_docstring_modules"] = config.get(
-            "show_docstring_namespaces", True
-        )
+        config["show_docstring_modules"] = config.get("show_docstring_namespaces", True)
         config["show_docstring_parameters"] = config.get(
             "show_docstring_input_arguments", True
         )
@@ -371,7 +373,7 @@ class MatlabHandler(BaseHandler):
             raise CollectionError(msg) from ex
         except Exception as ex:
             raise CollectionError(str(ex)) from ex
-        
+
         if model is None:
             raise CollectionError(f"Identifier '{identifier}' not found")
         return model
