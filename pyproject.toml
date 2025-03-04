@@ -41,9 +41,6 @@ build-backend = "hatchling.build"
 [tool.uv]
 managed = true
 
-[tool.uv.sources]
-mkdocstrings = { git = "https://github.com/mkdocstrings/mkdocstrings", branch = "main" }
-
 [tool.hatch.metadata]
 allow-direct-references = true
 
