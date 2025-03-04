@@ -1,7 +1,6 @@
 """The mkdocstrings handler for processing MATLAB code documentation."""
 
 import re
-from collections import ChainMap
 from pathlib import Path
 from pprint import pprint
 from typing import Any, ClassVar, Mapping
@@ -156,8 +155,8 @@ class MatlabHandler(BaseHandler):
         handler: str,
         theme: str,
         custom_templates: str | None = None,
-        config_file_path: str | None = None,
-        paths: list[str] | None = None,
+        handler_config: Mapping = {},
+        tool_config: Mapping = {},
         paths_recursive: bool = False,
         locale: str = "en",
         **kwargs: Any,
@@ -178,8 +177,14 @@ class MatlabHandler(BaseHandler):
         Returns:
             None
         """
-
-        super().__init__(handler, theme, custom_templates=custom_templates)
+        self.config = handler_config
+        super().__init__(
+            handler,
+            theme,
+            custom_templates=custom_templates,
+            tool_config=tool_config,
+            **kwargs,
+        )
 
         theme_path = Path(__file__).resolve().parent / "templates" / theme
         if theme_path.exists() and isinstance(self.env.loader, FileSystemLoader):
@@ -189,12 +194,15 @@ class MatlabHandler(BaseHandler):
         if css_path.exists():
             self.extra_css += "\n" + css_path.read_text(encoding="utf-8")
 
-        if paths is None or config_file_path is None:
-            config_path = None
-            full_paths = []
+        config_path = Path(tool_config.get("config_file_path", "./mkdocs.yml")).parent
+
+        if handler_config.get("paths", []):
+            full_paths = [
+                (config_path / path).resolve()
+                for path in handler_config.get("paths", [])
+            ]
         else:
-            config_path = Path(config_file_path).resolve().parent
-            full_paths = [(config_path / path).resolve() for path in paths]
+            full_paths = []
 
         if pathIds := [str(path) for path in full_paths if not path.is_dir()]:
             raise PluginError(
@@ -213,7 +221,10 @@ class MatlabHandler(BaseHandler):
         # (it assumes the python handler is installed)
         return super().get_templates_dir("python")
 
-    def render(self, data: CollectorItem, config: Mapping[str, Any]) -> str:
+    def get_options(self, local_options):
+        return {**self.default_config, **self.config["options"], **local_options}
+
+    def render(self, data: CollectorItem, config: dict[str, Any]) -> str:
         """Render a template using provided data and configuration options.
 
         Arguments:
@@ -223,46 +234,43 @@ class MatlabHandler(BaseHandler):
         Returns:
             The rendered template as HTML.
         """
-        final_config = ChainMap(config, self.default_config)  # type: ignore[arg-type]
 
         template_name = rendering.do_get_template(self.env, data)
         template = self.env.get_template(template_name)
 
-        heading_level = final_config["heading_level"]
+        heading_level = config["heading_level"]
 
         try:
-            final_config["members_order"] = rendering.Order(
-                final_config["members_order"]
-            )
+            config["members_order"] = rendering.Order(config["members_order"])
         except ValueError as error:
             choices = "', '".join(item.value for item in rendering.Order)
             raise PluginError(
-                f"Unknown members_order '{final_config['members_order']}', choose between '{choices}'.",
+                f"Unknown members_order '{config['members_order']}', choose between '{choices}'.",
             ) from error
 
-        if final_config["filters"]:
-            final_config["filters"] = [
+        if config["filters"]:
+            config["filters"] = [
                 (re.compile(filtr.lstrip("!")), filtr.startswith("!"))
-                for filtr in final_config["filters"]
+                for filtr in config["filters"]
             ]
 
-        summary = final_config["summary"]
+        summary = config["summary"]
         if summary is True:
-            final_config["summary"] = {
+            config["summary"] = {
                 "attributes": True,
                 "functions": True,
                 "classes": True,
                 "modules": True,
             }
         elif summary is False:
-            final_config["summary"] = {
+            config["summary"] = {
                 "attributes": False,
                 "functions": False,
                 "classes": False,
                 "modules": False,
             }
         else:
-            final_config["summary"] = {
+            config["summary"] = {
                 "attributes": summary.get(
                     "properties", False
                 ),  # Map properties (MATLAB) to attributes (Python)
@@ -274,19 +282,17 @@ class MatlabHandler(BaseHandler):
             }
 
         # Map docstring options
-        final_config["show_docstring_attributes"] = config.get(
+        config["show_docstring_attributes"] = config.get(
             "show_docstring_properties", True
         )
-        final_config["show_docstring_modules"] = config.get(
-            "show_docstring_namespaces", True
-        )
-        final_config["show_docstring_parameters"] = config.get(
+        config["show_docstring_modules"] = config.get("show_docstring_namespaces", True)
+        config["show_docstring_parameters"] = config.get(
             "show_docstring_input_arguments", True
         )
-        final_config["show_docstring_other_parameters"] = config.get(
+        config["show_docstring_other_parameters"] = config.get(
             "show_docstring_name_value_arguments", True
         )
-        final_config["show_docstring_returns"] = config.get(
+        config["show_docstring_returns"] = config.get(
             "show_docstring_output_arguments", True
         )
 
@@ -298,12 +304,12 @@ class MatlabHandler(BaseHandler):
             "show_docstring_yields",
             "show_docstring_warns",
         ]:
-            final_config[setting] = False
-        final_config["line_length"] = 88
+            config[setting] = False
+        config["line_length"] = 88
 
         return template.render(
             **{
-                "config": final_config,
+                "config": config,
                 data.kind.value: data,
                 "heading_level": heading_level,
                 "root": True,
@@ -341,7 +347,7 @@ class MatlabHandler(BaseHandler):
             lambda template_name: template_name in self.env.list_templates()
         )
 
-    def collect(self, identifier: str, config: Mapping[str, Any]) -> CollectorItem:
+    def collect(self, identifier: str, config: dict[str, Any]) -> CollectorItem:
         """Collect data given an identifier and user configuration.
 
         In the implementation, you typically call a subprocess that returns JSON, and load that JSON again into
@@ -357,7 +363,7 @@ class MatlabHandler(BaseHandler):
         if identifier == "":
             raise CollectionError("Empty identifier")
 
-        final_config = ChainMap(config, self.default_config)  # type: ignore[arg-type]
+        final_config = self.get_options(config)
         try:
             model = self.paths.resolve(identifier, config=final_config)
         except SyntaxError as ex:
@@ -367,6 +373,7 @@ class MatlabHandler(BaseHandler):
             raise CollectionError(msg) from ex
         except Exception as ex:
             raise CollectionError(str(ex)) from ex
+
         if model is None:
             raise CollectionError(f"Identifier '{identifier}' not found")
         return model
@@ -376,10 +383,10 @@ def get_handler(
     *,
     theme: str,
     custom_templates: str | None = None,
-    config_file_path: str | None = None,
-    paths: list[str] | None = None,
+    handler_config: Mapping = {},
+    tool_config: Mapping = {},
     paths_recursive: bool = False,
-    **config: Any,
+    **kwargs: Any,
 ) -> MatlabHandler:
     """
     Create and return a MatlabHandler object with the specified configuration.
@@ -399,9 +406,10 @@ def get_handler(
         handler="matlab",
         theme=theme,
         custom_templates=custom_templates,
-        config_file_path=config_file_path,
-        paths=paths,
+        handler_config=handler_config,
+        tool_config=tool_config,
         paths_recursive=paths_recursive,
+        **kwargs,
     )
 
 
