@@ -6,6 +6,7 @@
     "branchPrefix": "renovate-", 
     "packageRules": [
         {
+          "groupName": "group-github-actions",
           "description": "Group GitHub Action updates",
           "matchManagers": ["github-actions"]
         }
