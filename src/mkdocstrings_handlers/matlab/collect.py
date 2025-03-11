@@ -34,7 +34,7 @@ from mkdocstrings_handlers.matlab.treesitter import FileParser
 
 PathType = TypeVar("PathType", bound=PathMixin)
 
-__all__ = ["LinesCollection", "PathCollection"]
+__all__ = ["LinesCollection", "PathsCollection"]
 
 
 class LinesCollection(GLC):
@@ -94,18 +94,18 @@ class PathGlobber:
         return item
 
 
-class PathCollection(ModulesCollection):
+class PathsCollection(ModulesCollection):
     """
-    PathCollection is a class that manages a collection of MATLAB paths and their corresponding models.
+    PathsCollection is a class that manages a collection of MATLAB paths and their corresponding models.
 
     Attributes:
-        config (Mapping): Configuration settings for the PathCollection.
+        config (Mapping): Configuration settings for the PathsCollection.
         lines_collection (LinesCollection): An instance of LinesCollection for managing lines.
 
     Args:
         matlab_path (Sequence[str | Path]): A list of strings or Path objects representing the MATLAB paths.
         recursive (bool, optional): If True, recursively adds all subdirectories of the given paths to the search path. Defaults to False.
-        config (Mapping, optional): Configuration settings for the PathCollection. Defaults to {}.
+        config (Mapping, optional): Configuration settings for the PathsCollection. Defaults to {}.
         config_path (Path | None, optional): The path to the configuration file. Defaults to None.
 
     Methods:
@@ -136,7 +136,7 @@ class PathCollection(ModulesCollection):
         config_path: Path | None = None,
     ) -> None:
         """
-        Initialize an instance of PathCollection.
+        Initialize an instance of PathsCollection.
 
         Args:
             matlab_path (list[str | Path]): A list of strings or Path objects representing the MATLAB paths.
@@ -638,10 +638,10 @@ class LazyModel:
         model: Collects and returns the MATLAB object model..
     """
 
-    def __init__(self, path: Path, path_collection: PathCollection):
+    def __init__(self, path: Path, path_collection: PathsCollection):
         self._path: Path = path
         self._model: MatlabMixin | None = None
-        self._path_collection: PathCollection = path_collection
+        self._path_collection: PathsCollection = path_collection
         self._lines_collection: LinesCollection = path_collection.lines_collection
 
     @property

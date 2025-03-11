@@ -9,7 +9,7 @@ license =  { text = "MIT" }
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "mkdocstrings==0.28.2",
+    "mkdocstrings==0.29.0",
     "mkdocstrings-python==1.13.0",
     "mkdocs-autorefs>=1.4",
     "griffe>=0.49",

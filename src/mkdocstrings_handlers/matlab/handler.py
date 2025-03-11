@@ -1,192 +1,67 @@
 """The mkdocstrings handler for processing MATLAB code documentation."""
 
+from __future__ import annotations 
+
 import re
 from pathlib import Path
 from pprint import pprint
-from typing import Any, ClassVar, Mapping
+from typing import TYPE_CHECKING, Any, ClassVar
 
 from jinja2.loaders import FileSystemLoader
 from markdown import Markdown
 from mkdocs.exceptions import PluginError
-from mkdocstrings.handlers.base import BaseHandler, CollectionError, CollectorItem
 
-from mkdocstrings_handlers.matlab.collect import LinesCollection, PathCollection
+from mkdocstrings import BaseHandler, CollectionError, CollectorItem, HandlerOptions, Inventory, get_logger
+from mkdocstrings_handlers.matlab.collect import LinesCollection, PathsCollection
+from mkdocstrings_handlers.matlab.config import MatlabConfig, MatlabOptions
 from mkdocstrings_handlers.python import rendering
 
+if TYPE_CHECKING:
+    from collections.abc import Iterator, Mapping, MutableMapping, Sequence
+    from mkdocs.config.defaults import MkDocsConfig
 
 class MatlabHandler(BaseHandler):
     """The `MatlabHandler` class is a handler for processing Matlab code documentation."""
 
-    name: str = "matlab"
-    """The handler's name."""
-    domain: str = "mat"  # to match Sphinx's default domain
+    name: ClassVar[str] = "matlab"
+    """The MATLAB handler class."""
+    
+    domain: ClassVar[str] = "mat"  # to match Sphinx's default domain
     """The cross-documentation domain/language for this handler."""
-    enable_inventory: bool = True
+    
+    enable_inventory: ClassVar[bool] = True
     """Whether this handler is interested in enabling the creation of the `objects.inv` Sphinx inventory file."""
-    fallback_theme = "material"
+    fallback_theme: ClassVar[str] = "material"
     """The fallback theme."""
+
     fallback_config: ClassVar[dict] = {
         "fallback": True,
     }
-    """The configuration used to collect item during autorefs fallback."""
-    default_config: ClassVar[dict] = {
-        # General options
-        "show_bases": True,
-        "show_inheritance_diagram": False,
-        "show_source": True,
-        # Heading options
-        "heading_level": 2,
-        "parameter_headings": False,
-        "show_root_heading": False,
-        "show_root_toc_entry": True,
-        "show_root_full_path": True,
-        "show_root_members_full_path": False,
-        "show_object_full_path": False,
-        "show_category_heading": False,
-        "show_symbol_type_heading": False,
-        "show_symbol_type_toc": False,
-        # Member options
-        "members": None,
-        "hidden_members": False,
-        "private_members": False,
-        "inherited_members": False,
-        "members_order": rendering.Order.alphabetical.value,
-        "filters": ["!^delete$|^disp$"],
-        "group_by_category": True,
-        "show_subnamespaces": False,
-        "summary": False,
-        "show_labels": True,
-        # Docstring options
-        "docstring_style": "google",
-        "docstring_options": {},
-        "docstring_section_style": "table",
-        "parse_arguments": False,
-        "merge_constructor_into_class": False,
-        "merge_constructor_ignore_summary": False,
-        "show_if_no_docstring": False,
-        "show_docstring_propeties": True,
-        "show_docstring_functions": True,
-        "show_docstring_classes": True,
-        "show_docstring_namespaces": True,
-        "show_docstring_description": True,
-        "show_docstring_examples": True,
-        "show_docstring_input_arguments": True,
-        "show_docstring_name_value_arguments": True,
-        "show_docstring_output_arguments": True,
-        # Signature options
-        "show_signature": True,
-        "show_signature_annotations": False,
-        "separate_signature": False,
-        "signature_crossrefs": False,
-    }
-    """Default handler configuration.
-
-    Attributes: General options:
-        show_bases (bool): Show the base classes of a class. Default: `True`.
-        show_inheritance_diagram (bool): Show the inheritance diagram of a class using Mermaid. Default: `False`.
-        show_source (bool): Show the source code of this object. Default: `True`.
-
-
-    Attributes: Headings options:
-        heading_level (int): The initial heading level to use. Default: `2`.
-        parameter_headings (bool): Whether to render headings for parameters (therefore showing parameters in the ToC). Default: `False`.
-        show_root_heading (bool): Show the heading of the object at the root of the documentation tree
-            (i.e. the object referenced by the identifier after `:::`). Default: `False`.
-        show_root_toc_entry (bool): If the root heading is not shown, at least add a ToC entry for it. Default: `True`.
-        show_root_full_path (bool): Show the full path for the root object heading. Default: `True`.
-        show_root_members_full_path (bool): Show the full path of the root members. Default: `False`.
-        show_object_full_path (bool): Show the full path of every object. Default: `False`.
-        show_category_heading (bool): When grouped by categories, show a heading for each category. Default: `False`.
-        show_symbol_type_heading (bool): Show the symbol type in headings (e.g. mod, class, meth, func and attr). Default: `False`.
-        show_symbol_type_toc (bool): Show the symbol type in the Table of Contents (e.g. mod, class, methd, func and attr). Default: `False`.
-
-    Attributes: Members options:
-        members (list[str] | bool | None): A boolean, or an explicit list of members to render.
-            If true, select all members without further filtering.
-            If false or empty list, do not render members.
-            If none, select all members and apply further filtering with filters and docstrings. Default: `None`.
-        hidden_members (list[str] | bool | None): A boolean, or an explicit list of hidden members to render. 
-            If true, select all inherited members, which can then be filtered with `members`.
-            If false or empty list, do not select any hidden member. Default: `False`.
-        private_members (list[str] | bool | None): A boolean, or an explicit list of private members to render. 
-            If true, select all inherited members, which can then be filtered with `members`.
-            If false or empty list,  do not select any private member.  Default: `False`.
-        inherited_members (list[str] | bool | None): A boolean, or an explicit list of inherited members to render.
-            If true, select all inherited members, which can then be filtered with `members`.
-            If false or empty list, do not select any inherited member. Default: `False`.
-        members_order (str): The members ordering to use. Options: `alphabetical` - order by the members names,
-            `source` - order members as they appear in the source file. Default: `"alphabetical"`.
-        filters (list[str] | None): A list of filters applied to filter objects based on their name.
-            A filter starting with `!` will exclude matching objects instead of including them.
-            The `members` option takes precedence over `filters` (filters will still be applied recursively
-            to lower members in the hierarchy). Default: `["!^delete$|^disp$"]`.
-        group_by_category (bool): Group the object's children by categories: properties, classes, functions, and namespaces. Default: `True`.
-        show_subnamespaces (bool): When rendering a namespace, show its subnamespaces recursively. Default: `False`.
-        summary (bool | dict[str, bool]): Whether to render summaries of namespaces, classes, functions (methods) and properties. Default: `False`.
-        show_labels (bool): Whether to show labels of the members. Default: `True`.
-
-    Attributes: Docstrings options:
-        docstring_style (str): The docstring style to use: `google`, `numpy`, `sphinx`, or `None`. Default: `"google"`.
-        docstring_options (dict): The options for the docstring parser. See [docstring parsers](https://mkdocstrings.github.io/griffe/reference/docstrings/) and their options in Griffe docs.
-        docstring_section_style (str): The style used to render docstring sections. Options: `table`, `list`, `spacy`. Default: `"table"`.
-        parse_arguments (bool): Whether to load inputs and output parameters based on argument validation blocks. Default: `True`.
-        merge_constructor_into_class (bool): Whether to merge the constructor method into the class' signature and docstring. Default: `False`.
-        merge_constructor_ignore_summary (bool): Whether to ignore the constructor summary when merging it into the class. Default: `False`.
-        show_if_no_docstring (bool): Show the object heading even if it has no docstring or children with docstrings. Default: `False`.
-        show_docstring_properties (bool): Whether to display the "Properties" section in the object's docstring. Default: `True`.
-        show_docstring_functions (bool): Whether to display the "Functions" or "Methods" sections in the object's docstring. Default: `True`.
-        show_docstring_classes (bool): Whether to display the "Classes" section in the object's docstring. Default: `True`.
-        show_docstring_namespaces (bool): Whether to display the "Namespaces" section in the object's docstring. Default: `True`.
-        show_docstring_description (bool): Whether to display the textual block (including admonitions) in the object's docstring. Default: `True`.
-        show_docstring_examples (bool): Whether to display the "Examples" section in the object's docstring. Default: `True`.
-        show_docstring_input_arguments (bool): Whether to display the "Input arguments" section in the object's docstring. Default: `True`.
-        show_docstring_name_value_arguments (bool): Whether to display the "Name-value pairs" section in the object's docstring. Default: `True`.
-        show_docstring_output_arguments (bool): Whether to display the "Output arguments" section in the object's docstring. Default: `True`.
-
-    Attributes: Signatures/annotations options:
-        show_signature (bool): Show methods and functions signatures. Default: `True`.
-        show_signature_annotations (bool): Show the type annotations in methods and functions signatures. Default: `False`.
-        separate_signature (bool): Whether to put the whole signature in a code block below the heading.
-        signature_crossrefs (bool): Whether to render cross-references for type annotations in signatures. Default: `False`.
-    """
 
     def __init__(
         self,
-        handler: str,
-        theme: str,
-        custom_templates: str | None = None,
-        handler_config: Mapping = {},
-        tool_config: Mapping = {},
-        paths_recursive: bool = False,
-        locale: str = "en",
+        config: MatlabConfig,
+        base_dir: Path,
         **kwargs: Any,
     ) -> None:
         """
         Initialize the handler with the given configuration.
 
         Args:
-            handler: The name of the handler.
-            theme: The name of theme to use.
-            custom_templates: Directory containing custom templates.
-            config_file_path (str | None, optional): Path to the configuration file. Defaults to None.
-            paths (list[str] | None, optional): List of paths to include. Defaults to None.
-            paths_recursive (bool, optional): Whether to include paths recursively. Defaults to False.
-            locale (str, optional): Locale setting. Defaults to "en".
-            **kwargs (Any): Arbitrary keyword arguments.
+            config: The handler configuration.
+            base_dir: The base directory of the project.
+            **kwargs: Arguments passed to the parent constructor.
 
         Returns:
             None
         """
-        self.config = handler_config
-        super().__init__(
-            handler,
-            theme,
-            custom_templates=custom_templates,
-            tool_config=tool_config,
-            **kwargs,
-        )
+        super().__init__(**kwargs)
 
-        theme_path = Path(__file__).resolve().parent / "templates" / theme
+        self.config = config
+        self.base_dir = base_dir
+        self.global_options = config.options
+
+        theme_path = Path(__file__).resolve().parent / "templates" / self.theme
         if theme_path.exists() and isinstance(self.env.loader, FileSystemLoader):
             # Insert our templates directory at the beginning of the search path to overload the Python templates
             self.env.loader.searchpath.insert(0, str(theme_path))
@@ -194,12 +69,10 @@ class MatlabHandler(BaseHandler):
         if css_path.exists():
             self.extra_css += "\n" + css_path.read_text(encoding="utf-8")
 
-        config_path = Path(tool_config.get("config_file_path", "./mkdocs.yml")).parent
-
-        if handler_config.get("paths", []):
+        if config.paths:
             full_paths = [
-                (config_path / path).resolve()
-                for path in handler_config.get("paths", [])
+                (base_dir / path).resolve()
+                for path in config.paths
             ]
         else:
             full_paths = []
@@ -210,19 +83,36 @@ class MatlabHandler(BaseHandler):
                 + ", ".join(pathIds)
             )
 
-        self.paths: PathCollection = PathCollection(
-            full_paths, recursive=paths_recursive, config_path=config_path
+        self._path_collection: PathsCollection = PathsCollection(
+            full_paths, recursive=config.paths_recursive, config_path=base_dir
         )
-        self.lines: LinesCollection = self.paths.lines_collection
-        self._locale: str = locale
+        self._lines_collection: LinesCollection = self._path_collection.lines_collection
+
 
     def get_templates_dir(self, *args, **kwargs) -> Path:
         # use the python handler templates
         # (it assumes the python handler is installed)
         return super().get_templates_dir("python")
 
-    def get_options(self, local_options):
-        return {**self.default_config, **self.config["options"], **local_options}
+    def get_options(self, local_options: Mapping[str, Any]) -> HandlerOptions:
+        """Get combined default, global and local options.
+
+        Arguments:
+            local_options: The local options.
+
+        Returns:
+            The combined options.
+        """
+
+        extra = {**self.global_options.get("extra", {}), **local_options.get("extra", {})}
+        options = {**self.global_options, **local_options, "extra": extra}
+        try:
+            # YORE: Bump 2: Replace `opts =` with `return` within line.
+            opts = MatlabOptions.from_data(**options)
+        except Exception as error:
+            raise PluginError(f"Invalid options: {error}") from error
+
+        return opts
 
     def render(self, data: CollectorItem, config: dict[str, Any]) -> str:
         """Render a template using provided data and configuration options.
@@ -365,7 +255,7 @@ class MatlabHandler(BaseHandler):
 
         final_config = self.get_options(config)
         try:
-            model = self.paths.resolve(identifier, config=final_config)
+            model = self._path_collection.resolve(identifier, config=final_config)
         except SyntaxError as ex:
             msg = str(ex)
             if ex.text:
@@ -380,35 +270,24 @@ class MatlabHandler(BaseHandler):
 
 
 def get_handler(
-    *,
-    theme: str,
-    custom_templates: str | None = None,
-    handler_config: Mapping = {},
-    tool_config: Mapping = {},
-    paths_recursive: bool = False,
+    handler_config: MutableMapping[str, Any],
+    tool_config: MkDocsConfig,
     **kwargs: Any,
 ) -> MatlabHandler:
     """
     Create and return a MatlabHandler object with the specified configuration.
 
     Parameters:
-        theme (str): The theme to be used by the handler.
-        custom_templates (str | None, optional): Path to custom templates. Defaults to None.
-        config_file_path (str | None, optional): Path to the configuration file. Defaults to None.
-        paths (list[str] | None, optional): List of paths to include. Defaults to None.
-        paths_recursive (bool, optional): Whether to include paths recursively. Defaults to False.
-        **config (Any): Additional configuration options.
+         handler_config: The handler configuration.
+        tool_config: The tool (SSG) configuration.
 
     Returns:
         MatlabHandler: An instance of MatlabHandler configured with the provided parameters.
     """
+    base_dir = Path(tool_config.config_file_path or "./mkdocs.yml").parent
     return MatlabHandler(
-        handler="matlab",
-        theme=theme,
-        custom_templates=custom_templates,
-        handler_config=handler_config,
-        tool_config=tool_config,
-        paths_recursive=paths_recursive,
+        config=MatlabConfig.from_data(**handler_config),
+        base_dir=base_dir,
         **kwargs,
     )
 

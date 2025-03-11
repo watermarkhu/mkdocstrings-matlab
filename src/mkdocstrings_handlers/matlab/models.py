@@ -20,7 +20,7 @@ from griffe import (
 from mkdocstrings_handlers.matlab.enums import Kind, AccessEnum, ParameterKind
 
 if TYPE_CHECKING:
-    from mkdocstrings_handlers.matlab.collect import PathCollection
+    from mkdocstrings_handlers.matlab.collect import PathsCollection
 
 __all__ = [
     "Attribute",
@@ -124,13 +124,13 @@ class MatlabObject(Object):
     Represents a Matlab object with associated docstring, path collection, and parent object.
 
     Attributes:
-        path_collection (PathCollection | None): The collection of paths related to the Matlab object.
+        path_collection (PathsCollection | None): The collection of paths related to the Matlab object.
     """
 
     def __init__(
         self,
         *args,
-        path_collection: "PathCollection | None" = None,
+        path_collection: "PathsCollection | None" = None,
         **kwargs,
     ) -> None:
         """
@@ -138,10 +138,10 @@ class MatlabObject(Object):
 
         Args:
             *args: Variable length argument list.
-            path_collection (PathCollection | None): The collection of paths related to the object.
+            path_collection (PathsCollection | None): The collection of paths related to the object.
             **kwargs: Arbitrary keyword arguments.
         """
-        self.path_collection: "PathCollection | None" = path_collection
+        self.path_collection: "PathsCollection | None" = path_collection
         lines_collection = (
             path_collection.lines_collection if path_collection is not None else None
         )
