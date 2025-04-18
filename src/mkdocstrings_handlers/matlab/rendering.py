@@ -93,8 +93,8 @@ def do_format_code(code: str, line_length: int) -> str:
     code = code.strip()
     if len(code) < line_length:
         return code
-    formatter = _get_formatter()
-    return formatter(code, line_length)
+    # No formatter implemented for MATLAB
+    return code
 
 
 class _StashCrossRefFilter:
@@ -122,24 +122,6 @@ do_stash_crossref = _StashCrossRefFilter()
 """Filter to stash cross-references (and restore them after formatting and highlighting)."""
 
 
-def _format_signature(name: Markup, signature: str, line_length: int) -> str:
-    name = str(name).strip()  # type: ignore[assignment]
-    signature = signature.strip()
-    if len(name + signature) < line_length:
-        return name + signature
-
-    # Black cannot format names with dots, so we replace
-    # the whole name with a string of equal length
-    name_length = len(name)
-    formatter = _get_formatter()
-    formatable = f"def {'x' * name_length}{signature}: pass"
-    formatted = formatter(formatable, line_length)
-
-    # We put back the original name
-    # and remove starting `def ` and trailing `: pass`
-    return name + formatted[4:-5].strip()[name_length:-1]
-
-
 @pass_context
 def do_format_signature(
     context: Context,
@@ -164,8 +146,7 @@ def do_format_signature(
         The same code, formatted.
     """
     env = context.environment
-    # YORE: Bump 2: Replace `do_get_template(env, "signature")` with `"signature.html.jinja"` within line.
-    template = env.get_template(do_get_template(env, "signature"))
+    template = env.get_template("signature.html.jinja")
 
     if annotations is None:
         new_context = context.parent
@@ -176,11 +157,10 @@ def do_format_signature(
         )
 
     signature = template.render(new_context, function=function, signature=True)
-    signature = _format_signature(callable_path, signature, line_length)
     signature = str(
         env.filters["highlight"](
             Markup.escape(signature),
-            language="python",
+            language="matlab",
             inline=False,
             classes=["doc-signature"],
             linenums=False,
@@ -524,71 +504,6 @@ def do_filter_objects(
         objects = list(_remove_cycles(objects))
 
     return objects
-
-
-@lru_cache(maxsize=1)
-def _get_formatter() -> Callable[[str, int], str]:
-    for formatter_function in [
-        _get_black_formatter,
-        _get_ruff_formatter,
-    ]:
-        if (formatter := formatter_function()) is not None:
-            return formatter
-
-    _logger.info("Formatting signatures requires either Black or Ruff to be installed.")
-    return lambda text, _: text
-
-
-def _get_ruff_formatter() -> Callable[[str, int], str] | None:
-    try:
-        from ruff.__main__ import find_ruff_bin
-    except ImportError:
-        return None
-
-    try:
-        ruff_bin = find_ruff_bin()
-    except FileNotFoundError:
-        ruff_bin = "ruff"
-
-    def formatter(code: str, line_length: int) -> str:
-        try:
-            completed_process = subprocess.run(  # noqa: S603
-                [
-                    ruff_bin,
-                    "format",
-                    "--config",
-                    f"line-length={line_length}",
-                    "--stdin-filename",
-                    "file.py",
-                    "-",
-                ],
-                check=True,
-                capture_output=True,
-                text=True,
-                input=code,
-            )
-        except subprocess.CalledProcessError:
-            return code
-        else:
-            return completed_process.stdout
-
-    return formatter
-
-
-def _get_black_formatter() -> Callable[[str, int], str] | None:
-    try:
-        from black import InvalidInput, Mode, format_str
-    except ModuleNotFoundError:
-        return None
-
-    def formatter(code: str, line_length: int) -> str:
-        mode = Mode(line_length=line_length)
-        try:
-            return format_str(code, mode=mode)
-        except InvalidInput:
-            return code
-
-    return formatter
 
 
 # YORE: Bump 2: Remove line.

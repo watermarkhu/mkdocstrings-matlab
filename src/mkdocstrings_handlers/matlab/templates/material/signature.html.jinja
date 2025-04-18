@@ -20,9 +20,6 @@ Context:
   {%- with -%}
 
     {%- set ns = namespace(
-        has_pos_only=False,
-        render_pos_only_separator=True,
-        render_kw_only_separator=True,
         annotation="",
         equal="=",
         default=False,
@@ -31,18 +28,6 @@ Context:
     (
     {%- for parameter in function.parameters -%}
       {%- if parameter.name != "obj" or loop.index0 > 0 or not (function.parent and function.parent.is_class) -%}
-
-        {#- Handle parameter kind. -#}
-        {%- if parameter.kind.value == "positional-only" -%}
-          {%- set ns.has_pos_only = True -%}
-        {%- else -%}
-          {%- if ns.has_pos_only and ns.render_pos_only_separator -%}
-            {%- set ns.render_pos_only_separator = False %}/, {% endif -%}
-          {%- if parameter.kind.value == "keyword-only" -%}
-            {%- if ns.render_kw_only_separator -%}
-              {%- set ns.render_kw_only_separator = False %}*, {% endif -%}
-          {%- endif -%}
-        {%- endif -%}
 
         {#- Prepare type annotation. -#}
         {%- if config.show_signature_annotations and parameter.annotation is not none -%}

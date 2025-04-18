@@ -151,7 +151,7 @@ plugins:
             options:
                 show_source: true
 
-    === "without bases"
+    === "without source"
 
         ```markdown
         ::: myfunction
