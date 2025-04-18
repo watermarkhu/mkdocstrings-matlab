@@ -23,17 +23,17 @@ nav:
   - Configuration options:
     - General: usage/configuration/general.md
     - Headings: usage/configuration/headings.md
-    - Members: usage/configuration/members.md
-    - Docstrings: usage/configuration/docstrings.md
-    - Signatures: usage/configuration/signatures.md
+    # - Members: usage/configuration/members.md
+    # - Docstrings: usage/configuration/docstrings.md
+    # - Signatures: usage/configuration/signatures.md
   - Docstring styles:
     - Google: usage/docstrings/google.md
     - Numpy: usage/docstrings/numpy.md
     - Sphinx: usage/docstrings/sphinx.md
 # # defer to gen-files + literate-nav
-- API reference:
-  - mkdocstrings_handlers:
-    - matlab: api.md
+# - API reference:
+#   - mkdocstrings_handlers:
+#     - matlab: api.md
 # - Development:
 #   - Contributing: contributing.md
 #   - Code of Conduct: code_of_conduct.md
@@ -104,6 +104,7 @@ markdown_extensions:
     emoji_index: !!python/name:material.extensions.emoji.twemoji
     emoji_generator: !!python/name:material.extensions.emoji.to_svg
 - pymdownx.highlight:
+    use_pygments: true
     pygments_lang_class: true
 - pymdownx.magiclink
 - pymdownx.snippets:
@@ -155,7 +156,7 @@ plugins:
           filters: ["!^delete$|^disp$"]
           members_order: "source"
           summary: false
-          show_labels: true
+          show_attributes: true
 
           docstring_style: google
           docstring_section_style: table

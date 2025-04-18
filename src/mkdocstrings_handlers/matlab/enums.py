@@ -1,3 +1,5 @@
+"""This module defines enumerations used by the MATLAB handler."""
+
 from enum import Enum
 
 
@@ -13,8 +15,8 @@ class Kind(str, Enum):
     """Classes."""
     FUNCTION = "function"
     """Functions and methods."""
-    ATTRIBUTE = "attribute"
-    """Attributes and properties."""
+    PROPERTY = "property"
+    """Class properties."""
     ALIAS = "alias"
     """Aliases (imported objects)."""
     SCRIPT = "script"
@@ -28,13 +30,13 @@ class ParameterKind(str, Enum):
         positional (str): Positional-only parameter.
         optional (str): Optional parameter.
         keyword_only (str): Keyword-only parameter.
-        var_keyword (str): Variadic keyword parameter.
+        varargin (str): Varargin parameter.
     """
 
     positional_only = "positional-only"
     optional = "optional"
     keyword_only = "keyword-only"
-    var_keyword = "variadic keyword"
+    varargin = "varargin"
 
 
 class AccessEnum(str, Enum):

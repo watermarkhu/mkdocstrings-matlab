@@ -25,9 +25,7 @@ from mkdocstrings_handlers.matlab.models import (
 
 __all__ = ["FileParser"]
 
-
 LANGUAGE = Language(tsmatlab.language())
-
 PARSER = Parser(LANGUAGE)
 
 FILE_QUERY = LANGUAGE.query("""(source_file .
@@ -256,9 +254,7 @@ class FileParser(object):
             if self._node is not None:
                 if self._node.text is not None:
                     indentation = " " * self._node.start_point.column
-                    syntax_error.text = indentation + self._node.text.decode(
-                        self.encoding
-                    )
+                    syntax_error.text = indentation + self._node.text.decode(self.encoding)
                 syntax_error.lineno = self._node.start_point.row + 1
                 syntax_error.offset = self._node.start_point.column + 1
                 syntax_error.end_lineno = self._node.end_point.row + 1
@@ -287,9 +283,7 @@ class FileParser(object):
         bases = self._decode_from_capture(captures, "bases")
         docstring = self._comment_docstring(captures.get("docstring", None))
 
-        attribute_pairs = [
-            self._parse_attribute(node) for node in captures.get("attributes", [])
-        ]
+        attribute_pairs = [self._parse_attribute(node) for node in captures.get("attributes", [])]
         for key, value in attribute_pairs:
             if key in ["Sealed", "Abstract", "Hidden"]:
                 kwargs[key] = value
@@ -320,8 +314,7 @@ class FileParser(object):
         ]:
             property_kwargs = {key: value for key, value in saved_kwargs.items()}
             attribute_pairs = [
-                self._parse_attribute(node)
-                for node in property_captures.get("attributes", [])
+                self._parse_attribute(node) for node in property_captures.get("attributes", [])
             ]
             for key, value in attribute_pairs:
                 if key in [
@@ -349,9 +342,7 @@ class FileParser(object):
                     self._first_from_capture(property_captures, "name"),
                     annotation=self._first_from_capture(property_captures, "class"),
                     value=self._decode_from_capture(property_captures, "default"),
-                    docstring=self._comment_docstring(
-                        property_captures.get("comment", None)
-                    ),
+                    docstring=self._comment_docstring(property_captures.get("comment", None)),
                     parent=model,
                     **property_kwargs,
                 )
@@ -362,8 +353,7 @@ class FileParser(object):
         ]:
             method_kwargs = {key: value for key, value in saved_kwargs.items()}
             attribute_pairs = [
-                self._parse_attribute(node)
-                for node in method_captures.get("attributes", [])
+                self._parse_attribute(node) for node in method_captures.get("attributes", [])
             ]
             for key, value in attribute_pairs:
                 if key in [
@@ -382,11 +372,7 @@ class FileParser(object):
                 method = self._parse_function(
                     method_node, method=True, parent=model, **method_kwargs
                 )
-                if (
-                    method.name != self.filepath.stem
-                    and not method.Static
-                    and method.parameters
-                ):
+                if method.name != self.filepath.stem and not method.Static and method.parameters:
                     # Remove self from first method argument
                     method.parameters._params = method.parameters._params[1:]
                 if method._is_getter and method.name in model.members:
@@ -433,9 +419,7 @@ class FileParser(object):
 
         return (key, value)
 
-    def _parse_function(
-        self, node: Node, method: bool = False, **kwargs: Any
-    ) -> Function:
+    def _parse_function(self, node: Node, method: bool = False, **kwargs: Any) -> Function:
         """
         Parse a function node and return a Function model.
 
@@ -457,8 +441,7 @@ class FileParser(object):
         input_names = self._decode_from_capture(captures, "input")
         parameters: dict = (
             OrderedDict(
-                (name, Parameter(name, kind=ParameterKind.positional_only))
-                for name in input_names
+                (name, Parameter(name, kind=ParameterKind.positional_only)) for name in input_names
             )
             if input_names
             else {}
@@ -466,8 +449,7 @@ class FileParser(object):
         output_names = self._decode_from_capture(captures, "output")
         returns: dict = (
             OrderedDict(
-                (name, Parameter(name, kind=ParameterKind.positional_only))
-                for name in output_names
+                (name, Parameter(name, kind=ParameterKind.positional_only)) for name in output_names
             )
             if output_names
             else {}
@@ -493,25 +475,17 @@ class FileParser(object):
         ]
         for arguments in captures_arguments:
             attributes = self._decode_from_capture(arguments, "attributes")
-            is_input = (
-                attributes is None
-                or "Input" in attributes
-                or "Output" not in attributes
-            )
+            is_input = attributes is None or "Input" in attributes or "Output" not in attributes
             # is_repeating = "Repeating" in attributes
 
-            captures_argument = [
-                PROPERTY_QUERY.captures(node) for node in arguments["arguments"]
-            ]
+            captures_argument = [PROPERTY_QUERY.captures(node) for node in arguments["arguments"]]
             for argument in captures_argument:
                 name = self._first_from_capture(argument, "name")
 
                 if "options" in argument:
                     options_name = self._first_from_capture(argument, "options")
                     parameters.pop(options_name, None)
-                    parameter = parameters[name] = Parameter(
-                        name, kind=ParameterKind.keyword_only
-                    )
+                    parameter = parameters[name] = Parameter(name, kind=ParameterKind.keyword_only)
                 else:
                     if is_input:
                         parameter = parameters.get(name, Parameter(name))
@@ -531,9 +505,7 @@ class FileParser(object):
                 if default:
                     parameter.default = default
 
-                docstring = self._comment_docstring(
-                    argument.get("comment", None), parent=model
-                )
+                docstring = self._comment_docstring(argument.get("comment", None), parent=model)
                 if docstring:
                     parameter.docstring = docstring
 
@@ -553,15 +525,9 @@ class FileParser(object):
             str: The decoded text of the node. If the node or its text is None, returns an empty string.
         """
         self._node = node
-        return (
-            node.text.decode(self.encoding)
-            if node is not None and node.text is not None
-            else ""
-        )
+        return node.text.decode(self.encoding) if node is not None and node.text is not None else ""
 
-    def _decode_from_capture(
-        self, capture: dict[str, list[Node]], key: str
-    ) -> list[str]:
+    def _decode_from_capture(self, capture: dict[str, list[Node]], key: str) -> list[str]:
         """
         Decode elements from a capture dictionary based on a specified key.
 
@@ -622,14 +588,8 @@ class FileParser(object):
                 end.start_point.row - start.end_point.row
                 for (start, end) in zip(nodes[:-1], nodes[1:])
             ):
-                first_gap_index = next(
-                    (i for i, gap in enumerate(gaps) if gap > 1), None
-                )
-                nodes = (
-                    nodes[: first_gap_index + 1]
-                    if first_gap_index is not None
-                    else nodes
-                )
+                first_gap_index = next((i for i, gap in enumerate(gaps) if gap > 1), None)
+                nodes = nodes[: first_gap_index + 1] if first_gap_index is not None else nodes
 
             lineno = nodes[0].range.start_point.row + 1
             endlineno = nodes[-1].range.end_point.row + 1

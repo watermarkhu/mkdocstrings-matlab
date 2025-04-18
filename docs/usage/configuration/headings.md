@@ -66,14 +66,14 @@ Whether to render headings for function/method parameters.
 
 With this option enabled, each function/method parameter (including parameters of the constructor methods merged in their parent class with the [`merge_constructor_into_class`][] option) gets a permalink, an entry in the Table of Contents, and an entry in the generated objects inventory. The permalink and inventory entry allow cross-references from internal and external pages.
 
-The identifier used in the permalink and inventory is of the following form: `path.to.function(param_name)`. To manually cross-reference a arameter, you can therefore use this Markdown syntax:
+The identifier used in the permalink and inventory is of the following form: `path.to.function(param_name)`. To manually cross-reference a parameter, you can therefore use this Markdown syntax:
 
 ```md
 - Class parameter: [`param`][package.module.Class(param)]
 - Method parameter: [`param`][package.module.Class.method(param)]
 - Function parameter: [`param`][package.module.function(param)]
-- Variadic positional parameters: [`*args`][package.module.function(*args)]
-- Variadic keyword parameters: [`**kwargs`][package.module.function(**kwargs)]
+- Keyword parameters (name-value pairs): [`key`][package.module.function(key)]
+- Varargin: [`varargin`][package.module.function(varargin)]
 ```
 
 ```yaml title="in mkdocs.yml (global configuration)"

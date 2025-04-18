@@ -4,18 +4,12 @@ the python handler to the matlab handler and update the names"""
 import re
 from pathlib import Path
 
-from mkdocstrings_handlers.python.handler import PythonHandler
+from mkdocstrings_handlers.python import PythonHandler, PythonConfig
 
 # Get the templates directory of the python handler
-pythonHandler = PythonHandler("python", "material")
+pythonHandler = PythonHandler(PythonConfig(), Path())
 templatesDir = pythonHandler.get_templates_dir()
-targetDir = (
-    Path(__file__).parent.parent
-    / "src"
-    / "mkdocstrings_handlers"
-    / "matlab"
-    / "templates"
-)
+targetDir = Path(__file__).parent.parent / "src" / "mkdocstrings_handlers" / "matlab" / "templates"
 
 
 def copy_template(
@@ -35,6 +29,18 @@ def copy_template(
     targetFile.write_text(content)
 
     return (targetFile, content)
+
+
+for source_file in (templatesDir / "material" / "_base").rglob("*.html.jinja"):
+    # Get the relative path of the source file
+    relative_path = source_file.relative_to(templatesDir / "material" / "_base")
+    # Get the target file path
+    target_file = targetDir / "material" / relative_path
+    # Create the target directory if it doesn't exist
+    target_file.parent.mkdir(parents=True, exist_ok=True)
+    # Copy the file
+    content = source_file.read_text()
+    target_file.write_text(content)
 
 
 # Copy the namespace and module templates

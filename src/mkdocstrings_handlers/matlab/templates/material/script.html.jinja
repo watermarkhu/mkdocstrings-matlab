@@ -56,15 +56,15 @@ Context:
           {% endif %}
         {% endblock heading %}
 
-        {% block labels scoped %}
-          {#- Labels block.
+        {% block attributes scoped %}
+          {#- attributes block.
           
-          This block renders the labels for the script.
+          This block renders the attributes for the script.
           -#}
-          {% with labels = script.labels %}
-            {% include "labels"|get_template with context %}
+          {% with attributes = script.attributes %}
+            {% include "attributes.html.jinja" with context %}
           {% endwith %}
-        {% endblock labels %}
+        {% endblock attributes %}
 
       {% endfilter %}
 

@@ -13,7 +13,7 @@ Context:
 {% if obj.all_members %}
   {% block logs scoped %}
     {#- Logging block.
-    
+
     This block can be used to log debug messages, deprecation messages, warnings, etc.
     -#}
     {{ log.debug("Rendering children of " + obj.path) }}
@@ -37,20 +37,20 @@ Context:
           {% set extra_level = 0 %}
         {% endif %}
 
-        {% with attributes = obj.attributes|filter_objects(
+        {% with properties = obj.properties|filter_objects(
             filters=config.filters,
             members_list=members_list,
             inherited_members=config.inherited_members,
             keep_no_docstrings=config.show_if_no_docstring,
           ) %}
-          {% if attributes %}
+          {% if properties %}
             {% if config.show_category_heading %}
               {% filter heading(heading_level, id=html_id ~ "-properties") %}Properties{% endfilter %}
             {% endif %}
             {% with heading_level = heading_level + extra_level %}
-              {% for attribute in attributes|order_members(config.members_order, members_list) %}
-                {% if members_list is not none or (not attribute.is_imported or attribute.is_public) %}
-                  {% include attribute|get_template with context %}
+              {% for property in properties|order_members(config.members_order, members_list) %}
+                {% if config.filters == "public" or members_list is not none or (not property.is_imported or property.is_public) %}
+                  {% include property|get_template with context %}
                 {% endif %}
               {% endfor %}
             {% endwith %}
@@ -69,7 +69,7 @@ Context:
             {% endif %}
             {% with heading_level = heading_level + extra_level %}
               {% for class in classes|order_members(config.members_order, members_list) %}
-                {% if members_list is not none or (not class.is_imported or class.is_public) %}
+                {% if config.filters == "public" or members_list is not none or (not class.is_imported or class.is_public) %}
                   {% include class|get_template with context %}
                 {% endif %}
               {% endfor %}
@@ -90,7 +90,7 @@ Context:
             {% with heading_level = heading_level + extra_level %}
               {% for function in functions|order_members(config.members_order, members_list) %}
                 {% if not (obj.kind.value == "class" and function.name == "__init__" and config.merge_init_into_class) %}
-                  {% if members_list is not none or (not function.is_imported or function.is_public) %}
+                  {% if config.filters == "public" or members_list is not none or (not function.is_imported or function.is_public) %}
                     {% include function|get_template with context %}
                   {% endif %}
                 {% endif %}
@@ -132,8 +132,8 @@ Context:
                 {% filter heading(heading_level, id=html_id ~ "-namespaces") %}Modules{% endfilter %}
               {% endif %}
               {% with heading_level = heading_level + extra_level %}
-                {% for module in modules|order_members(config.members_order.alphabetical, members_list) %}
-                  {% if members_list is not none or (not module.is_alias or module.is_public) %}
+                {% for module in modules|order_members("alphabetical", members_list) %}
+                  {% if config.filters == "public" or members_list is not none or (not module.is_alias or module.is_public) %}
                     {% include module|get_template with context %}
                   {% endif %}
                 {% endfor %}
@@ -158,7 +158,7 @@ Context:
 
         {% if not (obj.is_class and child.name == "__init__" and config.merge_init_into_class) %}
 
-          {% if members_list is not none or child.is_public %}
+          {% if config.filters == "public" or members_list is not none or child.is_public %}
             {% if child.is_attribute %}
               {% with attribute = child %}
                 {% include attribute|get_template with context %}
