@@ -7,7 +7,7 @@ import sys
 from dataclasses import field, fields
 from typing import TYPE_CHECKING, Annotated, Any, Literal
 
-from mkdocstrings.loggers import get_logger
+from mkdocstrings import get_logger
 
 # YORE: EOL 3.10: Replace block with line 2.
 if sys.version_info >= (3, 11):
@@ -35,17 +35,6 @@ try:
 
     if getattr(pydantic, "__version__", "1.").startswith("1."):
         raise ImportError  # noqa: TRY301
-
-    if sys.version_info < (3, 10):
-        try:
-            import eval_type_backport  # noqa: F401
-        except ImportError:
-            logger.debug(
-                "Pydantic needs the `eval-type-backport` package to be installed "
-                "for modern type syntax to work on Python 3.9. "
-                "Deactivating Pydantic validation for Python handler options.",
-            )
-            raise
 
     from inspect import cleandoc
 
@@ -81,7 +70,6 @@ except ImportError:
 
 if TYPE_CHECKING:
     from collections.abc import MutableMapping
-
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -177,7 +165,6 @@ class GoogleStyleOptions:
     ] = True
 
 
-
 @dataclass(frozen=True, kw_only=True)
 class NumpyStyleOptions:
     """Numpy style docstring options."""
@@ -210,11 +197,9 @@ class NumpyStyleOptions:
     ] = True
 
 
-
 @dataclass(frozen=True, kw_only=True)
 class SphinxStyleOptions:
     """Sphinx style docstring options."""
-
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -258,7 +243,6 @@ class PerStyleOptions:
         if "sphinx" in data:
             data["sphinx"] = SphinxStyleOptions(**data["sphinx"])
         return cls(**data)
-
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -309,7 +293,6 @@ class AutoStyleOptions:
         return cls(**data)
 
 
-
 @dataclass(frozen=True, kw_only=True)
 class SummaryOption:
     """Summary option."""
@@ -349,7 +332,6 @@ class SummaryOption:
             description="Whether to render summaries of namespaces.",
         ),
     ] = False
-
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -402,7 +384,9 @@ class MatlabInputOptions:
             to lower members in the hierarchy).
             """,
         ),
-    ] = field(default_factory=lambda: ["!^delete$|^disp$"],)
+    ] = field(
+        default_factory=lambda: ["!^delete$|^disp$"],
+    )
 
     group_by_category: Annotated[
         bool,
@@ -633,11 +617,11 @@ class MatlabInputOptions:
         ),
     ] = False
 
-    show_labels: Annotated[
+    show_attributes: Annotated[
         bool,
         Field(
             group="docstrings",
-            description="Whether to show labels of the members.",
+            description="Whether to show attributes of the members.",
         ),
     ] = True
 
@@ -789,9 +773,13 @@ class MatlabInputOptions:
         if "summary" in data:
             summary = data["summary"]
             if summary is True:
-                summary = SummaryOption(properties=True, functions=True, classes=True, namespaces=True)
+                summary = SummaryOption(
+                    properties=True, functions=True, classes=True, namespaces=True
+                )
             elif summary is False:
-                summary = SummaryOption(properties=False, functions=False, classes=False, namespaces=False)
+                summary = SummaryOption(
+                    properties=False, functions=False, classes=False, namespaces=False
+                )
             else:
                 summary = SummaryOption(**summary)
             data["summary"] = summary
@@ -818,7 +806,8 @@ class MatlabOptions(MatlabInputOptions):  # type: ignore[override,unused-ignore]
         """Create an instance from a dictionary."""
         if "filters" in data:
             data["filters"] = [
-                (re.compile(filtr.lstrip("!")), filtr.startswith("!")) for filtr in data["filters"] or ()
+                (re.compile(filtr.lstrip("!")), filtr.startswith("!"))
+                for filtr in data["filters"] or ()
             ]
         return super().coerce(**data)
 
@@ -908,6 +897,7 @@ class MatlabConfig(MatlabInputConfig):  # type: ignore[override,unused-ignore]
         """Coerce data."""
         if "inventories" in data:
             data["inventories"] = [
-                Inventory(url=inv) if isinstance(inv, str) else Inventory(**inv) for inv in data["inventories"]
+                Inventory(url=inv) if isinstance(inv, str) else Inventory(**inv)
+                for inv in data["inventories"]
             ]
         return data

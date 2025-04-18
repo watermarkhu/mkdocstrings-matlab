@@ -45,7 +45,7 @@ class Docstring(GriffeDocstring):
     A class to represent a docstring with additional sections.
 
     This class extends the GriffeDocstring class to include extra sections
-    that can be added to the parsed docstring.
+    that can be added to the parsed docstring.A
 
     Attributes:
         _suffixes (list[DocstringSection]): A list to store additional docstring sections.
@@ -142,10 +142,17 @@ class MatlabObject(Object):
             **kwargs: Arbitrary keyword arguments.
         """
         self.path_collection: "PathsCollection | None" = path_collection
-        lines_collection = (
-            path_collection.lines_collection if path_collection is not None else None
-        )
+        lines_collection = path_collection.lines_collection if path_collection is not None else None
         super().__init__(*args, lines_collection=lines_collection, **kwargs)
+
+
+    @property
+    def attributes(self) -> set[str]:
+        return set()
+
+    @property
+    def properties(self) -> dict[str, "Property"]:
+        return {name: member for name, member in self.all_members.items() if member.kind is Kind.PROPERTY} 
 
     @property
     def namespaces(self) -> dict[str, "Namespace"]:
@@ -154,9 +161,7 @@ class MatlabObject(Object):
     @property
     def scripts(self) -> dict[str, "Script"]:
         return {
-            name: member
-            for name, member in self.all_members.items()
-            if member.kind is Kind.SCRIPT
+            name: member for name, member in self.all_members.items() if member.kind is Kind.SCRIPT
         }  # type: ignore[misc]
 
     @property
@@ -264,9 +269,7 @@ class Parameter(MatlabMixin, GriffeParameter, MatlabObject):
         kind (ParameterKind | None): The kind of the parameter, which can be of type ParameterKind or None.
     """
 
-    def __init__(
-        self, *args: Any, kind: ParameterKind | None = None, **kwargs: Any
-    ) -> None:
+    def __init__(self, *args: Any, kind: ParameterKind | None = None, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.kind: ParameterKind | None = kind
 
@@ -312,7 +315,7 @@ class Class(MatlabMixin, PathMixin, GriffeClass, MatlabObject):
     This class extends `PathMixin`, `MatlabObject`, and `GriffeClass` to provide
     additional functionality for handling MATLAB class properties such as
     abstract, hidden, and sealed attributes. It also provides methods to retrieve
-    parameters, inherited members, and labels.
+    parameters, inherited members, and attributes.
 
     Attributes:
         abstract (bool): Indicates if the class is abstract.
@@ -373,11 +376,7 @@ class Class(MatlabMixin, PathMixin, GriffeClass, MatlabObject):
 
         inherited_members = {}
         for base in reversed(self.bases):
-            model = (
-                self.path_collection.resolve(str(base))
-                if self.path_collection
-                else None
-            )
+            model = self.path_collection.resolve(str(base)) if self.path_collection else None
             if model is None:
                 # TODO Perhaps issue a warning here?
                 continue
@@ -392,18 +391,18 @@ class Class(MatlabMixin, PathMixin, GriffeClass, MatlabObject):
         return inherited_members
 
     @property
-    def labels(self) -> set[str]:
-        labels = set()
+    def attributes(self) -> set[str]:
+        attributes = set()
         if self.Abstract:
-            labels.add("Abstract")
+            attributes.add("Abstract")
         if self.Hidden:
-            labels.add("Hidden")
+            attributes.add("Hidden")
         if self.Sealed:
-            labels.add("Sealed")
-        return labels
+            attributes.add("Sealed")
+        return attributes
 
-    @labels.setter
-    def labels(self, *args):
+    @attributes.setter
+    def attributes(self, *args):
         pass
 
     @property
@@ -423,6 +422,9 @@ class Classfolder(Class):
 
 
 class Property(MatlabMixin, Attribute, MatlabObject):
+
+    kind = Kind.PROPERTY
+
     def __init__(
         self,
         *args: Any,
@@ -470,8 +472,8 @@ class Property(MatlabMixin, Attribute, MatlabObject):
         return self.Private or self.Hidden
 
     @property
-    def labels(self) -> set[str]:
-        labels = set()
+    def attributes(self) -> set[str]:
+        attributes = set()
         for attr in [
             "AbortSet",
             "Abstract",
@@ -485,16 +487,15 @@ class Property(MatlabMixin, Attribute, MatlabObject):
             "WeakHandle",
         ]:
             if getattr(self, attr):
-                labels.add(attr)
+                attributes.add(attr)
         for attr in ["Access", "GetAccess", "SetAccess"]:
             if getattr(self, attr) != AccessEnum.public:
-                labels.add(f"{attr}={getattr(self, attr).value}")
-        return labels
+                attributes.add(f"{attr}={getattr(self, attr).value}")
+        return attributes
 
-    @labels.setter
-    def labels(self, *args):
+    @attributes.setter
+    def attributes(self, *args):
         pass
-
 
 class Function(MatlabMixin, PathMixin, GriffeFunction, MatlabObject):
     """
@@ -556,17 +557,17 @@ class Function(MatlabMixin, PathMixin, GriffeFunction, MatlabObject):
         return self.Private or self.Hidden
 
     @property
-    def labels(self) -> set[str]:
-        labels = set()
+    def attributes(self) -> set[str]:
+        attributes = set()
         for attr in ["Abstract", "Hidden", "Sealed", "Static"]:
             if getattr(self, attr):
-                labels.add(attr)
+                attributes.add(attr)
         if self.Access != AccessEnum.public:
-            labels.add(f"Access={self.Access.value}")
-        return labels
+            attributes.add(f"Access={self.Access.value}")
+        return attributes
 
-    @labels.setter
-    def labels(self, *args):
+    @attributes.setter
+    def attributes(self, *args):
         pass
 
 
@@ -591,9 +592,7 @@ class Folder(MatlabMixin, PathMixin, Module, MatlabObject):
     @property
     def namespaces(self) -> dict[str, "Namespace"]:
         return {
-            name: member
-            for name, member in self.members.items()
-            if isinstance(member, Namespace)
+            name: member for name, member in self.members.items() if isinstance(member, Namespace)
         }
 
     @property
@@ -622,11 +621,7 @@ class Namespace(MatlabMixin, PathMixin, Module, MatlabObject):
 
     @property
     def is_internal(self) -> bool:
-        return (
-            any(part == "+internal" for part in self.filepath.parts)
-            if self.filepath
-            else False
-        )
+        return any(part == "+internal" for part in self.filepath.parts) if self.filepath else False
 
     @property
     def is_namespace(self) -> bool:

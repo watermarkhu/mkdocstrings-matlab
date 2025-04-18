@@ -20,20 +20,20 @@ nav:
   - License: license.md
 - Usage:
   - usage/index.md
-  - Configuration options:
-    - General: usage/configuration/general.md
-    - Headings: usage/configuration/headings.md
-    - Members: usage/configuration/members.md
-    - Docstrings: usage/configuration/docstrings.md
-    - Signatures: usage/configuration/signatures.md
+  # - Configuration options:
+    # - General: usage/configuration/general.md
+    # - Headings: usage/configuration/headings.md
+    # - Members: usage/configuration/members.md
+    # - Docstrings: usage/configuration/docstrings.md
+    # - Signatures: usage/configuration/signatures.md
   - Docstring styles:
     - Google: usage/docstrings/google.md
     - Numpy: usage/docstrings/numpy.md
     - Sphinx: usage/docstrings/sphinx.md
 # # defer to gen-files + literate-nav
-- API reference:
-  - mkdocstrings_handlers:
-    - matlab: api.md
+# - API reference:
+#   - mkdocstrings_handlers:
+#     - matlab: api.md
 # - Development:
 #   - Contributing: contributing.md
 #   - Code of Conduct: code_of_conduct.md
@@ -155,7 +155,7 @@ plugins:
           filters: ["!^delete$|^disp$"]
           members_order: "source"
           summary: false
-          show_labels: true
+          show_attributes: true
 
           docstring_style: google
           docstring_section_style: table

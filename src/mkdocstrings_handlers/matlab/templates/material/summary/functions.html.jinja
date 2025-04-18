@@ -1,4 +1,4 @@
-{#- 👌 Summary of properties. -#}
+{#- 👌 Summary of functions/methods. -#}
 
 {% block logs scoped %}
   {#- Logging block.
@@ -7,8 +7,8 @@
   -#}
 {% endblock logs %}
 
-{% if not obj.docstring.parsed | selectattr("kind.value", "eq", "properties") | list %}
-  {% with section = obj.properties
+{% if not obj.docstring.parsed | selectattr("kind.value", "eq", "functions") | list %}
+  {% with section = obj.functions
       |filter_objects(
         filters=config.filters,
         members_list=members_list,
@@ -16,8 +16,8 @@
         keep_no_docstrings=config.show_if_no_docstring,
       )
       |order_members(config.members_order, members_list)
-      |as_properties_section(check_public=not members_list)
+      |as_functions_section(check_public=not members_list)
     %}
-    {% if section %}{% include "docstring/properties.html.jinja" with context %}{% endif %}
+    {% if section %}{% include "docstring/functions.html.jinja" with context %}{% endif %}
   {% endwith %}
 {% endif %}

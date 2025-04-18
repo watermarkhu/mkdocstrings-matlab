@@ -188,10 +188,3 @@ in the following pages:
 - [Docstrings options](configuration/docstrings.md): options related to docstrings (parsing and rendering)
 - [Signature options](configuration/signatures.md): options related to signatures and type annotations
 
-#### Options summary
-
-::: mkdocstrings_handlers.matlab.handler.MatlabHandler.default_config
-    handler: python
-    options:
-      show_root_heading: false
-      show_root_toc_entry: false

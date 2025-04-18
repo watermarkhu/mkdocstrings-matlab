@@ -93,7 +93,7 @@ plugins:
 
 MATLAB's [classes](https://mathworks.com/help/matlab/matlab_oop/class-attributes.html), [methods](https://mathworks.com/help/matlab/matlab_oop/method-attributes.html) and [properties](https://mathworks.com/help/matlab/matlab_oop/property-attributes.html) can be hidden by setting its attributes to `Hidden` or `Hidden=true`. By default, members that are specified as hidden will not be documented. 
 
-This takes precedence over [`members`][] and [`filters`][], and also applies for [`inherited_members`][]. This means that for any hidden member to be shown, `hidden_members` must be enabled, and further selection is possible via [`members`][] and [`filters`][]. Hidden members will be labeled `Hidden`, this can be disabled in [`show_labels`][]. 
+This takes precedence over [`members`][] and [`filters`][], and also applies for [`inherited_members`][]. This means that for any hidden member to be shown, `hidden_members` must be enabled, and further selection is possible via [`members`][] and [`filters`][]. Hidden members will be labeled `Hidden`, this can be disabled in [`show_attributes`][]. 
 
 ```yaml title="in mkdocs.yml (global configuration)"
 plugins:
@@ -180,7 +180,7 @@ ga -- no --> private
 ga -- yes --> public
 ```
 
-This takes precedence over [`members`][] and [`filters`][], and also applies for [`inherited_members`][]. This means that for any private member to be shown, `private_members` must be enabled, and further selection is possible via [`members`][] and [`filters`][]. Private members will be labeled with it access attribute setting, this can be disabled in [`show_labels`][]. 
+This takes precedence over [`members`][] and [`filters`][], and also applies for [`inherited_members`][]. This means that for any private member to be shown, `private_members` must be enabled, and further selection is possible via [`members`][] and [`filters`][]. Private members will be labeled with it access attribute setting, this can be disabled in [`show_attributes`][]. 
 
 ```yaml title="in mkdocs.yml (global configuration)"
 plugins:
@@ -699,7 +699,7 @@ plugins:
               summary:
                 functions: true
 
-## `show_labels`
+## `show_attributes`
 
 - **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
 <!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
@@ -712,13 +712,13 @@ plugins:
     handlers:
       matlab:
         options:
-          show_labels: true
+          show_attributes: true
 ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: mymembers.ThisClass
     options:
-      show_labels: false
+      show_attributes: false
 ```
 
 --8<-- "docs/snippets/+mymembers/mymembers.md"
@@ -731,13 +731,13 @@ plugins:
         ::: mymembers.ThisClass
             options:
               private_members: true
-              show_labels: true
+              show_attributes: true
         ```
 
         ::: mymembers.ThisClass
             options:
               private_members: true
-              show_labels: true
+              show_attributes: true
 
     === "Without show labels"
 
@@ -745,10 +745,10 @@ plugins:
         ::: mymembers.ThisClass
             options:
               private_members: true
-              show_labels: false
+              show_attributes: false
         ```
 
         ::: mymembers.ThisClass
             options:
               private_members: true
-              show_labels: false
+              show_attributes: false

@@ -3,7 +3,7 @@
 from collections import defaultdict, deque
 from copy import copy, deepcopy
 from pathlib import Path
-from typing import Any, Callable, Mapping, Sequence, TypeVar
+from typing import Any, Callable, Sequence, TypeVar
 
 from _griffe.collections import LinesCollection as GLC
 from _griffe.collections import ModulesCollection
@@ -31,6 +31,7 @@ from mkdocstrings_handlers.matlab.models import (
     _ParentGrabber,
 )
 from mkdocstrings_handlers.matlab.treesitter import FileParser
+from mkdocstrings_handlers.matlab.config import MatlabOptions
 
 PathType = TypeVar("PathType", bound=PathMixin)
 
@@ -69,11 +70,7 @@ class PathGlobber:
                 self._glob(member)
             elif member.is_dir() and member.stem[0] == "@":
                 self._paths.append(member)
-            elif (
-                member.is_file()
-                and member.suffix == ".m"
-                and member.name != "Contents.m"
-            ):
+            elif member.is_file() and member.suffix == ".m" and member.name != "Contents.m":
                 self._paths.append(member)
 
     def max_stem_length(self) -> int:
@@ -105,7 +102,6 @@ class PathsCollection(ModulesCollection):
     Args:
         matlab_path (Sequence[str | Path]): A list of strings or Path objects representing the MATLAB paths.
         recursive (bool, optional): If True, recursively adds all subdirectories of the given paths to the search path. Defaults to False.
-        config (Mapping, optional): Configuration settings for the PathsCollection. Defaults to {}.
         config_path (Path | None, optional): The path to the configuration file. Defaults to None.
 
     Methods:
@@ -132,7 +128,6 @@ class PathsCollection(ModulesCollection):
         self,
         matlab_path: Sequence[str | Path],
         recursive: bool = False,
-        config: Mapping = {},
         config_path: Path | None = None,
     ) -> None:
         """
@@ -154,8 +149,6 @@ class PathsCollection(ModulesCollection):
         self._members: dict[Path, list[tuple[str, Path]]] = defaultdict(list)
         self._folders: dict[Path, LazyModel] = {}
         self._config_path = config_path
-
-        self.config = config
         self.lines_collection = LinesCollection()
 
         for path in matlab_path:
@@ -168,11 +161,7 @@ class PathsCollection(ModulesCollection):
             for identifier, paths in self._mapping.items()
         }
 
-    def resolve(
-        self,
-        identifier: str,
-        config: Mapping = {},
-    ):
+    def resolve(self, identifier: str, options: MatlabOptions = MatlabOptions()):
         """
         Resolve an identifier to a MatlabMixin model.
 
@@ -183,7 +172,7 @@ class PathsCollection(ModulesCollection):
 
         Args:
             identifier (str): The identifier to resolve.
-            config (Mapping, optional): Configuration options to update the model. Defaults to an empty dictionary.
+            options (MatlabOptions): Configuration options to update the model. Defaults to an empty dictionary.
 
         Returns:
             MatlabMixin or None: The resolved MatlabMixin model if found, otherwise None.
@@ -193,7 +182,7 @@ class PathsCollection(ModulesCollection):
         if identifier in self._mapping:
             model = self._models[self._mapping[identifier][0]].model()
             if model is not None:
-                model = self.update_model(model, config)
+                model = self.update_model(model, options)
 
         elif self._config_path is not None and "/" in identifier:
             absolute_path = (self._config_path / Path(identifier)).resolve()
@@ -217,7 +206,7 @@ class PathsCollection(ModulesCollection):
             model = None
             name_parts = identifier.split(".")
             if len(name_parts) > 1:
-                base = self.resolve(".".join(name_parts[:-1]), config=config)
+                base = self.resolve(".".join(name_parts[:-1]), options)
                 if base is None or name_parts[-1] not in base.members:
                     model = None
                 else:
@@ -229,7 +218,7 @@ class PathsCollection(ModulesCollection):
             return model
         return None
 
-    def update_model(self, model: MatlabMixin, config: Mapping) -> MatlabMixin:
+    def update_model(self, model: MatlabMixin, options: MatlabOptions) -> MatlabMixin:
         """
         Update the given model based on the provided configuration.
 
@@ -249,8 +238,10 @@ class PathsCollection(ModulesCollection):
 
         # Update docstring parser and parser options
         if hasattr(model, "docstring") and model.docstring is not None:
-            model.docstring.parser = config.get("docstring_style", "google")
-            model.docstring.parser_options = config.get("docstring_options", {})
+            model.docstring.parser = options.docstring_style
+            model.docstring.parser_options = (
+                {} if options.docstring_options is None else options.docstring_options
+            )
 
         # Patch docstring section titles
         if model.docstring is not None:
@@ -274,15 +265,10 @@ class PathsCollection(ModulesCollection):
         if (
             isinstance(model, Function)
             and model.docstring is not None
-            and any(
-                isinstance(doc, DocstringSectionReturns)
-                for doc in model.docstring.parsed
-            )
+            and any(isinstance(doc, DocstringSectionReturns) for doc in model.docstring.parsed)
         ):
             section = next(
-                doc
-                for doc in model.docstring.parsed
-                if isinstance(doc, DocstringSectionReturns)
+                doc for doc in model.docstring.parsed if isinstance(doc, DocstringSectionReturns)
             )
             for returns in section.value:
                 if not isinstance(returns.annotation, Expr):
@@ -293,20 +279,18 @@ class PathsCollection(ModulesCollection):
         # such as adding new sections to the docstring or editing its members.abs
         # Thus, we need to copy the model to avoid editing the original model
         alias = copy(model)
-        alias.docstring = (
-            deepcopy(model.docstring) if model.docstring is not None else None
-        )
+        alias.docstring = deepcopy(model.docstring) if model.docstring is not None else None
         alias.members = {key: value for key, value in model.members.items()}
         if isinstance(alias, Class):
             alias._inherited_members = None
 
         for name, member in getattr(alias, "members", {}).items():
-            alias.members[name] = self.update_model(member, config)
+            alias.members[name] = self.update_model(member, options)
 
         # Merge constructor docstring into class
         if (
             isinstance(alias, Class)
-            and config.get("merge_constructor_into_class", False)
+            and options.merge_constructor_into_class
             and alias.name in alias.members
             and alias.members[alias.name].docstring is not None
         ):
@@ -315,13 +299,13 @@ class PathsCollection(ModulesCollection):
                 if alias.docstring is None:
                     alias.docstring = Docstring("", parent=alias)
 
-                if config.get("merge_constructor_ignore_summary", False):
+                if options.merge_constructor_ignore_summary:
                     alias.docstring._suffixes.extend(constructor.docstring.parsed[1:])
                 else:
                     alias.docstring._suffixes.extend(constructor.docstring.parsed)
 
         # Hide hidden members (methods and properties)
-        hidden_members = config.get("hidden_members", False)
+        hidden_members = options.hidden_members
         if isinstance(hidden_members, bool):
             filter_hidden = not hidden_members
             show_hidden = []
@@ -333,25 +317,17 @@ class PathsCollection(ModulesCollection):
                 key: value
                 for key, value in alias.members.items()
                 if not getattr(value, "Hidden", False)
-                or (
-                    show_hidden
-                    and getattr(value, "Hidden", False)
-                    and key in show_hidden
-                )
+                or (show_hidden and getattr(value, "Hidden", False) and key in show_hidden)
             }
             alias._inherited_members = {
                 key: value
                 for key, value in alias.inherited_members.items()
                 if not getattr(value, "Hidden", False)
-                or (
-                    show_hidden
-                    and getattr(value, "Hidden", False)
-                    and key in show_hidden
-                )
+                or (show_hidden and getattr(value, "Hidden", False) and key in show_hidden)
             }
 
         # Hide private members (methods and properties)
-        private_members = config.get("private_members", False)
+        private_members = options.private_members
         if isinstance(private_members, bool):
             filter_private = not private_members
             show_private = []
@@ -363,41 +339,31 @@ class PathsCollection(ModulesCollection):
                 key: value
                 for key, value in alias.members.items()
                 if not getattr(value, "Private", False)
-                or (
-                    show_private
-                    and getattr(value, "Private", False)
-                    and key in show_private
-                )
+                or (show_private and getattr(value, "Private", False) and key in show_private)
             }
             alias._inherited_members = {
                 key: value
                 for key, value in alias.inherited_members.items()
                 if not getattr(value, "Private", False)
-                or (
-                    show_private
-                    and getattr(value, "Private", False)
-                    and key in show_private
-                )
+                or (show_private and getattr(value, "Private", False) and key in show_private)
             }
 
         # Create parameters and returns sections from argument blocks
         if (
             isinstance(alias, Function)
             and alias.docstring is not None
-            and config.get("parse_arguments", True)
+            and options.parse_arguments
             and (
-                config.get("show_docstring_input_arguments", True)
-                or config.get("show_docstring_name_value_arguments", True)
-                or config.get("show_docstring_output_arguments", True)
+                options.show_docstring_input_arguments
+                or options.show_docstring_name_value_arguments
+                or options.show_docstring_output_arguments
             )
         ):
             docstring_parameters = any(
-                isinstance(doc, DocstringSectionParameters)
-                for doc in alias.docstring.parsed
+                isinstance(doc, DocstringSectionParameters) for doc in alias.docstring.parsed
             )
             docstring_returns = any(
-                isinstance(doc, DocstringSectionReturns)
-                for doc in alias.docstring.parsed
+                isinstance(doc, DocstringSectionReturns) for doc in alias.docstring.parsed
             )
 
             if not docstring_parameters and alias.parameters:
@@ -408,9 +374,7 @@ class PathsCollection(ModulesCollection):
                 arguments_parameters = False
 
             if not docstring_returns and alias.returns:
-                arguments_returns = any(
-                    ret.docstring is not None for ret in alias.returns
-                )
+                arguments_returns = any(ret.docstring is not None for ret in alias.returns)
             else:
                 arguments_returns = False
 
@@ -418,19 +382,15 @@ class PathsCollection(ModulesCollection):
             document_returns = not docstring_returns and arguments_returns
 
             standard_parameters = [
-                param
-                for param in alias.parameters
-                if param.kind is not ParameterKind.keyword_only
+                param for param in alias.parameters if param.kind is not ParameterKind.keyword_only
             ]
 
             keyword_parameters = [
-                param
-                for param in alias.parameters
-                if param.kind is ParameterKind.keyword_only
+                param for param in alias.parameters if param.kind is ParameterKind.keyword_only
             ]
 
             if (
-                config.get("show_docstring_input_arguments", True)
+                options.show_docstring_input_arguments
                 and document_parameters
                 and standard_parameters
             ):
@@ -439,9 +399,7 @@ class PathsCollection(ModulesCollection):
                         [
                             DocstringParameter(
                                 name=param.name,
-                                value=str(param.default)
-                                if param.default is not None
-                                else None,
+                                value=str(param.default) if param.default is not None else None,
                                 annotation=param.annotation,
                                 description=param.docstring.value
                                 if param.docstring is not None
@@ -453,7 +411,7 @@ class PathsCollection(ModulesCollection):
                 )
 
             if (
-                config.get("show_docstring_name_value_arguments", True)
+                options.show_docstring_name_value_arguments
                 and document_parameters
                 and keyword_parameters
             ):
@@ -462,9 +420,7 @@ class PathsCollection(ModulesCollection):
                         [
                             DocstringParameter(
                                 name=param.name,
-                                value=str(param.default)
-                                if param.default is not None
-                                else None,
+                                value=str(param.default) if param.default is not None else None,
                                 annotation=param.annotation,
                                 description=param.docstring.value
                                 if param.docstring is not None
@@ -476,14 +432,12 @@ class PathsCollection(ModulesCollection):
                     )
                 )
 
-            if config.get("show_docstring_output_arguments", True) and document_returns:
+            if options.show_docstring_output_arguments and document_returns:
                 returns = DocstringSectionReturns(
                     [
                         DocstringReturn(
                             name=param.name,
-                            value=str(param.default)
-                            if param.default is not None
-                            else None,
+                            value=str(param.default) if param.default is not None else None,
                             annotation=param.annotation,
                             description=param.docstring.value
                             if param.docstring is not None
@@ -497,7 +451,7 @@ class PathsCollection(ModulesCollection):
         # Add inheritance diagram to class docstring
         if (
             isinstance(alias, Class)
-            and config.get("show_inheritance_diagram", False)
+            and options.show_inheritance_diagram
             and (
                 (
                     alias.docstring is not None
@@ -705,9 +659,7 @@ class LazyModel:
 
     def _collect_parent(self, path: Path) -> _ParentGrabber | None:
         if self.is_in_namespace:
-            grabber: Callable[[], MatlabMixin | None] = self._path_collection._models[
-                path
-            ].model
+            grabber: Callable[[], MatlabMixin | None] = self._path_collection._models[path].model
             parent = _ParentGrabber(grabber)
         else:
             parent = None

@@ -3,10 +3,19 @@
 from _griffe.docstrings import google, numpy
 from _griffe.enumerations import DocstringSectionKind
 
-from mkdocstrings_handlers.matlab import collect, handler, models, treesitter
-from mkdocstrings_handlers.matlab.handler import get_handler
+from mkdocstrings_handlers.matlab import collect, models, treesitter
+from mkdocstrings_handlers.matlab.handler import MatlabHandler, get_handler
+from mkdocstrings_handlers.matlab.config import MatlabConfig, MatlabOptions
 
-__all__ = ["get_handler", "collect", "handler", "models", "treesitter"]
+__all__ = [
+    "MatlabHandler",
+    "MatlabConfig",
+    "MatlabOptions",
+    "get_handler",
+    "collect",
+    "models",
+    "treesitter",
+]
 
 
 # Add custom sections to the numpy and google docstring parsers

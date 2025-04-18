@@ -1,6 +1,6 @@
-{#- Template for "Namespaces" sections in docstrings.
+{#- Template for "Classes" sections in docstrings.
 
-This template renders a list of documented namespaces in the format
+This template renders a list of documented classes in the format
 specified with the [`docstring_section_style`][] configuration option.
 
 Context:
@@ -12,7 +12,7 @@ Context:
 
   This block can be used to log debug messages, deprecation messages, warnings, etc.
   -#}
-  {{ log.debug("Rendering namespaces section") }}
+  {{ log.debug("Rendering classes section") }}
 {% endblock logs %}
 
 {# YORE: Bump 2: Replace `"|get_template` with `.html.jinja"` within line. #}
@@ -22,7 +22,7 @@ Context:
 {% if config.docstring_section_style == "table" %}
   {% block table_style scoped %}
     {#- Block for the `table` section style. -#}
-    <p><span class="doc-section-title">{{ section.title or "Namespaces:" }}</span></p>
+    <p><span class="doc-section-title">{{ section.title or lang.t("Classes:") }}</span></p>
     <table>
       <thead>
         <tr>
@@ -31,12 +31,12 @@ Context:
         </tr>
       </thead>
       <tbody>
-        {% for module in section.value %}
+        {% for class in section.value %}
           <tr class="doc-section-item">
-            <td><code><autoref identifier="{{ obj.path }}.{{ module.name }}" optional hover>{{ module.name }}</autoref></code></td>
+            <td><code><autoref identifier="{{ obj.path }}.{{ class.name }}" optional hover>{{ class.name }}</autoref></code></td>
             <td>
               <div class="doc-md-description">
-                {{ module.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
+                {{ class.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
               </div>
             </td>
           </tr>
@@ -47,14 +47,14 @@ Context:
 {% elif config.docstring_section_style == "list" %}
   {% block list_style scoped %}
     {#- Block for the `list` section style. -#}
-    <p><span class="doc-section-title">{{ section.title or "Namespaces:" }}</span></p>
+    <p><span class="doc-section-title">{{ section.title or lang.t("Classes:") }}</span></p>
     <ul>
-      {% for module in section.value %}
+      {% for class in section.value %}
         <li class="doc-section-item field-body">
-          <b><code><autoref identifier="{{ obj.path }}.{{ module.name }}" optional hover>{{ module.name }}</autoref></code></b>
+          <b><code><autoref identifier="{{ obj.path }}.{{ class.name }}" optional hover>{{ class.name }}</autoref></code></b>
           –
           <div class="doc-md-description">
-            {{ module.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
+            {{ class.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
           </div>
         </li>
       {% endfor %}
@@ -66,17 +66,17 @@ Context:
     <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">{{ (section.title or "NAMESPACE:").rstrip(":").upper() }}</span></th>
+          <th><span class="doc-section-title">{{ (section.title or lang.t("CLASS")).rstrip(":").upper() }}</span></th>
           <th><span>{{ lang.t("DESCRIPTION") }}</span></th>
         </tr>
       </thead>
       <tbody>
-        {% for module in section.value %}
+        {% for class in section.value %}
           <tr class="doc-section-item">
-            <td><code><autoref identifier="{{ obj.path }}.{{ module.name }}" optional hover>{{ module.name }}</autoref></code></td>
-            <td class="doc-module-details">
+            <td><code><autoref identifier="{{ obj.path }}.{{ class.name }}" optional hover>{{ class.name }}</autoref></code></td>
+            <td class="doc-class-details">
               <div class="doc-md-description">
-                {{ module.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
+                {{ class.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
               </div>
             </td>
           </tr>
