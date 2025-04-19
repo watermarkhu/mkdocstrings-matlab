@@ -120,8 +120,6 @@ class PathsCollection(ModulesCollection):
         rm_path(path: str | Path, recursive: bool = False) -> list[Path]:
             Removes a path from the search path and updates the namespace and database accordingly.
 
-        get_inheritance_diagram(model: Class) -> DocstringSectionText | None:
-            Generates an inheritance diagram for the given class model.
     """
 
     def __init__(
@@ -232,13 +230,6 @@ class PathsCollection(ModulesCollection):
         Returns:
             MatlabMixin: The updated model.
         """
-
-        # Update docstring parser and parser options
-        if hasattr(model, "docstring") and model.docstring is not None:
-            model.docstring.parser = options.docstring_style
-            model.docstring.parser_options = (
-                {} if options.docstring_options is None else options.docstring_options
-            )
 
         # Patch docstring section titles
         if model.docstring is not None:
@@ -429,24 +420,6 @@ class PathsCollection(ModulesCollection):
                 )
                 alias.docstring._suffixes.append(returns)
 
-        # Add inheritance diagram to class docstring
-        if (
-            isinstance(alias, Class)
-            and options.show_inheritance_diagram
-            and (
-                (
-                    alias.docstring is not None
-                    and "Inheritance Diagram" not in alias.docstring.parsed
-                )
-                or alias.docstring is None
-            )
-        ):
-            diagram = self.get_inheritance_diagram(alias)
-            if diagram is not None:
-                if alias.docstring is None:
-                    alias.docstring = Docstring("", parent=alias)
-                alias.docstring._prefixes.append(diagram)
-
         return alias
 
     def addpath(self, path: str | Path, to_end: bool = False, recursive: bool = False):
@@ -573,11 +546,11 @@ class LazyModel:
         model: Collects and returns the MATLAB object model..
     """
 
-    def __init__(self, path: Path, path_collection: PathsCollection):
+    def __init__(self, path: Path, paths_collection: PathsCollection):
         self._path: Path = path
         self._model: MatlabMixin | None = None
-        self._path_collection: PathsCollection = path_collection
-        self._lines_collection: LinesCollection = path_collection.lines_collection
+        self._paths_collection: PathsCollection = paths_collection
+        self._lines_collection: LinesCollection = paths_collection.lines_collection
 
     @property
     def is_folder(self) -> bool:
@@ -640,7 +613,7 @@ class LazyModel:
 
     def _collect_parent(self, path: Path) -> _ParentGrabber | None:
         if self.is_in_namespace:
-            grabber: Callable[[], MatlabMixin | None] = self._path_collection._models[path].model
+            grabber: Callable[[], MatlabMixin | None] = self._paths_collection._models[path].model
             parent = _ParentGrabber(grabber)
         else:
             parent = None
@@ -648,14 +621,14 @@ class LazyModel:
 
     def _collect_path(self, path: Path, **kwargs: Any) -> MatlabMixin:
         file = FileParser(path)
-        model = file.parse(path_collection=self._path_collection, **kwargs)
+        model = file.parse(paths_collection=self._paths_collection, **kwargs)
         self._lines_collection[path] = file.content.split("\n")
         return model
 
     def _collect_directory(self, path: Path, model: PathType) -> PathType:
         for member in path.iterdir():
             if member.is_dir() and member.name[0] in ["+", "@"]:
-                submodel = self._path_collection._models[member].model()
+                submodel = self._paths_collection._models[member].model()
                 if submodel is not None:
                     model.members[submodel.name] = submodel
 
@@ -664,7 +637,7 @@ class LazyModel:
                     contentsfile = self._collect_path(member)
                     model.docstring = contentsfile.docstring
                 else:
-                    submodel = self._path_collection._models[member].model()
+                    submodel = self._paths_collection._models[member].model()
                     if submodel is not None:
                         model.members[submodel.name] = submodel
 
@@ -695,12 +668,12 @@ class LazyModel:
 
     def _collect_namespace(self, path: Path) -> Namespace:
         name = self.name[1:].split(".")[-1]
-        model = Namespace(name, filepath=path, path_collection=self._path_collection)
+        model = Namespace(name, filepath=path, paths_collection=self._paths_collection)
         return self._collect_directory(path, model)
 
     def _collect_folder(self, path: Path) -> Folder:
         name = path.stem
-        model = Folder("/" + name, filepath=path, path_collection=self._path_collection)
+        model = Folder("/" + name, filepath=path, paths_collection=self._paths_collection)
         return self._collect_directory(path, model)
 
     def _collect_readme_md(self, path, parent: PathMixin) -> Docstring | None:

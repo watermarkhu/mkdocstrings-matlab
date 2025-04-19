@@ -86,10 +86,10 @@ class MatlabHandler(BaseHandler):
             )
 
         self._paths = full_paths
-        self._path_collection: PathsCollection = PathsCollection(
+        self._paths_collection: PathsCollection = PathsCollection(
             full_paths, recursive=config.paths_recursive, config_path=base_dir
         )
-        self._lines_collection: LinesCollection = self._path_collection.lines_collection
+        self._lines_collection: LinesCollection = self._paths_collection.lines_collection
 
     def get_options(self, local_options: Mapping[str, Any]) -> HandlerOptions:
         """Get combined default, global and local options.
@@ -163,6 +163,7 @@ class MatlabHandler(BaseHandler):
         self.env.filters["as_functions_section"] = rendering.do_as_functions_section
         self.env.filters["as_classes_section"] = rendering.do_as_classes_section
         self.env.filters["as_namespaces_section"] = rendering.do_as_namespaces_section
+        self.env.filters["as_inheritance_diagram_section"] = rendering.do_as_inheritance_diagram_section
         self.env.filters["backlink_tree"] = rendering.do_backlink_tree
         self.env.globals["AutorefsHook"] = rendering.AutorefsHook
         self.env.tests["existing_template"] = (
@@ -188,7 +189,7 @@ class MatlabHandler(BaseHandler):
         if options == {}:
             options = self.get_options({})
         try:
-            model = self._path_collection.resolve(identifier)
+            model = self._paths_collection.resolve(identifier)
         except SyntaxError as ex:
             msg = str(ex)
             if ex.text:

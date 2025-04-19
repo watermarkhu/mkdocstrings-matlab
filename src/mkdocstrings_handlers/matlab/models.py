@@ -124,13 +124,13 @@ class MatlabObject(Object):
     Represents a Matlab object with associated docstring, path collection, and parent object.
 
     Attributes:
-        path_collection (PathsCollection | None): The collection of paths related to the Matlab object.
+        paths_collection (PathsCollection | None): The collection of paths related to the Matlab object.
     """
 
     def __init__(
         self,
         *args,
-        path_collection: "PathsCollection | None" = None,
+        paths_collection: "PathsCollection | None" = None,
         **kwargs,
     ) -> None:
         """
@@ -138,11 +138,11 @@ class MatlabObject(Object):
 
         Args:
             *args: Variable length argument list.
-            path_collection (PathsCollection | None): The collection of paths related to the object.
+            paths_collection (PathsCollection | None): The collection of paths related to the object.
             **kwargs: Arbitrary keyword arguments.
         """
-        self.path_collection: "PathsCollection | None" = path_collection
-        lines_collection = path_collection.lines_collection if path_collection is not None else None
+        self.paths_collection: "PathsCollection | None" = paths_collection
+        lines_collection = paths_collection.lines_collection if paths_collection is not None else None
         super().__init__(*args, lines_collection=lines_collection, **kwargs)
 
 
@@ -373,7 +373,7 @@ class Class(MatlabMixin, PathMixin, GriffeClass, MatlabObject):
             return self._base_classes
         base_classes = []
         for base in self.bases:
-            model = self.path_collection.resolve(str(base)) if self.path_collection else None
+            model = self.paths_collection.resolve(str(base)) if self.paths_collection else None
             if model is not None:
                 base_classes.append(model)
                 # TODO Perhaps issue a warning here?
@@ -451,7 +451,6 @@ class Classfolder(Class):
     """
     A class representing a MATLAB classfolder
     """
-
     pass
 
 

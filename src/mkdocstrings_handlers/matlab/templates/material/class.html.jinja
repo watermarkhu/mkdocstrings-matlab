@@ -1,4 +1,4 @@
-{#- Template for MATLAB classes.
+{#- 👌 Template for MATLAB classes.
 
 This template renders a MATLAB class.
 
@@ -140,6 +140,15 @@ Context:
           {% endif %}
         {% endblock bases %}
 
+        {% block diagram scoped %}
+
+        {% endblock diagram %}
+        {# This block renders the inheritance diagram #}
+          {% if config.show_inheritance_diagram and class.bases %}
+            {% with section = class | as_inheritance_diagram_section %}
+              {{ section.value|convert_markdown(heading_level, html_id) }}
+            {% endwith %}
+          {% endif %}
         {% block docstring scoped %}
           {#- Docstring block.
 

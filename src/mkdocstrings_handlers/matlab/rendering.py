@@ -5,7 +5,6 @@ from __future__ import annotations
 import random
 import re
 import string
-import subprocess
 import sys
 import warnings
 from collections import defaultdict
@@ -28,6 +27,7 @@ from griffe import (
     DocstringSectionClasses,
     DocstringSectionFunctions,
     DocstringSectionModules,
+    DocstringSectionText,
     Object,
 )
 from jinja2 import TemplateNotFound, pass_context, pass_environment
@@ -35,12 +35,12 @@ from markupsafe import Markup
 from mkdocs_autorefs import AutorefsHookInterface, Backlink, BacklinkCrumb
 from mkdocstrings import get_logger
 
-from mkdocstrings_handlers.matlab.models import Property, Namespace
+from mkdocstrings_handlers.matlab.models import Property, Namespace, Class
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Iterator, Sequence
 
-    from griffe import Attribute, Class, Function
+    from griffe import Attribute, Function
     from jinja2 import Environment
     from jinja2.runtime import Context
     from mkdocstrings import CollectorItem
@@ -668,6 +668,43 @@ def do_as_namespaces_section(
             if not check_public or namespace.is_public
         ],
     )
+
+
+def do_as_inheritance_diagram_section(model: Class) -> DocstringSectionText | None:
+    def get_id(str: str) -> str:
+        return str.replace(".", "_")
+
+    def get_nodes(model: Class, nodes: set[str] = set()) -> set[str]:
+        nodes.add(f"   {get_id(model.name)}[{model.name}]")
+        for base in [str(base) for base in model.bases]:
+            super = model.paths_collection.resolve(base)
+            if super is None:
+                nodes.add(f"   {get_id(base)}[{base}]")
+            else:
+                if isinstance(super, Class):
+                    get_nodes(super, nodes)
+        return nodes
+
+    def get_links(model: Class, links: set[str] = set()) -> set[str]:
+        for base in [str(base) for base in model.bases]:
+            super = model.paths_collection.resolve(base)
+            if super is None:
+                links.add(f"   {get_id(base)} --> {get_id(model.name)}")
+            else:
+                links.add(f"   {get_id(super.name)} --> {get_id(model.name)}")
+                if isinstance(super, Class):
+                    get_links(super, links)
+        return links
+
+    nodes = get_nodes(model)
+    if len(nodes) == 1:
+        return None
+
+    nodes_str = "\n".join(list(nodes))
+    links_str = "\n".join(list(get_links(model)))
+    section = f"```mermaid\nflowchart TB\n{nodes_str}\n{links_str}\n```"
+
+    return DocstringSectionText(section, title="Inheritance Diagram")
 
 
 class AutorefsHook(AutorefsHookInterface):
