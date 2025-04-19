@@ -1,6 +1,6 @@
 """Classes to represent MATLAB objects and their properties."""
 
-from typing import Any, TYPE_CHECKING, Callable
+from typing import Any, TYPE_CHECKING, Callable, Optional
 from functools import cached_property
 from pathlib import Path
 from griffe import (
@@ -341,7 +341,9 @@ class Class(MatlabMixin, PathMixin, GriffeClass, MatlabObject):
         self.Abstract: bool = Abstract
         self.Hidden: bool = Hidden
         self.Sealed: bool = Sealed
-        self._inherited_members: dict[str, MatlabObject] | None = None
+        self._inherited_members: dict[str, MatlabObject] | False = False
+        self._constructor: "Function | None | False" = False
+        self._base_classes: list["Class"] | False = False
 
     @property
     def parameters(self) -> Parameters:
@@ -359,11 +361,48 @@ class Class(MatlabMixin, PathMixin, GriffeClass, MatlabObject):
             return Parameters()
         except KeyError:
             return Parameters()
+        
+    @property
+    def base_classes(self) -> list["Class"]:
+        """Retrieves a list of first order superclasses
+
+        This method resolves the superclass identifiers and returns a list of superclasses. 
+        This method does not return the full MRO, but only the first order superclasses.         
+        """
+        if self._base_classes is not False:
+            return self._base_classes
+        base_classes = []
+        for base in self.bases:
+            model = self.path_collection.resolve(str(base)) if self.path_collection else None
+            if model is not None:
+                base_classes.append(model)
+                # TODO Perhaps issue a warning here?
+        self._base_classes = base_classes
+        return base_classes
+
+        
+    @property
+    def constructor(self) -> "Function | None | False":
+        """Retrieves the constructor method of this class. 
+
+        This methods checks whether the current class implements a constructor. If not, it iterates
+        over the base classes in order to find their constructor methods. This will either return the
+        constructor method or None if no constructor method is defined. 
+        """
+        if self._constructor is not False:
+            return self._constructor
+        if self.name in self.all_members:
+            return self.all_members[self.name]
+        constructor = None
+        for model in self.base_classes:
+            if model.constructor:
+                constructor = model.constructor
+        self._constructor = constructor
+        return constructor
 
     @property
     def inherited_members(self) -> dict[str, MatlabObject]:
-        """
-        Retrieve a dictionary of inherited members from base classes.
+        """Retrieve a dictionary of inherited members from base classes.
 
         This method iterates over the base classes in reverse order, resolves their models,
         and collects members that are not already present in the current object's members.
@@ -371,17 +410,12 @@ class Class(MatlabMixin, PathMixin, GriffeClass, MatlabObject):
         Returns:
             dict[str, MatlabObject]: A dictionary where the keys are member names and the values are the corresponding MatlabObject instances.
         """
-        if self._inherited_members is not None:
+        if self._inherited_members is not False:
             return self._inherited_members
 
         inherited_members = {}
-        for base in reversed(self.bases):
-            model = self.path_collection.resolve(str(base)) if self.path_collection else None
-            if model is None:
-                # TODO Perhaps issue a warning here?
-                continue
-
-            for name, member in model.members.items():
+        for model in reversed(self.base_classes):
+            for name, member in model.all_members.items():
                 if name not in self.members:
                     inherited_members[name] = Alias(
                         name, target=member, parent=self, inherited=True

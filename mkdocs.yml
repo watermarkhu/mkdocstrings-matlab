@@ -162,7 +162,6 @@ plugins:
           docstring_section_style: table
           parse_arguments: true
           merge_constructor_into_class: false
-          merge_constructor_ignore_summary: false
           show_if_no_docstring: false
           show_docstring_description: true
           show_docstring_examples: true

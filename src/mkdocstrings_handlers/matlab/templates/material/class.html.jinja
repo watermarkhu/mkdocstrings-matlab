@@ -76,12 +76,12 @@ Context:
         {#- Signature block.
 
         This block renders the signature for the class.
-        Overloads of the `__init__` method are rendered if `merge_init_into_class` is enabled.
-        The actual `__init__` method signature is only rendered if `separate_signature` is also enabled.
+        Overloads of the constructor method are rendered if `merge_constructor_into_class` is enabled.
+        The actual constructor method signature is only rendered if `separate_signature` is also enabled.
         -#}
-        {% if config.merge_init_into_class %}
-          {% if "__init__" in all_members %}
-            {% with function = all_members["__init__"] %}
+        {% if config.merge_constructor_into_class %}
+          {% if class.name in all_members %}
+            {% with function = all_members[class.name] %}
               {% if function.overloads and config.show_overloads %}
                 <div class="doc-overloads">
                   {% for overload in function.overloads %}
@@ -132,8 +132,7 @@ Context:
               Bases: {% for expression in class.bases -%}
                 <code>
                   {%- with backlink_type = "subclassed-by" -%}
-                    {#- YORE: Bump 2: Replace `"|get_template` with `.html.jinja"` within line. -#}
-                    {%- include "expression"|get_template with context -%}
+                    {%- include "expression.html.jinja" with context -%}
                   {%- endwith -%}
                 </code>{% if not loop.last %}, {% endif %}
               {% endfor -%}
@@ -147,18 +146,16 @@ Context:
           This block renders the docstring for the class.
           -#}
           {% with docstring_sections = class.docstring.parsed %}
-            {# YORE: Bump 2: Replace `"|get_template` with `.html.jinja"` within line. #}
-            {% include "docstring"|get_template with context %}
+            {% include "docstring.html.jinja" with context %}
           {% endwith %}
-          {% if config.merge_init_into_class %}
-            {# We don't want to merge the inherited `__init__` method docstring into the class docstring #}
+          {% if config.merge_constructor_into_class and class.constructor %}
+            {# We don't want to merge the inherited constructor method docstring into the class docstring #}
             {# if such inherited method was not selected through `inherited_members`. #}
-            {% with check_members = all_members if (config.inherited_members is true or (config.inherited_members is iterable and "__init__" in config.inherited_members)) else class.members %}
-              {% if "__init__" in check_members and check_members["__init__"].has_docstring %}
-                {% with function = check_members["__init__"] %}
+            {% with check_members = all_members if (config.inherited_members is true or (config.inherited_members is iterable and class.constructor.name in config.inherited_members)) else class.members %}
+              {% if class.constructor in check_members and class.constructor.has_docstring %}
+                {% with function = class.constructor %}
                   {% with obj = function, docstring_sections = function.docstring.parsed %}
-                    {# YORE: Bump 2: Replace `"|get_template` with `.html.jinja"` within line. #}
-                    {% include "docstring"|get_template with context %}
+                    {% include "docstring.html.jinja" with context %}
                   {% endwith %}
                 {% endwith %}
               {% endif %}
@@ -175,8 +172,7 @@ Context:
 
           This block renders auto-summaries for classes, methods, and attributes.
           -#}
-          {# YORE: Bump 2: Replace `"|get_template` with `.html.jinja"` within line. #}
-          {% include "summary"|get_template with context %}
+          {% include "summary.html.jinja" with context %}
         {% endblock summary %}
 
         {% block source scoped %}
@@ -185,18 +181,18 @@ Context:
           This block renders the source code for the class.
           -#}
           {% if config.show_source %}
-            {% if config.merge_init_into_class %}
-              {% if "__init__" in all_members and all_members["__init__"].source %}
-                {% with init = all_members["__init__"] %}
+            {% if config.merge_constructor_into_class %}
+              {% if class.constructor and class.constructor.source %}
+                {% with constructor = class.constructor %}
                   <details class="quote">
                     <summary>Source code in <code>
-                      {%- if init.relative_filepath.is_absolute() -%}
-                        {{ init.relative_package_filepath }}
+                      {%- if constructor.relative_filepath.is_absolute() -%}
+                        {{ constructor.relative_package_filepath }}
                       {%- else -%}
-                        {{ init.relative_filepath }}
+                        {{ constructor.relative_filepath }}
                       {%- endif -%}
                     </code></summary>
-                    {{ init.source|highlight(language="python", linestart=init.lineno or 0, linenums=True) }}
+                    {{ constructor.source|highlight(language="matlab", linestart=constructor.lineno or 0, linenums=True) }}
                   </details>
                 {% endwith %}
               {% endif %}
@@ -209,7 +205,7 @@ Context:
                     {{ class.relative_filepath }}
                   {%- endif -%}
                 </code></summary>
-                {{ class.source|highlight(language="python", linestart=class.lineno or 0, linenums=True) }}
+                {{ class.source|highlight(language="matlab", linestart=class.lineno or 0, linenums=True) }}
               </details>
             {% endif %}
           {% endif %}
@@ -222,8 +218,7 @@ Context:
           -#}
           {% set root = False %}
           {% set heading_level = heading_level + 1 %}
-          {# YORE: Bump 2: Replace `"|get_template` with `.html.jinja"` within line. #}
-          {% include "children"|get_template with context %}
+          {% include "children.html.jinja" with context %}
         {% endblock children %}
       {% endblock contents %}
     </div>

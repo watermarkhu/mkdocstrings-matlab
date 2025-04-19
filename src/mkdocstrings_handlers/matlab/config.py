@@ -489,13 +489,6 @@ class MatlabInputOptions:
         ),
     ] = False
 
-    merge_constructor_ignore_summary: Annotated[
-        bool,
-        Field(
-            group="docstrings",
-            description="Whether to ignore the constructor summary when merging it into the class.",
-        ),
-    ] = False
 
     parameter_headings: Annotated[
         bool,

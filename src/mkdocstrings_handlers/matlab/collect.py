@@ -161,7 +161,7 @@ class PathsCollection(ModulesCollection):
             for identifier, paths in self._mapping.items()
         }
 
-    def resolve(self, identifier: str, options: MatlabOptions = MatlabOptions()):
+    def resolve(self, identifier: str):
         """
         Resolve an identifier to a MatlabMixin model.
 
@@ -172,7 +172,6 @@ class PathsCollection(ModulesCollection):
 
         Args:
             identifier (str): The identifier to resolve.
-            options (MatlabOptions): Configuration options to update the model. Defaults to an empty dictionary.
 
         Returns:
             MatlabMixin or None: The resolved MatlabMixin model if found, otherwise None.
@@ -181,8 +180,6 @@ class PathsCollection(ModulesCollection):
         # Find in global database
         if identifier in self._mapping:
             model = self._models[self._mapping[identifier][0]].model()
-            if model is not None:
-                model = self.update_model(model, options)
 
         elif self._config_path is not None and "/" in identifier:
             absolute_path = (self._config_path / Path(identifier)).resolve()
@@ -206,7 +203,7 @@ class PathsCollection(ModulesCollection):
             model = None
             name_parts = identifier.split(".")
             if len(name_parts) > 1:
-                base = self.resolve(".".join(name_parts[:-1]), options)
+                base = self.resolve(".".join(name_parts[:-1]))
                 if base is None or name_parts[-1] not in base.members:
                     model = None
                 else:
@@ -287,22 +284,6 @@ class PathsCollection(ModulesCollection):
         for name, member in getattr(alias, "members", {}).items():
             alias.members[name] = self.update_model(member, options)
 
-        # Merge constructor docstring into class
-        if (
-            isinstance(alias, Class)
-            and options.merge_constructor_into_class
-            and alias.name in alias.members
-            and alias.members[alias.name].docstring is not None
-        ):
-            constructor = alias.members.pop(alias.name)
-            if constructor.docstring is not None:
-                if alias.docstring is None:
-                    alias.docstring = Docstring("", parent=alias)
-
-                if options.merge_constructor_ignore_summary:
-                    alias.docstring._suffixes.extend(constructor.docstring.parsed[1:])
-                else:
-                    alias.docstring._suffixes.extend(constructor.docstring.parsed)
 
         # Hide hidden members (methods and properties)
         hidden_members = options.hidden_members

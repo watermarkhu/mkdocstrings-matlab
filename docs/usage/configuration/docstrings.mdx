@@ -279,7 +279,7 @@ plugins:
 
 Whether to merge the constructor method into the class' signature and docstring.
 
-By default, only the class name is rendered in headings. When merging, the constructor method parameters are added after the class name, like a signature, and the constructor method docstring is appended to the class' docstring. This option is well used in combination with the `merge_constructor_ignore_summary` option, to discard the first line of the constructor docstring which is not often useful.
+By default, only the class name is rendered in headings. When merging, the constructor method parameters are added after the class name, like a signature, and the constructor method docstring is appended to the class' docstring. 
 
 ```yaml title="in mkdocs.yml (global configuration)"
 plugins:
@@ -288,14 +288,12 @@ plugins:
       matlab:
         options:
           merge_constructor_into_class: true
-          merge_constructor_ignore_summary: true
 ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
     options:
       merge_constructor_into_class: true
-      merge_constructor_ignore_summary: true
 ```
 
 ??? code ":material-file-code: `Thing.m`"
@@ -306,33 +304,17 @@ plugins:
 
 ???+ preview
 
-    === "Merged, summary discarded"
+    === "Merged"
 
         ```markdown
         ::: Thing
             options:
               merge_constructor_into_class: true
-              merge_constructor_ignore_summary: true
         ```
 
         ::: Thing
             options:
               merge_constructor_into_class: true
-              merge_constructor_ignore_summary: true
-
-    === "Merged, summary kept"
-
-        ```markdown
-        ::: Thing
-            options:
-              merge_constructor_into_class: true
-              merge_constructor_ignore_summary: false
-        ```
-
-        ::: Thing
-            options:
-              merge_constructor_into_class: true
-              merge_constructor_ignore_summary: false
 
     === "Unmerged"
 

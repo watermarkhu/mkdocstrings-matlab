@@ -2,9 +2,12 @@
 
 from __future__ import annotations
 
+from contextlib import suppress
+from dataclasses import asdict
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, ClassVar
 
+from griffe import Parser, AliasResolutionError
 from mkdocs.exceptions import PluginError
 from mkdocstrings import (
     BaseHandler,
@@ -127,59 +130,6 @@ class MatlabHandler(BaseHandler):
 
         heading_level = options.heading_level
 
-        # summary = options.summary
-        # if summary is True:
-        #     options.summary = {
-        #         "attributes": True,
-        #         "functions": True,
-        #         "classes": True,
-        #         "modules": True,
-        #     }
-        # elif summary is False:
-        #     options.summary = {
-        #         "attributes": False,
-        #         "functions": False,
-        #         "classes": False,
-        #         "modules": False,
-        #     }
-        # else:
-        #     options.summary = {
-        #         "attributes": summary.get(
-        #             "properties", False
-        #         ),  # Map properties (MATLAB) to attributes (Python)
-        #         "functions": summary.get("functions", False),
-        #         "classes": summary.get("classes", False),
-        #         "modules": summary.get(
-        #             "namespaces", False
-        #         ),  # Map namespaces (MATLAB) to modules (Python)
-        #     }
-
-        # # Map docstring options
-        # options.show_docstring_attributes = config.get(
-        #     "show_docstring_properties", True
-        # )
-        # options.show_docstring_modules = config.get("show_docstring_namespaces", True)
-        # options.show_docstring_parameters = config.get(
-        #     "show_docstring_input_arguments", True
-        # )
-        # options.show_docstring_other_parameters = config.get(
-        #     "show_docstring_name_value_arguments", True
-        # )
-        # options.show_docstring_returns = config.get(
-        #     "show_docstring_output_arguments", True
-        # )
-
-        # # These settings must be present to avoid errors
-        # for setting in [
-        #     "merge_init_into_class",
-        #     "show_docstring_raises",
-        #     "show_docstring_receives",
-        #     "show_docstring_yields",
-        #     "show_docstring_warns",
-        # ]:
-        #     config[setting] = False
-        # options.line_length = 88
-
         return template.render(
             **{
                 "config": options,
@@ -238,17 +188,29 @@ class MatlabHandler(BaseHandler):
         if options == {}:
             options = self.get_options({})
         try:
-            model = self._path_collection.resolve(identifier, options=options)
+            model = self._path_collection.resolve(identifier)
         except SyntaxError as ex:
             msg = str(ex)
             if ex.text:
                 msg += ":\n" + ex.text
             raise CollectionError(msg) from ex
-        except Exception as ex:
+        except KeyError as ex:
+            raise CollectionError(str(ex)) from ex
+        except AliasResolutionError as ex:
             raise CollectionError(str(ex)) from ex
 
         if model is None:
             raise CollectionError(f"Identifier '{identifier}' not found")
+        
+        parser_name = options.docstring_style
+        parser = parser_name and Parser(parser_name)
+        parser_options = options.docstring_options and asdict(options.docstring_options)
+
+        with suppress(AliasResolutionError):
+            if model.docstring is not None:
+                model.docstring.parser = parser
+                model.docstring.parser_options = parser_options or {}
+
         return model
 
 
