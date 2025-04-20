@@ -9,17 +9,20 @@ class Kind(str, Enum):
     This enumeration is a subclass of the Griffe `Kind` enumeration, and extends it with additional values.
     """
 
-    MODULE = "module"
-    """Modules."""
+    FOLDER = "folder"
+    """folders"""
+    NAMESPACE = "namespace"
+    """namespaces"""
     CLASS = "class"
     """Classes."""
     FUNCTION = "function"
     """Functions and methods."""
+    SCRIPT = "script"
+    """Scripts."""
     PROPERTY = "property"
     """Class properties."""
     ALIAS = "alias"
     """Aliases (imported objects)."""
-    SCRIPT = "script"
 
 
 class ParameterKind(str, Enum):

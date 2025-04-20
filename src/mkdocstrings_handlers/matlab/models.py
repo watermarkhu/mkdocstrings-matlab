@@ -614,6 +614,7 @@ class Folder(MatlabMixin, PathMixin, Module, MatlabObject):
         - Module: A class representing a module.
         - MatlabObject: A base class for MATLAB objects.
     """
+    kind = Kind.FOLDER
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
@@ -643,6 +644,7 @@ class Namespace(MatlabMixin, PathMixin, Module, MatlabObject):
         - Module: A class representing a module.
         - MatlabObject: A base class for MATLAB objects.
     """
+    kind = Kind.NAMESPACE
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)

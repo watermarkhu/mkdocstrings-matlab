@@ -1,9 +1,9 @@
-{#- Template for Python modules.
+{#- Template for MATLAB namespaces
 
-This template renders a Python module.
+This template renders a MATALB namespace.
 
 Context:
-  module (griffe.Module): The module to render.
+  namespace (griffe.namespace): The namespace to render.
   root (bool): Whether this is the root object, injected with `:::` in a Markdown page.
   heading_level (int): The HTML heading level to use.
   config (dict): The configuration options.
@@ -14,11 +14,11 @@ Context:
 
   This block can be used to log debug messages, deprecation messages, warnings, etc.
   -#}
-  {{ log.debug("Rendering " + module.path) }}
+  {{ log.debug("Rendering " + namespace.path) }}
 {% endblock logs %}
 
-<div class="doc doc-object doc-module">
-  {% with obj = module, html_id = module.path %}
+<div class="doc doc-object doc-namespace">
+  {% with obj = namespace, html_id = namespace.path %}
 
     {% if root %}
       {% set show_full_path = config.show_root_full_path %}
@@ -27,30 +27,30 @@ Context:
       {% set show_full_path = config.show_root_members_full_path or config.show_object_full_path %}
       {% set root_members = False %}
     {% else %}
-      {% set show_full_path = config.show_object_full_path %}
+      {% set show_full_path = config.show_object_full_path %}"|get_template
     {% endif %}
 
-    {% set module_name = module.path + ".*" if show_full_path else module.name + ".*" %}
+    {% set namespace_name = namespace.path + ".*" if show_full_path else namespace.name + ".*" %}
 
     {% if not root or config.show_root_heading %}
       {% filter heading(
           heading_level,
-          role="module",
+          role="namespace",
           id=html_id,
           class="doc doc-heading",
-          toc_label=('<code class="doc-symbol doc-symbol-toc doc-symbol-namespace"></code>&nbsp;'|safe if config.show_symbol_type_toc else '') + (config.toc_label if config.toc_label and root else module.name),
+          toc_label=('<code class="doc-symbol doc-symbol-toc doc-symbol-namespace"></code>&nbsp;'|safe if config.show_symbol_type_toc else '') + (config.toc_label if config.toc_label and root else namespace.name),
         ) %}
 
         {% block heading scoped %}
           {#- Heading block.
 
-          This block renders the heading for the module.
+          This block renders the heading for the namespace.
           -#}
           {% if config.show_symbol_type_heading %}<code class="doc-symbol doc-symbol-heading doc-symbol-namespace"></code>{% endif %}
           {% if config.separate_signature %}
-            <span class="doc doc-object-name doc-module-name">{{ config.heading if config.heading and root else module_name }}</span>
+            <span class="doc doc-object-name doc-namespace-name">{{ config.heading if config.heading and root else namespace_name }}</span>
           {% else %}
-            <code>{{ module_name }}</code>
+            <code>{{ namespace_name }}</code>
           {% endif %}
         {% endblock heading %}
 
@@ -59,9 +59,9 @@ Context:
     {% else %}
       {% if config.show_root_toc_entry %}
         {% filter heading(heading_level,
-            role="module",
+            role="namespace",
             id=html_id,
-            toc_label=('<code class="doc-symbol doc-symbol-toc doc-symbol-namespace"></code>&nbsp;'|safe if config.show_symbol_type_toc else '') + (config.toc_label if config.toc_label and root else module.name),
+            toc_label=('<code class="doc-symbol doc-symbol-toc doc-symbol-namespace"></code>&nbsp;'|safe if config.show_symbol_type_toc else '') + (config.toc_label if config.toc_label and root else namespace.name),
             hidden=True,
           ) %}
         {% endfilter %}
@@ -73,18 +73,17 @@ Context:
       {% block contents scoped %}
         {#- Contents block.
 
-        This block renders the contents of the module.
+        This block renders the contents of the namespace.
         It contains other blocks that users can override.
         Overriding the contents block allows to rearrange the order of the blocks.
         -#}
         {% block docstring scoped %}
           {#- Docstring block.
 
-          This block renders the docstring for the module.
+          This block renders the docstring for the namespace.
           -#}
-          {% with docstring_sections = module.docstring.parsed %}
-            {# YORE: Bump 2: Replace `"|get_template` with `.html.jinja"` within line. #}
-            {% include "docstring"|get_template with context %}
+          {% with docstring_sections = namespace.docstring.parsed %}
+            {% include "docstring.html.jinja" with context %}
           {% endwith %}
         {% endblock docstring %}
 
@@ -97,19 +96,17 @@ Context:
 
           This block renders auto-summaries for classes, methods, and attributes.
           -#}
-          {# YORE: Bump 2: Replace `"|get_template` with `.html.jinja"` within line. #}
-          {% include "summary"|get_template with context %}
+          {% include "summary.html.jinja" with context %}
         {% endblock summary %}
 
         {% block children scoped %}
           {#- Children block.
 
-          This block renders the children (members) of the module.
+          This block renders the children (members) of the namespace.
           -#}
           {% set root = False %}
           {% set heading_level = heading_level + 1 %}
-          {# YORE: Bump 2: Replace `"|get_template` with `.html.jinja"` within line. #}
-          {% include "children"|get_template with context %}
+          {% include "children.html.jinja" with context %}
         {% endblock children %}
       {% endblock contents %}
     </div>

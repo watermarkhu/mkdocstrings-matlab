@@ -1,4 +1,4 @@
-{#- Template for auto-summaries. -#}
+{#- 👌 Template for auto-summaries. -#}
 
 {% block logs scoped %}
   {#- Logging block.
@@ -9,22 +9,18 @@
 
 {% with members_list = config.members if root_members else None %}
   {% if config.summary.modules %}
-    {# YORE: Bump 2: Replace `"|get_template` with `.html.jinja"` within line. #}
-    {% include "summary/namespaces"|get_template with context %}
+    {% include "summary/namespaces.html.jinja" with context %}
   {% endif %}
 
   {% if config.summary.classes %}
-    {# YORE: Bump 2: Replace `"|get_template` with `.html.jinja"` within line. #}
-    {% include "summary/classes"|get_template with context %}
+    {% include "summary/classes.html.jinja" with context %}
   {% endif %}
 
   {% if config.summary.functions %}
-    {# YORE: Bump 2: Replace `"|get_template` with `.html.jinja"` within line. #}
-    {% include "summary/functions"|get_template with context %}
+    {% include "summary/functions.html.jinja" with context %}
   {% endif %}
 
   {% if config.summary.attributes %}
-    {# YORE: Bump 2: Replace `"|get_template` with `.html.jinja"` within line. #}
-    {% include "summary/properties"|get_template with context %}
+    {% include "summary/properties.html.jinja" with context %}
   {% endif %}
 {% endwith %}

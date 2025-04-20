@@ -5,7 +5,7 @@ It iterates over the parameters of the function to rebuild the signature.
 The signature is the list of parameters of a function or method, including their names, default values, and annotations.
 
 Context:
-  function (mkdocstrings_matlab.models.Function): The function or method to render.
+  function (mkdocstrings_handlers.matlab.models.Function): The function or method to render.
   config (dict): The configuration options.
 -#}
 
@@ -19,7 +19,7 @@ Context:
   {%- endblock logs -%}
   {%- with -%}
 
-    {%- set ns = namespace(
+    {%- set ns = jinja_namespace(
         annotation="",
         equal="=",
         default=False,
