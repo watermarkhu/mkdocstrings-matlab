@@ -1,5 +1,7 @@
 """This module defines enumerations used by the MATLAB handler."""
 
+from __future__ import annotations
+
 from enum import Enum
 
 

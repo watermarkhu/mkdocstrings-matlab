@@ -150,12 +150,10 @@ class MatlabHandler(BaseHandler):
         self.env.lstrip_blocks = True
         self.env.keep_trailing_newline = False
         self.env.filters["split_path"] = rendering.do_split_path
-        self.env.filters["crossref"] = rendering.do_crossref
-        self.env.filters["multi_crossref"] = rendering.do_multi_crossref
         self.env.filters["order_members"] = rendering.do_order_members
         self.env.filters["format_code"] = rendering.do_format_code
         self.env.filters["format_signature"] = rendering.do_format_signature
-        self.env.filters["format_attribute"] = rendering.do_format_attribute
+        self.env.filters["format_property"] = rendering.do_format_property
         self.env.filters["filter_objects"] = rendering.do_filter_objects
         self.env.filters["stash_crossref"] = rendering.do_stash_crossref
         self.env.filters["get_template"] = rendering.do_get_template

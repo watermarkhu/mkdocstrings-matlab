@@ -23,7 +23,7 @@ nav:
   - Configuration options:
     - General: usage/configuration/general.md
     - Headings: usage/configuration/headings.md
-    # - Members: usage/configuration/members.md
+    - Members: usage/configuration/members.md
     # - Docstrings: usage/configuration/docstrings.md
     # - Signatures: usage/configuration/signatures.md
   - Docstring styles:

@@ -16,7 +16,6 @@ from re import Match, Pattern
 from typing import TYPE_CHECKING, Any, Callable, ClassVar, Literal, TypeVar
 
 from griffe import (
-    Alias,
     AliasResolutionError,
     CyclicAliasError,
     DocstringAttribute,
@@ -28,19 +27,23 @@ from griffe import (
     DocstringSectionFunctions,
     DocstringSectionModules,
     DocstringSectionText,
-    Object,
 )
 from jinja2 import TemplateNotFound, pass_context, pass_environment
 from markupsafe import Markup
 from mkdocs_autorefs import AutorefsHookInterface, Backlink, BacklinkCrumb
 from mkdocstrings import get_logger
 
-from mkdocstrings_handlers.matlab.models import Property, Namespace, Class
+from mkdocstrings_handlers.matlab.models import (
+    Alias,
+    Class,
+    Function,
+    MatlabObject, 
+    Namespace, 
+    Property, 
+)
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Iterator, Sequence
-
-    from griffe import Attribute, Function
     from jinja2 import Environment
     from jinja2.runtime import Context
     from mkdocstrings import CollectorItem
@@ -73,7 +76,7 @@ Order = Literal["__all__", "alphabetical", "source"]
 - `source`: order members as they appear in the source file.
 """
 
-_order_map: dict[str, Callable[[Object | Alias], str | float]] = {
+_order_map: dict[str, Callable[[MatlabObject | Alias], str | float]] = {
     "alphabetical": _sort_key_alphabetical,
     "source": _sort_key_source,
     "__all__": _sort__all__,
@@ -185,20 +188,20 @@ def do_format_signature(
 
 
 @pass_context
-def do_format_attribute(
+def do_format_property(
     context: Context,
-    attribute_path: Markup,
-    attribute: Attribute,
+    property_path: Markup,
+    property: Property,
     line_length: int,
     *,
     crossrefs: bool = False,  # noqa: ARG001
 ) -> str:
-    """Format an attribute.
+    """Format an property.
 
     Parameters:
         context: Jinja context, passed automatically.
-        attribute_path: The path of the callable we render the signature of.
-        attribute: The attribute we render the signature of.
+        property_path: The path of the callable we render the signature of.
+        property: The property we render the signature of.
         line_length: The line length.
         crossrefs: Whether to cross-reference types in the signature.
 
@@ -206,23 +209,22 @@ def do_format_attribute(
         The same code, formatted.
     """
     env = context.environment
-    # YORE: Bump 2: Replace `do_get_template(env, "expression")` with `"expression.html.jinja"` within line.
-    template = env.get_template(do_get_template(env, "expression"))
+    template = env.get_template("expression.html.jinja")
     annotations = context.parent["config"].show_signature_annotations
 
-    signature = str(attribute_path).strip()
-    if annotations and attribute.annotation:
+    signature = str(property_path).strip()
+    if annotations and property.annotation:
         annotation = template.render(
             context.parent,
-            expression=attribute.annotation,
+            expression=property.annotation,
             signature=True,
             backlink_type="returned-by",
         )
         signature += f": {annotation}"
-    if attribute.value:
+    if property.value:
         value = template.render(
             context.parent,
-            expression=attribute.value,
+            expression=property.value,
             signature=True,
             backlink_type="used-by",
         )
@@ -248,10 +250,10 @@ def do_format_attribute(
 
 
 def do_order_members(
-    members: Sequence[Object | Alias],
+    members: Sequence[MatlabObject | Alias],
     order: Order | list[Order],
     members_list: bool | list[str] | None,
-) -> Sequence[Object | Alias]:
+) -> Sequence[MatlabObject | Alias]:
     """Order members given an ordering method.
 
     Parameters:
@@ -275,77 +277,6 @@ def do_order_members(
         with suppress(ValueError):
             return sorted(members, key=_order_map[method])
     return members
-
-
-# YORE: Bump 2: Remove block.
-@lru_cache
-def _warn_crossref() -> None:
-    warnings.warn(
-        "The `crossref` filter is deprecated and will be removed in a future version",
-        DeprecationWarning,
-        stacklevel=1,
-    )
-
-
-# YORE: Bump 2: Remove block.
-def do_crossref(path: str, *, brief: bool = True) -> Markup:
-    """Deprecated. Filter to create cross-references.
-
-    Parameters:
-        path: The path to link to.
-        brief: Show only the last part of the path, add full path as hover.
-
-    Returns:
-        Markup text.
-    """
-    _warn_crossref()
-    full_path = path
-    if brief:
-        path = full_path.split(".")[-1]
-    return Markup("<autoref identifier={full_path} optional hover>{path}</autoref>").format(
-        full_path=full_path,
-        path=path,
-    )
-
-
-# YORE: Bump 2: Remove block.
-@lru_cache
-def _warn_multi_crossref() -> None:
-    warnings.warn(
-        "The `multi_crossref` filter is deprecated and will be removed in a future version",
-        DeprecationWarning,
-        stacklevel=1,
-    )
-
-
-# YORE: Bump 2: Remove block.
-def do_multi_crossref(text: str, *, code: bool = True) -> Markup:
-    """Deprecated. Filter to create cross-references.
-
-    Parameters:
-        text: The text to scan.
-        code: Whether to wrap the result in a code tag.
-
-    Returns:
-        Markup text.
-    """
-    _warn_multi_crossref()
-    group_number = 0
-    variables = {}
-
-    def repl(match: Match) -> str:
-        nonlocal group_number
-        group_number += 1
-        path = match.group()
-        path_var = f"path{group_number}"
-        variables[path_var] = path
-        return f"<autoref identifier={{{path_var}}} optional hover>{{{path_var}}}</autoref>"
-
-    text = re.sub(r"([\w.]+)", repl, text)
-    if code:
-        text = f"<code>{text}</code>"
-    return Markup(text).format(**variables)  # noqa: S704
-
 
 _split_path_re = re.compile(r"([.(]?)([\w]+)(\))?")
 _splitable_re = re.compile(r"[().]")
@@ -405,7 +336,7 @@ def _keep_object(name: str, filters: Sequence[tuple[Pattern, bool]]) -> bool:
 
 
 def _parents(obj: Alias) -> set[str]:
-    parent: Object | Alias = obj.parent  # type: ignore[assignment]
+    parent: MatlabObject | Alias = obj.parent  # type: ignore[assignment]
     parents = {obj.path, parent.path}
     if parent.is_alias:
         parents.add(parent.final_target.path)  # type: ignore[union-attr]
@@ -417,7 +348,7 @@ def _parents(obj: Alias) -> set[str]:
     return parents
 
 
-def _remove_cycles(objects: list[Object | Alias]) -> Iterator[Object | Alias]:
+def _remove_cycles(objects: list[MatlabObject | Alias]) -> Iterator[MatlabObject | Alias]:
     suppress_errors = suppress(AliasResolutionError, CyclicAliasError)
     for obj in objects:
         if obj.is_alias:
@@ -428,13 +359,15 @@ def _remove_cycles(objects: list[Object | Alias]) -> Iterator[Object | Alias]:
 
 
 def do_filter_objects(
-    objects_dictionary: dict[str, Object | Alias],
+    objects_dictionary: dict[str, MatlabObject | Alias],
     *,
     filters: Sequence[tuple[Pattern, bool]] | Literal["public"] | None = None,
     members_list: bool | list[str] | None = None,
     inherited_members: bool | list[str] = False,
+    private_members: bool | list[str] = False,
+    hidden_members: bool | list[str]= False,
     keep_no_docstrings: bool = True,
-) -> list[Object | Alias]:
+) -> list[MatlabObject | Alias]:
     """Filter a dictionary of objects based on their docstrings.
 
     Parameters:
@@ -446,6 +379,8 @@ def do_filter_objects(
             When given and empty, return an empty list.
             When given and not empty, ignore filters and docstrings presence/absence.
         inherited_members: Whether to keep inherited members or exclude them.
+        private_members: Whether to keep private members or exclude them.
+        hidden_members: Whether to keep hidden members or exclude them.
         keep_no_docstrings: Whether to keep objects with no/empty docstrings (recursive check).
 
     Returns:
@@ -466,6 +401,17 @@ def do_filter_objects(
             for obj in objects_dictionary.values()
             if not obj.inherited or obj.name in set(inherited_members)
         ]
+    
+    if not private_members:
+        objects = [obj for obj in objects if not obj.is_private]
+    elif isinstance(private_members, list):
+        objects = [obj for obj in objects if not obj.is_private or (obj.is_private and obj.name in private_members)]
+
+    if not hidden_members:
+        objects = [obj for obj in objects if not obj.is_hidden]
+    elif isinstance(hidden_members, list):
+        objects = [obj for obj in objects if not obj.is_hidden or (obj.is_hidden and obj.name in hidden_members)]
+
 
     if members_list is True:
         # Return all pre-selected members.
@@ -510,7 +456,7 @@ def do_filter_objects(
 @pass_environment
 # YORE: Bump 2: Replace `env: Environment, ` with `` within line.
 # YORE: Bump 2: Replace `str | ` with `` within line.
-def do_get_template(env: Environment, obj: str | Object) -> str:
+def do_get_template(env: Environment, obj: str | MatlabObject) -> str:
     """Get the template name used to render an object.
 
     Parameters:
@@ -521,7 +467,7 @@ def do_get_template(env: Environment, obj: str | Object) -> str:
         A template name.
     """
     name = obj
-    if isinstance(obj, (Alias, Object)):
+    if isinstance(obj, (Alias, MatlabObject)):
         extra_data = getattr(obj, "extra", {}).get("mkdocstrings", {})
         if name := extra_data.get("template", ""):
             return name
@@ -598,7 +544,7 @@ def do_as_functions_section(
     Returns:
         A functions docstring section.
     """
-    keep_init_method = not context.parent["config"].merge_init_into_class
+    keep_constructor_method = not context.parent["config"].merge_constructor_into_class
     return DocstringSectionFunctions(
         [
             DocstringFunction(
@@ -609,7 +555,12 @@ def do_as_functions_section(
             )
             for function in functions
             if (not check_public or function.is_public)
-            and (function.name != "__init__" or keep_init_method)
+            and (
+                keep_constructor_method 
+                or not function.parent 
+                or not function.parent.is_class
+                or function.name != function.parent.name
+            )
         ],
     )
 
@@ -714,7 +665,7 @@ class AutorefsHook(AutorefsHookInterface):
     such as originating file path and line number, to improve error reporting.
     """
 
-    def __init__(self, current_object: Object | Alias, config: dict[str, Any]) -> None:
+    def __init__(self, current_object: MatlabObject | Alias, config: dict[str, Any]) -> None:
         """Initialize the hook.
 
         Parameters:
@@ -744,7 +695,7 @@ class AutorefsHook(AutorefsHookInterface):
             The context.
         """
         role = {
-            "attribute": "data"
+            "property": "data"
             if self.current_object.parent and self.current_object.parent.is_module
             else "attr",
             "class": "class",

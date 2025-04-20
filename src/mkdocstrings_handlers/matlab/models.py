@@ -4,7 +4,7 @@ from typing import Any, TYPE_CHECKING, Callable, Optional
 from functools import cached_property
 from pathlib import Path
 from griffe import (
-    Alias,
+    Alias as GriffeAlias,
     Attribute,
     Function as GriffeFunction,
     Class as GriffeClass,
@@ -13,6 +13,7 @@ from griffe import (
     DocstringSectionText,
     Module,
     Object,
+    ObjectAliasMixin as GriffeObjectAliaxMixin,
     Parameters as GriffeParameters,
     Parameter as GriffeParameter,
 )
@@ -23,6 +24,7 @@ if TYPE_CHECKING:
     from mkdocstrings_handlers.matlab.collect import PathsCollection
 
 __all__ = [
+    "Alias",
     "Attribute",
     "Class",
     "Classfolder",
@@ -119,32 +121,7 @@ class _ParentGrabber:
         return self._grabber()
 
 
-class MatlabObject(Object):
-    """
-    Represents a Matlab object with associated docstring, path collection, and parent object.
-
-    Attributes:
-        paths_collection (PathsCollection | None): The collection of paths related to the Matlab object.
-    """
-
-    def __init__(
-        self,
-        *args,
-        paths_collection: "PathsCollection | None" = None,
-        **kwargs,
-    ) -> None:
-        """
-        Initialize the object with the given parameters.
-
-        Args:
-            *args: Variable length argument list.
-            paths_collection (PathsCollection | None): The collection of paths related to the object.
-            **kwargs: Arbitrary keyword arguments.
-        """
-        self.paths_collection: "PathsCollection | None" = paths_collection
-        lines_collection = paths_collection.lines_collection if paths_collection is not None else None
-        super().__init__(*args, lines_collection=lines_collection, **kwargs)
-
+class ObjectAliasMixin(GriffeObjectAliaxMixin):
 
     @property
     def attributes(self) -> set[str]:
@@ -164,6 +141,14 @@ class MatlabObject(Object):
             name: member for name, member in self.all_members.items() if member.kind is Kind.SCRIPT
         }  # type: ignore[misc]
 
+    @property
+    def is_internal(self) -> bool:
+        return any(part == "+internal" for part in self.filepath.parts) if self.filepath else False
+
+    @property
+    def is_hidden(self) -> bool:
+        return False
+    
     @property
     def is_script(self) -> bool:
         return False
@@ -187,7 +172,7 @@ class MatlabObject(Object):
         if self.parent is None:
             return self.name
 
-        if isinstance(self.parent, MatlabObject):
+        if isinstance(self.parent, "ObjectAliasMixin"):
             parent = self.parent
         else:
             parent = getattr(self.parent, "model", self.parent)
@@ -200,8 +185,7 @@ class MatlabObject(Object):
         else:
             return f"{parent.canonical_path}.{self.name}" if parent else self.name
 
-
-class PathMixin(Object):
+class PathMixin:
     """
     A mixin class that provides a filepath attribute and related functionality.
 
@@ -220,8 +204,7 @@ class PathMixin(Object):
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.name})"
 
-
-class MatlabMixin(Object):
+class MatlabMixin:
     def __init__(
         self,
         *args: Any,
@@ -255,6 +238,36 @@ class MatlabMixin(Object):
     def docstring(self, value: Docstring | None):
         if value is not None:
             self._docstring = value
+
+class MatlabObject(ObjectAliasMixin, Object):
+    """
+    Represents a Matlab object with associated docstring, path collection, and parent object.
+
+    Attributes:
+        paths_collection (PathsCollection | None): The collection of paths related to the Matlab object.
+    """
+
+    def __init__(
+        self,
+        *args,
+        paths_collection: "PathsCollection | None" = None,
+        **kwargs,
+    ) -> None:
+        """
+        Initialize the object with the given parameters.
+
+        Args:
+            *args: Variable length argument list.
+            paths_collection (PathsCollection | None): The collection of paths related to the object.
+            **kwargs: Arbitrary keyword arguments.
+        """
+        self.paths_collection: "PathsCollection | None" = paths_collection
+        lines_collection = paths_collection.lines_collection if paths_collection is not None else None
+        super().__init__(*args, lines_collection=lines_collection, **kwargs)
+
+
+class Alias(ObjectAliasMixin, GriffeAlias):
+    pass
 
 
 class Parameter(MatlabMixin, GriffeParameter, MatlabObject):
@@ -445,6 +458,10 @@ class Class(MatlabMixin, PathMixin, GriffeClass, MatlabObject):
             return self.parent.canonical_path
         else:
             return super().canonical_path
+    
+    @property
+    def is_hidden(self) -> bool:
+        return self.Hidden
 
 
 class Classfolder(Class):
@@ -530,6 +547,10 @@ class Property(MatlabMixin, Attribute, MatlabObject):
     def attributes(self, *args):
         pass
 
+    @property
+    def is_hidden(self) -> bool:
+        return self.Hidden
+
 class Function(MatlabMixin, PathMixin, GriffeFunction, MatlabObject):
     """
     Represents a MATLAB function with various attributes and properties.
@@ -603,6 +624,9 @@ class Function(MatlabMixin, PathMixin, GriffeFunction, MatlabObject):
     def attributes(self, *args):
         pass
 
+    @property
+    def is_hidden(self) -> bool:
+        return  self.Hidden
 
 class Folder(MatlabMixin, PathMixin, Module, MatlabObject):
     """
@@ -655,9 +679,9 @@ class Namespace(MatlabMixin, PathMixin, Module, MatlabObject):
         return f"Namespace({self.path!r})"
 
     @property
-    def is_internal(self) -> bool:
-        return any(part == "+internal" for part in self.filepath.parts) if self.filepath else False
-
-    @property
     def is_namespace(self) -> bool:
         return True
+
+    @property
+    def is_hidden(self) -> bool:
+        return self.is_internal

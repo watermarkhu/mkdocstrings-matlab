@@ -57,7 +57,7 @@ Context:
         {%- if config.separate_signature and config.parameter_headings and config.signature_crossrefs -%}
           {%- filter stash_crossref(length=parameter.name|length) -%}
             {%- with func_path = function.path -%}
-              {%- if config.merge_constructor_into_class and function.parent and function.parent.is_class and func_path.endswith("." ~ function.parent) -%}
+              {%- if config.merge_constructor_into_class and function.parent and function.parent.is_class and function.name == function.parent.name -%}
                 {%- set func_path = func_path[:-((function.parent | length) + 1)] -%}
               {%- endif -%}
               <autoref identifier="{{ func_path }}({{ parameter.name }})" optional>{{ parameter.name }}</autoref>
@@ -91,7 +91,7 @@ Context:
     {#- Render return type. -#}
     {%- if config.show_signature_annotations
         and function.annotation
-        and not (config.merge_constructor_into_class and function.parent and function.parent.is_class and func_path.endswith("." ~ function.parent))
+        and not (config.merge_constructor_into_class and function.parent and function.parent.is_class and function.name == function.parent.name)
       %} -> {% if config.separate_signature and config.signature_crossrefs -%}
         {%- with expression = function.annotation, backlink_type = "returned-by" -%}
           {%- include "expression.html.jinja" with context -%}

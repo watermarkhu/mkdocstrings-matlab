@@ -1,5 +1,7 @@
 """Functions and classes for collecting MATLAB objects from paths."""
 
+from __future__ import annotations
+
 from collections import defaultdict, deque
 from copy import copy, deepcopy
 from pathlib import Path
@@ -275,50 +277,6 @@ class PathsCollection(ModulesCollection):
         for name, member in getattr(alias, "members", {}).items():
             alias.members[name] = self.update_model(member, options)
 
-
-        # Hide hidden members (methods and properties)
-        hidden_members = options.hidden_members
-        if isinstance(hidden_members, bool):
-            filter_hidden = not hidden_members
-            show_hidden = []
-        else:
-            filter_hidden = True
-            show_hidden: list[str] = hidden_members
-        if isinstance(alias, Class) and filter_hidden:
-            alias.members = {
-                key: value
-                for key, value in alias.members.items()
-                if not getattr(value, "Hidden", False)
-                or (show_hidden and getattr(value, "Hidden", False) and key in show_hidden)
-            }
-            alias._inherited_members = {
-                key: value
-                for key, value in alias.inherited_members.items()
-                if not getattr(value, "Hidden", False)
-                or (show_hidden and getattr(value, "Hidden", False) and key in show_hidden)
-            }
-
-        # Hide private members (methods and properties)
-        private_members = options.private_members
-        if isinstance(private_members, bool):
-            filter_private = not private_members
-            show_private = []
-        else:
-            filter_private = True
-            show_private: list[str] = private_members
-        if isinstance(alias, Class) and filter_private:
-            alias.members = {
-                key: value
-                for key, value in alias.members.items()
-                if not getattr(value, "Private", False)
-                or (show_private and getattr(value, "Private", False) and key in show_private)
-            }
-            alias._inherited_members = {
-                key: value
-                for key, value in alias.inherited_members.items()
-                if not getattr(value, "Private", False)
-                or (show_private and getattr(value, "Private", False) and key in show_private)
-            }
 
         # Create parameters and returns sections from argument blocks
         if (
