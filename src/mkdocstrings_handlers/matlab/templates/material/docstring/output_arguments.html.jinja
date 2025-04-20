@@ -1,6 +1,6 @@
-{#- Template for "Returns" sections in docstrings.
+{#- Template for "Output arguments" sections in docstrings.
 
-This template renders a list of documented returned values in the format
+This template renders a list of documented output arguments in the format
 specified with the [`docstring_section_style`][] configuration option.
 
 Context:
@@ -12,7 +12,7 @@ Context:
 
   This block can be used to log debug messages, deprecation messages, warnings, etc.
   -#}
-  {{ log.debug("Rendering returns section") }}
+  {{ log.debug("Rendering output arguments section") }}
 {% endblock logs %}
 {% import "language.html.jinja" as lang with context %}
 {#- Language module providing the `t` translation method. -#}
@@ -21,7 +21,7 @@ Context:
   {% block table_style scoped %}
     {#- Block for the `table` section style. -#}
     {% set name_column = section.value|selectattr("name")|any %}
-    <p><span class="doc-section-title">{{ section.title or lang.t("Returns:") }}</span></p>
+    <p><span class="doc-section-title">{{ "Output arguments:" }}</span></p>
     <table>
       <thead>
         <tr>
@@ -31,19 +31,19 @@ Context:
         </tr>
       </thead>
       <tbody>
-        {% for returns in section.value %}
+        {% for argument in section.value %}
           <tr class="doc-section-item">
-            {% if name_column %}<td>{% if returns.name %}<code>{{ returns.name }}</code>{% endif %}</td>{% endif %}
+            {% if name_column %}<td>{% if argument.name %}<code>{{ argument.name }}</code>{% endif %}</td>{% endif %}
             <td>
-              {% if returns.annotation %}
-                {% with expression = returns.annotation, backlink_type = "returned-by" %}
+              {% if argument.annotation %}
+                {% with expression = argument.annotation, backlink_type = "returned-by" %}
                   <code>{% include "expression.html.jinja" with context %}</code>
                 {% endwith %}
               {% endif %}
             </td>
             <td>
               <div class="doc-md-description">
-                {{ returns.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
+                {{ argument.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
               </div>
             </td>
           </tr>
@@ -54,21 +54,21 @@ Context:
 {% elif config.docstring_section_style == "list" %}
   {% block list_style scoped %}
     {#- Block for the `list` section style. -#}
-    <p><span class="doc-section-title">{{ section.title or lang.t("Returns:") }}</span></p>
+    <p><span class="doc-section-title">{{ "Output arguments:" }}</span></p>
     <ul>
-      {% for returns in section.value %}
+      {% for argument in section.value %}
         <li class="doc-section-item field-body">
-          {% if returns.name %}<b><code>{{ returns.name }}</code></b>{% endif %}
-          {% if returns.annotation %}
-            {% with expression = returns.annotation, backlink_type = "returned-by" %}
-              {% if returns.name %} ({% endif %}
+          {% if argument.name %}<b><code>{{ argument.name }}</code></b>{% endif %}
+          {% if argument.annotation %}
+            {% with expression = argument.annotation, backlink_type = "returned-by" %}
+              {% if argument.name %} ({% endif %}
               <code>{% include "expression.html.jinja" with context %}</code>
-              {% if returns.name %}){% endif %}
+              {% if argument.name %}){% endif %}
             {% endwith %}
           {% endif %}
           –
           <div class="doc-md-description">
-            {{ returns.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
+            {{ argument.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
           </div>
         </li>
       {% endfor %}
@@ -80,33 +80,33 @@ Context:
     <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">{{ (section.title or lang.t("RETURNS")).rstrip(":").upper() }}</span></th>
+          <th><span class="doc-section-title">{{ ("OUTPUT ARGUMENT").rstrip(":").upper() }}</span></th>
           <th><span>{{ lang.t("DESCRIPTION").upper() }}</span></th>
         </tr>
       </thead>
       <tbody>
-        {% for returns in section.value %}
+        {% for argument in section.value %}
           <tr class="doc-section-item">
             <td>
-              {% if returns.name %}
-                <code>{{ returns.name }}</code>
-              {% elif returns.annotation %}
-                <span class="doc-returns-annotation">
-                  {% with expression = returns.annotation, backlink_type = "returned-by" %}
+              {% if argument.name %}
+                <code>{{ argument.name }}</code>
+              {% elif argument.annotation %}
+                <span class="doc-argument-annotation">
+                  {% with expression = argument.annotation, backlink_type = "returned-by" %}
                     <code>{% include "expression.html.jinja" with context %}</code>
                   {% endwith %}
                 </span>
               {% endif %}
             </td>
-            <td class="doc-returns-details">
+            <td class="doc-argument-details">
               <div class="doc-md-description">
-                {{ returns.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
+                {{ argument.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
               </div>
-              {% if returns.name and returns.annotation %}
+              {% if argument.name and argument.annotation %}
                 <p>
-                  <span class="doc-returns-annotation">
+                  <span class="doc-argument-annotation">
                     <b>{{ lang.t("TYPE:") }}</b>
-                    {% with expression = returns.annotation, backlink_type = "returned-by" %}
+                    {% with expression = argument.annotation, backlink_type = "returned-by" %}
                       <code>{% include "expression.html.jinja" with context %}</code>
                     {% endwith %}
                   </span>

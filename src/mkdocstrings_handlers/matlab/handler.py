@@ -157,6 +157,7 @@ class MatlabHandler(BaseHandler):
         self.env.filters["filter_objects"] = rendering.do_filter_objects
         self.env.filters["stash_crossref"] = rendering.do_stash_crossref
         self.env.filters["get_template"] = rendering.do_get_template
+        self.env.filters["function_docstring"] = rendering.do_function_docstring
         self.env.filters["as_properties_section"] = rendering.do_as_properties_section
         self.env.filters["as_functions_section"] = rendering.do_as_functions_section
         self.env.filters["as_classes_section"] = rendering.do_as_classes_section

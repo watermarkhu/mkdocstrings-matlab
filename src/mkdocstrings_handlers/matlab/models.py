@@ -1,6 +1,6 @@
 """Classes to represent MATLAB objects and their properties."""
 
-from typing import Any, TYPE_CHECKING, Callable, Optional
+from typing import Any, TYPE_CHECKING, Callable
 from functools import cached_property
 from pathlib import Path
 from griffe import (
@@ -12,7 +12,7 @@ from griffe import (
     DocstringSection,
     DocstringSectionText,
     Module,
-    Object,
+    Object as GriffeObject,
     ObjectAliasMixin as GriffeObjectAliaxMixin,
     Parameters as GriffeParameters,
     Parameter as GriffeParameter,
@@ -29,7 +29,7 @@ __all__ = [
     "Class",
     "Classfolder",
     "Function",
-    "MatlabObject",
+    "Object",
     "MatlabMixin",
     "Module",
     "Docstring",
@@ -92,13 +92,13 @@ class Docstring(GriffeDocstring):
 
 class _ParentGrabber:
     """
-    A callable class that wraps a function to grab a parent MatlabObject.
+    A callable class that wraps a function to grab a parent Object.
 
     Attributes:
-        _grabber (Callable[[], MatlabObject]): A callable that returns a MatlabObject.
+        _grabber (Callable[[], Object]): A callable that returns a Object.
 
     Methods:
-        __call__(): Calls the grabber function and returns a MatlabObject.
+        __call__(): Calls the grabber function and returns a Object.
     """
 
     def __init__(self, grabber: "Callable[[], MatlabMixin | None]") -> None:
@@ -106,17 +106,17 @@ class _ParentGrabber:
         Initializes the _ParentGrabber with a grabber function.
 
         Args:
-            grabber (Callable[[], MatlabObject]): A function that returns a MatlabObject.
+            grabber (Callable[[], Object]): A function that returns a Object.
         """
         self._grabber = grabber
 
     @property
     def parent(self) -> "MatlabMixin | None":
         """
-        Calls the grabber function and returns a MatlabObject.
+        Calls the grabber function and returns a Object.
 
         Returns:
-            MatlabObject: The MatlabObject returned by the grabber function.
+            Object: The Object returned by the grabber function.
         """
         return self._grabber()
 
@@ -133,12 +133,12 @@ class ObjectAliasMixin(GriffeObjectAliaxMixin):
 
     @property
     def namespaces(self) -> dict[str, "Namespace"]:
-        return {}
+        return {name: member for name, member in self.members.items() if member.kind is Kind.NAMESPACE} 
 
     @property
     def scripts(self) -> dict[str, "Script"]:
         return {
-            name: member for name, member in self.all_members.items() if member.kind is Kind.SCRIPT
+            name: member for name, member in self.members.items() if member.kind is Kind.SCRIPT
         }  # type: ignore[misc]
 
     @property
@@ -172,7 +172,7 @@ class ObjectAliasMixin(GriffeObjectAliaxMixin):
         if self.parent is None:
             return self.name
 
-        if isinstance(self.parent, "ObjectAliasMixin"):
+        if isinstance(self.parent, ObjectAliasMixin):
             parent = self.parent
         else:
             parent = getattr(self.parent, "model", self.parent)
@@ -217,7 +217,7 @@ class MatlabMixin:
         self._docstring: Docstring | None = docstring
 
     @property
-    def parent(self) -> Object | None:
+    def parent(self) -> "Object | None":
         if isinstance(self._parent, MatlabMixin):
             return self._parent
         elif isinstance(self._parent, _ParentGrabber):
@@ -239,12 +239,12 @@ class MatlabMixin:
         if value is not None:
             self._docstring = value
 
-class MatlabObject(ObjectAliasMixin, Object):
+class Object(ObjectAliasMixin, GriffeObject):
     """
-    Represents a Matlab object with associated docstring, path collection, and parent object.
+    Represents a MATLAB object with associated docstring, path collection, and parent object.
 
     Attributes:
-        paths_collection (PathsCollection | None): The collection of paths related to the Matlab object.
+        paths_collection (PathsCollection | None): The collection of paths related to the MATLAB object.
     """
 
     def __init__(
@@ -270,12 +270,12 @@ class Alias(ObjectAliasMixin, GriffeAlias):
     pass
 
 
-class Parameter(MatlabMixin, GriffeParameter, MatlabObject):
+class Parameter(MatlabMixin, GriffeParameter, Object):
     """
     Represents a parameter in a MATLAB object.
 
     Inherits from:
-        MatlabObject: Base class for MATLAB objects.
+        Object: Base class for MATLAB objects.
         GriffeParameter: Base class for parameters.
 
     Attributes:
@@ -287,12 +287,12 @@ class Parameter(MatlabMixin, GriffeParameter, MatlabObject):
         self.kind: ParameterKind | None = kind
 
 
-class Parameters(MatlabMixin, GriffeParameters, MatlabObject):
+class Parameters(MatlabMixin, GriffeParameters, Object):
     """
     A class to represent a collection of parameters.
 
     Inherits from:
-        MatlabObject: Base class for MATLAB objects.
+        Object: Base class for MATLAB objects.
         GriffeParameters: Base class for handling parameters.
     """
 
@@ -301,11 +301,11 @@ class Parameters(MatlabMixin, GriffeParameters, MatlabObject):
         self._params: list[Parameter] = list(parameters)
 
 
-class Script(MatlabMixin, PathMixin, MatlabObject):
+class Script(MatlabMixin, PathMixin, Object):
     """
     A class representing a MATLAB script.
 
-    This class inherits from `PathMixin` and `MatlabObject` to provide
+    This class inherits from `PathMixin` and `Object` to provide
     functionality specific to MATLAB scripts.
     """
 
@@ -320,12 +320,12 @@ class Script(MatlabMixin, PathMixin, MatlabObject):
         return True
 
 
-class Class(MatlabMixin, PathMixin, GriffeClass, MatlabObject):
+class Class(MatlabMixin, PathMixin, GriffeClass, Object):
     """
     Represents a MATLAB class with additional properties and methods for handling
     MATLAB-specific features.
 
-    This class extends `PathMixin`, `MatlabObject`, and `GriffeClass` to provide
+    This class extends `PathMixin`, `Object`, and `GriffeClass` to provide
     additional functionality for handling MATLAB class properties such as
     abstract, hidden, and sealed attributes. It also provides methods to retrieve
     parameters, inherited members, and attributes.
@@ -354,7 +354,7 @@ class Class(MatlabMixin, PathMixin, GriffeClass, MatlabObject):
         self.Abstract: bool = Abstract
         self.Hidden: bool = Hidden
         self.Sealed: bool = Sealed
-        self._inherited_members: dict[str, MatlabObject] | False = False
+        self._inherited_members: dict[str, Object] | False = False
         self._constructor: "Function | None | False" = False
         self._base_classes: list["Class"] | False = False
 
@@ -414,14 +414,14 @@ class Class(MatlabMixin, PathMixin, GriffeClass, MatlabObject):
         return constructor
 
     @property
-    def inherited_members(self) -> dict[str, MatlabObject]:
+    def inherited_members(self) -> dict[str, Object]:
         """Retrieve a dictionary of inherited members from base classes.
 
         This method iterates over the base classes in reverse order, resolves their models,
         and collects members that are not already present in the current object's members.
 
         Returns:
-            dict[str, MatlabObject]: A dictionary where the keys are member names and the values are the corresponding MatlabObject instances.
+            dict[str, Object]: A dictionary where the keys are member names and the values are the corresponding Object instances.
         """
         if self._inherited_members is not False:
             return self._inherited_members
@@ -471,7 +471,7 @@ class Classfolder(Class):
     pass
 
 
-class Property(MatlabMixin, Attribute, MatlabObject):
+class Property(MatlabMixin, Attribute, Object):
 
     kind = Kind.PROPERTY
 
@@ -551,7 +551,7 @@ class Property(MatlabMixin, Attribute, MatlabObject):
     def is_hidden(self) -> bool:
         return self.Hidden
 
-class Function(MatlabMixin, PathMixin, GriffeFunction, MatlabObject):
+class Function(MatlabMixin, PathMixin, GriffeFunction, Object):
     """
     Represents a MATLAB function with various attributes and properties.
 
@@ -628,7 +628,7 @@ class Function(MatlabMixin, PathMixin, GriffeFunction, MatlabObject):
     def is_hidden(self) -> bool:
         return  self.Hidden
 
-class Folder(MatlabMixin, PathMixin, Module, MatlabObject):
+class Folder(MatlabMixin, PathMixin, Module, Object):
     """
     A class representing a Folder in a MATLAB project.
 
@@ -636,7 +636,7 @@ class Folder(MatlabMixin, PathMixin, Module, MatlabObject):
         - MatlabMixin: A mixin class providing MATLAB-specific functionality.
         - PathMixin: A mixin class providing path-related functionality.
         - Module: A class representing a module.
-        - MatlabObject: A base class for MATLAB objects.
+        - Object: A base class for MATLAB objects.
     """
     kind = Kind.FOLDER
 
@@ -658,7 +658,7 @@ class Folder(MatlabMixin, PathMixin, Module, MatlabObject):
         return True
 
 
-class Namespace(MatlabMixin, PathMixin, Module, MatlabObject):
+class Namespace(MatlabMixin, PathMixin, Module, Object):
     """
     A class representing a namespace in a MATLAB project.
 
@@ -666,7 +666,7 @@ class Namespace(MatlabMixin, PathMixin, Module, MatlabObject):
         - MatlabMixin: A mixin class providing MATLAB-specific functionality.
         - PathMixin: A mixin class providing path-related functionality.
         - Module: A class representing a module.
-        - MatlabObject: A base class for MATLAB objects.
+        - Object: A base class for MATLAB objects.
     """
     kind = Kind.NAMESPACE
 

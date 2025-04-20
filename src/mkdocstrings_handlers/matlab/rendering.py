@@ -6,15 +6,20 @@ import random
 import re
 import string
 import sys
-import warnings
 from collections import defaultdict
 from contextlib import suppress
 from dataclasses import replace
-from functools import lru_cache
 from pathlib import Path
-from re import Match, Pattern
+from re import  Pattern
 from typing import TYPE_CHECKING, Any, Callable, ClassVar, Literal, TypeVar
 
+from _griffe.docstrings.models import (
+    DocstringParameter,
+    DocstringReturn,
+    DocstringSectionOtherParameters,
+    DocstringSectionParameters,
+    DocstringSectionReturns,
+)
 from griffe import (
     AliasResolutionError,
     CyclicAliasError,
@@ -22,6 +27,7 @@ from griffe import (
     DocstringClass,
     DocstringFunction,
     DocstringModule,
+    DocstringSection,
     DocstringSectionAttributes,
     DocstringSectionClasses,
     DocstringSectionFunctions,
@@ -33,11 +39,12 @@ from markupsafe import Markup
 from mkdocs_autorefs import AutorefsHookInterface, Backlink, BacklinkCrumb
 from mkdocstrings import get_logger
 
+from mkdocstrings_handlers.matlab.enums import ParameterKind
 from mkdocstrings_handlers.matlab.models import (
     Alias,
     Class,
     Function,
-    MatlabObject, 
+    Object, 
     Namespace, 
     Property, 
 )
@@ -76,7 +83,7 @@ Order = Literal["__all__", "alphabetical", "source"]
 - `source`: order members as they appear in the source file.
 """
 
-_order_map: dict[str, Callable[[MatlabObject | Alias], str | float]] = {
+_order_map: dict[str, Callable[[Object | Alias], str | float]] = {
     "alphabetical": _sort_key_alphabetical,
     "source": _sort_key_source,
     "__all__": _sort__all__,
@@ -250,10 +257,10 @@ def do_format_property(
 
 
 def do_order_members(
-    members: Sequence[MatlabObject | Alias],
+    members: Sequence[Object | Alias],
     order: Order | list[Order],
     members_list: bool | list[str] | None,
-) -> Sequence[MatlabObject | Alias]:
+) -> Sequence[Object | Alias]:
     """Order members given an ordering method.
 
     Parameters:
@@ -336,7 +343,7 @@ def _keep_object(name: str, filters: Sequence[tuple[Pattern, bool]]) -> bool:
 
 
 def _parents(obj: Alias) -> set[str]:
-    parent: MatlabObject | Alias = obj.parent  # type: ignore[assignment]
+    parent: Object | Alias = obj.parent  # type: ignore[assignment]
     parents = {obj.path, parent.path}
     if parent.is_alias:
         parents.add(parent.final_target.path)  # type: ignore[union-attr]
@@ -348,7 +355,7 @@ def _parents(obj: Alias) -> set[str]:
     return parents
 
 
-def _remove_cycles(objects: list[MatlabObject | Alias]) -> Iterator[MatlabObject | Alias]:
+def _remove_cycles(objects: list[Object | Alias]) -> Iterator[Object | Alias]:
     suppress_errors = suppress(AliasResolutionError, CyclicAliasError)
     for obj in objects:
         if obj.is_alias:
@@ -359,7 +366,7 @@ def _remove_cycles(objects: list[MatlabObject | Alias]) -> Iterator[MatlabObject
 
 
 def do_filter_objects(
-    objects_dictionary: dict[str, MatlabObject | Alias],
+    objects_dictionary: dict[str, Object | Alias],
     *,
     filters: Sequence[tuple[Pattern, bool]] | Literal["public"] | None = None,
     members_list: bool | list[str] | None = None,
@@ -367,7 +374,7 @@ def do_filter_objects(
     private_members: bool | list[str] = False,
     hidden_members: bool | list[str]= False,
     keep_no_docstrings: bool = True,
-) -> list[MatlabObject | Alias]:
+) -> list[Object | Alias]:
     """Filter a dictionary of objects based on their docstrings.
 
     Parameters:
@@ -456,7 +463,7 @@ def do_filter_objects(
 @pass_environment
 # YORE: Bump 2: Replace `env: Environment, ` with `` within line.
 # YORE: Bump 2: Replace `str | ` with `` within line.
-def do_get_template(env: Environment, obj: str | MatlabObject) -> str:
+def do_get_template(env: Environment, obj: str | Object) -> str:
     """Get the template name used to render an object.
 
     Parameters:
@@ -467,7 +474,7 @@ def do_get_template(env: Environment, obj: str | MatlabObject) -> str:
         A template name.
     """
     name = obj
-    if isinstance(obj, (Alias, MatlabObject)):
+    if isinstance(obj, (Alias, Object)):
         extra_data = getattr(obj, "extra", {}).get("mkdocstrings", {})
         if name := extra_data.get("template", ""):
             return name
@@ -620,6 +627,109 @@ def do_as_namespaces_section(
         ],
     )
 
+def do_function_docstring(
+    function: Function, 
+    parse_arguments: bool, 
+    show_docstring_input_arguments: bool,
+    show_docstring_name_value_arguments: bool,
+    show_docstring_output_arguments: bool
+) -> list[DocstringSection]:
+    
+    docstring_sections = function.docstring.parsed
+    if not parse_arguments and not (show_docstring_input_arguments or show_docstring_name_value_arguments or show_docstring_output_arguments):
+        return docstring_sections
+
+    docstring_parameters = any(
+        isinstance(doc, DocstringSectionParameters) for doc in docstring_sections
+    )
+    docstring_returns = any(
+        isinstance(doc, DocstringSectionReturns) for doc in docstring_sections
+    )
+
+    if not docstring_parameters and function.parameters:
+        arguments_parameters = any(
+            param.docstring is not None for param in function.parameters
+        )
+    else:
+        arguments_parameters = False
+
+    if not docstring_returns and function.returns:
+        arguments_returns = any(ret.docstring is not None for ret in function.returns)
+    else:
+        arguments_returns = False
+
+    document_parameters = not docstring_parameters and arguments_parameters
+    document_returns = not docstring_returns and arguments_returns
+
+    standard_parameters = [
+        param for param in function.parameters if param.kind is not ParameterKind.keyword_only
+    ]
+
+    keyword_parameters = [
+        param for param in function.parameters if param.kind is ParameterKind.keyword_only
+    ]
+
+    if (
+        show_docstring_input_arguments
+        and document_parameters
+        and standard_parameters
+    ):
+        docstring_sections.append(
+            DocstringSectionParameters(
+                [
+                    DocstringParameter(
+                        name=param.name,
+                        value=str(param.default) if param.default is not None else None,
+                        annotation=param.annotation,
+                        description=param.docstring.value
+                        if param.docstring is not None
+                        else "",
+                    )
+                    for param in standard_parameters
+                ]
+            )
+        )
+
+    if (
+        show_docstring_name_value_arguments
+        and document_parameters
+        and keyword_parameters
+    ):
+        docstring_sections.append(
+            DocstringSectionOtherParameters(
+                [
+                    DocstringParameter(
+                        name=param.name,
+                        value=str(param.default) if param.default is not None else None,
+                        annotation=param.annotation,
+                        description=param.docstring.value
+                        if param.docstring is not None
+                        else "",
+                    )
+                    for param in keyword_parameters
+                ],
+                title="Name-Value Arguments:",
+            )
+        )
+
+    if show_docstring_output_arguments and document_returns:
+        returns = DocstringSectionReturns(
+            [
+                DocstringReturn(
+                    name=param.name,
+                    value=str(param.default) if param.default is not None else None,
+                    annotation=param.annotation,
+                    description=param.docstring.value
+                    if param.docstring is not None
+                    else "",
+                )
+                for param in function.returns or []
+            ]
+        )
+        docstring_sections.append(returns)
+
+    return docstring_sections
+
 
 def do_as_inheritance_diagram_section(model: Class) -> DocstringSectionText | None:
     def get_id(str: str) -> str:
@@ -665,7 +775,7 @@ class AutorefsHook(AutorefsHookInterface):
     such as originating file path and line number, to improve error reporting.
     """
 
-    def __init__(self, current_object: MatlabObject | Alias, config: dict[str, Any]) -> None:
+    def __init__(self, current_object: Object | Alias, config: dict[str, Any]) -> None:
         """Initialize the hook.
 
         Parameters:

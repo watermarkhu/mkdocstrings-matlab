@@ -66,16 +66,16 @@
 /* Symbols in Navigation and ToC. */
 :root, :host,
 [data-md-color-scheme="default"] {
-  --doc-symbol-parameter-fg-color: #df50af;
-  --doc-symbol-attribute-fg-color: #953800;
+  --doc-symbol-argument-fg-color: #df50af;
+  --doc-symbol-property-fg-color: #953800;
   --doc-symbol-script-fg-color: #d0bf3d;
   --doc-symbol-function-fg-color: #8250df;
   --doc-symbol-method-fg-color: #8250df;
   --doc-symbol-class-fg-color: #0550ae;
   --doc-symbol-module-fg-color: #5cad0f;
 
-  --doc-symbol-parameter-bg-color: #df50af1a;
-  --doc-symbol-attribute-bg-color: #9538001a;
+  --doc-symbol-argument-bg-color: #df50af1a;
+  --doc-symbol-property-bg-color: #9538001a;
   --doc-symbol-script-bg-color: #96862f27;
   --doc-symbol-function-bg-color: #8250df1a;
   --doc-symbol-method-bg-color: #8250df1a;
@@ -84,16 +84,16 @@
 }
 
 [data-md-color-scheme="slate"] {
-  --doc-symbol-parameter-fg-color: #ffa8cc;
-  --doc-symbol-attribute-fg-color: #ffa657;
+  --doc-symbol-argument-fg-color: #ffa8cc;
+  --doc-symbol-property-fg-color: #ffa657;
   --doc-symbol-script-fg-color: #f0d78a;
   --doc-symbol-function-fg-color: #d2a8ff;
   --doc-symbol-method-fg-color: #d2a8ff;
   --doc-symbol-class-fg-color: #79c0ff;
   --doc-symbol-module-fg-color: #baff79;
 
-  --doc-symbol-parameter-bg-color: #ffa8cc1a;
-  --doc-symbol-attribute-bg-color: #ffa6571a;
+  --doc-symbol-argument-bg-color: #ffa8cc1a;
+  --doc-symbol-property-bg-color: #ffa6571a;
   --doc-symbol-script-bg-color: #f0d78a1a;
   --doc-symbol-function-bg-color: #d2a8ff1a;
   --doc-symbol-method-bg-color: #d2a8ff1a;
@@ -108,23 +108,23 @@ code.doc-symbol {
   font-weight: bold;
 }
 
-code.doc-symbol-parameter,
-a code.doc-symbol-parameter {
-  color: var(--doc-symbol-parameter-fg-color);
-  background-color: var(--doc-symbol-parameter-bg-color);
+code.doc-symbol-argument,
+a code.doc-symbol-argument {
+  color: var(--doc-symbol-argument-fg-color);
+  background-color: var(--doc-symbol-argument-bg-color);
 }
 
-code.doc-symbol-parameter::after {
+code.doc-symbol-argument::after {
   content: "param";
 }
 
-code.doc-symbol-attribute,
-a code.doc-symbol-attribute {
-  color: var(--doc-symbol-attribute-fg-color);
-  background-color: var(--doc-symbol-attribute-bg-color);
+code.doc-symbol-property,
+a code.doc-symbol-property {
+  color: var(--doc-symbol-property-fg-color);
+  background-color: var(--doc-symbol-property-bg-color);
 }
 
-code.doc-symbol-attribute::after {
+code.doc-symbol-property::after {
   content: "attr";
 }
 
@@ -187,8 +187,8 @@ code.doc-symbol-folder::after {
 }
 
 code.doc-symbol-property {
-  color: var(--doc-symbol-attribute-fg-color);
-  background-color: var(--doc-symbol-attribute-bg-color);
+  color: var(--doc-symbol-property-fg-color);
+  background-color: var(--doc-symbol-property-bg-color);
 }
 
 code.doc-symbol-property::after {

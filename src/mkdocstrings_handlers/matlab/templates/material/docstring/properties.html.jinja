@@ -30,19 +30,19 @@ Context:
         </tr>
       </thead>
       <tbody>
-        {% for attribute in section.value %}
+        {% for property in section.value %}
           <tr class="doc-section-item">
-            <td><code><autoref identifier="{{ obj.path }}.{{ attribute.name }}" optional hover>{{ attribute.name }}</autoref></code></td>
+            <td><code><autoref identifier="{{ obj.path }}.{{ property.name }}" optional hover>{{ property.name }}</autoref></code></td>
             <td>
-              {% if attribute.annotation %}
-                {% with expression = attribute.annotation %}
+              {% if property.annotation %}
+                {% with expression = property.annotation %}
                   <code>{% include "expression.html.jinja" with context %}</code>
                 {% endwith %}
               {% endif %}
             </td>
             <td>
               <div class="doc-md-description">
-                {{ attribute.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
+                {{ property.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
               </div>
             </td>
           </tr>
@@ -55,17 +55,17 @@ Context:
     {#- Block for the `list` section style. -#}
     <p><span class="doc-section-title">{{ section.title or "Properties:" }}</span></p>
     <ul>
-      {% for attribute in section.value %}
+      {% for property in section.value %}
         <li class="doc-section-item field-body">
-          <b><code><autoref identifier="{{ obj.path }}.{{ attribute.name }}" optional hover>{{ attribute.name }}</autoref></code></b>
-          {% if attribute.annotation %}
-            {% with expression = attribute.annotation %}
+          <b><code><autoref identifier="{{ obj.path }}.{{ property.name }}" optional hover>{{ property.name }}</autoref></code></b>
+          {% if property.annotation %}
+            {% with expression = property.annotation %}
               (<code>{% include "expression.html.jinja" with context %}</code>)
             {% endwith %}
           {% endif %}
           –
           <div class="doc-md-description">
-            {{ attribute.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
+            {{ property.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
           </div>
         </li>
       {% endfor %}
@@ -82,18 +82,18 @@ Context:
         </tr>
       </thead>
       <tbody>
-        {% for attribute in section.value %}
+        {% for property in section.value %}
           <tr class="doc-section-item">
-            <td><code><autoref identifier="{{ obj.path }}.{{ attribute.name }}" optional hover>{{ attribute.name }}</autoref></code></td>
-            <td class="doc-attribute-details">
+            <td><code><autoref identifier="{{ obj.path }}.{{ property.name }}" optional hover>{{ property.name }}</autoref></code></td>
+            <td class="doc-property-details">
               <div class="doc-md-description">
-                {{ attribute.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
+                {{ property.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
               </div>
               <p>
-                {% if attribute.annotation %}
-                  <span class="doc-attribute-annotation">
+                {% if property.annotation %}
+                  <span class="doc-property-annotation">
                     <b>TYPE:</b>
-                    {% with expression = attribute.annotation %}
+                    {% with expression = property.annotation %}
                       <code>{% include "expression.html.jinja" with context %}</code>
                     {% endwith %}
                   </span>

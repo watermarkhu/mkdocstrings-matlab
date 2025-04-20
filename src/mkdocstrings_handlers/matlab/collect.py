@@ -19,7 +19,7 @@ from _griffe.docstrings.models import (
 from _griffe.enumerations import DocstringSectionKind
 from _griffe.expressions import Expr
 
-from mkdocstrings_handlers.matlab.enums import ParameterKind
+
 from mkdocstrings_handlers.matlab.models import (
     Class,
     Classfolder,
@@ -233,21 +233,6 @@ class PathsCollection(ModulesCollection):
             MatlabMixin: The updated model.
         """
 
-        # Patch docstring section titles
-        if model.docstring is not None:
-            for section in model.docstring.parsed:
-                match section.kind:
-                    case DocstringSectionKind.attributes:
-                        section.title = "Properties:"
-                    case DocstringSectionKind.modules:
-                        section.title = "Namespaces:"
-                    case DocstringSectionKind.parameters:
-                        section.title = "Input arguments:"
-                    case DocstringSectionKind.returns:
-                        section.title = "Output arguments:"
-                    case DocstringSectionKind.other_parameters:
-                        section.title = "Name-Value Arguments:"
-
         # Patch returns annotation
         # In _griffe.docstrings.<parser>.py the function _read_returns_section will enforce an annotation
         # on the return parameter. This annotation is grabbed from the parent. For MATLAB this is invalid.
@@ -263,122 +248,6 @@ class PathsCollection(ModulesCollection):
             for returns in section.value:
                 if not isinstance(returns.annotation, Expr):
                     returns.annotation = None
-
-        # previous updates do not edit the model attributes persistently
-        # However, the following updates do edit the model attributes persistently
-        # such as adding new sections to the docstring or editing its members.abs
-        # Thus, we need to copy the model to avoid editing the original model
-        alias = copy(model)
-        alias.docstring = deepcopy(model.docstring) if model.docstring is not None else None
-        alias.members = {key: value for key, value in model.members.items()}
-        if isinstance(alias, Class):
-            alias._inherited_members = None
-
-        for name, member in getattr(alias, "members", {}).items():
-            alias.members[name] = self.update_model(member, options)
-
-
-        # Create parameters and returns sections from argument blocks
-        if (
-            isinstance(alias, Function)
-            and alias.docstring is not None
-            and options.parse_arguments
-            and (
-                options.show_docstring_input_arguments
-                or options.show_docstring_name_value_arguments
-                or options.show_docstring_output_arguments
-            )
-        ):
-            docstring_parameters = any(
-                isinstance(doc, DocstringSectionParameters) for doc in alias.docstring.parsed
-            )
-            docstring_returns = any(
-                isinstance(doc, DocstringSectionReturns) for doc in alias.docstring.parsed
-            )
-
-            if not docstring_parameters and alias.parameters:
-                arguments_parameters = any(
-                    param.docstring is not None for param in alias.parameters
-                )
-            else:
-                arguments_parameters = False
-
-            if not docstring_returns and alias.returns:
-                arguments_returns = any(ret.docstring is not None for ret in alias.returns)
-            else:
-                arguments_returns = False
-
-            document_parameters = not docstring_parameters and arguments_parameters
-            document_returns = not docstring_returns and arguments_returns
-
-            standard_parameters = [
-                param for param in alias.parameters if param.kind is not ParameterKind.keyword_only
-            ]
-
-            keyword_parameters = [
-                param for param in alias.parameters if param.kind is ParameterKind.keyword_only
-            ]
-
-            if (
-                options.show_docstring_input_arguments
-                and document_parameters
-                and standard_parameters
-            ):
-                alias.docstring._suffixes.append(
-                    DocstringSectionParameters(
-                        [
-                            DocstringParameter(
-                                name=param.name,
-                                value=str(param.default) if param.default is not None else None,
-                                annotation=param.annotation,
-                                description=param.docstring.value
-                                if param.docstring is not None
-                                else "",
-                            )
-                            for param in standard_parameters
-                        ]
-                    )
-                )
-
-            if (
-                options.show_docstring_name_value_arguments
-                and document_parameters
-                and keyword_parameters
-            ):
-                alias.docstring._suffixes.append(
-                    DocstringSectionOtherParameters(
-                        [
-                            DocstringParameter(
-                                name=param.name,
-                                value=str(param.default) if param.default is not None else None,
-                                annotation=param.annotation,
-                                description=param.docstring.value
-                                if param.docstring is not None
-                                else "",
-                            )
-                            for param in keyword_parameters
-                        ],
-                        title="Name-Value Arguments:",
-                    )
-                )
-
-            if options.show_docstring_output_arguments and document_returns:
-                returns = DocstringSectionReturns(
-                    [
-                        DocstringReturn(
-                            name=param.name,
-                            value=str(param.default) if param.default is not None else None,
-                            annotation=param.annotation,
-                            description=param.docstring.value
-                            if param.docstring is not None
-                            else "",
-                        )
-                        for param in alias.returns or []
-                    ]
-                )
-                alias.docstring._suffixes.append(returns)
-
-        return alias
 
     def addpath(self, path: str | Path, to_end: bool = False, recursive: bool = False):
         """

@@ -1,6 +1,6 @@
-{#- Template for "Other parameters" sections in docstrings.
+{#- Template for "Other arguments" sections in docstrings.
 
-This template renders a list of documented other parameters in the format
+This template renders a list of documented name-value pairs in the format
 specified with the [`docstring_section_style`][] configuration option.
 
 Context:
@@ -12,7 +12,7 @@ Context:
 
   This block can be used to log debug messages, deprecation messages, warnings, etc.
   -#}
-  {{ log.debug("Rendering other parameters section") }}
+  {{ log.debug("Rendering name-value pairs section") }}
 {% endblock logs %}
 {% import "language.html.jinja" as lang with context %}
 {#- Language module providing the `t` translation method. -#}
@@ -20,7 +20,7 @@ Context:
 {% if config.docstring_section_style == "table" %}
   {% block table_style scoped %}
     {#- Block for the `table` section style. -#}
-    <p><span class="doc-section-title">{{ section.title or lang.t("Other Parameters:") }}</span></p>
+    <p><span class="doc-section-title">{{ "Name-value pairs:" }}</span></p>
     <table>
       <thead>
         <tr>
@@ -30,19 +30,19 @@ Context:
         </tr>
       </thead>
       <tbody>
-        {% for parameter in section.value %}
+        {% for argument in section.value %}
           <tr class="doc-section-item">
-            <td><code>{{ parameter.name }}</code></td>
+            <td><code>{{ argument.name }}</code></td>
             <td>
-              {% if parameter.annotation %}
-                {% with expression = parameter.annotation, backlink_type = "used-by" %}
+              {% if argument.annotation %}
+                {% with expression = argument.annotation, backlink_type = "used-by" %}
                   <code>{% include "expression.html.jinja" with context %}</code>
                 {% endwith %}
               {% endif %}
             </td>
             <td>
               <div class="doc-md-description">
-                {{ parameter.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
+                {{ argument.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
               </div>
             </td>
           </tr>
@@ -53,19 +53,19 @@ Context:
 {% elif config.docstring_section_style == "list" %}
   {% block list_style scoped %}
     {#- Block for the `list` section style. -#}
-    <p><span class="doc-section-title">{{ section.title or lang.t("Other Parameters:") }}</span></p>
+    <p><span class="doc-section-title">{{ "Name-value pairs:" }}</span></p>
     <ul>
-      {% for parameter in section.value %}
+      {% for argument in section.value %}
         <li class="doc-section-item field-body">
-          <b><code>{{ parameter.name }}</code></b>
-          {% if parameter.annotation %}
-            {% with expression = parameter.annotation, backlink_type = "used-by" %}
+          <b><code>{{ argument.name }}</code></b>
+          {% if argument.annotation %}
+            {% with expression = argument.annotation, backlink_type = "used-by" %}
               (<code>{% include "expression.html.jinja" with context %}</code>)
             {% endwith %}
           {% endif %}
           –
           <div class="doc-md-description">
-            {{ parameter.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
+            {{ argument.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
           </div>
         </li>
       {% endfor %}
@@ -77,23 +77,23 @@ Context:
     <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">{{ (section.title or lang.t("PARAMETER")).rstrip(":").upper() }}</span></th>
+          <th><span class="doc-section-title">{{ ("NAME-VALUE PAIR").rstrip(":").upper() }}</span></th>
           <th><span>{{ lang.t("DESCRIPTION") }}</span></th>
         </tr>
       </thead>
       <tbody>
-        {% for parameter in section.value %}
+        {% for argument in section.value %}
           <tr class="doc-section-item">
-            <td><code>{{ parameter.name }}</code></td>
+            <td><code>{{ argument.name }}</code></td>
             <td class="doc-param-details">
               <div class="doc-md-description">
-                {{ parameter.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
+                {{ argument.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
               </div>
               <p>
-                {% if parameter.annotation %}
+                {% if argument.annotation %}
                   <span class="doc-param-annotation">
                     <b>{{ lang.t("TYPE:") }}</b>
-                    {% with expression = parameter.annotation, backlink_type = "used-by" %}
+                    {% with expression = argument.annotation, backlink_type = "used-by" %}
                       <code>{% include "expression.html.jinja" with context %}</code>
                     {% endwith %}
                   </span>
