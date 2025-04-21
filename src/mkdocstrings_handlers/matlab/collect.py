@@ -3,21 +3,11 @@
 from __future__ import annotations
 
 from collections import defaultdict, deque
-from copy import copy, deepcopy
 from pathlib import Path
 from typing import Any, Callable, Sequence, TypeVar
 
 from _griffe.collections import LinesCollection as GLC
 from _griffe.collections import ModulesCollection
-from _griffe.docstrings.models import (
-    DocstringParameter,
-    DocstringReturn,
-    DocstringSectionOtherParameters,
-    DocstringSectionParameters,
-    DocstringSectionReturns,
-)
-from _griffe.enumerations import DocstringSectionKind
-from _griffe.expressions import Expr
 
 
 from mkdocstrings_handlers.matlab.models import (
@@ -26,14 +16,12 @@ from mkdocstrings_handlers.matlab.models import (
     Docstring,
     DocstringSectionText,
     Folder,
-    Function,
     MatlabMixin,
     Namespace,
     PathMixin,
     _ParentGrabber,
 )
 from mkdocstrings_handlers.matlab.treesitter import FileParser
-from mkdocstrings_handlers.matlab.config import MatlabOptions
 
 PathType = TypeVar("PathType", bound=PathMixin)
 
@@ -214,40 +202,6 @@ class PathsCollection(ModulesCollection):
         if isinstance(model, MatlabMixin):
             return model
         return None
-
-    def update_model(self, model: MatlabMixin, options: MatlabOptions) -> MatlabMixin:
-        """
-        Update the given model based on the provided configuration.
-
-        This method updates the docstring parser and parser options for the model,
-        patches return annotations for MATLAB functions, and optionally creates
-        docstring sections from argument blocks. It also recursively updates
-        members of the model and handles special cases for class constructors
-        and inheritance diagrams.
-
-        Args:
-            model (MatlabMixin): The model to update.
-            config (Mapping): The configuration dictionary.
-
-        Returns:
-            MatlabMixin: The updated model.
-        """
-
-        # Patch returns annotation
-        # In _griffe.docstrings.<parser>.py the function _read_returns_section will enforce an annotation
-        # on the return parameter. This annotation is grabbed from the parent. For MATLAB this is invalid.
-        # Thus the return annotation needs to be patched back to a None.
-        if (
-            isinstance(model, Function)
-            and model.docstring is not None
-            and any(isinstance(doc, DocstringSectionReturns) for doc in model.docstring.parsed)
-        ):
-            section = next(
-                doc for doc in model.docstring.parsed if isinstance(doc, DocstringSectionReturns)
-            )
-            for returns in section.value:
-                if not isinstance(returns.annotation, Expr):
-                    returns.annotation = None
 
     def addpath(self, path: str | Path, to_end: bool = False, recursive: bool = False):
         """

@@ -11,7 +11,7 @@ requires-python = ">=3.10"
 dependencies = [
     "mkdocstrings>=0.29",
     "mkdocs-autorefs>=1.4",
-    "griffe>=0.49",
+    "griffe>=1.6",
     "charset-normalizer>=3.4",
     "tree-sitter~=0.24",
     "tree-sitter-matlab~=1.0",
