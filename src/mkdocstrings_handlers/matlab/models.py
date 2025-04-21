@@ -526,7 +526,7 @@ class Property(MatlabMixin, Attribute, Object):
 
     @property
     def is_private(self) -> bool:
-        return self.Private or self.Hidden
+        return self.Private
 
     @property
     def attributes(self) -> set[str]:
@@ -616,7 +616,7 @@ class Function(MatlabMixin, PathMixin, GriffeFunction, Object):
 
     @property
     def is_private(self) -> bool:
-        return self.Private or self.Hidden
+        return self.Private
 
     @property
     def attributes(self) -> set[str]:

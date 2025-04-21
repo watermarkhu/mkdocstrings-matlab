@@ -37,7 +37,7 @@ Context:
               {% if config.argument_headings %}
                 {% filter heading(
                     heading_level + 1,
-                    role="param",
+                    role="argument",
                     id=html_id ~ "(" ~ argument.name ~ ")",
                     class="doc doc-heading doc-heading-argument",
                     toc_label=('<code class="doc-symbol doc-symbol-toc doc-symbol-argument"></code>&nbsp;'|safe if config.show_symbol_type_toc else '') + argument.name,
@@ -84,7 +84,7 @@ Context:
           {% if config.argument_headings %}
             {% filter heading(
                 heading_level + 1,
-                role="param",
+                role="argument",
                 id=html_id ~ "(" ~ argument.name ~ ")",
                 class="doc doc-heading doc-heading-argument",
                 toc_label=('<code class="doc-symbol doc-symbol-toc doc-symbol-argument"></code>&nbsp;'|safe if config.show_symbol_type_toc else '') + argument.name,
@@ -129,7 +129,7 @@ Context:
               {% if config.argument_headings %}
                 {% filter heading(
                     heading_level + 1,
-                    role="param",
+                    role="argument",
                     id=html_id ~ "(" ~ argument.name ~ ")",
                     class="doc doc-heading doc-heading-argument",
                     toc_label=('<code class="doc-symbol doc-symbol-toc doc-symbol-argument"></code>&nbsp;'|safe if config.show_symbol_type_toc else '') + argument.name,
@@ -140,13 +140,13 @@ Context:
                 <code>{{ argument.name }}</code>
               {% endif %}
             </td>
-            <td class="doc-param-details">
+            <td class="doc-argument-details">
               <div class="doc-md-description">
                 {{ argument.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
               </div>
               <p>
                 {% if argument.annotation %}
-                  <span class="doc-param-annotation">
+                  <span class="doc-argument-annotation">
                     <b>{{ lang.t("TYPE:") }}</b>
                     {% with expression = argument.annotation, backlink_type = "used-by" %}
                       <code>{% include "expression.html.jinja" with context %}</code>
@@ -154,7 +154,7 @@ Context:
                   </span>
                 {% endif %}
                 {% if argument.default %}
-                  <span class="doc-param-default">
+                  <span class="doc-argument-default">
                     <b>{{ lang.t("DEFAULT:") }}</b>
                     {% with expression = argument.default, backlink_type = "used-by" %}
                       <code>{% include "expression.html.jinja" with context %}</code>

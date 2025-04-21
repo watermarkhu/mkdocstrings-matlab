@@ -1,4 +1,4 @@
-/* Avoid breaking parameter names, etc. in table cells. */
+/* Avoid breaking argument names, etc. in table cells. */
 .doc-contents td code {
   word-break: normal !important;
 }
@@ -21,17 +21,17 @@
 }
 
 /* Defaults in Spacy table style. */
-.doc-param-default {
+.doc-argument-default {
   float: right;
 }
 
-/* Parameter headings must be inline, not blocks. */
-.doc-heading-parameter {
+/* Argument headings must be inline, not blocks. */
+.doc-heading-argument {
   display: inline;
 }
 
-/* Prefer space on the right, not the left of parameter permalinks. */
-.doc-heading-parameter .headerlink {
+/* Prefer space on the right, not the left of argument permalinks. */
+.doc-heading-argument .headerlink {
   margin-left: 0 !important;
   margin-right: 0.2rem;
 }
@@ -115,7 +115,7 @@ a code.doc-symbol-argument {
 }
 
 code.doc-symbol-argument::after {
-  content: "param";
+  content: "arg";
 }
 
 code.doc-symbol-property,
@@ -125,7 +125,7 @@ a code.doc-symbol-property {
 }
 
 code.doc-symbol-property::after {
-  content: "attr";
+  content: "prop";
 }
 
 code.doc-symbol-function,

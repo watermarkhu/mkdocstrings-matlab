@@ -489,7 +489,7 @@ class MatlabInputOptions:
         ),
     ] = False
 
-    parameter_headings: Annotated[
+    argument_headings: Annotated[
         bool,
         Field(
             group="headings",

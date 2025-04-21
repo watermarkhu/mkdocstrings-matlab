@@ -48,7 +48,7 @@ Context:
           {% if config.separate_signature %}
             <span class="doc doc-object-name doc-folder-name">{{ config.heading if config.heading and root else folder_name }}</span>
           {% else %}
-            <code>{{ module_name }}</code>
+            <code>{{ folder_name }}</code>
           {% endif %}
         {% endblock heading %}
       {% endfilter %}

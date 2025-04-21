@@ -54,7 +54,7 @@ Context:
         {%- endif -%}
 
         {#- Render parameter name with optional cross-reference to its heading. -#}
-        {%- if config.separate_signature and config.parameter_headings and config.signature_crossrefs -%}
+        {%- if config.separate_signature and config.argument_headings and config.signature_crossrefs -%}
           {%- filter stash_crossref(length=parameter.name|length) -%}
             {%- with func_path = function.path -%}
               {%- if config.merge_constructor_into_class and function.parent and function.parent.is_class and function.name == function.parent.name -%}

@@ -30,19 +30,10 @@ nav:
     - Google: usage/docstrings/google.md
     - Numpy: usage/docstrings/numpy.md
     - Sphinx: usage/docstrings/sphinx.md
-# # defer to gen-files + literate-nav
-# - API reference:
-#   - mkdocstrings_handlers:
-#     - matlab: api.md
-# - Development:
-#   - Contributing: contributing.md
-#   - Code of Conduct: code_of_conduct.md
-#   # - Coverage report: coverage.md
-# - Insiders:
-#   - insiders/index.md
-#   - Getting started:
-#     - Installation: insiders/installation.md
-#     - Changelog: insiders/changelog.md
+- API reference:
+  - mkdocstrings_handlers:
+    - matlab: api.md
+
 - mkdocstrings: https://mkdocstrings.github.io/
 
 theme:
@@ -141,6 +132,7 @@ plugins:
           show_inheritance_diagram: false
           show_source: false
           heading_level: 3
+          argument_headings: false
           show_root_heading: true
           show_root_toc_entry: false
           show_root_full_path: true
@@ -160,7 +152,7 @@ plugins:
 
           docstring_style: google
           docstring_section_style: table
-          parse_arguments: true
+          parse_arguments: false
           merge_constructor_into_class: false
           show_if_no_docstring: false
           show_docstring_description: true

@@ -369,7 +369,7 @@ def _remove_cycles(objects: list[Object | Alias]) -> Iterator[Object | Alias]:
 def do_filter_objects(
     objects_dictionary: dict[str, Object | Alias],
     *,
-    filters: Sequence[tuple[Pattern, bool]] | Literal["public"] | None = None,
+    filters: Sequence[tuple[Pattern, bool]] | None = None,
     members_list: bool | list[str] | None = None,
     inherited_members: bool | list[str] = False,
     private_members: bool | list[str] = False,
@@ -380,7 +380,7 @@ def do_filter_objects(
 
     Parameters:
         objects_dictionary: The dictionary of objects.
-        filters: Filters to apply, based on members' names, or `"public"`.
+        filters: Filters to apply, based on members' names.
             Each element is a tuple: a pattern, and a boolean indicating whether
             to reject the object if the pattern matches.
         members_list: An optional, explicit list of members to keep.
@@ -410,7 +410,7 @@ def do_filter_objects(
             if not obj.inherited or obj.name in set(inherited_members)
         ]
 
-    if not private_members:
+    if isinstance(private_members, bool) and not private_members:
         objects = [obj for obj in objects if not obj.is_private]
     elif isinstance(private_members, list):
         objects = [
@@ -419,7 +419,7 @@ def do_filter_objects(
             if not obj.is_private or (obj.is_private and obj.name in private_members)
         ]
 
-    if not hidden_members:
+    if isinstance(hidden_members, bool) and not hidden_members:
         objects = [obj for obj in objects if not obj.is_hidden]
     elif isinstance(hidden_members, list):
         objects = [
@@ -445,9 +445,7 @@ def do_filter_objects(
         ]
 
     # Use filters and docstrings.
-    if filters == "public":
-        objects = [obj for obj in objects if obj.is_public]
-    elif filters:
+    if filters:
         objects = [
             obj
             for obj in objects

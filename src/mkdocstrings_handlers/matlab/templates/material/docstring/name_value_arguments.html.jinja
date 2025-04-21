@@ -27,12 +27,27 @@ Context:
           <th>{{ lang.t("Name") }}</th>
           <th>{{ lang.t("Type") }}</th>
           <th>{{ lang.t("Description") }}</th>
+          <th>{{ lang.t("Default") }}</th>
         </tr>
       </thead>
       <tbody>
         {% for argument in section.value %}
           <tr class="doc-section-item">
-            <td><code>{{ argument.name }}</code></td>
+            <td>
+              {% if config.argument_headings %}
+                {% filter heading(
+                    heading_level + 1,
+                    role="argument",
+                    id=html_id ~ "(" ~ argument.name ~ ")",
+                    class="doc doc-heading doc-heading-argument",
+                    toc_label=('<code class="doc-symbol doc-symbol-toc doc-symbol-argument"></code>&nbsp;'|safe if config.show_symbol_type_toc else '') + argument.name,
+                  ) %}
+                  <code>{{ argument.name }}</code>
+                {% endfilter %}
+              {% else %}
+                <code>{{ argument.name }}</code>
+              {% endif %}
+            </td>
             <td>
               {% if argument.annotation %}
                 {% with expression = argument.annotation, backlink_type = "used-by" %}
@@ -44,6 +59,15 @@ Context:
               <div class="doc-md-description">
                 {{ argument.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
               </div>
+            </td>
+            <td>
+              {% if argument.default %}
+                {% with expression = argument.default, backlink_type = "used-by" %}
+                  <code>{% include "expression.html.jinja" with context %}</code>
+                {% endwith %}
+              {% else %}
+                <em>{{ lang.t("none") }}</em>
+              {% endif %}
             </td>
           </tr>
         {% endfor %}
@@ -57,7 +81,19 @@ Context:
     <ul>
       {% for argument in section.value %}
         <li class="doc-section-item field-body">
-          <b><code>{{ argument.name }}</code></b>
+          {% if config.argument_headings %}
+            {% filter heading(
+                heading_level + 1,
+                role="argument",
+                id=html_id ~ "(" ~ argument.name ~ ")",
+                class="doc doc-heading doc-heading-argument",
+                toc_label=('<code class="doc-symbol doc-symbol-toc doc-symbol-argument"></code>&nbsp;'|safe if config.show_symbol_type_toc else '') + argument.name,
+              ) %}
+              <b><code>{{ argument.name }}</code></b>
+            {% endfilter %}
+          {% else %}
+            <b><code>{{ argument.name }}</code></b>
+          {% endif %}
           {% if argument.annotation %}
             {% with expression = argument.annotation, backlink_type = "used-by" %}
               (<code>{% include "expression.html.jinja" with context %}</code>)
@@ -84,16 +120,38 @@ Context:
       <tbody>
         {% for argument in section.value %}
           <tr class="doc-section-item">
-            <td><code>{{ argument.name }}</code></td>
-            <td class="doc-param-details">
+            <td>
+              {% if config.argument_headings %}
+                {% filter heading(
+                    heading_level + 1,
+                    role="argument",
+                    id=html_id ~ "(" ~ argument.name ~ ")",
+                    class="doc doc-heading doc-heading-argument",
+                    toc_label=('<code class="doc-symbol doc-symbol-toc doc-symbol-argument"></code>&nbsp;'|safe if config.show_symbol_type_toc else '') + argument.name,
+                  ) %}
+                  <code>{{ argument.name }}</code>
+                {% endfilter %}
+              {% else %}
+                <code>{{ argument.name }}</code>
+              {% endif %}
+            </td>
+            <td class="doc-argument-details">
               <div class="doc-md-description">
                 {{ argument.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
               </div>
               <p>
                 {% if argument.annotation %}
-                  <span class="doc-param-annotation">
+                  <span class="doc-argument-annotation">
                     <b>{{ lang.t("TYPE:") }}</b>
                     {% with expression = argument.annotation, backlink_type = "used-by" %}
+                      <code>{% include "expression.html.jinja" with context %}</code>
+                    {% endwith %}
+                  </span>
+                {% endif %}
+                {% if argument.default %}
+                  <span class="doc-argument-default">
+                    <b>{{ lang.t("DEFAULT:") }}</b>
+                    {% with expression = argument.default, backlink_type = "used-by" %}
                       <code>{% include "expression.html.jinja" with context %}</code>
                     {% endwith %}
                   </span>
