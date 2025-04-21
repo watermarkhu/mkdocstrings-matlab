@@ -24,8 +24,8 @@ nav:
     - General: usage/configuration/general.md
     - Headings: usage/configuration/headings.md
     - Members: usage/configuration/members.md
-    # - Docstrings: usage/configuration/docstrings.md
-    # - Signatures: usage/configuration/signatures.md
+    - Docstrings: usage/configuration/docstrings.md
+    - Signatures: usage/configuration/signatures.md
   - Docstring styles:
     - Google: usage/docstrings/google.md
     - Numpy: usage/docstrings/numpy.md

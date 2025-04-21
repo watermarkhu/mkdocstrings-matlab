@@ -162,7 +162,9 @@ class MatlabHandler(BaseHandler):
         self.env.filters["as_functions_section"] = rendering.do_as_functions_section
         self.env.filters["as_classes_section"] = rendering.do_as_classes_section
         self.env.filters["as_namespaces_section"] = rendering.do_as_namespaces_section
-        self.env.filters["as_inheritance_diagram_section"] = rendering.do_as_inheritance_diagram_section
+        self.env.filters["as_inheritance_diagram_section"] = (
+            rendering.do_as_inheritance_diagram_section
+        )
         self.env.filters["backlink_tree"] = rendering.do_backlink_tree
         self.env.globals["AutorefsHook"] = rendering.AutorefsHook
         self.env.tests["existing_template"] = (
@@ -170,7 +172,7 @@ class MatlabHandler(BaseHandler):
         )
         # The following is required since in MATLAB there is a concept called namespace
         # This is used as a variable in Jinja templates and would overwrite the namespace macro
-        # Thus we create an alias for this. 
+        # Thus we create an alias for this.
         self.env.globals["jinja_namespace"] = self.env.globals["namespace"]
 
     def collect(self, identifier: str, options: MatlabOptions) -> CollectorItem:
@@ -205,7 +207,7 @@ class MatlabHandler(BaseHandler):
 
         if model is None:
             raise CollectionError(f"Identifier '{identifier}' not found")
-        
+
         parser_name = options.docstring_style
         parser = parser_name and Parser(parser_name)
         parser_options = options.docstring_options and asdict(options.docstring_options)

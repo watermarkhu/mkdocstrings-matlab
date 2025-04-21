@@ -1,6 +1,6 @@
-{#- Template for "Other arguments" sections in docstrings.
+{#- Template for "Name-value arguments" sections in docstrings.
 
-This template renders a list of documented name-value pairs in the format
+This template renders a list of documented name-value arguments in the format
 specified with the [`docstring_section_style`][] configuration option.
 
 Context:
@@ -12,7 +12,7 @@ Context:
 
   This block can be used to log debug messages, deprecation messages, warnings, etc.
   -#}
-  {{ log.debug("Rendering name-value pairs section") }}
+  {{ log.debug("Rendering name-value arguments section") }}
 {% endblock logs %}
 {% import "language.html.jinja" as lang with context %}
 {#- Language module providing the `t` translation method. -#}
@@ -20,7 +20,7 @@ Context:
 {% if config.docstring_section_style == "table" %}
   {% block table_style scoped %}
     {#- Block for the `table` section style. -#}
-    <p><span class="doc-section-title">{{ "Name-value pairs:" }}</span></p>
+    <p><span class="doc-section-title">{{ section.title or lang.t("Name-value arguments:") }}</span></p>
     <table>
       <thead>
         <tr>
@@ -53,7 +53,7 @@ Context:
 {% elif config.docstring_section_style == "list" %}
   {% block list_style scoped %}
     {#- Block for the `list` section style. -#}
-    <p><span class="doc-section-title">{{ "Name-value pairs:" }}</span></p>
+    <p><span class="doc-section-title">{{ section.title or lang.t("Name-value arguments:") }}</span></p>
     <ul>
       {% for argument in section.value %}
         <li class="doc-section-item field-body">
@@ -77,7 +77,7 @@ Context:
     <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">{{ ("NAME-VALUE PAIR").rstrip(":").upper() }}</span></th>
+          <th><span class="doc-section-title">{{ (section.title or lang.t("NAME-VALUE ARGUMENT")).rstrip(":").upper() }}</span></th>
           <th><span>{{ lang.t("DESCRIPTION") }}</span></th>
         </tr>
       </thead>

@@ -10,7 +10,7 @@ from collections import defaultdict
 from contextlib import suppress
 from dataclasses import replace
 from pathlib import Path
-from re import  Pattern
+from re import Pattern
 from typing import TYPE_CHECKING, Any, Callable, ClassVar, Literal, TypeVar
 
 from _griffe.docstrings.models import (
@@ -44,9 +44,9 @@ from mkdocstrings_handlers.matlab.models import (
     Alias,
     Class,
     Function,
-    Object, 
-    Namespace, 
-    Property, 
+    Object,
+    Namespace,
+    Property,
 )
 
 if TYPE_CHECKING:
@@ -285,6 +285,7 @@ def do_order_members(
             return sorted(members, key=_order_map[method])
     return members
 
+
 _split_path_re = re.compile(r"([.(]?)([\w]+)(\))?")
 _splitable_re = re.compile(r"[().]")
 
@@ -372,7 +373,7 @@ def do_filter_objects(
     members_list: bool | list[str] | None = None,
     inherited_members: bool | list[str] = False,
     private_members: bool | list[str] = False,
-    hidden_members: bool | list[str]= False,
+    hidden_members: bool | list[str] = False,
     keep_no_docstrings: bool = True,
 ) -> list[Object | Alias]:
     """Filter a dictionary of objects based on their docstrings.
@@ -408,17 +409,24 @@ def do_filter_objects(
             for obj in objects_dictionary.values()
             if not obj.inherited or obj.name in set(inherited_members)
         ]
-    
+
     if not private_members:
         objects = [obj for obj in objects if not obj.is_private]
     elif isinstance(private_members, list):
-        objects = [obj for obj in objects if not obj.is_private or (obj.is_private and obj.name in private_members)]
+        objects = [
+            obj
+            for obj in objects
+            if not obj.is_private or (obj.is_private and obj.name in private_members)
+        ]
 
     if not hidden_members:
         objects = [obj for obj in objects if not obj.is_hidden]
     elif isinstance(hidden_members, list):
-        objects = [obj for obj in objects if not obj.is_hidden or (obj.is_hidden and obj.name in hidden_members)]
-
+        objects = [
+            obj
+            for obj in objects
+            if not obj.is_hidden or (obj.is_hidden and obj.name in hidden_members)
+        ]
 
     if members_list is True:
         # Return all pre-selected members.
@@ -563,8 +571,8 @@ def do_as_functions_section(
             for function in functions
             if (not check_public or function.is_public)
             and (
-                keep_constructor_method 
-                or not function.parent 
+                keep_constructor_method
+                or not function.parent
                 or not function.parent.is_class
                 or function.name != function.parent.name
             )
@@ -620,36 +628,41 @@ def do_as_namespaces_section(
         [
             DocstringModule(
                 name=namespace.name,
-                description=namespace.docstring.value.split("\n", 1)[0] if namespace.docstring else "",
+                description=namespace.docstring.value.split("\n", 1)[0]
+                if namespace.docstring
+                else "",
             )
             for namespace in namespaces
             if not check_public or namespace.is_public
         ],
     )
 
+
 def do_function_docstring(
-    function: Function, 
-    parse_arguments: bool, 
+    function: Function,
+    parse_arguments: bool,
     show_docstring_input_arguments: bool,
     show_docstring_name_value_arguments: bool,
-    show_docstring_output_arguments: bool
+    show_docstring_output_arguments: bool,
 ) -> list[DocstringSection]:
-    
+    if function.docstring is None:
+        return []
+
     docstring_sections = function.docstring.parsed
-    if not parse_arguments and not (show_docstring_input_arguments or show_docstring_name_value_arguments or show_docstring_output_arguments):
+    if not parse_arguments or not (
+        show_docstring_input_arguments
+        or show_docstring_name_value_arguments
+        or show_docstring_output_arguments
+    ):
         return docstring_sections
 
     docstring_parameters = any(
         isinstance(doc, DocstringSectionParameters) for doc in docstring_sections
     )
-    docstring_returns = any(
-        isinstance(doc, DocstringSectionReturns) for doc in docstring_sections
-    )
+    docstring_returns = any(isinstance(doc, DocstringSectionReturns) for doc in docstring_sections)
 
     if not docstring_parameters and function.parameters:
-        arguments_parameters = any(
-            param.docstring is not None for param in function.parameters
-        )
+        arguments_parameters = any(param.docstring is not None for param in function.parameters)
     else:
         arguments_parameters = False
 
@@ -669,11 +682,7 @@ def do_function_docstring(
         param for param in function.parameters if param.kind is ParameterKind.keyword_only
     ]
 
-    if (
-        show_docstring_input_arguments
-        and document_parameters
-        and standard_parameters
-    ):
+    if show_docstring_input_arguments and document_parameters and standard_parameters:
         docstring_sections.append(
             DocstringSectionParameters(
                 [
@@ -681,20 +690,14 @@ def do_function_docstring(
                         name=param.name,
                         value=str(param.default) if param.default is not None else None,
                         annotation=param.annotation,
-                        description=param.docstring.value
-                        if param.docstring is not None
-                        else "",
+                        description=param.docstring.value if param.docstring is not None else "",
                     )
                     for param in standard_parameters
                 ]
             )
         )
 
-    if (
-        show_docstring_name_value_arguments
-        and document_parameters
-        and keyword_parameters
-    ):
+    if show_docstring_name_value_arguments and document_parameters and keyword_parameters:
         docstring_sections.append(
             DocstringSectionOtherParameters(
                 [
@@ -702,9 +705,7 @@ def do_function_docstring(
                         name=param.name,
                         value=str(param.default) if param.default is not None else None,
                         annotation=param.annotation,
-                        description=param.docstring.value
-                        if param.docstring is not None
-                        else "",
+                        description=param.docstring.value if param.docstring is not None else "",
                     )
                     for param in keyword_parameters
                 ],
@@ -719,9 +720,7 @@ def do_function_docstring(
                     name=param.name,
                     value=str(param.default) if param.default is not None else None,
                     annotation=param.annotation,
-                    description=param.docstring.value
-                    if param.docstring is not None
-                    else "",
+                    description=param.docstring.value if param.docstring is not None else "",
                 )
                 for param in function.returns or []
             ]

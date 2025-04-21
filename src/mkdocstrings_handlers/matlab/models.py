@@ -122,24 +122,27 @@ class _ParentGrabber:
 
 
 class ObjectAliasMixin(GriffeObjectAliaxMixin):
-
     @property
     def attributes(self) -> set[str]:
         return set()
 
     @property
     def properties(self) -> dict[str, "Property"]:
-        return {name: member for name, member in self.all_members.items() if member.kind is Kind.PROPERTY} 
+        return {
+            name: member
+            for name, member in self.all_members.items()
+            if member.kind is Kind.PROPERTY
+        }
 
     @property
     def namespaces(self) -> dict[str, "Namespace"]:
-        return {name: member for name, member in self.members.items() if member.kind is Kind.NAMESPACE} 
+        return {
+            name: member for name, member in self.members.items() if member.kind is Kind.NAMESPACE
+        }
 
     @property
     def scripts(self) -> dict[str, "Script"]:
-        return {
-            name: member for name, member in self.members.items() if member.kind is Kind.SCRIPT
-        }  # type: ignore[misc]
+        return {name: member for name, member in self.members.items() if member.kind is Kind.SCRIPT}  # type: ignore[misc]
 
     @property
     def is_internal(self) -> bool:
@@ -148,7 +151,7 @@ class ObjectAliasMixin(GriffeObjectAliaxMixin):
     @property
     def is_hidden(self) -> bool:
         return False
-    
+
     @property
     def is_script(self) -> bool:
         return False
@@ -185,6 +188,7 @@ class ObjectAliasMixin(GriffeObjectAliaxMixin):
         else:
             return f"{parent.canonical_path}.{self.name}" if parent else self.name
 
+
 class PathMixin:
     """
     A mixin class that provides a filepath attribute and related functionality.
@@ -203,6 +207,7 @@ class PathMixin:
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.name})"
+
 
 class MatlabMixin:
     def __init__(
@@ -239,6 +244,7 @@ class MatlabMixin:
         if value is not None:
             self._docstring = value
 
+
 class Object(ObjectAliasMixin, GriffeObject):
     """
     Represents a MATLAB object with associated docstring, path collection, and parent object.
@@ -262,7 +268,9 @@ class Object(ObjectAliasMixin, GriffeObject):
             **kwargs: Arbitrary keyword arguments.
         """
         self.paths_collection: "PathsCollection | None" = paths_collection
-        lines_collection = paths_collection.lines_collection if paths_collection is not None else None
+        lines_collection = (
+            paths_collection.lines_collection if paths_collection is not None else None
+        )
         super().__init__(*args, lines_collection=lines_collection, **kwargs)
 
 
@@ -374,13 +382,13 @@ class Class(MatlabMixin, PathMixin, GriffeClass, Object):
             return Parameters()
         except KeyError:
             return Parameters()
-        
+
     @property
     def base_classes(self) -> list["Class"]:
         """Retrieves a list of first order superclasses
 
-        This method resolves the superclass identifiers and returns a list of superclasses. 
-        This method does not return the full MRO, but only the first order superclasses.         
+        This method resolves the superclass identifiers and returns a list of superclasses.
+        This method does not return the full MRO, but only the first order superclasses.
         """
         if self._base_classes is not False:
             return self._base_classes
@@ -393,14 +401,13 @@ class Class(MatlabMixin, PathMixin, GriffeClass, Object):
         self._base_classes = base_classes
         return base_classes
 
-        
     @property
     def constructor(self) -> "Function | None | False":
-        """Retrieves the constructor method of this class. 
+        """Retrieves the constructor method of this class.
 
         This methods checks whether the current class implements a constructor. If not, it iterates
         over the base classes in order to find their constructor methods. This will either return the
-        constructor method or None if no constructor method is defined. 
+        constructor method or None if no constructor method is defined.
         """
         if self._constructor is not False:
             return self._constructor
@@ -458,7 +465,7 @@ class Class(MatlabMixin, PathMixin, GriffeClass, Object):
             return self.parent.canonical_path
         else:
             return super().canonical_path
-    
+
     @property
     def is_hidden(self) -> bool:
         return self.Hidden
@@ -468,11 +475,11 @@ class Classfolder(Class):
     """
     A class representing a MATLAB classfolder
     """
+
     pass
 
 
 class Property(MatlabMixin, Attribute, Object):
-
     kind = Kind.PROPERTY
 
     def __init__(
@@ -551,6 +558,7 @@ class Property(MatlabMixin, Attribute, Object):
     def is_hidden(self) -> bool:
         return self.Hidden
 
+
 class Function(MatlabMixin, PathMixin, GriffeFunction, Object):
     """
     Represents a MATLAB function with various attributes and properties.
@@ -626,7 +634,8 @@ class Function(MatlabMixin, PathMixin, GriffeFunction, Object):
 
     @property
     def is_hidden(self) -> bool:
-        return  self.Hidden
+        return self.Hidden
+
 
 class Folder(MatlabMixin, PathMixin, Module, Object):
     """
@@ -638,6 +647,7 @@ class Folder(MatlabMixin, PathMixin, Module, Object):
         - Module: A class representing a module.
         - Object: A base class for MATLAB objects.
     """
+
     kind = Kind.FOLDER
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
@@ -668,6 +678,7 @@ class Namespace(MatlabMixin, PathMixin, Module, Object):
         - Module: A class representing a module.
         - Object: A base class for MATLAB objects.
     """
+
     kind = Kind.NAMESPACE
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:

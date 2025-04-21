@@ -20,7 +20,7 @@ Context:
 {% if config.docstring_section_style == "table" %}
   {% block table_style scoped %}
     {#- Block for the `table` section style. -#}
-    <p><span class="doc-section-title">{{ "Namespaces:" }}</span></p>
+    <p><span class="doc-section-title">{{ section.title or lang.t("Namespaces:") }}</span></p>
     <table>
       <thead>
         <tr>
@@ -45,7 +45,7 @@ Context:
 {% elif config.docstring_section_style == "list" %}
   {% block list_style scoped %}
     {#- Block for the `list` section style. -#}
-    <p><span class="doc-section-title">{{ "Namespaces:" }}</span></p>
+    <p><span class="doc-section-title">{{ section.title or lang.t("Namespaces:") }}</span></p>
     <ul>
       {% for module in section.value %}
         <li class="doc-section-item field-body">
@@ -64,7 +64,7 @@ Context:
     <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">{{ ("NAMESPACE:").rstrip(":").upper() }}</span></th>
+          <th><span class="doc-section-title">{{ (section.title or lang.t("NAMESPACE:")).rstrip(":").upper() }}</span></th>
           <th><span>{{ lang.t("DESCRIPTION") }}</span></th>
         </tr>
       </thead>

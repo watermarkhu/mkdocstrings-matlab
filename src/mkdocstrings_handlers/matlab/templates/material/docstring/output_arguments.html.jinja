@@ -21,7 +21,7 @@ Context:
   {% block table_style scoped %}
     {#- Block for the `table` section style. -#}
     {% set name_column = section.value|selectattr("name")|any %}
-    <p><span class="doc-section-title">{{ "Output arguments:" }}</span></p>
+    <p><span class="doc-section-title">{{ section.title or lang.t("Output arguments:") }}</span></p>
     <table>
       <thead>
         <tr>
@@ -54,7 +54,7 @@ Context:
 {% elif config.docstring_section_style == "list" %}
   {% block list_style scoped %}
     {#- Block for the `list` section style. -#}
-    <p><span class="doc-section-title">{{ "Output arguments:" }}</span></p>
+    <p><span class="doc-section-title">{{ section.title or lang.t("Output arguments:") }}</span></p>
     <ul>
       {% for argument in section.value %}
         <li class="doc-section-item field-body">
@@ -80,7 +80,7 @@ Context:
     <table>
       <thead>
         <tr>
-          <th><span class="doc-section-title">{{ ("OUTPUT ARGUMENT").rstrip(":").upper() }}</span></th>
+          <th><span class="doc-section-title">{{ (section.title or lang.t("OUTPUT ARGUMENT")).rstrip(":").upper() }}</span></th>
           <th><span>{{ lang.t("DESCRIPTION").upper() }}</span></th>
         </tr>
       </thead>

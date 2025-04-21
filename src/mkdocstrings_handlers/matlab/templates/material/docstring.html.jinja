@@ -1,4 +1,4 @@
-{#- 👌 Template for docstrings.
+{#- Template for docstrings.
 
 This template renders Python docstrings.
 Griffe parses docstrings into a list of sections, each with a `kind` and a `value`.
@@ -34,7 +34,7 @@ Context:
       {% elif config.show_docstring_input_arguments and section.kind.value == "parameters" %}
         {% include "docstring/input_arguments.html.jinja" with context %}
       {% elif config.show_docstring_name_value_arguments and section.kind.value == "other parameters" %}
-        {% include "docstring/name_value_pairs.html.jinja" with context %}
+        {% include "docstring/name_value_arguments.html.jinja" with context %}
       {% elif config.show_docstring_output_arguments and section.kind.value == "returns" %}
         {% include "docstring/output_arguments.html.jinja" with context %}
       {% elif config.show_docstring_examples and section.kind.value == "examples" %}
