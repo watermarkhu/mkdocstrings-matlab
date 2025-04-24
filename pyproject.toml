@@ -76,6 +76,10 @@ dev = [
     "mike>=2.1",
     "pydantic>=2.10",
 ]
+reference = [
+    "beautifulsoup4>=4.13.3",
+    "playwright>=1.51.0",
+]
 
 [tool.pyright]
 include = ["src"]

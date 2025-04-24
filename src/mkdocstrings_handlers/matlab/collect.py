@@ -269,42 +269,6 @@ class PathsCollection(ModulesCollection):
             for subdir in [item for item in self._path if _is_subdirectory(path, item)]:
                 self.rm_path(subdir, recursive=False)
 
-    def get_inheritance_diagram(self, model: Class) -> DocstringSectionText | None:
-        def get_id(str: str) -> str:
-            return str.replace(".", "_")
-
-        def get_nodes(model: Class, nodes: set[str] = set()) -> set[str]:
-            nodes.add(f"   {get_id(model.name)}[{model.name}]")
-            for base in [str(base) for base in model.bases]:
-                super = self.resolve(base)
-                if super is None:
-                    nodes.add(f"   {get_id(base)}[{base}]")
-                else:
-                    if isinstance(super, Class):
-                        get_nodes(super, nodes)
-            return nodes
-
-        def get_links(model: Class, links: set[str] = set()) -> set[str]:
-            for base in [str(base) for base in model.bases]:
-                super = self.resolve(base)
-                if super is None:
-                    links.add(f"   {get_id(base)} --> {get_id(model.name)}")
-                else:
-                    links.add(f"   {get_id(super.name)} --> {get_id(model.name)}")
-                    if isinstance(super, Class):
-                        get_links(super, links)
-            return links
-
-        nodes = get_nodes(model)
-        if len(nodes) == 1:
-            return None
-
-        nodes_str = "\n".join(list(nodes))
-        links_str = "\n".join(list(get_links(model)))
-        section = f"```mermaid\nflowchart TB\n{nodes_str}\n{links_str}\n```"
-
-        return DocstringSectionText(section, title="Inheritance Diagram")
-
 
 def _is_subdirectory(parent_path: Path, child_path: Path) -> bool:
     try:
@@ -401,7 +365,7 @@ class LazyModel:
         return parent
 
     def _collect_path(self, path: Path, **kwargs: Any) -> MatlabMixin:
-        file = FileParser(path)
+        file = FileParser(path, paths_collection=self._paths_collection)
         model = file.parse(paths_collection=self._paths_collection, **kwargs)
         self._lines_collection[path] = file.content.split("\n")
         return model

@@ -29,8 +29,8 @@ Context:
         {% include "docstring/functions.html.jinja" with context %}
       {% elif config.show_docstring_classes and section.kind.value == "classes" %}
         {% include "docstring/classes.html.jinja" with context %}
-      {% elif config.show_docstring_modules and section.kind.value == "modules" %}
-        {% include "docstring/modules.html.jinja" with context %}
+      {% elif config.show_docstring_namespaces and section.kind.value == "modules" %}
+        {% include "docstring/namespaces.html.jinja" with context %}
       {% elif config.show_docstring_input_arguments and section.kind.value == "parameters" %}
         {% include "docstring/input_arguments.html.jinja" with context %}
       {% elif config.show_docstring_name_value_arguments and section.kind.value == "other parameters" %}

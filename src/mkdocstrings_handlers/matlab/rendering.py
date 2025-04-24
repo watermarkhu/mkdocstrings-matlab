@@ -691,7 +691,8 @@ def do_function_docstring(
                         description=param.docstring.value if param.docstring is not None else "",
                     )
                     for param in standard_parameters
-                ]
+                ],
+                title="",
             )
         )
 
@@ -707,7 +708,7 @@ def do_function_docstring(
                     )
                     for param in keyword_parameters
                 ],
-                title="Name-Value Arguments:",
+                title="",
             )
         )
 
@@ -721,7 +722,8 @@ def do_function_docstring(
                     description=param.docstring.value if param.docstring is not None else "",
                 )
                 for param in function.returns or []
-            ]
+            ],
+            title="",
         )
         docstring_sections.append(returns)
 

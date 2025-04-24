@@ -5,13 +5,14 @@ from __future__ import annotations
 import textwrap
 from collections import OrderedDict
 from pathlib import Path
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 import charset_normalizer
 import tree_sitter_matlab as tsmatlab
 from tree_sitter import Language, Node, Parser
 
 from mkdocstrings_handlers.matlab.enums import ParameterKind
+from mkdocstrings_handlers.matlab.expressions import BuiltinExpr, CallableExpr, MATLAB_BUILTINS
 from mkdocstrings_handlers.matlab.models import (
     AccessEnum,
     Class,
@@ -24,6 +25,10 @@ from mkdocstrings_handlers.matlab.models import (
     Property,
     Script,
 )
+
+if TYPE_CHECKING:
+    from mkdocstrings_handlers.matlab.collect import PathsCollection
+
 
 __all__ = ["FileParser"]
 
@@ -189,7 +194,7 @@ class FileParser(object):
         parse(**kwargs) -> MatlabMixin: Parses the MATLAB file and returns a MatlabMixin.
     """
 
-    def __init__(self, filepath: Path):
+    def __init__(self, filepath: Path, paths_collection: PathsCollection | None = None) -> None:
         """
         Initialize the object with the given file path.
 
@@ -197,6 +202,7 @@ class FileParser(object):
             filepath (Path): The path to the file to be processed.
         """
         self.filepath: Path = filepath
+        self.paths_collection: PathsCollection | None = paths_collection
         result = charset_normalizer.from_path(filepath).best()
         self.encoding: str = result.encoding if result else "utf-8"
         with open(filepath, "rb") as f:
@@ -342,7 +348,7 @@ class FileParser(object):
 
                 prop = Property(
                     self._first_from_capture(property_captures, "name"),
-                    annotation=self._first_from_capture(property_captures, "class"),
+                    annotation=self._get_expression(self._first_from_capture(property_captures, "class")),
                     value=self._decode_from_capture(property_captures, "default"),
                     docstring=self._comment_docstring(property_captures.get("comment", None)),
                     parent=model,
@@ -501,7 +507,7 @@ class FileParser(object):
 
                 annotation = self._first_from_capture(argument, "class")
                 if annotation:
-                    parameter.annotation = annotation
+                    parameter.annotation = self._get_expression(annotation)
 
                 default = self._first_from_capture(argument, "default")
                 if default:
@@ -667,3 +673,20 @@ class FileParser(object):
             endlineno=endlineno,
             parent=parent,
         )
+
+    def _get_expression(self, expr: str) -> CallableExpr | BuiltinExpr | None:
+        """
+        Get the expression from a node.
+
+        Args:
+            node (Node): The node to extract the expression from.
+
+        Returns:
+            CallableExpr | BuiltinExpr | None: The extracted expression or None if not found.
+        """
+        if expr in self.paths_collection._mapping:
+            return CallableExpr(expr)
+        elif expr in MATLAB_BUILTINS:
+            return BuiltinExpr(expr)
+        else:
+            return expr
