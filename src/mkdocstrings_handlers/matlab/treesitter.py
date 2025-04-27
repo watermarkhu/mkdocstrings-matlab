@@ -348,7 +348,9 @@ class FileParser(object):
 
                 prop = Property(
                     self._first_from_capture(property_captures, "name"),
-                    annotation=self._get_expression(self._first_from_capture(property_captures, "class")),
+                    annotation=self._get_expression(
+                        self._first_from_capture(property_captures, "class")
+                    ),
                     value=self._decode_from_capture(property_captures, "default"),
                     docstring=self._comment_docstring(property_captures.get("comment", None)),
                     parent=model,
@@ -684,7 +686,7 @@ class FileParser(object):
         Returns:
             CallableExpr | BuiltinExpr | None: The extracted expression or None if not found.
         """
-        if expr in self.paths_collection._mapping:
+        if self.paths_collection is not None and expr in self.paths_collection._mapping:
             return CallableExpr(expr)
         elif expr in MATLAB_BUILTINS:
             return BuiltinExpr(expr)

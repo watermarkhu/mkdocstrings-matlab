@@ -119,7 +119,7 @@ class MatlabHandler(BaseHandler):
 
         Arguments:
             data: The collected data to render.
-            config: The handler's configuration options.
+            options: The handler's configuration options.
 
         Returns:
             The rendered template as HTML.
@@ -149,7 +149,6 @@ class MatlabHandler(BaseHandler):
         self.env.trim_blocks = True
         self.env.lstrip_blocks = True
         self.env.keep_trailing_newline = False
-        self.env.filters["split_path"] = rendering.do_split_path
         self.env.filters["order_members"] = rendering.do_order_members
         self.env.filters["format_code"] = rendering.do_format_code
         self.env.filters["format_signature"] = rendering.do_format_signature
@@ -183,7 +182,7 @@ class MatlabHandler(BaseHandler):
 
         Arguments:
             identifier: An identifier for which to collect data.
-            config: The handler's configuration options.
+            options: The handler's configuration options.
 
         Returns:
             CollectorItem

@@ -11,10 +11,8 @@ from _griffe.collections import ModulesCollection
 
 
 from mkdocstrings_handlers.matlab.models import (
-    Class,
     Classfolder,
     Docstring,
-    DocstringSectionText,
     Folder,
     MatlabMixin,
     Namespace,

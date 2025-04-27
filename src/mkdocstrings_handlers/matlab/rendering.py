@@ -286,49 +286,6 @@ def do_order_members(
     return members
 
 
-_split_path_re = re.compile(r"([.(]?)([\w]+)(\))?")
-_splitable_re = re.compile(r"[().]")
-
-
-def do_split_path(path: str, full_path: str) -> Iterator[tuple[str, str, str, str]]:
-    """Split object paths for building cross-references.
-
-    Parameters:
-        path: The path to split.
-        full_path: The full path, used to compute correct paths for each part of the path.
-
-    Yields:
-        4-tuples: prefix, word, full path, suffix.
-    """
-    # Path is a single word, yield full path directly.
-    if not _splitable_re.search(path):
-        yield ("", path, full_path, "")
-        return
-
-    current_path = ""
-    if path == full_path:
-        # Split full path and yield directly without storing data in a dict.
-        for match in _split_path_re.finditer(full_path):
-            prefix, word, suffix = match.groups()
-            current_path = f"{current_path}{prefix}{word}{suffix or ''}" if current_path else word
-            yield prefix or "", word, current_path, suffix or ""
-        return
-
-    # Split full path first to store tuples in a dict.
-    elements = {}
-    for match in _split_path_re.finditer(full_path):
-        prefix, word, suffix = match.groups()
-        current_path = f"{current_path}{prefix}{word}{suffix or ''}" if current_path else word
-        elements[word] = (prefix or "", word, current_path, suffix or "")
-
-    # Then split path and pick tuples from the dict.
-    first = True
-    for match in _split_path_re.finditer(path):
-        prefix, word, current_path, suffix = elements[match.group(2)]
-        yield "" if first else prefix, word, current_path, suffix
-        first = False
-
-
 def _keep_object(name: str, filters: Sequence[tuple[Pattern, bool]]) -> bool:
     keep = None
     rules = set()

@@ -1,5 +1,9 @@
 """MATLAB handler for mkdocstrings."""
 
+from __future__ import annotations
+
+import logging
+
 from _griffe.docstrings import google, numpy
 from _griffe.enumerations import DocstringSectionKind
 
@@ -35,3 +39,17 @@ extensions = {
 
 google._section_kind.update(extensions)
 numpy._section_kind.update(extensions)
+
+
+# Filter griffe logger to remove return type warnings, as this is possible in MATLAB
+class ReturnTypeWarningFilter(logging.Filter):
+    def filter(self, record):
+        if hasattr(record, "msg"):
+            message = str(record.msg)
+            if "No type or annotation for returned value" in message:
+                return False
+        return True
+
+
+griffe_logger = logging.getLogger("mkdocs.plugins.griffe")
+griffe_logger.addFilter(ReturnTypeWarningFilter())

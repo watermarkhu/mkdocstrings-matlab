@@ -6,11 +6,7 @@ from pathlib import Path
 
 from griffe import Expr as GriffeExpr
 
-__all__ = [
-    "CallableExpr",
-    "BuiltinExpr",
-    "MATLAB_BUILTINS"
-]
+__all__ = ["CallableExpr", "BuiltinExpr", "MATLAB_BUILTINS"]
 
 
 def _load_matlab_builtins():
@@ -25,16 +21,16 @@ MATHWORKS_DOC_URL = "https://www.mathworks.com/help/matlab"
 
 @dataclass
 class CallableExpr(GriffeExpr):
-
-    value: str
+    name: str
 
     def __str__(self) -> str:
         """Return the string representation of the builtin expression."""
-        return f"{self.value}"
+        return f"{self.name}"
+
 
 @dataclass
 class BuiltinExpr(CallableExpr):
-
+    @property
     def doc(self) -> str:
         """Return the link for the builtin expression."""
-        return f"{MATHWORKS_DOC_URL}/{MATLAB_BUILTINS[self.value]}"
+        return f"{MATHWORKS_DOC_URL}/{MATLAB_BUILTINS[self.name]}"

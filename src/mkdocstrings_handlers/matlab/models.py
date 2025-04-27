@@ -1,15 +1,16 @@
 """Classes to represent MATLAB objects and their properties."""
 
+from __future__ import annotations
+
 from typing import Any, TYPE_CHECKING, Callable
-from functools import cached_property
 from pathlib import Path
+
 from griffe import (
     Alias as GriffeAlias,
     Attribute,
     Function as GriffeFunction,
     Class as GriffeClass,
-    Docstring as GriffeDocstring,
-    DocstringSection,
+    Docstring,
     DocstringSectionText,
     Module,
     Object as GriffeObject,
@@ -17,7 +18,6 @@ from griffe import (
     Parameters as GriffeParameters,
     Parameter as GriffeParameter,
 )
-
 from mkdocstrings_handlers.matlab.enums import Kind, AccessEnum, ParameterKind
 
 if TYPE_CHECKING:
@@ -40,54 +40,6 @@ __all__ = [
     "Property",
     "Script",
 ]
-
-
-class Docstring(GriffeDocstring):
-    """
-    A class to represent a docstring with additional sections.
-
-    This class extends the GriffeDocstring class to include extra sections
-    that can be added to the parsed docstring.A
-
-    Attributes:
-        _suffixes (list[DocstringSection]): A list to store additional docstring sections.
-
-    Methods:
-        parsed: Returns the parsed docstring sections combined with extra sections.
-        _parsed: Parses the docstring into structured data.
-    """
-
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        """
-        Initializes the Docstring object.
-
-        Args:
-            *args (Any): Variable length argument list.
-            **kwargs (Any): Arbitrary keyword arguments.
-        """
-        super().__init__(*args, **kwargs)
-        self._prefixes: list[DocstringSection] = []
-        self._suffixes: list[DocstringSection] = []
-
-    @property
-    def parsed(self) -> list[DocstringSection]:
-        """
-        The docstring sections, parsed into structured data.
-
-        Returns:
-            list[DocstringSection]: The combined list of parsed and extra docstring sections.
-        """
-        return self._prefixes + self._parsed + self._suffixes
-
-    @cached_property
-    def _parsed(self) -> list[DocstringSection]:
-        """
-        Parses the docstring into structured data.
-
-        Returns:
-            list[DocstringSection]: The parsed docstring sections.
-        """
-        return self.parse()
 
 
 class _ParentGrabber:
@@ -255,9 +207,9 @@ class Object(ObjectAliasMixin, GriffeObject):
 
     def __init__(
         self,
-        *args,
+        *args: Any,
         paths_collection: "PathsCollection | None" = None,
-        **kwargs,
+        **kwargs: Any,
     ) -> None:
         """
         Initialize the object with the given parameters.

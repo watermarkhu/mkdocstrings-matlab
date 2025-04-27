@@ -18,7 +18,7 @@ Context:
 {% endblock logs %}
 
 <div class="doc doc-object doc-namespace">
-  {% with obj = namespace, html_id = namespace.path %}
+  {% with obj = namespace, html_id = "+" + namespace.path %}
 
     {% if root %}
       {% set show_full_path = config.show_root_full_path %}
