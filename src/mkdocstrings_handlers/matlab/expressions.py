@@ -9,7 +9,13 @@ from griffe import Expr as GriffeExpr
 __all__ = ["CallableExpr", "BuiltinExpr", "MATLAB_BUILTINS"]
 
 
-def _load_matlab_builtins():
+def _load_matlab_builtins() -> dict:
+    """
+    Load the MATLAB builtin functions from a JSON file.
+
+    Returns:
+        dict: A dictionary containing MATLAB builtin functions and their documentation URLs.
+    """
     json_path = Path(__file__).parent / "matlab_builtins.json"
     with open(json_path, "r") as file:
         return json.load(file)

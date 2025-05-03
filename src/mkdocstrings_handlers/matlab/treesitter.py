@@ -155,10 +155,10 @@ def _strtobool(value: str) -> bool:
     Convert a string representation of truth to boolean.
 
     Args:
-        value (str): The string to convert. Expected values are "true", "1" for True, and any other value for False.
+        value: The string to convert. Expected values are "true", "1" for True, and any other value for False.
 
     Returns:
-        bool: True if the input string is "true" or "1" (case insensitive), otherwise False.
+        True if the input string is "true" or "1" (case insensitive), otherwise False.
     """
     if value.lower() in ["true", "1"]:
         return True
@@ -171,10 +171,10 @@ def _dedent(lines: list[str]) -> list[str]:
     Remove the common leading whitespace from each line in the given list of lines.
 
     Args:
-        lines (list[str]): A list of strings where each string represents a line of text.
+        lines: A list of strings where each string represents a line of text.
 
     Returns:
-        list[str]: A list of strings with the common leading whitespace removed from each line.
+        A list of strings with the common leading whitespace removed from each line.
     """
     text = "\n".join(lines)
     dedented_text = textwrap.dedent(text)
@@ -529,10 +529,10 @@ class FileParser(object):
         Decode the text of a given node using the specified encoding.
 
         Args:
-            node (Node): The node whose text needs to be decoded.
+            node: The node whose text needs to be decoded.
 
         Returns:
-            str: The decoded text of the node. If the node or its text is None, returns an empty string.
+            The decoded text of the node. If the node or its text is None, returns an empty string.
         """
         self._node = node
         return node.text.decode(self.encoding) if node is not None and node.text is not None else ""
@@ -542,11 +542,11 @@ class FileParser(object):
         Decode elements from a capture dictionary based on a specified key.
 
         Args:
-            capture (dict[str, list[Node]]): A dictionary where the keys are strings and the values are lists of Node objects.
-            key (str): The key to look for in the capture dictionary.
+            capture: A dictionary where the keys are strings and the values are lists of Node objects.
+            key: The key to look for in the capture dictionary.
 
         Returns:
-            list[str]: A list of decoded strings corresponding to the elements associated with the specified key in the capture dictionary.
+            A list of decoded strings corresponding to the elements associated with the specified key in the capture dictionary.
         """
         if key not in capture:
             return []
@@ -558,17 +558,35 @@ class FileParser(object):
         Retrieve the first decoded string from a capture dictionary for a given key.
 
         Args:
-            capture (dict[str, list[Node]]): A dictionary where the key is a string and the value is a list of Node objects.
-            key (str): The key to look up in the capture dictionary.
+            capture: A dictionary where the key is a string and the value is a list of Node objects.
+            key: The key to look up in the capture dictionary.
 
         Returns:
-            str: The first decoded string if available, otherwise an empty string.
+            The first decoded string if available, otherwise an empty string.
         """
         decoded = self._decode_from_capture(capture, key)
         if decoded:
             return decoded[0]
         else:
             return ""
+
+    def _get_expression(self, expr: str) -> CallableExpr | BuiltinExpr | None:
+        """
+        Get the expression object from an expression string.
+
+        Args:
+            expr: The expression string to evaluate.
+
+        Returns:
+            A CallableExpr, BuiltinExpr, or the original expression string
+            depending on the type of expression and available information.
+        """
+        if self.paths_collection is not None and expr in self.paths_collection._mapping:
+            return CallableExpr(expr)
+        elif expr in MATLAB_BUILTINS:
+            return BuiltinExpr(expr)
+        else:
+            return expr
 
     def _comment_docstring(
         self, nodes: list[Node] | Node | None, parent: MatlabMixin | None = None
@@ -675,20 +693,3 @@ class FileParser(object):
             endlineno=endlineno,
             parent=parent,
         )
-
-    def _get_expression(self, expr: str) -> CallableExpr | BuiltinExpr | None:
-        """
-        Get the expression from a node.
-
-        Args:
-            node (Node): The node to extract the expression from.
-
-        Returns:
-            CallableExpr | BuiltinExpr | None: The extracted expression or None if not found.
-        """
-        if self.paths_collection is not None and expr in self.paths_collection._mapping:
-            return CallableExpr(expr)
-        elif expr in MATLAB_BUILTINS:
-            return BuiltinExpr(expr)
-        else:
-            return expr

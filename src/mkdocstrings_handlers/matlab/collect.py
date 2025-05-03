@@ -269,6 +269,16 @@ class PathsCollection(ModulesCollection):
 
 
 def _is_subdirectory(parent_path: Path, child_path: Path) -> bool:
+    """
+    Check if a path is a subdirectory of another path.
+
+    Args:
+        parent_path: The potential parent directory path.
+        child_path: The potential subdirectory path.
+
+    Returns:
+        True if child_path is a subdirectory of parent_path, False otherwise.
+    """
     try:
         child_path.relative_to(parent_path)
     except ValueError:

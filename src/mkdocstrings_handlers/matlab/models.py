@@ -74,6 +74,17 @@ class _ParentGrabber:
 
 
 class ObjectAliasMixin(GriffeObjectAliaxMixin):
+    """
+    A mixin class for Griffe objects that provides alias functionality.
+
+    This class allows you to create aliases for Griffe objects,
+    making it easier to refer to them by different names within your code.
+    It inherits from GriffeObjectAliaxMixin to provide the base alias functionality.
+
+    Attributes:
+        attributes (set[str]): A set containing the names of the attributes
+                                 associated with this object.  Currently empty.
+    """
     @property
     def attributes(self) -> set[str]:
         return set()

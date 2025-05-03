@@ -59,12 +59,30 @@ _logger = get_logger(__name__)
 
 
 def _sort_key_alphabetical(item: CollectorItem) -> str:
+    """
+    Sort key function to order items alphabetically by name.
+
+    Args:
+        item: The collector item to get sort key for.
+
+    Returns:
+        A string representing the sort key (the item's name).
+    """
     # `chr(sys.maxunicode)` is a string that contains the final unicode character,
     # so if `name` isn't found on the object, the item will go to the end of the list.
     return item.name or chr(sys.maxunicode)
 
 
 def _sort_key_source(item: CollectorItem) -> float:
+    """
+    Sort key function to order items by their position in the source file.
+
+    Args:
+        item: The collector item to get sort key for.
+
+    Returns:
+        A float representing the line number of the item in the source file.
+    """
     # If `lineno` is none, the item will go to the end of the list.
     if item.is_alias:
         return item.alias_lineno if item.alias_lineno is not None else float("inf")
@@ -72,6 +90,18 @@ def _sort_key_source(item: CollectorItem) -> float:
 
 
 def _sort__all__(item: CollectorItem) -> float:  # noqa: ARG001
+    """
+    Sort key function to order items according to __all__ attribute.
+
+    Args:
+        item: The collector item to get sort key for.
+
+    Returns:
+        Float representation of position in __all__ list.
+
+    Raises:
+        ValueError: Always raises this error as not implemented in the public version.
+    """
     raise ValueError("Not implemented in public version of mkdocstrings-python")
 
 
@@ -287,6 +317,16 @@ def do_order_members(
 
 
 def _keep_object(name: str, filters: Sequence[tuple[Pattern, bool]]) -> bool:
+    """
+    Determine if an object should be kept based on filter patterns.
+
+    Args:
+        name: The name of the object.
+        filters: A sequence of tuple pairs of (pattern, exclude_flag).
+
+    Returns:
+        True if the object should be kept, False otherwise.
+    """
     keep = None
     rules = set()
     for regex, exclude in filters:
@@ -301,6 +341,18 @@ def _keep_object(name: str, filters: Sequence[tuple[Pattern, bool]]) -> bool:
 
 
 def _parents(obj: Alias) -> set[str]:
+    """
+    Get the full set of parent paths for an object.
+
+    This function collects all parent paths in the inheritance hierarchy
+    including paths for both direct parents and their alias targets.
+
+    Args:
+        obj: The alias object to get parents for.
+
+    Returns:
+        A set of parent path strings.
+    """
     parent: Object | Alias = obj.parent  # type: ignore[assignment]
     parents = {obj.path, parent.path}
     if parent.is_alias:
@@ -314,6 +366,15 @@ def _parents(obj: Alias) -> set[str]:
 
 
 def _remove_cycles(objects: list[Object | Alias]) -> Iterator[Object | Alias]:
+    """
+    Filter objects to remove those that create cycles in the inheritance graph.
+
+    Args:
+        objects: List of objects to check for cycles.
+
+    Returns:
+        An iterator yielding objects that don't create inheritance cycles.
+    """
     suppress_errors = suppress(AliasResolutionError, CyclicAliasError)
     for obj in objects:
         if obj.is_alias:
@@ -688,13 +749,25 @@ def do_function_docstring(
 
 
 def do_as_inheritance_diagram_section(model: Class) -> DocstringSectionText | None:
+    """Generate an inheritance diagram section for a class.
+
+    Args:
+        model: The class model to create an inheritance diagram for.
+
+    Returns:
+        A docstring section with a Mermaid diagram, or None if there's no inheritance.
+    """
+
+    if not hasattr(model, 'bases') or not model.bases:
+        return None
+
     def get_id(str: str) -> str:
         return str.replace(".", "_")
 
     def get_nodes(model: Class, nodes: set[str] = set()) -> set[str]:
         nodes.add(f"   {get_id(model.name)}[{model.name}]")
         for base in [str(base) for base in model.bases]:
-            super = model.paths_collection.resolve(base)
+            super = model.paths_collection.resolve(base) if model.paths_collection else None
             if super is None:
                 nodes.add(f"   {get_id(base)}[{base}]")
             else:
@@ -704,12 +777,12 @@ def do_as_inheritance_diagram_section(model: Class) -> DocstringSectionText | No
 
     def get_links(model: Class, links: set[str] = set()) -> set[str]:
         for base in [str(base) for base in model.bases]:
-            super = model.paths_collection.resolve(base)
+            super = model.paths_collection.resolve(base) if model.paths_collection else None
             if super is None:
                 links.add(f"   {get_id(base)} --> {get_id(model.name)}")
             else:
-                links.add(f"   {get_id(super.name)} --> {get_id(model.name)}")
                 if isinstance(super, Class):
+                    links.add(f"   {get_id(super.name)} --> {get_id(model.name)}")
                     get_links(super, links)
         return links
 
@@ -796,6 +869,15 @@ Tree = dict[tuple[_T, ...], "Tree"]
 
 
 def _tree(data: Iterable[tuple[_T, ...]]) -> _Tree:
+    """
+    Create a tree structure from a collection of path tuples.
+
+    Args:
+        data: An iterable of tuples where each tuple represents a path in the tree.
+
+    Returns:
+        A nested dictionary representing the tree structure.
+    """
     new_tree = _rtree()
     for nav in data:
         *path, leaf = nav
@@ -807,6 +889,15 @@ def _tree(data: Iterable[tuple[_T, ...]]) -> _Tree:
 
 
 def _compact_tree(tree: _Tree) -> Tree:
+    """
+    Compact a tree by combining single-child nodes into compound nodes.
+
+    Args:
+        tree: A tree structure to compact.
+
+    Returns:
+        A compacted tree with nodes that have single children merged.
+    """
     new_tree = _rtree()
     for key, value in tree.items():
         child = _compact_tree(value)
