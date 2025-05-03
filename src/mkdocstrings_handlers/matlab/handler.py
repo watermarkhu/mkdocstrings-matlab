@@ -377,8 +377,6 @@ def get_handler(
     theme: str,
     custom_templates: str | None = None,
     config_file_path: str | None = None,
-    paths: list[str] | None = None,
-    paths_recursive: bool = False,
     **config: Any,
 ) -> MatlabHandler:
     """
@@ -400,8 +398,7 @@ def get_handler(
         theme=theme,
         custom_templates=custom_templates,
         config_file_path=config_file_path,
-        paths=paths,
-        paths_recursive=paths_recursive,
+        **config['handler_config']
     )
 
 
