@@ -220,9 +220,11 @@ class MatlabHandler(BaseHandler):
 
 
 def get_handler(
-    handler_config: MutableMapping[str, Any],
-    tool_config: MkDocsConfig,
-    **kwargs: Any,
+    *,
+    theme: str,
+    custom_templates: str | None = None,
+    config_file_path: str | None = None,
+    **config: Any,
 ) -> MatlabHandler:
     """
     Create and return a MatlabHandler object with the specified configuration.
@@ -236,7 +238,9 @@ def get_handler(
     """
     base_dir = Path(tool_config.config_file_path or "./mkdocs.yml").parent
     return MatlabHandler(
-        config=MatlabConfig.from_data(**handler_config),
-        base_dir=base_dir,
-        **kwargs,
+        handler="matlab",
+        theme=theme,
+        custom_templates=custom_templates,
+        config_file_path=config_file_path,
+        **config['handler_config']
     )

@@ -1,6 +1,28 @@
 # CHANGELOG
 
 
+## v0.9.7 (2025-05-03)
+
+### Bug Fixes
+
+- Handler config ([#84](https://github.com/watermarkhu/mkdocstrings-matlab/pull/84),
+  [`51c6fda`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/51c6fda399b6a2abf18c6ffa3298bfae167315aa))
+
+### Chores
+
+- **deps**: Update actions/create-github-app-token action to v2
+  ([#80](https://github.com/watermarkhu/mkdocstrings-matlab/pull/80),
+  [`e9e6899`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/e9e689916e368d9c12f552f22445423888fb651d))
+
+Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
+
+- **deps**: Update group-github-actions to v9.21.0
+  ([#75](https://github.com/watermarkhu/mkdocstrings-matlab/pull/75),
+  [`f4c14e3`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/f4c14e321e12d84e79dc7d9da0e3f877921521c7))
+
+Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
+
+
 ## v0.9.6 (2025-02-14)
 
 ### Bug Fixes
