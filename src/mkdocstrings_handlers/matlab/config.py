@@ -416,7 +416,7 @@ class MatlabInputOptions:
         bool | list[str],
         Field(
             group="members",
-            description="""A boolean, or an explicit list of hidden members to render. 
+            description="""A boolean, or an explicit list of hidden members to render.
 
             If true, select all hidden members, which can then be filtered with `members`.
             If false or empty list, do not select any hidden member. Default: `False`.
@@ -428,7 +428,7 @@ class MatlabInputOptions:
         bool | list[str],
         Field(
             group="members",
-            description="""A boolean, or an explicit list of private members to render. 
+            description="""A boolean, or an explicit list of private members to render.
 
             If true, select all private members, which can then be filtered with `members`.
             If false or empty list,  do not select any private member.

@@ -36,21 +36,21 @@ from griffe import (
 )
 from jinja2 import TemplateNotFound, pass_context, pass_environment
 from markupsafe import Markup
-from mkdocs_autorefs import AutorefsHookInterface, Backlink, BacklinkCrumb
-from mkdocstrings import get_logger
-
-from mkdocstrings_handlers.matlab.enums import ParameterKind
-from mkdocstrings_handlers.matlab.models import (
+from maxx.enums import ArgumentKind
+from maxx.objects import (
     Alias,
     Class,
     Function,
-    Object,
     Namespace,
+    Object,
     Property,
 )
+from mkdocs_autorefs import AutorefsHookInterface, Backlink, BacklinkCrumb
+from mkdocstrings import get_logger
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Iterator, Sequence
+
     from jinja2 import Environment
     from jinja2.runtime import Context
     from mkdocstrings import CollectorItem
@@ -84,31 +84,12 @@ def _sort_key_source(item: CollectorItem) -> float:
         A float representing the line number of the item in the source file.
     """
     # If `lineno` is none, the item will go to the end of the list.
-    if item.is_alias:
-        return item.alias_lineno if item.alias_lineno is not None else float("inf")
     return item.lineno if item.lineno is not None else float("inf")
 
 
-def _sort__all__(item: CollectorItem) -> float:  # noqa: ARG001
-    """
-    Sort key function to order items according to __all__ attribute.
-
-    Args:
-        item: The collector item to get sort key for.
-
-    Returns:
-        Float representation of position in __all__ list.
-
-    Raises:
-        ValueError: Always raises this error as not implemented in the public version.
-    """
-    raise ValueError("Not implemented in public version of mkdocstrings-python")
-
-
-Order = Literal["__all__", "alphabetical", "source"]
+Order = Literal["alphabetical", "source"]
 """Ordering methods.
 
-- `__all__`: order members according to `__all__` module attributes, if declared;
 - `alphabetical`: order members alphabetically;
 - `source`: order members as they appear in the source file.
 """
@@ -116,7 +97,6 @@ Order = Literal["__all__", "alphabetical", "source"]
 _order_map: dict[str, Callable[[Object | Alias], str | float]] = {
     "alphabetical": _sort_key_alphabetical,
     "source": _sort_key_source,
-    "__all__": _sort__all__,
 }
 
 
@@ -250,10 +230,10 @@ def do_format_property(
     annotations = context.parent["config"].show_signature_annotations
 
     signature = str(property_path).strip()
-    if annotations and property.annotation:
+    if annotations and property.type:
         annotation = template.render(
             context.parent,
-            expression=property.annotation,
+            expression=property.type,
             signature=True,
             backlink_type="returned-by",
         )
@@ -354,14 +334,10 @@ def _parents(obj: Alias) -> set[str]:
         A set of parent path strings.
     """
     parent: Object | Alias = obj.parent  # type: ignore[assignment]
-    parents = {obj.path, parent.path}
-    if parent.is_alias:
-        parents.add(parent.final_target.path)  # type: ignore[union-attr]
+    parents = {parent.path}
     while parent.parent:
         parent = parent.parent
         parents.add(parent.path)
-        if parent.is_alias:
-            parents.add(parent.final_target.path)  # type: ignore[union-attr]
     return parents
 
 
@@ -379,7 +355,7 @@ def _remove_cycles(objects: list[Object | Alias]) -> Iterator[Object | Alias]:
     for obj in objects:
         if obj.is_alias:
             with suppress_errors:
-                if obj.final_target.path in _parents(obj):  # type: ignore[arg-type,union-attr]
+                if obj.path in _parents(obj):  # type: ignore[arg-type,union-attr]
                     continue
         yield obj
 
@@ -473,7 +449,7 @@ def do_filter_objects(
         objects = [
             obj
             for obj in objects
-            if obj.has_docstrings or (inherited_members_specified and obj.inherited)
+            if obj.has_docstring or (inherited_members_specified and obj.inherited)
         ]
 
     # Prevent infinite recursion.
@@ -550,11 +526,11 @@ def do_as_properties_section(
             DocstringAttribute(
                 name=property.name,
                 description=_parse_docstring_summary(property),
-                annotation=property.annotation,
-                value=property.value,  # type: ignore[arg-type]
+                annotation=property.type,
+                value=property.default,  # type: ignore[arg-type]
             )
             for property in properties
-            if not check_public or property.is_public
+            if not check_public or not property.is_private
         ],
     )
 
@@ -585,7 +561,7 @@ def do_as_functions_section(
                 else "",
             )
             for function in functions
-            if (not check_public or function.is_public)
+            if (not check_public or not function.is_private)
             and (
                 keep_constructor_method
                 or not function.parent
@@ -672,59 +648,59 @@ def do_function_docstring(
     ):
         return docstring_sections
 
-    docstring_parameters = any(
+    docstring_arguments = any(
         isinstance(doc, DocstringSectionParameters) for doc in docstring_sections
     )
     docstring_returns = any(isinstance(doc, DocstringSectionReturns) for doc in docstring_sections)
 
-    if not docstring_parameters and function.parameters:
-        arguments_parameters = any(param.docstring is not None for param in function.parameters)
+    if not docstring_arguments and function.arguments:
+        arguments_arguments = any(param.docstring is not None for param in function.arguments)
     else:
-        arguments_parameters = False
+        arguments_arguments = False
 
     if not docstring_returns and function.returns:
         arguments_returns = any(ret.docstring is not None for ret in function.returns)
     else:
         arguments_returns = False
 
-    document_parameters = not docstring_parameters and arguments_parameters
+    document_arguments = not docstring_arguments and arguments_arguments
     document_returns = not docstring_returns and arguments_returns
 
-    standard_parameters = [
-        param for param in function.parameters if param.kind is not ParameterKind.keyword_only
+    standard_arguments = [
+        param for param in function.arguments if param.kind is not ArgumentKind.keyword_only
     ]
 
-    keyword_parameters = [
-        param for param in function.parameters if param.kind is ParameterKind.keyword_only
+    keyword_arguments = [
+        param for param in function.arguments if param.kind is ArgumentKind.keyword_only
     ]
 
-    if show_docstring_input_arguments and document_parameters and standard_parameters:
+    if show_docstring_input_arguments and document_arguments and standard_arguments:
         docstring_sections.append(
             DocstringSectionParameters(
                 [
                     DocstringParameter(
                         name=param.name,
                         value=str(param.default) if param.default is not None else None,
-                        annotation=param.annotation,
+                        annotation=param.type,
                         description=param.docstring.value if param.docstring is not None else "",
                     )
-                    for param in standard_parameters
+                    for param in standard_arguments
                 ],
                 title="",
             )
         )
 
-    if show_docstring_name_value_arguments and document_parameters and keyword_parameters:
+    if show_docstring_name_value_arguments and document_arguments and keyword_arguments:
         docstring_sections.append(
             DocstringSectionOtherParameters(
                 [
                     DocstringParameter(
                         name=param.name,
                         value=str(param.default) if param.default is not None else None,
-                        annotation=param.annotation,
+                        annotation=param.type,
                         description=param.docstring.value if param.docstring is not None else "",
                     )
-                    for param in keyword_parameters
+                    for param in keyword_arguments
                 ],
                 title="",
             )
@@ -736,7 +712,7 @@ def do_function_docstring(
                 DocstringReturn(
                     name=param.name,
                     value=str(param.default) if param.default is not None else None,
-                    annotation=param.annotation,
+                    annotation=param.type,
                     description=param.docstring.value if param.docstring is not None else "",
                 )
                 for param in function.returns or []
@@ -758,7 +734,7 @@ def do_as_inheritance_diagram_section(model: Class) -> DocstringSectionText | No
         A docstring section with a Mermaid diagram, or None if there's no inheritance.
     """
 
-    if not hasattr(model, 'bases') or not model.bases:
+    if not hasattr(model, "bases") or not model.bases:
         return None
 
     def get_id(str: str) -> str:
@@ -767,7 +743,7 @@ def do_as_inheritance_diagram_section(model: Class) -> DocstringSectionText | No
     def get_nodes(model: Class, nodes: set[str] = set()) -> set[str]:
         nodes.add(f"   {get_id(model.name)}[{model.name}]")
         for base in [str(base) for base in model.bases]:
-            super = model.paths_collection.resolve(base) if model.paths_collection else None
+            super = model.paths_collection.get_member(base) if model.paths_collection else None
             if super is None:
                 nodes.add(f"   {get_id(base)}[{base}]")
             else:
@@ -777,7 +753,7 @@ def do_as_inheritance_diagram_section(model: Class) -> DocstringSectionText | No
 
     def get_links(model: Class, links: set[str] = set()) -> set[str]:
         for base in [str(base) for base in model.bases]:
-            super = model.paths_collection.resolve(base) if model.paths_collection else None
+            super = model.paths_collection.get_member(base) if model.paths_collection else None
             if super is None:
                 links.add(f"   {get_id(base)} --> {get_id(model.name)}")
             else:

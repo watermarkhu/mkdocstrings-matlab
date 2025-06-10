@@ -7,7 +7,8 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, ClassVar
 
-from griffe import Parser, AliasResolutionError
+from griffe import AliasResolutionError, Parser
+from maxx.collection import LinesCollection, PathsCollection
 from mkdocs.exceptions import PluginError
 from mkdocstrings import (
     BaseHandler,
@@ -16,12 +17,13 @@ from mkdocstrings import (
     HandlerOptions,
     get_logger,
 )
+
 from mkdocstrings_handlers.matlab import rendering
-from mkdocstrings_handlers.matlab.collect import LinesCollection, PathsCollection
 from mkdocstrings_handlers.matlab.config import MatlabConfig, MatlabOptions
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, MutableMapping
+
     from mkdocs.config.defaults import MkDocsConfig
 
 
@@ -68,7 +70,7 @@ class MatlabHandler(BaseHandler):
 
         # Warn if user overrides base templates.
         if self.custom_templates:
-            for theme_dir in base_dir.joinpath(self.custom_templates, "python").iterdir():
+            for theme_dir in base_dir.joinpath(self.custom_templates, "matlab").iterdir():
                 if theme_dir.joinpath("_base").is_dir():
                     _logger.warning(
                         f"Overriding base template '{theme_dir.name}/_base/<template>.html.jinja' is not supported, "
@@ -87,7 +89,7 @@ class MatlabHandler(BaseHandler):
 
         self._paths = full_paths
         self._paths_collection: PathsCollection = PathsCollection(
-            full_paths, recursive=config.paths_recursive, config_path=base_dir
+            full_paths, recursive=config.paths_recursive, working_directory=base_dir
         )
         self._lines_collection: LinesCollection = self._paths_collection.lines_collection
 
@@ -193,7 +195,7 @@ class MatlabHandler(BaseHandler):
         if options == {}:
             options = self.get_options({})
         try:
-            model = self._paths_collection.resolve(identifier)
+            model = self._paths_collection.get_member(identifier)
         except SyntaxError as ex:
             msg = str(ex)
             if ex.text:
@@ -220,11 +222,9 @@ class MatlabHandler(BaseHandler):
 
 
 def get_handler(
-    *,
-    theme: str,
-    custom_templates: str | None = None,
-    config_file_path: str | None = None,
-    **config: Any,
+    handler_config: MutableMapping[str, Any],
+    tool_config: MkDocsConfig,
+    **kwargs: Any,
 ) -> MatlabHandler:
     """
     Create and return a MatlabHandler object with the specified configuration.
@@ -238,9 +238,7 @@ def get_handler(
     """
     base_dir = Path(tool_config.config_file_path or "./mkdocs.yml").parent
     return MatlabHandler(
-        handler="matlab",
-        theme=theme,
-        custom_templates=custom_templates,
-        config_file_path=config_file_path,
-        **config['handler_config']
+        config=MatlabConfig.from_data(**handler_config),
+        base_dir=base_dir,
+        **kwargs,
     )

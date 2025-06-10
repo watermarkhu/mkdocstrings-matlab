@@ -7,18 +7,14 @@ import logging
 from _griffe.docstrings import google, numpy
 from _griffe.enumerations import DocstringSectionKind
 
-from mkdocstrings_handlers.matlab import collect, models, treesitter
-from mkdocstrings_handlers.matlab.handler import MatlabHandler, get_handler
 from mkdocstrings_handlers.matlab.config import MatlabConfig, MatlabOptions
+from mkdocstrings_handlers.matlab.handler import MatlabHandler, get_handler
 
-__all__ = [
+__all__: list = [
     "MatlabHandler",
     "MatlabConfig",
     "MatlabOptions",
     "get_handler",
-    "collect",
-    "models",
-    "treesitter",
 ]
 
 
@@ -51,5 +47,5 @@ class ReturnTypeWarningFilter(logging.Filter):
         return True
 
 
-griffe_logger = logging.getLogger("mkdocs.plugins.griffe")
+griffe_logger: logging.Logger = logging.getLogger("mkdocs.plugins.griffe")
 griffe_logger.addFilter(ReturnTypeWarningFilter())
