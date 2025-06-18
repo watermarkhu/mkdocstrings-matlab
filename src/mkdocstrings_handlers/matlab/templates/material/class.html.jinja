@@ -161,9 +161,9 @@ Context:
             {# We don't want to merge the inherited constructor method docstring into the class docstring #}
             {# if such inherited method was not selected through `inherited_members`. #}
             {% with check_members = all_members if (config.inherited_members is true or (config.inherited_members is iterable and class.constructor.name in config.inherited_members)) else class.members %}
-              {% if class.constructor in check_members and class.constructor.has_docstring %}
+              {% if class.constructor.name in check_members and class.constructor.has_docstring %}
                 {% with function = class.constructor %}
-                  {% with obj = function, docstring_sections = function.docstring.parsed %}
+                  {% with obj = function, docstring_sections = function | function_docstring(config.parse_arguments, config.show_docstring_input_arguments, config.show_docstring_name_value_arguments, config.show_docstring_output_arguments) %}
                     {% include "docstring.html.jinja" with context %}
                   {% endwith %}
                 {% endwith %}

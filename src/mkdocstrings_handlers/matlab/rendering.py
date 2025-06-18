@@ -640,7 +640,7 @@ def do_function_docstring(
     if function.docstring is None:
         return []
 
-    docstring_sections = function.docstring.parsed
+    docstring_sections = [section for section in function.docstring.parsed] 
     if not parse_arguments or not (
         show_docstring_input_arguments
         or show_docstring_name_value_arguments

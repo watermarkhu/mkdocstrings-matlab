@@ -310,11 +310,13 @@ plugins:
         ::: Thing
             options:
               merge_constructor_into_class: true
+              parse_arguments: true
         ```
 
         ::: Thing
             options:
               merge_constructor_into_class: true
+              parse_arguments: true
 
     === "Unmerged"
 
@@ -322,11 +324,13 @@ plugins:
         ::: Thing
             options:
               merge_constructor_into_class: false
+              parse_arguments: true
         ```
         
         ::: Thing
             options:
               merge_constructor_into_class: false
+              parse_arguments: true
 
 
 
