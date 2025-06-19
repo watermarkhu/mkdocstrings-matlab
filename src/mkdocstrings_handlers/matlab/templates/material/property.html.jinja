@@ -52,7 +52,7 @@ Context:
             <span class="doc doc-object-name doc-property-name">{{ config.heading if config.heading and root else property_name }}</span>
           {% else %}
             {%+ filter highlight(language="python", inline=True) %}
-              {{ property_name }}{% if property.annotation and config.show_signature_annotations %}: {{ property.annotation }}{% endif %}
+              {{ property_name }}{% if property.annotation and config.show_signature_types %}: {{ property.annotation }}{% endif %}
               {% if property.value %} = {{ property.value }}{% endif %}
             {% endfilter %}
           {% endif %}

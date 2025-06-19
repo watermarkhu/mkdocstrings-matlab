@@ -33,10 +33,6 @@ which is a tree-like structure representing a Python expression.
   {%- endif -%}a
 {%- endmacro -%}
 
-{%- macro builtin_ref(expression) -%}
-  <a href="{{ expression.doc }}">{{ expression.name }}</a>
-{%- endmacro -%}
-
 {%- macro render(expression, annotations_path, backlink_type="") -%}
   {#- Render an expression.
 
@@ -49,8 +45,12 @@ which is a tree-like structure representing a Python expression.
   -#}
   {%- if expression is string -%}
     {%- if signature -%}{{ expression|safe }}{%- else -%}{{ expression }}{%- endif -%}
-  {%- elif expression.classname == "BuiltinExpr" -%}
-    {{ builtin_ref(expression) }}
+  {%- elif expression.doc != "" -%}
+    {%- if config.signature_crossrefs -%}
+      <a class="autorefs autorefs-external" href="{{ expression.doc }}">{{ expression|string }}</a>
+    {%- else -%}
+      {{ expression|string }}
+    {%- endif -%}
   {%- elif expression.classname == "CallableExpr" -%}
     {{ crossref(expression) }}
   {%- else -%}

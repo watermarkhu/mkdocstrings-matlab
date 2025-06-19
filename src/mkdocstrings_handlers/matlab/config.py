@@ -660,7 +660,7 @@ class MatlabInputOptions:
         ),
     ] = True
 
-    show_signature_annotations: Annotated[
+    show_signature_types: Annotated[
         bool,
         Field(
             group="signatures",

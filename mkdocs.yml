@@ -162,7 +162,7 @@ plugins:
           show_docstring_output_arguments: true
 
           show_signature: true
-          show_signature_annotations: false
+          show_signature_types: false
           separate_signature: false 
       python:
         paths: [src]
@@ -184,7 +184,7 @@ plugins:
           show_inheritance_diagram: true
           show_root_heading: true
           show_root_full_path: false
-          show_signature_annotations: true
+          show_signature_types: true
           show_source: false
           show_symbol_type_heading: true
           show_symbol_type_toc: true

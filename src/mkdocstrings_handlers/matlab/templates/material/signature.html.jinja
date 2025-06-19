@@ -1,8 +1,8 @@
 {#- Template for signatures.
 
 This template renders the signature of a function or method.
-It iterates over the parameters of the function to rebuild the signature.
-The signature is the list of parameters of a function or method, including their names, default values, and annotations.
+It iterates over the arguments of the function to rebuild the signature.
+The signature is the list of arguments of a function or method, including their names, default values, and types.
 
 Context:
   function (mkdocstrings_handlers.matlab.models.Function): The function or method to render.
@@ -20,65 +20,65 @@ Context:
   {%- with -%}
 
     {%- set ns = jinja_namespace(
-        annotation="",
+        type="",
         equal="=",
         default=False,
       ) -%}
 
     (
-    {%- for parameter in function.parameters -%}
-      {%- if parameter.name != "obj" or loop.index0 > 0 or not (function.parent and function.parent.is_class) -%}
+    {%- for argument in function.arguments -%}
+      {%- if argument.name != "obj" or loop.index0 > 0 or not (function.parent and function.parent.is_class) -%}
 
-        {#- Prepare type annotation. -#}
-        {%- if config.show_signature_annotations and parameter.annotation is not none -%}
+        {#- Prepare types. -#}
+        {%- if config.show_signature_types and argument.type is not none -%}
           {%- set ns.equal = " = " -%}
           {%- if config.separate_signature -%}
-            {%- with expression = parameter.annotation -%}
-              {%- set ns.annotation -%}: {% with backlink_type = "used-by" -%}
+            {%- with expression = argument.type -%}
+              {%- set ns.type -%}: {% with backlink_type = "used-by" -%}
                 {%- include "expression.html.jinja" with context -%}
               {%- endwith -%}{%- endset -%}
             {%- endwith -%}
           {%- else -%}
-            {%- set ns.annotation = ": " + parameter.annotation|safe -%}
+            {%- set ns.type = ": " + argument.type|safe -%}
           {%- endif -%}
         {%- else -%}
           {%- set ns.equal = "=" -%}
-          {%- set ns.annotation = "" -%}
+          {%- set ns.type = "" -%}
         {%- endif -%}
 
         {#- Prepare default value. -#}
-        {%- if parameter.default is not none and parameter.kind.value != "varargin" -%}
+        {%- if argument.default is not none and argument.kind.value != "varargin" -%}
           {%- set ns.default = True -%}
         {%- else -%}
           {%- set ns.default = False -%}
         {%- endif -%}
 
-        {#- Render parameter name with optional cross-reference to its heading. -#}
+        {#- Render argument name with optional cross-reference to its heading. -#}
         {%- if config.separate_signature and config.argument_headings and config.signature_crossrefs -%}
-          {%- filter stash_crossref(length=parameter.name|length) -%}
+          {%- filter stash_crossref(length=argument.name|length) -%}
             {%- with func_path = function.path -%}
               {%- if config.merge_constructor_into_class and function.parent and function.parent.is_class and function.name == function.parent.name -%}
                 {%- set func_path = func_path[:-((function.parent | length) + 1)] -%}
               {%- endif -%}
-              <autoref identifier="{{ func_path }}({{ parameter.name }})" optional>{{ parameter.name }}</autoref>
+              <autoref identifier="{{ func_path }}({{ argument.name }})" optional>{{ argument.name }}</autoref>
             {%- endwith -%}
           {%- endfilter -%}
         {%- else -%}
-          {{ parameter.name }}
+          {{ argument.name }}
         {%- endif -%}
 
-        {#- Render parameter annotation. -#}
-        {{ ns.annotation }}
+        {#- Render argument type. -#}
+        {{ ns.type }}
 
-        {#- Render parameter default value. -#}
+        {#- Render argument default value. -#}
         {%- if ns.default -%}
           {{ ns.equal }}
           {%- if config.signature_crossrefs and config.separate_signature -%}
-            {%- with expression = parameter.default, backlink_type = "used-by" -%}
+            {%- with expression = argument.default, backlink_type = "used-by" -%}
               {%- include "expression.html.jinja" with context -%}
             {%- endwith -%}
           {%- else -%}
-            {{ parameter.default|safe }}
+            {{ argument.default|safe }}
           {%- endif -%}
         {%- endif -%}
 
@@ -89,15 +89,15 @@ Context:
     )
 
     {#- Render return type. -#}
-    {%- if config.show_signature_annotations
-        and function.annotation
+    {%- if config.show_signature_types
+        and function.type
         and not (config.merge_constructor_into_class and function.parent and function.parent.is_class and function.name == function.parent.name)
       %} -> {% if config.separate_signature and config.signature_crossrefs -%}
-        {%- with expression = function.annotation, backlink_type = "returned-by" -%}
+        {%- with expression = function.type, backlink_type = "returned-by" -%}
           {%- include "expression.html.jinja" with context -%}
         {%- endwith -%}
       {%- else -%}
-        {{ function.annotation|safe }}
+        {{ function.type|safe }}
       {%- endif -%}
     {%- endif -%}
 

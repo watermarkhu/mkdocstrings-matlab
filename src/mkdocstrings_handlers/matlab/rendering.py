@@ -173,7 +173,7 @@ def do_format_signature(
     else:
         new_context = dict(context.parent)
         new_context["config"] = replace(
-            new_context["config"], show_signature_annotations=annotations
+            new_context["config"], show_signature_types=annotations
         )
 
     signature = template.render(new_context, function=function, signature=True)
@@ -227,7 +227,7 @@ def do_format_property(
     """
     env = context.environment
     template = env.get_template("expression.html.jinja")
-    annotations = context.parent["config"].show_signature_annotations
+    annotations = context.parent["config"].show_signature_types
 
     signature = str(property_path).strip()
     if annotations and property.type:
