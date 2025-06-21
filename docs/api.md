@@ -6,7 +6,7 @@
       show_submodules: true
       heading_level: 1
       separate_signature: true
-      show_signature_types: true
+      show_signature_annotations: true
       signature_crossrefs: true
       members:
         - handler
