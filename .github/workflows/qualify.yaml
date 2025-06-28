@@ -60,8 +60,18 @@ jobs:
         uv sync --dev
 
     - name: Run tests
+      id: run-tests
       run: |
         uv run pytest --cov mkdocstrings_handlers.matlab
+
+    - name: Report test result
+      if: always()
+      run: |
+        if [ "${{ steps.run-tests.outcome }}" = "success" ]; then
+          echo '# ✅ Tests passed' >> $GITHUB_STEP_SUMMARY
+        else
+          echo '# ❌ Tests failed' >> $GITHUB_STEP_SUMMARY
+        fi
 
     - name: Generate test coverage report
       if: always()
