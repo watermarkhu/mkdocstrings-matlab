@@ -18,6 +18,10 @@ permissions:
   contents: write
   pull-requests: write
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
 jobs:
   docs:
     if: contains(github.event.pull_request.labels.*.name, 'documentation')
@@ -33,11 +37,56 @@ jobs:
       set-default: false
       push: true
 
+  test:
+    name: Run tests
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.10, 3.11, 3.12, 3.13]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Install the latest version of uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        version: "latest"
+
+    - name: Install dependencies
+      run: |
+        uv python pin ${{ matrix.python-version }}
+        uv sync --dev
+
+    - name: Run tests
+      run: |
+        uv run pytest --cov mkdocstrings_handlers.matlab
+
+    - name: Generate test coverage report
+      if: always()
+      run: |
+        echo '### Test Coverage Summary' >> $GITHUB_STEP_SUMMARY
+        uv run coverage report --show-missing --format=markdown >> $GITHUB_STEP_SUMMARY
+
   check-semantic-version:
     name: Check semantic version
     if: github.repository == 'watermarkhu/mkdocstrings-matlab'
+    needs: [docs, test]
     runs-on: ubuntu-latest
     steps:
+
+    - uses: actions/create-github-app-token@v2.0.6
+      id: app-token
+      with:
+        app-id: ${{ vars.APP_ID }}
+        private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+    - name: Get GitHub App User ID
+      id: get-user-id
+      env:
+        GH_TOKEN: ${{ steps.app-token.outputs.token }}
+      run: echo "user-id=$(gh api "/users/${{ steps.app-token.outputs.app-slug }}[bot]" --jq .id)" >> "$GITHUB_OUTPUT"
 
     - name: Checkout repository
       uses: actions/checkout@v4

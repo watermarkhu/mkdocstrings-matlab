@@ -199,7 +199,7 @@ class MatlabHandler(BaseHandler):
         except SyntaxError as ex:
             msg = str(ex)
             if ex.text:
-                msg += ":\n" + ex.text
+                msg += ":\n" + str(ex.text)
             raise CollectionError(msg) from ex
         except KeyError as ex:
             raise CollectionError(str(ex)) from ex

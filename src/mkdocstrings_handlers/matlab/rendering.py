@@ -6,12 +6,11 @@ import random
 import re
 import string
 import sys
-from collections import defaultdict
 from contextlib import suppress
 from dataclasses import replace
 from pathlib import Path
 from re import Pattern
-from typing import TYPE_CHECKING, Any, Callable, ClassVar, Literal, TypeVar
+from typing import TYPE_CHECKING, Any, Callable, ClassVar, Literal
 
 from _griffe.docstrings.models import (
     DocstringParameter,
@@ -45,11 +44,11 @@ from maxx.objects import (
     Object,
     Property,
 )
-from mkdocs_autorefs import AutorefsHookInterface, Backlink, BacklinkCrumb
+from mkdocs_autorefs import AutorefsHookInterface
 from mkdocstrings import get_logger
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable, Iterator, Sequence
+    from collections.abc import Iterator, Sequence
 
     from jinja2 import Environment
     from jinja2.runtime import Context
@@ -172,9 +171,7 @@ def do_format_signature(
         new_context = context.parent
     else:
         new_context = dict(context.parent)
-        new_context["config"] = replace(
-            new_context["config"], show_signature_types=annotations
-        )
+        new_context["config"] = replace(new_context["config"], show_signature_types=annotations)
 
     signature = template.render(new_context, function=function, signature=True)
     signature = str(
@@ -229,10 +226,10 @@ def do_format_property(
             backlink_type="returned-by",
         )
         signature += f": {annotation}"
-    if property.value:
+    if property.default:
         value = template.render(
             context.parent,
-            expression=property.value,
+            expression=property.default,
             signature=True,
             backlink_type="used-by",
         )
@@ -631,7 +628,7 @@ def do_function_docstring(
     if function.docstring is None:
         return []
 
-    docstring_sections = [section for section in function.docstring.parsed] 
+    docstring_sections = [section for section in function.docstring.parsed]
     if not parse_arguments or not (
         show_docstring_input_arguments
         or show_docstring_name_value_arguments
