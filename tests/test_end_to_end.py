@@ -71,7 +71,7 @@ def _signature_matlab_path() -> Iterator[Path]:
         module_function = matlab_dir / "module_function.m"
         module_function.write_text("""function module_function(a, b)
 % Docstring for module_function.
-% 
+%
 % Arguments:
 %   a (double): First parameter
 %   b (char): Second parameter
@@ -86,7 +86,7 @@ end
 % Docstring for private_function.
 %
 % Arguments:
-%   a (double): First parameter  
+%   a (double): First parameter
 %   b (char): Second parameter
 end
 """)
@@ -97,7 +97,7 @@ end
         class_file = class_dir / "TestClass.m"
         class_file.write_text("""classdef TestClass < handle
 % Docstring for TestClass.
-    
+
     methods
         function obj = TestClass(a, b)
         % Docstring for TestClass constructor.
@@ -106,7 +106,7 @@ end
         %   a (double): First parameter
         %   b (char): Second parameter
         end
-        
+
         function method1(obj, a, b)
         % Docstring for TestClass.method1.
         %
@@ -145,10 +145,10 @@ def test_end_to_end_for_signatures(
         "signature_crossrefs": signature_crossrefs,
         "separate_signature": separate_signature,
     }
-    html = _render_options(final_options) + _render(
+    _render_options(final_options) + _render(
         session_handler, signature_matlab_path, "module_function", final_options
     )
-    snapshot_key = tuple(sorted(final_options.items()))
+    tuple(sorted(final_options.items()))
     # Note: You'll need to create snapshots_signatures for MATLAB
     # assert outsource(html, suffix=".html") == snapshots_signatures[snapshot_key]
 
@@ -192,26 +192,26 @@ end
     properties
         class_property = 42
         % Docstring for TestClass.class_property.
-        
+
         instance_property
         % Docstring for TestClass.instance_property.
     end
-    
+
     methods
         function obj = TestClass(a, b)
         % Docstring for TestClass constructor.
         obj.instance_property = a + b;
         end
-        
+
         function method1(obj, a, b)
         % Docstring for TestClass.method1.
         end
-        
+
         function method2(obj, a, b)
         % Docstring for TestClass.method2.
         end
     end
-    
+
     methods (Access = private)
         function private_method(obj)
         % Private method docstring.
@@ -272,13 +272,13 @@ def test_end_to_end_for_members(
         "members": members,
         "filters": filters,
     }
-    html = _render_options(final_options) + _render(
+    _render_options(final_options) + _render(
         session_handler,
         members_matlab_path,
         "/",
         final_options,  # Test folder identifier
     )
-    snapshot_key = tuple(sorted(final_options.items()))
+    tuple(sorted(final_options.items()))
     # Note: You'll need to create snapshots_members for MATLAB
     # assert outsource(html, suffix=".html") == snapshots_members[snapshot_key]
 
@@ -303,12 +303,12 @@ end
     properties
         class_property = 42
     end
-    
+
     methods
         function obj = TestClass(a, b)
         obj.instance_property = a + b;
         end
-        
+
         function method1(obj, a, b)
         end
     end
@@ -340,10 +340,10 @@ def test_end_to_end_for_headings(
         "show_if_no_docstring": True,
         "members": False,
     }
-    html = _render_options(final_options) + _render(
+    _render_options(final_options) + _render(
         session_handler, headings_matlab_path, "/", final_options
     )
-    snapshot_key = tuple(sorted(final_options.items()))
+    tuple(sorted(final_options.items()))
     # Note: You'll need to create snapshots for MATLAB headings
     # assert outsource(html, suffix=".html") == snapshots_members[snapshot_key]
 
@@ -397,9 +397,9 @@ def test_end_to_end_for_namespaces(
     final_options = {
         "show_subnamespaces": show_subnamespaces,
     }
-    html = _render_options(final_options) + _render(
+    _render_options(final_options) + _render(
         session_handler, namespace_matlab_path, "+testnamespace", final_options
     )
-    snapshot_key = tuple(sorted(final_options.items()))
+    tuple(sorted(final_options.items()))
     # Note: You'll need to create snapshots for MATLAB namespaces
     # assert outsource(html, suffix=".html") == snapshots_members[snapshot_key]

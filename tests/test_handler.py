@@ -99,7 +99,7 @@ def test_expand_globs(tmp_path: Path, plugin: MkdocstringsPlugin) -> None:
 def test_expand_globs_without_changing_directory(plugin: MkdocstringsPlugin) -> None:
     """Assert globs are correctly expanded when we are already in the right directory."""
     plugin.handlers._tool_config.config_file_path = "mkdocs.yml"
-    handler: MatlabHandler = plugin.handlers.get_handler("matlab", {"paths": ["*.md"]})  # type: ignore[assignment]
+    plugin.handlers.get_handler("matlab", {"paths": ["*.md"]})  # type: ignore[assignment]
     # For MATLAB handler, this would expand directories, not .md files
     # The test logic may need adjustment based on actual implementation
 
@@ -167,7 +167,7 @@ def test_give_precedence_to_user_paths(tmp_path: Path) -> None:
             "Functions",
             """
             % Module with functions
-            % 
+            %
             % Functions:
             %   function_x: X function
             %   function_y: Y function

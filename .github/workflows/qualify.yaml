@@ -37,37 +37,78 @@ jobs:
       set-default: false
       push: true
 
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      python-versions: ${{ steps.get-versions.outputs.python-versions }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Get Python versions from pyproject.toml
+      id: get-versions
+      run: |
+        # Extract Python versions from classifiers
+        versions=$(grep -E "Programming Language :: Python :: 3\.[0-9]+" pyproject.toml | \
+                  sed -E 's/.*Python :: (3\.[0-9]+).*/\1/' | \
+                  sort -V | \
+                  jq -R -s -c 'split("\n")[:-1]')
+        echo "python-versions=$versions" >> $GITHUB_OUTPUT
+        echo "Found Python versions: $versions"
+
   test:
     name: Run tests
+    needs: setup
     strategy:
-      fail-fast: false
       matrix:
-        python-version: ['3.10', '3.11', '3.12', '3.13']
+        python-version: ${{ fromJson(needs.setup.outputs.python-versions) }}
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-    - name: Install the latest version of uv
-      uses: astral-sh/setup-uv@v5
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v6
       with:
         version: "latest"
 
     - name: Install dependencies
       run: |
-        uv python pin ${{ matrix.python-version }}
-        uv sync --dev
+        uv sync --dev --python ${{ matrix.python-version }}
+
+    - name: Run ruff linting
+      run: |
+        echo "## 🔍 Ruff Linting Results" >> $GITHUB_STEP_SUMMARY
+        if uv run ruff check --output-format=github .; then
+          echo "✅ No linting errors found" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ Linting errors found" >> $GITHUB_STEP_SUMMARY
+          exit 1
+        fi
+
+    - name: Run ruff formatting check
+      run: |
+        echo "## 🎨 Code Formatting Check" >> $GITHUB_STEP_SUMMARY
+        if uv run ruff format --check .; then
+          echo "✅ Code formatting is correct" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ Code formatting issues found" >> $GITHUB_STEP_SUMMARY
+          exit 1
+        fi
+
+    - name: Run Ty type checking
+      run: |
+        echo "## 🔧 Ty Type Checking Results" >> $GITHUB_STEP_SUMMARY
+        if uv run ty check; then
+          echo "✅ No type errors found" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ Type errors found" >> $GITHUB_STEP_SUMMARY
+          exit 1
+        fi
 
     - name: Run tests
-      id: run-tests
       run: |
-        uv run pytest --cov mkdocstrings_handlers.matlab
-
-    - name: Report test result
-      if: always()
-      run: |
-        if [ "${{ steps.run-tests.outcome }}" = "success" ]; then
+        if uv run pytest --cov mkdocstrings_handlers.matlab --tb=short -v --junit-xml=pytest.xml; then
           echo '# ✅ Tests passed' >> $GITHUB_STEP_SUMMARY
         else
           echo '# ❌ Tests failed' >> $GITHUB_STEP_SUMMARY
@@ -79,10 +120,45 @@ jobs:
         echo '### Test Coverage Summary' >> $GITHUB_STEP_SUMMARY
         uv run coverage report --show-missing --format=markdown >> $GITHUB_STEP_SUMMARY
 
+    - name: Upload Test Results
+      if: (!cancelled())
+      uses: actions/upload-artifact@v4
+      with:
+        name: Test Results (Python ${{ matrix.python-version }})
+        path: pytest.xml
+
+  summary:
+    runs-on: ubuntu-latest
+    needs: [setup, test]
+    if: (!cancelled())
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          files: "artifacts/**/*.xml"
+
+      - name: Check all jobs
+        run: |
+          if [[ "${{ needs.test.result }}" == "success" ]]; then
+            echo "✅ All Python versions passed CI checks"
+            echo "## 🎉 CI Summary" >> $GITHUB_STEP_SUMMARY
+            echo "All tests passed across Python versions: ${{ needs.setup.outputs.python-versions }}" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Some Python versions failed CI checks"
+            echo "## ❌ CI Summary" >> $GITHUB_STEP_SUMMARY
+            echo "Some tests failed. Check individual job results for details." >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
   check-semantic-version:
     name: Check semantic version
     if: github.repository == 'watermarkhu/mkdocstrings-matlab'
-    needs: [docs, test]
+    needs: [summary]
     runs-on: ubuntu-latest
     steps:
 
