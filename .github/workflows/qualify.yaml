@@ -57,9 +57,10 @@ jobs:
         echo "Found Python versions: $versions"
 
   test:
-    name: Run tests
+    name: Run checks and tests
     needs: setup
     strategy:
+      fail-fast: false
       matrix:
         python-version: ${{ fromJson(needs.setup.outputs.python-versions) }}
     runs-on: ubuntu-latest
