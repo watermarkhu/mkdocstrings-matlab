@@ -36,7 +36,7 @@ dependencies = [
 ]
 
 [tool.uv.sources]
-tree-sitter = { git = "https://github.com/tree-sitter/py-tree-sitter",  tag = "0.25" }
+tree-sitter = { git = "https://github.com/tree-sitter/py-tree-sitter", branch = "master" }
 
 [dependency-groups]
 dev = [
