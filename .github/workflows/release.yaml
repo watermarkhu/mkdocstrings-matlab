@@ -25,7 +25,7 @@ jobs:
           fetch-depth: 0 # Required to push to the documentation branch
 
       - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v6
         with:
           version: "latest"
 
@@ -95,7 +95,7 @@ jobs:
 
     - name: Update version and changelogs
       id: semantic-release
-      uses: python-semantic-release/python-semantic-release@v9.21.0
+      uses: python-semantic-release/python-semantic-release@v10.1.0
       with: 
         build: false
         changelog: true
@@ -107,7 +107,7 @@ jobs:
 
     - name: Install the latest version of uv
       if: steps.semantic-release.outputs.released == 'true'
-      uses: astral-sh/setup-uv@v5
+      uses: astral-sh/setup-uv@v6
       with:
         version: "latest"
 
@@ -121,7 +121,7 @@ jobs:
     - name: Publish package distributions to GitHub Releases
       if: steps.semantic-release.outputs.released == 'true'
       id: publish-dist
-      uses: python-semantic-release/publish-action@v9.21.0
+      uses: python-semantic-release/publish-action@v10.1.0
       with:
         github_token: ${{ steps.app-token.outputs.token }}
         tag: ${{ steps.semantic-release.outputs.tag }}
