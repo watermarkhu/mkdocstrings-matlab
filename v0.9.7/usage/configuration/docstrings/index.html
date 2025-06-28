@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.11">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.4af4bdda.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.342714a4.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -1481,7 +1481,7 @@
 <span class="w">    </span><span class="c">% Returns:</span>
 <span class="w">    </span><span class="c">%     message: A greeting message.</span>
 
-<span class="w">    </span><span class="n">message</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sprintf</span><span class="p">(</span><span class="s">&quot;Hello %s!&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">)</span>
+<span class="w">    </span><span class="n">message</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">sprintf</span><span class="p">(</span><span class="s">&quot;Hello %s!&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">)</span>
 <span class="k">end</span>
 </code></pre></div>
 </div>
@@ -1499,7 +1499,7 @@
 <span class="w">    </span><span class="c">% message</span>
 <span class="w">    </span><span class="c">%    A greeting message.</span>
 
-<span class="w">    </span><span class="n">message</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sprintf</span><span class="p">(</span><span class="s">&quot;Hello %s!&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">)</span>
+<span class="w">    </span><span class="n">message</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">sprintf</span><span class="p">(</span><span class="s">&quot;Hello %s!&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">)</span>
 <span class="k">end</span>
 </code></pre></div>
 </div>
@@ -1510,7 +1510,7 @@
 <span class="w">    </span><span class="c">% :param name: The name of the person to greet.</span>
 <span class="w">    </span><span class="c">% :return: A greeting message.</span>
 
-<span class="w">    </span><span class="n">message</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sprintf</span><span class="p">(</span><span class="s">&quot;Hello %s!&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">)</span>
+<span class="w">    </span><span class="n">message</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">sprintf</span><span class="p">(</span><span class="s">&quot;Hello %s!&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">)</span>
 <span class="k">end</span>
 </code></pre></div>
 </div>
@@ -1690,11 +1690,11 @@
 <p>Similarly to Python, MATLAB is by default not a typed language. Function and method arguments are dynamically typed, in most cases. This provides flexibility, but is generally bad behavior if the code is meant for production or is intended to be exposed as an API. </p>
 <p>In MATLAB R2019b the concept of <a href="https://mathworks.com/help/matlab/input-and-output-arguments.html">Argument Definitions</a> was introduced. Within an <a href="https://mathworks.com/help/matlab/ref/arguments.html">arguments</a> block, the type, size, or other aspects of the inputs (and outputs since R2022b) can be verified. </p>
 <div class="language-matlab highlight"><pre><span></span><code><span class="k">function</span><span class="w"> </span>z<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">mySharedFunction</span><span class="p">(</span>x,y,NameValueArgs<span class="p">)</span>
-<span class="w">   </span><span class="k">arguments</span>
-<span class="w">      </span><span class="n">x</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">double</span><span class="w">     </span><span class="c">% scalar</span>
-<span class="w">      </span><span class="n">y</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="p">{</span><span class="n">mustBeVector</span><span class="p">,</span><span class="n">mustBePositive</span><span class="p">}</span><span class="w"> </span>
-<span class="w">      </span><span class="n">NameValueArgs</span><span class="p">.</span><span class="n">A</span><span class="w"> </span><span class="n">string</span>
-<span class="w">      </span><span class="n">NameValueArgs</span><span class="p">.</span><span class="n">B</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;default&quot;</span>
+<span class="w">   </span><span class="nb">arguments</span>
+<span class="w">      </span><span class="n">x</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="nb">double</span><span class="w">     </span><span class="c">% scalar</span>
+<span class="w">      </span><span class="n">y</span><span class="w"> </span><span class="nb">double</span><span class="w"> </span><span class="p">{</span><span class="nb">mustBeVector</span><span class="p">,</span><span class="nb">mustBePositive</span><span class="p">}</span><span class="w"> </span>
+<span class="w">      </span><span class="n">NameValueArgs</span><span class="p">.</span><span class="n">A</span><span class="w"> </span><span class="nb">string</span>
+<span class="w">      </span><span class="n">NameValueArgs</span><span class="p">.</span><span class="n">B</span><span class="w"> </span><span class="nb">string</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;default&quot;</span>
 <span class="w">   </span><span class="k">end</span><span class="w"> </span>
 <span class="k">...</span>
 <span class="k">end</span>
@@ -1757,14 +1757,14 @@
 <div class="tabbed-block">
 <div class="language-matlab highlight"><pre><span></span><code><span class="k">function</span><span class="w"> </span>output<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">typed_function</span><span class="p">(</span>input, options<span class="p">)</span>
 <span class="w">    </span><span class="c">% Example function with typed inputs and outputs</span>
-<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Input<span class="p">)</span>
-<span class="w">        </span><span class="n">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="c">% The input variable</span>
-<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
+<span class="w">    </span><span class="nb">arguments</span><span class="w"> </span><span class="p">(</span><span class="n">Input</span><span class="p">)</span>
+<span class="w">        </span><span class="nb">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="nb">string</span><span class="w"> </span><span class="c">% The input variable</span>
+<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="nb">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
 <span class="w">    </span><span class="k">end</span>
-<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Output<span class="p">)</span>
-<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="n">char</span><span class="w"> </span><span class="c">% The output variable</span>
+<span class="w">    </span><span class="nb">arguments</span><span class="w"> </span><span class="p">(</span><span class="n">Output</span><span class="p">)</span>
+<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="c">% The output variable</span>
 <span class="w">    </span><span class="k">end</span>
-<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">char</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">char</span><span class="p">(</span><span class="nb">input</span><span class="p">);</span>
 <span class="k">end</span>
 </code></pre></div>
 </div>
@@ -1772,7 +1772,7 @@
 <div class="language-matlab highlight"><pre><span></span><code><span class="c">% This is an example script.</span>
 
 <span class="c">% This is a paragraph. </span>
-<span class="n">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
+<span class="nb">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
 </code></pre></div>
 </div>
 </div>
@@ -1943,7 +1943,7 @@
 <span class="k">methods</span><span class="w"> </span>
 <span class="w">    </span><span class="k">function</span><span class="w"> </span>obj<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">Thing</span><span class="p">(</span>value<span class="p">)</span>
 <span class="w">        </span><span class="c">% Initialize a thing.</span>
-<span class="w">        </span><span class="k">arguments</span>
+<span class="w">        </span><span class="nb">arguments</span>
 <span class="w">            </span><span class="n">value</span><span class="w"> </span><span class="c">% The thing&#39;s value.</span>
 <span class="w">        </span><span class="k">end</span>
 <span class="w">        </span><span class="n">obj</span><span class="p">.</span><span class="n">value</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
@@ -2361,21 +2361,6 @@
 <div class="doc doc-object doc-function">
 
 
-<h4 id="undocumented.function_without_docstring" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">function_without_docstring</span><span class="p">()</span></code>
-
-<a href="#undocumented.function_without_docstring" class="headerlink" title="Permanent link">¤</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
 <h4 id="undocumented.function_with_docstring" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">function_with_docstring</span><span class="p">()</span></code>
 
@@ -2385,6 +2370,21 @@
     <div class="doc doc-contents ">
 
         <p>Hello</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="undocumented.function_without_docstring" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">function_without_docstring</span><span class="p">()</span></code>
+
+<a href="#undocumented.function_without_docstring" class="headerlink" title="Permanent link">¤</a></h4>
+
+
+    <div class="doc doc-contents ">
 
     </div>
 
@@ -3935,7 +3935,7 @@
 <span class="w">    </span><span class="c">% Examples:</span>
 <span class="w">    </span><span class="c">%     &gt;&gt;&gt; print(&quot;hello&quot;)</span>
 <span class="w">    </span><span class="c">%     % hello</span>
-<span class="w">    </span><span class="n">fprintf</span><span class="p">(</span><span class="s">&quot;hello\n&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;hello\n&quot;</span><span class="p">)</span>
 <span class="k">end</span>
 </code></pre></div>
 </details>
@@ -4023,8 +4023,8 @@
 <span class="c">%</span>
 <span class="c">% Parameters:</span>
 <span class="c">%     whatever: Some integer.</span>
-<span class="w">    </span><span class="k">arguments</span>
-<span class="w">        </span><span class="n">whatever</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="p">{</span><span class="n">mustBeInteger</span><span class="p">}</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="c">% A integer</span>
+<span class="w">    </span><span class="nb">arguments</span>
+<span class="w">        </span><span class="n">whatever</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="nb">double</span><span class="w"> </span><span class="p">{</span><span class="nb">mustBeInteger</span><span class="p">}</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="c">% A integer</span>
 <span class="w">    </span><span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div>
@@ -4433,10 +4433,10 @@
     
     
       
-      <script id="__config" type="application/json">{"base": "../../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "search.highlight", "search.suggest", "toc.follow", "toc.integrate"], "search": "../../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "search.highlight", "search.suggest", "toc.follow", "toc.integrate"], "search": "../../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.13a4f30d.min.js"></script>
       
         <script src="../../../assets/_markdown_exec_pyodide.js"></script>
       
