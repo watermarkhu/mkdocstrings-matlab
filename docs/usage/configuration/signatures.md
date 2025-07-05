@@ -60,7 +60,7 @@ plugins:
             options:
               show_signature: false
 
-## `show_signature_annotations`
+## `show_signature_types`
 
 - **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
 <!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
@@ -75,13 +75,13 @@ plugins:
     handlers:
       matlab:
         options:
-          show_signature_annotations: true
+          show_signature_types: true
 ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: path.to.module
     options:
-      show_signature_annotations: false
+      show_signature_types: false
 ```
 
 ??? code ":material-file-code: `myfunction.m`"
@@ -98,13 +98,13 @@ plugins:
         ::: myfunction
             options:
               show_signature: true
-              show_signature_annotations: true
+              show_signature_types: true
         ```
 
         ::: myfunction
             options:
               show_signature: true
-              show_signature_annotations: true
+              show_signature_types: true
 
     === "Without signature annotations"
 
@@ -112,13 +112,13 @@ plugins:
         ::: myfunction
             options:
               show_signature: true
-              show_signature_annotations: false
+              show_signature_types: false
         ```
 
         ::: myfunction
             options:
               show_signature: true
-              show_signature_annotations: false
+              show_signature_types: false
 
 
 ## `separate_signature`
@@ -183,7 +183,7 @@ plugins:
 
 Whether to render cross-references for type annotations in signatures.
 
-When signatures are separated from headings with the [`separate_signature`][] option and type annotations are shown with the [`show_signature_annotations`][] option, this option will render a cross-reference (link) for each type annotation in the signature.
+When signatures are separated from headings with the [`separate_signature`][] option and type annotations are shown with the [`show_signature_types`][] option, this option will render a cross-reference (link) for each type annotation in the signature.
 
 ```yaml title="in mkdocs.yml (global configuration)"
 plugins:
@@ -192,7 +192,7 @@ plugins:
       matlab:
         options:
           separate_signature: true
-          show_signature_annotations: true
+          show_signature_types: true
           signature_crossrefs: false
 ```
 
@@ -200,7 +200,7 @@ plugins:
 ::: path.to.module
     options:
       separate_signature: true
-      show_signature_annotations: true
+      show_signature_types: true
       signature_crossrefs: true
 ```
 
@@ -218,14 +218,14 @@ plugins:
         ::: myfunction
             options:
               separate_signature: true
-              show_signature_annotations: true
+              show_signature_types: true
               signature_crossrefs: true
         ```
 
         ::: myfunction
             options:
               separate_signature: true
-              show_signature_annotations: true
+              show_signature_types: true
               signature_crossrefs: true
 
     === "Without separate signature"
@@ -234,12 +234,12 @@ plugins:
         ::: myfunction
             options:
               separate_signature: true
-              show_signature_annotations: true
+              show_signature_types: true
               signature_crossrefs: false
         ```
 
         ::: myfunction
             options:
               separate_signature: true
-              show_signature_annotations: true
+              show_signature_types: true
               signature_crossrefs: false

@@ -1,0 +1,38 @@
+{#- Macro for Chinese translations. -#}
+
+{% block logs scoped %}
+  {#- Logging block.
+
+  This block can be used to log debug messages, deprecation messages, warnings, etc.
+  -#}
+{% endblock logs %}
+
+{% macro t(key) %}{{ {
+  "PROPERTY": "属性",
+  "Properties:": "属性：",
+  "Classes:": "类：",
+  "CLASS": "类",
+  "DEFAULT:": "默认：",
+  "Default": "默认",
+  "default:": "默认：",
+  "DESCRIPTION": "描述",
+  "Description": "描述",
+  "Examples:": "示例：",
+  "Functions:": "函数：",
+  "FUNCTION": "函数",
+  "Folder:": "文件夹：",
+  "Methods:": "方法：",
+  "METHOD": "方法",
+  "Namespaces:": "模块：",
+  "NAMESPACE": "模块",
+  "Name": "名称",
+  "Name-value arguments:": "名称-值参量：",
+  "INPUT ARGUMENT": "参数",
+  "Input arguments:": "参数：",
+  "required": "必需",
+  "OUTPUT ARGUMENT": "返回",
+  "Output arguments:": "返回：",
+  "Source code in": "源代码位于：",
+  "TYPE:": "类型：",
+  "Type": "类型",
+}[key] }}{% endmacro %}

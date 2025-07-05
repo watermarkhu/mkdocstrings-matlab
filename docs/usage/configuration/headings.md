@@ -58,7 +58,7 @@ plugins:
         <p>Docstring of the function.</p>
 
 
-## `parameter_headings`
+## `argument_headings`
 
 - **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
 
@@ -66,14 +66,14 @@ Whether to render headings for function/method parameters.
 
 With this option enabled, each function/method parameter (including parameters of the constructor methods merged in their parent class with the [`merge_constructor_into_class`][] option) gets a permalink, an entry in the Table of Contents, and an entry in the generated objects inventory. The permalink and inventory entry allow cross-references from internal and external pages.
 
-The identifier used in the permalink and inventory is of the following form: `path.to.function(param_name)`. To manually cross-reference a arameter, you can therefore use this Markdown syntax:
+The identifier used in the permalink and inventory is of the following form: `path.to.function(param_name)`. To manually cross-reference a parameter, you can therefore use this Markdown syntax:
 
 ```md
-- Class parameter: [`param`][package.module.Class(param)]
-- Method parameter: [`param`][package.module.Class.method(param)]
-- Function parameter: [`param`][package.module.function(param)]
-- Variadic positional parameters: [`*args`][package.module.function(*args)]
-- Variadic keyword parameters: [`**kwargs`][package.module.function(**kwargs)]
+- Class argument: [`param`][package.module.Class(param)]
+- Method argument: [`param`][package.module.Class.method(param)]
+- Function argument: [`param`][package.module.function(param)]
+- Name-value arguments): [`name`][package.module.function(name)]
+- Varargin: [`varargin`][package.module.function(varargin)]
 ```
 
 ```yaml title="in mkdocs.yml (global configuration)"
@@ -82,13 +82,13 @@ plugins:
     handlers:
       matlab:
         options:
-          parameter_headings: false
+          argument_headings: false
 ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
     options:
-      parameter_headings: true
+      argument_headings: true
 ```
 
 --8<-- "docs/snippets/+mynamespace/mynamespace.md"
@@ -100,12 +100,13 @@ plugins:
         ```markdown
         ::: mynamespace.typed_function
             options:
-              parameter_headings: true
+              argument_headings: true
         ```
 
         ::: mynamespace.typed_function
             options:
-              parameter_headings: true
+              argument_headings: true
+              parse_arguments: true
               docstring_section_style: list
 
     === "Without parameter headings"
@@ -113,12 +114,13 @@ plugins:
         ```markdown
         ::: mynamespace.typed_function
             options:
-              parameter_headings: false
+              argument_headings: false
         ```
 
         ::: mynamespace.typed_function
             options:
-              parameter_headings: false
+              argument_headings: false
+              parse_arguments: true
               docstring_section_style: list
 
 ???+ preview "Preview: Parameter sections"
@@ -129,9 +131,8 @@ plugins:
             options:
               show_root_heading: false
               show_root_toc_entry: false
-              parameter_headings: true
+              parse_arguments: true
               docstring_section_style: table
-              show_docstring_output_arguments: false
               show_docstring_description: false
 
     === "List style"
@@ -140,9 +141,8 @@ plugins:
             options:
               show_root_heading: false
               show_root_toc_entry: false
-              parameter_headings: true
+              parse_arguments: true
               docstring_section_style: list
-              show_docstring_output_arguments: false
               show_docstring_description: false
 
     === "Spacy style"
@@ -151,15 +151,14 @@ plugins:
             options:
               show_root_heading: false
               show_root_toc_entry: false
-              parameter_headings: true
+              parse_arguments: true
               docstring_section_style: spacy
-              show_docstring_output_arguments: false
               show_docstring_description: false
 
 ???+ preview "Preview: Table of contents (with symbol types)"
 
     <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code> typed_function<br>
-    <code class="doc-symbol doc-symbol-toc doc-symbol-parameter" style="margin-left: 16px;"></code> input
+    <code class="doc-symbol doc-symbol-toc doc-symbol-argument" style="margin-left: 16px;"></code> input
 
 
 ## `show_root_heading`
@@ -626,7 +625,7 @@ plugins:
           <li><code class="doc-symbol doc-symbol-namespace"></code> namespace</li>
           <li><code class="doc-symbol doc-symbol-script"></code> script</li>
           <li><code class="doc-symbol doc-symbol-function"></code> function</li>
-          <li><code class="doc-symbol doc-symbol-class"></code> Class
+          <li><code class="doc-symbol doc-symbol-class"></code> class
             <ul style="list-style: none;">
               <li><code class="doc-symbol doc-symbol-method"></code> method</li>
               <li><code class="doc-symbol doc-symbol-property"></code> property</li>
@@ -641,7 +640,7 @@ plugins:
           <li>namespace</li>
           <li>script</li>
           <li>function</li>
-          <li>Class
+          <li>class
             <ul style="list-style: none;">
               <li>method</li>
               <li>property</li>

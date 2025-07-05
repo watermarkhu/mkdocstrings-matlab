@@ -2,25 +2,25 @@
 
 {% block logs scoped %}
   {#- Logging block.
-  
+
   This block can be used to log debug messages, deprecation messages, warnings, etc.
   -#}
 {% endblock logs %}
 
 {% with members_list = config.members if root_members else None %}
   {% if config.summary.modules %}
-    {% include "summary/namespaces"|get_template with context %}
+    {% include "summary/namespaces.html.jinja" with context %}
   {% endif %}
 
   {% if config.summary.classes %}
-    {% include "summary/classes"|get_template with context %}
+    {% include "summary/classes.html.jinja" with context %}
   {% endif %}
 
   {% if config.summary.functions %}
-    {% include "summary/functions"|get_template with context %}
+    {% include "summary/functions.html.jinja" with context %}
   {% endif %}
 
-  {% if config.summary.attributes %}
-    {% include "summary/properties"|get_template with context %}
+  {% if config.summary.properties %}
+    {% include "summary/properties.html.jinja" with context %}
   {% endif %}
 {% endwith %}

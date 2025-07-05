@@ -1,0 +1,38 @@
+{#- Macro for Japanese translations. -#}
+
+{% block logs scoped %}
+  {#- Logging block.
+
+  This block can be used to log debug messages, deprecation messages, warnings, etc.
+  -#}
+{% endblock logs %}
+
+{% macro t(key) %}{{ {
+  "PROPERTY": "属性",
+  "Properties:": "属性：",
+  "Classes:": "クラス：",
+  "CLASS": "クラス",
+  "DEFAULT:": "デフォルト：",
+  "Default": "デフォルト",
+  "default:": "デフォルト：",
+  "DESCRIPTION": "デスクリプション",
+  "Description": "デスクリプション",
+  "Examples:": "例：",
+  "Functions:": "関数：",
+  "FUNCTION": "関数",
+  "Folder:": "フォルダ：",
+  "Methods:": "メソッド：",
+  "METHOD": "メソッド",
+  "Namespaces:": "モジュール：",
+  "NAMESPACE": "モジュール",
+  "Name": "名前",
+  "Name-value arguments:": "名前と値の引数：",
+  "INPUT ARGUMENT": "引数",
+  "Input arguments:": "引数：",
+  "required": "必須",
+  "OUTPUT ARGUMENT": "戻り値",
+  "Output arguments:": "戻り値：",
+  "Source code in": "ソースコード位置：",
+  "TYPE:": "タイプ：",
+  "Type": "タイプ",
+}[key] }}{% endmacro %}

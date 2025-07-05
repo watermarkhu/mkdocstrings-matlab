@@ -30,19 +30,10 @@ nav:
     - Google: usage/docstrings/google.md
     - Numpy: usage/docstrings/numpy.md
     - Sphinx: usage/docstrings/sphinx.md
-# # defer to gen-files + literate-nav
 - API reference:
   - mkdocstrings_handlers:
     - matlab: api.md
-# - Development:
-#   - Contributing: contributing.md
-#   - Code of Conduct: code_of_conduct.md
-#   # - Coverage report: coverage.md
-# - Insiders:
-#   - insiders/index.md
-#   - Getting started:
-#     - Installation: insiders/installation.md
-#     - Changelog: insiders/changelog.md
+
 - mkdocstrings: https://mkdocstrings.github.io/
 
 theme:
@@ -104,6 +95,7 @@ markdown_extensions:
     emoji_index: !!python/name:material.extensions.emoji.twemoji
     emoji_generator: !!python/name:material.extensions.emoji.to_svg
 - pymdownx.highlight:
+    use_pygments: true
     pygments_lang_class: true
 - pymdownx.magiclink
 - pymdownx.snippets:
@@ -140,6 +132,7 @@ plugins:
           show_inheritance_diagram: false
           show_source: false
           heading_level: 3
+          argument_headings: false
           show_root_heading: true
           show_root_toc_entry: false
           show_root_full_path: true
@@ -155,13 +148,12 @@ plugins:
           filters: ["!^delete$|^disp$"]
           members_order: "source"
           summary: false
-          show_labels: true
+          show_attributes: true
 
           docstring_style: google
           docstring_section_style: table
-          parse_arguments: true
+          parse_arguments: false
           merge_constructor_into_class: false
-          merge_constructor_ignore_summary: false
           show_if_no_docstring: false
           show_docstring_description: true
           show_docstring_examples: true
@@ -170,11 +162,11 @@ plugins:
           show_docstring_output_arguments: true
 
           show_signature: true
-          show_signature_annotations: false
+          show_signature_types: false
           separate_signature: false 
       python:
         paths: [src]
-        import:
+        inventories:
         - https://docs.python.org/3/objects.inv
         options:
           docstring_options:

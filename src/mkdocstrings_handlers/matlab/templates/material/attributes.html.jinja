@@ -1,0 +1,25 @@
+{#- Template for object attributes.
+
+mathworks.com/help/matlab/matlab_oop/class-attributes.html
+mathworks.com/help/matlab/matlab_oop/method-attributes.html
+mathworks.com/help/matlab/matlab_oop/property-attributes.html
+
+Context:
+    attributes (list): The list of attributes to render.
+    config (dict): The configuration options.
+-#}
+
+{% if config.show_attributes and attributes %}
+  {% block logs scoped %}
+    {#- Logging block.
+
+    This block can be used to log debug messages, deprecation messages, warnings, etc.
+    -#}
+    {{ log.debug("Rendering attributes") }}
+  {% endblock logs %}
+  <span class="doc doc-attributes">
+    {% for attribute in attributes|sort %}
+      <small class="doc doc-attribute doc-attribute-{{ attribute }}"><code>{{ attribute }}</code></small>
+    {% endfor %}
+  </span>
+{% endif %}

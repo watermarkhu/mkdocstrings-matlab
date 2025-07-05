@@ -2,20 +2,24 @@
 
 {% block logs scoped %}
   {#- Logging block.
-  
+
   This block can be used to log debug messages, deprecation messages, warnings, etc.
   -#}
 {% endblock logs %}
 
-{% with section = obj.attributes
-    |filter_objects(
-      filters=config.filters,
-      members_list=members_list,
-      inherited_members=config.inherited_members,
-      keep_no_docstrings=config.show_if_no_docstring,
-    )
-    |order_members(config.members_order, members_list)
-    |as_attributes_section(check_public=not members_list)
-  %}
-  {% if section %}{% include "docstring/properties"|get_template with context %}{% endif %}
-{% endwith %}
+{% if not obj.docstring.parsed | selectattr("kind.value", "eq", "properties") | list %}
+  {% with section = obj.properties
+      |filter_objects(
+        filters=config.filters,
+        members_list=members_list,
+        inherited_members=config.inherited_members,
+        private_members=config.private_members,
+        hidden_members=config.hidden_members,
+        keep_no_docstrings=config.show_if_no_docstring,
+      )
+      |order_members(config.members_order, members_list)
+      |as_properties_section(check_public=not members_list)
+    %}
+    {% if section %}{% include "docstring/properties.html.jinja" with context %}{% endif %}
+  {% endwith %}
+{% endif %}

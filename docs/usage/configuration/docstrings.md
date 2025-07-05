@@ -154,14 +154,14 @@ plugins:
 
         Tables work well when you have lots of items with short names, type annotations, descriptions, etc.. With longer strings, the columns risk getting squished horizontally. In that case, the Spacy tables can help.
 
-        **Parameters:**
+        **Input arguments:**
 
         **Type**   | **Name**    | **Description**          | **Default**
         ---------- | ----------- | ------------------------ | -----------
         [`int`][]  | `threshold` | Threshold for something. | *required*
         [`bool`][] | `flag`      | Enable something.        | `False`
 
-        **Other Parameters:**
+        **Name-value arguments:**
 
         **Type**   | **Name**    | **Description**          | **Default**
         ---------- | ----------- | ------------------------ | -----------
@@ -172,12 +172,12 @@ plugins:
 
         Lists work well whatever the length of names, type annotations, descriptions, etc.
 
-        **Parameters:**
+        **Input arguments:**
 
         - `threshold` ([`int`][]) &mdash; Threshold for something.
         - `flag` ([`bool`][]) &mdash; Enable something.
 
-        **Other Parameters:**
+        **Name-value arguments:**
 
         - `gravity_forces` (<code><autoref identifier="list" optional>list</autoref>[<autoref identifier="int" optional>int</autoref> \| <autoref identifier="float" optional>float</autoref>]</code>) &mdash; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         - `vacuum_type` (<code><autoref identifier="VacuumType" optional>VacuumType</autoref> \| <autoref identifier="typing.Literal" optional>Literal</autoref>["regular"]</code>) &mdash; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -186,14 +186,14 @@ plugins:
 
         Spacy tables work better than regular tables with longer names, type annotations, descriptions, etc., by reserving more horizontal space on the second column.
 
-        **Parameters:**
+        **Input arguments:**
 
         **Name**    | **Description**
         ----------- | ---------------
         `threshold` | <span style="display: inline-block; min-width: 400px;">Threshold for something.</span><br>**TYPE:** [`int`][] <span style="float: right;"><b>DEFAULT:</b> <i>required</i></span>
         `flag`      | <span style="display: inline-block; min-width: 400px;">Enable something.</span><br>**TYPE:** [`bool`][] <span style="float: right;"><b>DEFAULT:</b> <code>False</code></span>
 
-        **Other Parameters:**
+        **Name-value arguments:**
 
         **Name**    | **Description**
         ----------- | ---------------
@@ -279,7 +279,7 @@ plugins:
 
 Whether to merge the constructor method into the class' signature and docstring.
 
-By default, only the class name is rendered in headings. When merging, the constructor method parameters are added after the class name, like a signature, and the constructor method docstring is appended to the class' docstring. This option is well used in combination with the `merge_constructor_ignore_summary` option, to discard the first line of the constructor docstring which is not often useful.
+By default, only the class name is rendered in headings. When merging, the constructor method parameters are added after the class name, like a signature, and the constructor method docstring is appended to the class' docstring. 
 
 ```yaml title="in mkdocs.yml (global configuration)"
 plugins:
@@ -288,14 +288,12 @@ plugins:
       matlab:
         options:
           merge_constructor_into_class: true
-          merge_constructor_ignore_summary: true
 ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
     options:
       merge_constructor_into_class: true
-      merge_constructor_ignore_summary: true
 ```
 
 ??? code ":material-file-code: `Thing.m`"
@@ -306,33 +304,19 @@ plugins:
 
 ???+ preview
 
-    === "Merged, summary discarded"
+    === "Merged"
 
         ```markdown
         ::: Thing
             options:
               merge_constructor_into_class: true
-              merge_constructor_ignore_summary: true
+              parse_arguments: true
         ```
 
         ::: Thing
             options:
               merge_constructor_into_class: true
-              merge_constructor_ignore_summary: true
-
-    === "Merged, summary kept"
-
-        ```markdown
-        ::: Thing
-            options:
-              merge_constructor_into_class: true
-              merge_constructor_ignore_summary: false
-        ```
-
-        ::: Thing
-            options:
-              merge_constructor_into_class: true
-              merge_constructor_ignore_summary: false
+              parse_arguments: true
 
     === "Unmerged"
 
@@ -340,11 +324,13 @@ plugins:
         ::: Thing
             options:
               merge_constructor_into_class: false
+              parse_arguments: true
         ```
         
         ::: Thing
             options:
               merge_constructor_into_class: false
+              parse_arguments: true
 
 
 
