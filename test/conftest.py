@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from tests import helpers
+from test import helpers
 
 if TYPE_CHECKING:
     from collections.abc import Iterator

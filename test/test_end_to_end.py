@@ -10,7 +10,7 @@ import bs4
 import pytest
 from inline_snapshot import outsource
 
-from tests import snapshots
+from test import snapshots
 
 if TYPE_CHECKING:
     from mkdocstrings_handlers.matlab import MatlabHandler
@@ -18,12 +18,12 @@ if TYPE_CHECKING:
 
 def _normalize_html(html: str) -> str:
     soup = bs4.BeautifulSoup(html, features="html.parser")
-    html = soup.prettify()  # type: ignore[assignment]
+    html = soup.prettify()
     html = re.sub(r"\b(0x)[a-f0-9]+\b", r"\1...", html)
     html = re.sub(r"^(Build Date UTC ?:).+", r"\1...", html, flags=re.MULTILINE)
     html = re.sub(r"\b[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\b", r"...", html)
     html = re.sub(r'(?<=id="cell-id=)\w+(?=")', r"...", html)
-    return html  # noqa: RET504
+    return html
 
 
 def _render(handler: MatlabHandler, identifier: str, final_options: dict[str, Any]) -> str:

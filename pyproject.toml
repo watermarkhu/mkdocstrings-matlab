@@ -161,5 +161,8 @@ default_bump_level = 0
 
 [tool.pytest.ini_options]
 pythonpath = [
-    "tests"
+    "test"
+]
+markers = [
+    "without_handler"
 ]
