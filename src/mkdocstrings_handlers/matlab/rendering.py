@@ -514,7 +514,7 @@ def do_as_properties_section(
             DocstringAttribute(
                 name=property.name,
                 description=_parse_docstring_summary(property),
-                annotation=property.type,
+                annotation=str(property.type),
                 value=property.default,  # type: ignore[arg-type]
             )
             for property in properties

@@ -92,6 +92,10 @@ ignore = [
 quote-style = "double"
 indent-style = "space"
 
+[tool.inline-snapshot]
+storage-dir = "tests/snapshots"
+format-command = "ruff format --config pyproject.toml --stdin-filename {filename}"
+
 [tool.ty.src]
 include = ["src"]
 exclude = ["tests"]
