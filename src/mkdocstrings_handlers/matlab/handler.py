@@ -216,7 +216,9 @@ class MatlabHandler(BaseHandler):
 
         parser_name = options.docstring_style
         parser = parser_name and Parser(parser_name)
-        parser_options = options.docstring_options and asdict(options.docstring_options)
+        parser_options = options.docstring_options and asdict(
+            options.docstring_options
+        )  # ty: ignore[invalid-argument-type]
 
         with suppress(AliasResolutionError):
             if model.docstring is not None:

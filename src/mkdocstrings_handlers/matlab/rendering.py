@@ -583,7 +583,7 @@ def do_as_classes_section(
                 description=cls.docstring.value.split("\n", 1)[0] if cls.docstring else "",
             )
             for cls in classes
-            if not check_public or cls.is_public
+            if not check_public or not cls.is_private
         ],
     )
 
@@ -613,7 +613,7 @@ def do_as_namespaces_section(
                 else "",
             )
             for namespace in namespaces
-            if not check_public or namespace.is_public
+            if not check_public or not namespace.is_internal
         ],
     )
 

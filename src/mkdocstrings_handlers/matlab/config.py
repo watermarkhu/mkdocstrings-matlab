@@ -62,9 +62,9 @@ try:
             **kwargs,
         )
 except ImportError:
-    from dataclasses import dataclass  # type: ignore[no-redef]
+    from dataclasses import dataclass
 
-    def Field(*args: Any, **kwargs: Any) -> None:  # type: ignore[misc]  # noqa: D103, N802
+    def Field(*args: Any, **kwargs: Any) -> None:
         pass
 
 
@@ -766,11 +766,11 @@ class MatlabInputOptions:
             summary = data["summary"]
             if summary is True:
                 summary = SummaryOption(
-                    properties=True, functions=True, classes=True, namespaces=True
+                    **dict(properties=True, functions=True, classes=True, namespaces=True)
                 )
             elif summary is False:
                 summary = SummaryOption(
-                    properties=False, functions=False, classes=False, namespaces=False
+                    **dict(properties=False, functions=False, classes=False, namespaces=False)
                 )
             else:
                 summary = SummaryOption(**summary)
@@ -883,13 +883,3 @@ class MatlabConfig(MatlabInputConfig):  # type: ignore[override,unused-ignore]
 
     inventories: list[Inventory] = field(default_factory=list)  # type: ignore[assignment]
     options: dict[str, Any] = field(default_factory=dict)  # type: ignore[assignment]
-
-    @classmethod
-    def coerce(cls, **data: Any) -> MutableMapping[str, Any]:
-        """Coerce data."""
-        if "inventories" in data:
-            data["inventories"] = [
-                Inventory(url=inv) if isinstance(inv, str) else Inventory(**inv)
-                for inv in data["inventories"]
-            ]
-        return data
