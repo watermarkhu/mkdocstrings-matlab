@@ -23,8 +23,8 @@ if TYPE_CHECKING:
 # --------------------------------------------
 # Function-scoped fixtures.
 # --------------------------------------------
-@pytest.fixture(name="mkdocs_conf")
-def fixture_mkdocs_conf(request: pytest.FixtureRequest, tmp_path: Path) -> Iterator[MkDocsConfig]:
+@pytest.fixture
+def mkdocs_conf(request: pytest.FixtureRequest, tmp_path: Path) -> Iterator[MkDocsConfig]:
     """Yield a MkDocs configuration object.
 
     Parameters:
@@ -38,8 +38,8 @@ def fixture_mkdocs_conf(request: pytest.FixtureRequest, tmp_path: Path) -> Itera
         yield mkdocs_conf
 
 
-@pytest.fixture(name="plugin")
-def fixture_plugin(mkdocs_conf: MkDocsConfig) -> MkdocstringsPlugin:
+@pytest.fixture
+def plugin(mkdocs_conf: MkDocsConfig) -> MkdocstringsPlugin:
     """Return a plugin instance.
 
     Parameters:
@@ -51,8 +51,8 @@ def fixture_plugin(mkdocs_conf: MkDocsConfig) -> MkdocstringsPlugin:
     return helpers.plugin(mkdocs_conf)
 
 
-@pytest.fixture(name="ext_markdown")
-def fixture_ext_markdown(mkdocs_conf: MkDocsConfig) -> Markdown:
+@pytest.fixture
+def ext_markdown(mkdocs_conf: MkDocsConfig) -> Markdown:
     """Return a Markdown instance with MkdocstringsExtension.
 
     Parameters:
@@ -64,8 +64,8 @@ def fixture_ext_markdown(mkdocs_conf: MkDocsConfig) -> Markdown:
     return helpers.ext_markdown(mkdocs_conf)
 
 
-@pytest.fixture(name="handler")
-def fixture_handler(plugin: MkdocstringsPlugin, ext_markdown: Markdown) -> MatlabHandler:
+@pytest.fixture
+def handler(plugin: MkdocstringsPlugin, ext_markdown: Markdown) -> MatlabHandler:
     """Return a handler instance.
 
     Parameters:
@@ -80,8 +80,8 @@ def fixture_handler(plugin: MkdocstringsPlugin, ext_markdown: Markdown) -> Matla
 # --------------------------------------------
 # Session-scoped fixtures.
 # --------------------------------------------
-@pytest.fixture(name="session_mkdocs_conf", scope="session")
-def fixture_session_mkdocs_conf(
+@pytest.fixture(scope="session")
+def session_mkdocs_conf(
     request: pytest.FixtureRequest,
     tmp_path_factory: pytest.TempPathFactory,
 ) -> Iterator[MkDocsConfig]:
@@ -98,8 +98,8 @@ def fixture_session_mkdocs_conf(
         yield mkdocs_conf
 
 
-@pytest.fixture(name="session_plugin", scope="session")
-def fixture_session_plugin(session_mkdocs_conf: MkDocsConfig) -> MkdocstringsPlugin:
+@pytest.fixture(scope="session")
+def session_plugin(session_mkdocs_conf: MkDocsConfig) -> MkdocstringsPlugin:
     """Return a plugin instance.
 
     Parameters:
@@ -111,8 +111,8 @@ def fixture_session_plugin(session_mkdocs_conf: MkDocsConfig) -> MkdocstringsPlu
     return helpers.plugin(session_mkdocs_conf)
 
 
-@pytest.fixture(name="session_ext_markdown", scope="session")
-def fixture_session_ext_markdown(session_mkdocs_conf: MkDocsConfig) -> Markdown:
+@pytest.fixture(scope="session")
+def session_ext_markdown(session_mkdocs_conf: MkDocsConfig) -> Markdown:
     """Return a Markdown instance with MkdocstringsExtension.
 
     Parameters:
@@ -124,8 +124,8 @@ def fixture_session_ext_markdown(session_mkdocs_conf: MkDocsConfig) -> Markdown:
     return helpers.ext_markdown(session_mkdocs_conf)
 
 
-@pytest.fixture(name="session_handler", scope="session")
-def fixture_session_handler(
+@pytest.fixture(scope="session")
+def session_handler(
     session_plugin: MkdocstringsPlugin, session_ext_markdown: Markdown
 ) -> MatlabHandler:
     """Return a handler instance.

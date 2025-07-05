@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections import ChainMap
 from contextlib import contextmanager
+from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 from markdown.core import Markdown
@@ -16,7 +17,7 @@ if TYPE_CHECKING:
     import pytest
     from mkdocstrings import MkdocstringsPlugin
 
-    from mkdocstrings_handlers.python import PythonHandler
+    from mkdocstrings_handlers.matlab import MatlabHandler
 
 
 @contextmanager
@@ -35,21 +36,24 @@ def mkdocs_conf(request: pytest.FixtureRequest, tmp_path: Path) -> Iterator[MkDo
     ):
         request = request._parent_request
 
-    params = getattr(request, "param", {})
-    plugins = params.pop("plugins", [{"mkdocstrings": {}}])
+    mkdocstring_config = {"default_handler": "matlab"}
+    marker = request.node.get_closest_marker("without_handler")
+    if marker is None:
+        mkdocstring_config["handlers"] = {"matlab": {"paths": ["fixture"]}}
 
     conf = MkDocsConfig()
     conf_dict = {
         "site_name": "foo",
         "site_url": "https://example.org/",
         "site_dir": str(tmp_path),
-        "plugins": plugins,
+        "plugins": [{"mkdocstrings": mkdocstring_config}],
         **getattr(request, "param", {}),
     }
     # Re-create it manually as a workaround for https://github.com/mkdocs/mkdocs/issues/2289
     mdx_configs: dict[str, Any] = dict(ChainMap(*conf_dict.get("markdown_extensions", [])))
 
     conf.load_dict(conf_dict)
+    conf.config_file_path = str((Path(__file__).parent / "mkdocs.yml").resolve())
     assert conf.validate() == ([], [])
 
     conf["mdx_configs"] = mdx_configs
@@ -87,7 +91,7 @@ def ext_markdown(mkdocs_conf: MkDocsConfig) -> Markdown:
     )
 
 
-def handler(plugin: MkdocstringsPlugin, ext_markdown: Markdown) -> PythonHandler:
+def handler(plugin: MkdocstringsPlugin, ext_markdown: Markdown) -> MatlabHandler:
     """Return a handler instance.
 
     Parameters:
@@ -96,6 +100,6 @@ def handler(plugin: MkdocstringsPlugin, ext_markdown: Markdown) -> PythonHandler
     Returns:
         A handler instance.
     """
-    handler = plugin.handlers.get_handler("python")
+    handler = plugin.handlers.get_handler("matlab")
     handler._update_env(ext_markdown)
-    return handler  # type: ignore[return-value]
+    return handler

@@ -69,12 +69,12 @@ def _signature_matlab_path() -> Iterator[Path]:
 
         # Create module function
         module_function = matlab_dir / "module_function.m"
-        module_function.write_text("""function module_function(a, b)
+        module_function.write_text(r"""function module_function(a, b)
 % Docstring for module_function.
-%
-% Arguments:
-%   a (double): First parameter
-%   b (char): Second parameter
+Arguments:
+  a (1,:) double % First parameter
+  b (char): Second parameter
+end
 end
 """)
 
@@ -85,9 +85,10 @@ end
         private_function.write_text("""function private_function(a, b)
 % Docstring for private_function.
 %
-% Arguments:
-%   a (double): First parameter
-%   b (char): Second parameter
+Arguments:
+  a (double): First parameter
+  b (char): Second parameter
+end
 end
 """)
 

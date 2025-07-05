@@ -73,6 +73,7 @@ def test_render_docstring_examples_section(handler: MatlabHandler) -> None:
     assert "Hello" in rendered
 
 
+@pytest.mark.without_handler
 def test_expand_globs(tmp_path: Path, plugin: MkdocstringsPlugin) -> None:
     """Assert globs are correctly expanded for MATLAB paths.
 
@@ -80,35 +81,27 @@ def test_expand_globs(tmp_path: Path, plugin: MkdocstringsPlugin) -> None:
         tmp_path: Pytest fixture that creates a temporary directory.
     """
     globbed_names = (
-        "expanded_a.m",
-        "expanded_b.m",
-        "other_expanded_c.m",
-        "other_expanded_d.m",
+        "expanded_a",
+        "expanded_b",
+        "other_expanded_c",
+        "other_expanded_d",
     )
-    globbed_paths = [tmp_path.joinpath(globbed_name) for globbed_name in globbed_names]
-    for path in globbed_paths:
-        path.touch()
+    globbed_dirs = [tmp_path.joinpath(globbed_name) for globbed_name in globbed_names]
+    for d in globbed_dirs:
+        d.mkdir()
     plugin.handlers._tool_config.config_file_path = str(tmp_path.joinpath("mkdocs.yml"))
     handler: MatlabHandler = plugin.handlers.get_handler("matlab", {"paths": ["*exp*"]})  # type: ignore[assignment]
     # Check that paths containing the glob pattern are included
-    expanded_paths = [str(path.parent) for path in globbed_paths if "exp" in path.name]
+    expanded_paths = [str(d) for d in globbed_dirs if "exp" in d.name]
     for expanded_path in set(expanded_paths):
         assert expanded_path in [str(p) for p in handler._paths]
-
-
-def test_expand_globs_without_changing_directory(plugin: MkdocstringsPlugin) -> None:
-    """Assert globs are correctly expanded when we are already in the right directory."""
-    plugin.handlers._tool_config.config_file_path = "mkdocs.yml"
-    plugin.handlers.get_handler("matlab", {"paths": ["*.md"]})  # type: ignore[assignment]
-    # For MATLAB handler, this would expand directories, not .md files
-    # The test logic may need adjustment based on actual implementation
 
 
 def test_rendering_object_source_without_lineno(handler: MatlabHandler) -> None:
     """Test rendering MATLAB objects without a line number."""
     # This would need to create mock MATLAB objects
     # Example structure for when you have actual MATLAB object creation:
-    """
+    r"""
     function_obj = Function(
         name="test_function",
         filepath=Path("test.m"),
@@ -139,7 +132,7 @@ def test_give_precedence_to_user_paths(tmp_path: Path) -> None:
     [
         (
             "Properties",
-            """
+            r"""
             classdef TestClass
                 properties
                     x % X property
@@ -150,7 +143,7 @@ def test_give_precedence_to_user_paths(tmp_path: Path) -> None:
         ),
         (
             "Methods",
-            """
+            r"""
             classdef TestClass
                 methods
                     function obj = method_x(obj)
@@ -165,7 +158,7 @@ def test_give_precedence_to_user_paths(tmp_path: Path) -> None:
         ),
         (
             "Functions",
-            """
+            r"""
             % Module with functions
             %
             % Functions:
@@ -175,7 +168,7 @@ def test_give_precedence_to_user_paths(tmp_path: Path) -> None:
         ),
         (
             "Classes",
-            """
+            r"""
             % Package with classes
             %
             % Classes:
@@ -185,7 +178,7 @@ def test_give_precedence_to_user_paths(tmp_path: Path) -> None:
         ),
         (
             "Namespaces",
-            """
+            r"""
             % Package with namespaces
             %
             % Namespaces:

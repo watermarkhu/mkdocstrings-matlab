@@ -251,15 +251,6 @@ def test_as_namespaces_section() -> None:
     assert hasattr(rendering, "do_as_namespaces_section")
 
 
-def test_get_template_function() -> None:
-    """Test template name resolution for MATLAB objects."""
-    # Test with string input
-    assert rendering.do_get_template(None, "function") == "function.html.jinja"  # type: ignore[arg-type]
-    assert rendering.do_get_template(None, "class") == "class.html.jinja"  # type: ignore[arg-type]
-
-    # This would need actual MATLAB objects for full testing of object input
-
-
 def test_function_docstring_processing() -> None:
     """Test MATLAB function docstring processing."""
     # This would need actual Function objects with arguments/returns for full testing

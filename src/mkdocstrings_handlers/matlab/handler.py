@@ -78,7 +78,12 @@ class MatlabHandler(BaseHandler):
                     )
 
         if config.paths:
-            full_paths = [(base_dir / path).resolve() for path in config.paths]
+            full_paths = []
+            for path in config.paths:
+                if "*" in path:
+                    full_paths.extend([d for d in base_dir.glob(path) if d.is_dir()])
+                else:
+                    full_paths.append((base_dir / path).resolve())
         else:
             full_paths = []
 
