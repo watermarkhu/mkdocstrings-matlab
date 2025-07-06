@@ -196,3 +196,4 @@ codegen/
 octave-workspace
 
 .vscode/
+.python-version
