@@ -7,4 +7,10 @@ classdef SubClass < moduleClass
             obj@moduleClass(a, b);
         end
     end
+
+    methods (Hidden)
+        function hidden_method(obj)
+        % Docstring for moduleClass.hidden_method.
+        end
+    end
 end

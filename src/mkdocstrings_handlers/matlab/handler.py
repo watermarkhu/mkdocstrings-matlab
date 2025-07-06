@@ -199,8 +199,21 @@ class MatlabHandler(BaseHandler):
 
         if options == {}:
             options = self.get_options({})
+
         try:
-            model = self._paths_collection.get_member(identifier)
+            if "/" in identifier:
+                # If the identifier contains a slash, it is a path to a file.
+                # We use the lines collection to get the model.
+                path = (self.base_dir / identifier).resolve()
+                if path in self._paths_collection._folders:
+                    # If the path is a folder, we return the folder model.
+                    model = self._paths_collection._folders[path]
+                else:
+                    raise CollectionError(
+                        f"Path '{identifier}' is not a valid path in the collection"
+                    )
+            else:
+                model = self._paths_collection.get_member(identifier)
         except SyntaxError as ex:
             msg = str(ex)
             if ex.text:
