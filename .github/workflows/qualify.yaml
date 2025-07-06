@@ -14,10 +14,6 @@ on:
     branches:
       - main
 
-permissions:
-  contents: write
-  pull-requests: write
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
@@ -30,6 +26,8 @@ jobs:
     concurrency:
       group: gh-pages
       cancel-in-progress: false
+    permissions: 
+      contents: write
     secrets: inherit
     with:
       version: ${{ format('pr-{0}', github.head_ref) || 'test' }}
@@ -39,6 +37,8 @@ jobs:
 
   setup:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       python-versions: ${{ steps.get-versions.outputs.python-versions }}
     steps:
@@ -59,6 +59,8 @@ jobs:
   test:
     name: Run checks and tests
     needs: setup
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -134,7 +136,7 @@ jobs:
     needs: [setup, test]
     if: (!cancelled())
     permissions:
-      contents: write
+      contents: read
       pull-requests: write
       checks: write
     steps:
