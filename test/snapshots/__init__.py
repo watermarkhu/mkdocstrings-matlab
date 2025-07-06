@@ -601,7 +601,7 @@ signatures = snapshot(
             ("separate_signature", True),
             ("show_signature_annotations", False),
             ("signature_crossrefs", True),
-        ): external("08f93c2248f6*.html"),
+        ): external("0bbef9a6bd29*.html"),
         (
             ("separate_signature", True),
             ("show_signature_annotations", True),
@@ -616,12 +616,12 @@ signatures = snapshot(
             ("separate_signature", False),
             ("show_signature_annotations", True),
             ("signature_crossrefs", True),
-        ): external("fa63503b9263*.html"),
+        ): external("7e910465b3ca*.html"),
         (
             ("separate_signature", True),
             ("show_signature_annotations", True),
             ("signature_crossrefs", True),
-        ): external("06ab27179592*.html"),
+        ): external("1d353b3d9ed0*.html"),
         (
             ("separate_signature", True),
             ("show_signature_annotations", False),
@@ -631,7 +631,7 @@ signatures = snapshot(
             ("separate_signature", False),
             ("show_signature_annotations", False),
             ("signature_crossrefs", True),
-        ): external("7d0b1a0c580b*.html"),
+        ): external("cb087c3d28e1*.html"),
         (
             ("separate_signature", False),
             ("show_signature_annotations", True),
