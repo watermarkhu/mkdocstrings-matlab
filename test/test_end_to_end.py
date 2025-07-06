@@ -249,6 +249,103 @@ def test_end_to_end_members_class(
     assert outsource(html, suffix=".html") == snapshots.members_class[snapshot_key]
 
 
+@pytest.mark.parametrize("parse_arguments", [True, False])
+@pytest.mark.parametrize("show_docstring_examples", [True, False])
+@pytest.mark.parametrize("docstring_section_style", ["table", "list", "spacy"])
+def test_end_to_end_docstring_arguments(
+    session_handler: "MatlabHandler",
+    parse_arguments: bool,
+    show_docstring_examples: bool,
+    docstring_section_style: str,
+) -> None:
+    final_options = {
+        "parse_arguments": parse_arguments,
+        "show_docstring_examples": show_docstring_examples,
+        "docstring_section_style": docstring_section_style,
+    }
+    html = _render_options(final_options) + _render(
+        session_handler, "module_arguments", final_options
+    )
+    snapshot_key = tuple(sorted(final_options.items()))
+    assert outsource(html, suffix=".html") == snapshots.docstring_arguments[snapshot_key]
+
+
+@pytest.mark.parametrize("show_if_no_docstring", [True, False])
+def test_end_to_end_no_docstring(
+    session_handler: "MatlabHandler",
+    show_if_no_docstring: bool,
+) -> None:
+    final_options = {
+        "show_if_no_docstring": show_if_no_docstring,
+    }
+    html = _render_options(final_options) + _render(
+        session_handler, "moduleNamespace.internal.hidden_function", final_options
+    )
+    snapshot_key = tuple(sorted(final_options.items()))
+    assert outsource(html, suffix=".html") == snapshots.no_docstring[snapshot_key]
+
+
+@pytest.mark.parametrize("show_docstring_properties", [True, False])
+@pytest.mark.parametrize("show_docstring_description", [True, False])
+@pytest.mark.parametrize("merge_constructor_into_class", [True, False])
+def test_end_to_end_docstring_class(
+    session_handler: "MatlabHandler",
+    show_docstring_properties: bool,
+    show_docstring_description: bool,
+    merge_constructor_into_class: bool,
+) -> None:
+    final_options = {
+        "show_docstring_properties": show_docstring_properties,
+        "show_docstring_description": show_docstring_description,
+        "merge_constructor_into_class": merge_constructor_into_class,
+    }
+    html = _render_options(final_options) + _render(session_handler, "subClass", final_options)
+    snapshot_key = tuple(sorted(final_options.items()))
+    assert outsource(html, suffix=".html") == snapshots.docstring_class[snapshot_key]
+
+
+@pytest.mark.parametrize("show_docstring_functions", [True, False])
+@pytest.mark.parametrize("show_docstring_classes", [True, False])
+@pytest.mark.parametrize("show_docstring_namespaces", [True, False])
+def test_end_to_end_docstring_namespace(
+    session_handler: "MatlabHandler",
+    show_docstring_functions: bool,
+    show_docstring_classes: bool,
+    show_docstring_namespaces: bool,
+) -> None:
+    final_options = {
+        "show_docstring_functions": show_docstring_functions,
+        "show_docstring_classes": show_docstring_classes,
+        "show_docstring_namespaces": show_docstring_namespaces,
+    }
+    html = _render_options(final_options) + _render(
+        session_handler, "+moduleNamespace", final_options
+    )
+    snapshot_key = tuple(sorted(final_options.items()))
+    assert outsource(html, suffix=".html") == snapshots.docstring_namespace[snapshot_key]
+
+
+@pytest.mark.parametrize("show_docstring_input_arguments", [True, False])
+@pytest.mark.parametrize("show_docstring_name_value_arguments", [True, False])
+@pytest.mark.parametrize("show_docstring_output_arguments", [True, False])
+def test_end_to_end_docstring_function(
+    session_handler: "MatlabHandler",
+    show_docstring_input_arguments: bool,
+    show_docstring_name_value_arguments: bool,
+    show_docstring_output_arguments: bool,
+) -> None:
+    final_options = {
+        "show_docstring_input_arguments": show_docstring_input_arguments,
+        "show_docstring_name_value_arguments": show_docstring_name_value_arguments,
+        "show_docstring_output_arguments": show_docstring_output_arguments,
+    }
+    html = _render_options(final_options) + _render(
+        session_handler, "module_arguments", final_options
+    )
+    snapshot_key = tuple(sorted(final_options.items()))
+    assert outsource(html, suffix=".html") == snapshots.docstring_function[snapshot_key]
+
+
 @pytest.mark.parametrize("show_signature_annotations", [True, False])
 @pytest.mark.parametrize("signature_crossrefs", [True, False])
 @pytest.mark.parametrize("separate_signature", [True, False])

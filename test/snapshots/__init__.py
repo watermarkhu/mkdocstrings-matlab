@@ -19,8 +19,8 @@ signature_show = snapshot(
 
 inheritance = snapshot(
     {
-        (("show_bases", False),): external("4070640d95cd*.html"),
-        (("show_bases", True),): external("4d1779bc6c35*.html"),
+        (("show_bases", False),): external("0f17233207bf*.html"),
+        (("show_bases", True),): external("da803de75149*.html"),
     }
 )
 
@@ -39,42 +39,42 @@ headings_root = snapshot(
             ("show_root_full_path", True),
             ("show_root_heading", False),
             ("show_root_members_full_path", False),
-        ): external("f50379c6bbcb*.html"),
+        ): external("57cab8f455df*.html"),
         (
             ("show_root_full_path", True),
             ("show_root_heading", True),
             ("show_root_members_full_path", False),
-        ): external("97e93d709b3d*.html"),
+        ): external("64343ec348af*.html"),
         (
             ("show_root_full_path", False),
             ("show_root_heading", False),
             ("show_root_members_full_path", False),
-        ): external("8fe495c4c8f8*.html"),
+        ): external("0cdb7b847da2*.html"),
         (
             ("show_root_full_path", False),
             ("show_root_heading", True),
             ("show_root_members_full_path", True),
-        ): external("7b9c9c8ca79b*.html"),
+        ): external("9f6d805fb9d4*.html"),
         (
             ("show_root_full_path", False),
             ("show_root_heading", True),
             ("show_root_members_full_path", False),
-        ): external("98b6bed82e1a*.html"),
+        ): external("6c4ed4cef313*.html"),
         (
             ("show_root_full_path", True),
             ("show_root_heading", False),
             ("show_root_members_full_path", True),
-        ): external("cb060fefdd41*.html"),
+        ): external("6b34cb137231*.html"),
         (
             ("show_root_full_path", False),
             ("show_root_heading", False),
             ("show_root_members_full_path", True),
-        ): external("5f8b90cf4bef*.html"),
+        ): external("69e31bce11d0*.html"),
         (
             ("show_root_full_path", True),
             ("show_root_heading", True),
             ("show_root_members_full_path", True),
-        ): external("b220be5fc430*.html"),
+        ): external("de831be4bec5*.html"),
     }
 )
 
@@ -143,13 +143,13 @@ toc = snapshot(
 members = snapshot(
     {
         (("filters", ("module*",)), ("members", True), ("members_order", "source")): external(
-            "bbb4e7e3f22e*.html"
+            "ef814ef15b29*.html"
         ),
         (("filters", ("module*",)), ("members", True), ("members_order", "alphabetical")): external(
-            "e93a13118d95*.html"
+            "94862983c762*.html"
         ),
         (("filters", False), ("members", True), ("members_order", "alphabetical")): external(
-            "f50ac9f63968*.html"
+            "1e9ff0fa4b77*.html"
         ),
         (
             ("filters", False),
@@ -191,12 +191,12 @@ members = snapshot(
             ("filters", ("!module_function",)),
             ("members", True),
             ("members_order", "source"),
-        ): external("a4709292b808*.html"),
+        ): external("ea09a0520de7*.html"),
         (
             ("filters", ("!module_function",)),
             ("members", True),
             ("members_order", "alphabetical"),
-        ): external("ca8e1b848ea1*.html"),
+        ): external("2cd08af1cb73*.html"),
         (("filters", False), ("members", False), ("members_order", "alphabetical")): external(
             "5836b3434a80*.html"
         ),
@@ -211,7 +211,7 @@ members = snapshot(
             ("members_order", "source"),
         ): external("c2e7d6b33a18*.html"),
         (("filters", False), ("members", True), ("members_order", "source")): external(
-            "5fcca190d220*.html"
+            "6e4bac7b42b2*.html"
         ),
         (
             ("filters", ("module*",)),
@@ -298,97 +298,300 @@ members_class = snapshot(
             ("inherited_members", False),
             ("private_members", False),
             ("show_attributes", False),
-        ): external("58f1b1f9c5d5*.html"),
+        ): external("ff027868c76c*.html"),
         (
             ("hidden_members", False),
             ("inherited_members", True),
             ("private_members", False),
             ("show_attributes", True),
-        ): external("f3bf6610d3ec*.html"),
+        ): external("dfbf8a2bdc12*.html"),
         (
             ("hidden_members", True),
             ("inherited_members", True),
             ("private_members", False),
             ("show_attributes", False),
-        ): external("10edd3ff0916*.html"),
+        ): external("d04b41ff753f*.html"),
         (
             ("hidden_members", True),
             ("inherited_members", False),
             ("private_members", True),
             ("show_attributes", True),
-        ): external("8e070116b29e*.html"),
+        ): external("6565fb92fbc0*.html"),
         (
             ("hidden_members", False),
             ("inherited_members", True),
             ("private_members", True),
             ("show_attributes", False),
-        ): external("2060bacaca4a*.html"),
+        ): external("9cd56ed037c1*.html"),
         (
             ("hidden_members", True),
             ("inherited_members", False),
             ("private_members", False),
             ("show_attributes", True),
-        ): external("a62361ee1c1a*.html"),
+        ): external("6ae3bf86dc66*.html"),
         (
             ("hidden_members", False),
             ("inherited_members", False),
             ("private_members", True),
             ("show_attributes", True),
-        ): external("9f36e561ef02*.html"),
+        ): external("63f358878e8f*.html"),
         (
             ("hidden_members", False),
             ("inherited_members", False),
             ("private_members", True),
             ("show_attributes", False),
-        ): external("38c8b1eb1c63*.html"),
+        ): external("0ca913b63591*.html"),
         (
             ("hidden_members", True),
             ("inherited_members", True),
             ("private_members", True),
             ("show_attributes", True),
-        ): external("f1bccdfceace*.html"),
+        ): external("a96bf77fb1a2*.html"),
         (
             ("hidden_members", False),
             ("inherited_members", False),
             ("private_members", False),
             ("show_attributes", True),
-        ): external("e5b99f8912c5*.html"),
+        ): external("20788949f838*.html"),
         (
             ("hidden_members", True),
             ("inherited_members", True),
             ("private_members", True),
             ("show_attributes", False),
-        ): external("4d0dcf27004a*.html"),
+        ): external("09f4b154fb06*.html"),
         (
             ("hidden_members", False),
             ("inherited_members", True),
             ("private_members", True),
             ("show_attributes", True),
-        ): external("8c2339ffff13*.html"),
+        ): external("cba42f041701*.html"),
         (
             ("hidden_members", True),
             ("inherited_members", False),
             ("private_members", True),
             ("show_attributes", False),
-        ): external("010192e644b6*.html"),
+        ): external("4335052308cf*.html"),
         (
             ("hidden_members", True),
             ("inherited_members", True),
             ("private_members", False),
             ("show_attributes", True),
-        ): external("e2d94150c535*.html"),
+        ): external("9ec2f8446a3b*.html"),
         (
             ("hidden_members", False),
             ("inherited_members", True),
             ("private_members", False),
             ("show_attributes", False),
-        ): external("d9d7a37bde2b*.html"),
+        ): external("f9c4d8a117d5*.html"),
         (
             ("hidden_members", True),
             ("inherited_members", False),
             ("private_members", False),
             ("show_attributes", False),
-        ): external("34762540aa64*.html"),
+        ): external("c217f15d59e2*.html"),
+    }
+)
+
+no_docstring = snapshot(
+    {
+        (("show_if_no_docstring", True),): external("d47b443929cd*.html"),
+        (("show_if_no_docstring", False),): external("e2b0478cf1db*.html"),
+    }
+)
+docstring_arguments = snapshot(
+    {
+        (
+            ("docstring_section_style", "table"),
+            ("parse_arguments", True),
+            ("show_docstring_examples", False),
+        ): external("bb970d5d56bc*.html"),
+        (
+            ("docstring_section_style", "list"),
+            ("parse_arguments", False),
+            ("show_docstring_examples", True),
+        ): external("61877524efcf*.html"),
+        (
+            ("docstring_section_style", "spacy"),
+            ("parse_arguments", False),
+            ("show_docstring_examples", True),
+        ): external("5c5f91af98da*.html"),
+        (
+            ("docstring_section_style", "table"),
+            ("parse_arguments", False),
+            ("show_docstring_examples", False),
+        ): external("705b5f3f36fd*.html"),
+        (
+            ("docstring_section_style", "spacy"),
+            ("parse_arguments", False),
+            ("show_docstring_examples", False),
+        ): external("43d6aff3bffc*.html"),
+        (
+            ("docstring_section_style", "spacy"),
+            ("parse_arguments", True),
+            ("show_docstring_examples", True),
+        ): external("5e86911da0a4*.html"),
+        (
+            ("docstring_section_style", "spacy"),
+            ("parse_arguments", True),
+            ("show_docstring_examples", False),
+        ): external("47ae9941659b*.html"),
+        (
+            ("docstring_section_style", "list"),
+            ("parse_arguments", False),
+            ("show_docstring_examples", False),
+        ): external("bce570735dc1*.html"),
+        (
+            ("docstring_section_style", "table"),
+            ("parse_arguments", False),
+            ("show_docstring_examples", True),
+        ): external("42de9019cab4*.html"),
+        (
+            ("docstring_section_style", "list"),
+            ("parse_arguments", True),
+            ("show_docstring_examples", False),
+        ): external("bbb338707ba9*.html"),
+        (
+            ("docstring_section_style", "table"),
+            ("parse_arguments", True),
+            ("show_docstring_examples", True),
+        ): external("8109aec26ddf*.html"),
+        (
+            ("docstring_section_style", "list"),
+            ("parse_arguments", True),
+            ("show_docstring_examples", True),
+        ): external("bf91ba59fb5b*.html"),
+    }
+)
+docstring_class = snapshot(
+    {
+        (
+            ("merge_constructor_into_class", False),
+            ("show_docstring_description", False),
+            ("show_docstring_properties", False),
+        ): external("a0db2f1efdc7*.html"),
+        (
+            ("merge_constructor_into_class", False),
+            ("show_docstring_description", True),
+            ("show_docstring_properties", False),
+        ): external("a627b8e4f7b7*.html"),
+        (
+            ("merge_constructor_into_class", False),
+            ("show_docstring_description", True),
+            ("show_docstring_properties", True),
+        ): external("474ba421e9fa*.html"),
+        (
+            ("merge_constructor_into_class", True),
+            ("show_docstring_description", False),
+            ("show_docstring_properties", False),
+        ): external("fd63613ae39a*.html"),
+        (
+            ("merge_constructor_into_class", True),
+            ("show_docstring_description", True),
+            ("show_docstring_properties", False),
+        ): external("241460a64885*.html"),
+        (
+            ("merge_constructor_into_class", True),
+            ("show_docstring_description", False),
+            ("show_docstring_properties", True),
+        ): external("d5c65abf4324*.html"),
+        (
+            ("merge_constructor_into_class", True),
+            ("show_docstring_description", True),
+            ("show_docstring_properties", True),
+        ): external("302678282827*.html"),
+        (
+            ("merge_constructor_into_class", False),
+            ("show_docstring_description", False),
+            ("show_docstring_properties", True),
+        ): external("fdeab6889b8a*.html"),
+    }
+)
+docstring_namespace = snapshot(
+    {
+        (
+            ("show_docstring_classes", False),
+            ("show_docstring_functions", True),
+            ("show_docstring_namespaces", True),
+        ): external("4090f4e69786*.html"),
+        (
+            ("show_docstring_classes", True),
+            ("show_docstring_functions", False),
+            ("show_docstring_namespaces", True),
+        ): external("e02fc8b67673*.html"),
+        (
+            ("show_docstring_classes", False),
+            ("show_docstring_functions", False),
+            ("show_docstring_namespaces", False),
+        ): external("98409988a68a*.html"),
+        (
+            ("show_docstring_classes", True),
+            ("show_docstring_functions", False),
+            ("show_docstring_namespaces", False),
+        ): external("764f06a57a8a*.html"),
+        (
+            ("show_docstring_classes", True),
+            ("show_docstring_functions", True),
+            ("show_docstring_namespaces", True),
+        ): external("50ba1c0e8baa*.html"),
+        (
+            ("show_docstring_classes", False),
+            ("show_docstring_functions", False),
+            ("show_docstring_namespaces", True),
+        ): external("0a944f9222d3*.html"),
+        (
+            ("show_docstring_classes", True),
+            ("show_docstring_functions", True),
+            ("show_docstring_namespaces", False),
+        ): external("5b37209c1d44*.html"),
+        (
+            ("show_docstring_classes", False),
+            ("show_docstring_functions", True),
+            ("show_docstring_namespaces", False),
+        ): external("7318e0ab2c15*.html"),
+    }
+)
+docstring_function = snapshot(
+    {
+        (
+            ("show_docstring_input_arguments", False),
+            ("show_docstring_name_value_arguments", True),
+            ("show_docstring_output_arguments", False),
+        ): external("66c4fa77fbe8*.html"),
+        (
+            ("show_docstring_input_arguments", False),
+            ("show_docstring_name_value_arguments", False),
+            ("show_docstring_output_arguments", False),
+        ): external("8162071006a5*.html"),
+        (
+            ("show_docstring_input_arguments", True),
+            ("show_docstring_name_value_arguments", True),
+            ("show_docstring_output_arguments", False),
+        ): external("7d1c71e70b39*.html"),
+        (
+            ("show_docstring_input_arguments", True),
+            ("show_docstring_name_value_arguments", False),
+            ("show_docstring_output_arguments", False),
+        ): external("22bd1ef93015*.html"),
+        (
+            ("show_docstring_input_arguments", False),
+            ("show_docstring_name_value_arguments", True),
+            ("show_docstring_output_arguments", True),
+        ): external("0051991ba39c*.html"),
+        (
+            ("show_docstring_input_arguments", True),
+            ("show_docstring_name_value_arguments", True),
+            ("show_docstring_output_arguments", True),
+        ): external("9acb987c01b1*.html"),
+        (
+            ("show_docstring_input_arguments", True),
+            ("show_docstring_name_value_arguments", False),
+            ("show_docstring_output_arguments", True),
+        ): external("a4905938c541*.html"),
+        (
+            ("show_docstring_input_arguments", False),
+            ("show_docstring_name_value_arguments", False),
+            ("show_docstring_output_arguments", True),
+        ): external("bb97d10f6422*.html"),
     }
 )
 
@@ -398,41 +601,41 @@ signatures = snapshot(
             ("separate_signature", True),
             ("show_signature_annotations", False),
             ("signature_crossrefs", True),
-        ): external("f083422a4625*.html"),
+        ): external("08f93c2248f6*.html"),
         (
             ("separate_signature", True),
             ("show_signature_annotations", True),
             ("signature_crossrefs", False),
-        ): external("c1f85fd1949b*.html"),
+        ): external("db742dc7757e*.html"),
         (
             ("separate_signature", False),
             ("show_signature_annotations", False),
             ("signature_crossrefs", False),
-        ): external("95868fa5a61c*.html"),
+        ): external("2577034c6a1e*.html"),
         (
             ("separate_signature", False),
             ("show_signature_annotations", True),
             ("signature_crossrefs", True),
-        ): external("f3023dc59860*.html"),
+        ): external("fa63503b9263*.html"),
         (
             ("separate_signature", True),
             ("show_signature_annotations", True),
             ("signature_crossrefs", True),
-        ): external("fa9c72c6f190*.html"),
+        ): external("06ab27179592*.html"),
         (
             ("separate_signature", True),
             ("show_signature_annotations", False),
             ("signature_crossrefs", False),
-        ): external("9b1523ffa0cf*.html"),
+        ): external("9d4909309731*.html"),
         (
             ("separate_signature", False),
             ("show_signature_annotations", False),
             ("signature_crossrefs", True),
-        ): external("fdd2a919e127*.html"),
+        ): external("7d0b1a0c580b*.html"),
         (
             ("separate_signature", False),
             ("show_signature_annotations", True),
             ("signature_crossrefs", False),
-        ): external("424e362fa66d*.html"),
+        ): external("9405f2231bc3*.html"),
     }
 )
