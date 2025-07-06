@@ -90,12 +90,12 @@ quote-style = "double"
 indent-style = "space"
 
 [tool.inline-snapshot]
-storage-dir = "tests/snapshots"
+storage-dir = "test/snapshots"
 format-command = "ruff format --config pyproject.toml --stdin-filename {filename}"
 
 [tool.ty.src]
 include = ["src", "pyproject.toml"]
-exclude = ["tests"]
+exclude = ["test"]
 
 [tool.hatch.metadata]
 allow-direct-references = true
