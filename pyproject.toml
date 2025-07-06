@@ -45,7 +45,6 @@ dev = [
     "pydantic~=2.10",
     "pytest>=8.3.5",
     "pytest-cov>=6.1.1",
-    "ipykernel>=6.29.5",
     "inline-snapshot>=0.23.2",
     "python-semantic-release~=10.0.0",
 ]
@@ -60,7 +59,6 @@ docs = [
 ]
 reference = [
     "beautifulsoup4>=4.13.3",
-    "playwright>=1.51.0",
 ]
 
 [build-system]

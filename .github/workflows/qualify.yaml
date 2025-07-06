@@ -113,6 +113,7 @@ jobs:
           echo '# ✅ Tests passed' >> $GITHUB_STEP_SUMMARY
         else
           echo '# ❌ Tests failed' >> $GITHUB_STEP_SUMMARY
+          exit 1
         fi
 
     - name: Generate test coverage report
