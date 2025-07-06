@@ -26,7 +26,7 @@ which is a tree-like structure representing a Python expression.
   {%- elif expression.doc != "" -%}
     {%- if config.signature_crossrefs -%}
       {%- filter stash_crossref(length=expression|string|length) -%}
-        <a class="autorefs autorefs-external" href="{{ expression.doc }}">{{ expression|string }}🔗</a>
+        <a class="autorefs autorefs-external" href="{{ expression.doc }}">{{ expression|string }}</a>
       {%- endfilter -%}
     {%- else -%}
       {{ expression|string }}

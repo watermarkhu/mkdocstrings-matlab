@@ -6,7 +6,7 @@
 
 <p align="center"><img width=300px src="logo.svg"></p>
 
-[![qualify](https://github.com/watermarkhu/mkdocstrings-matlab/actions/workflows/qualify.yaml/badge.svg)](https://github.com/watermarkhu/mkdocstrings-matlab/actions/workflows/qualify.yaml)
+[![Qualify](https://github.com/watermarkhu/mkdocstrings-matlab/actions/workflows/qualify.yaml/badge.svg)](https://github.com/watermarkhu/mkdocstrings-matlab/actions/workflows/qualify.yaml)
 [![documentation](https://img.shields.io/badge/docs-mkdocs-708FCC.svg?style=flat)](https://watermarkhu.nl/mkdocstrings-matlab)
 [![pypi version](https://img.shields.io/pypi/v/mkdocstrings-matlab.svg)](https://pypi.org/project/mkdocstrings-matlab/)
 
@@ -34,7 +34,7 @@ dependencies = [
 
 - **Support for argument validation blocks:** Tree-sitter collects your [function and method argument validation](https://mathworks.com/help/matlab/matlab_prog/function-argument-validation-1.html)
    blocks to display input and output argument types and default values. 
-   It is even able to automatically add cross-references to other objects from your API.
+   It is even able to automatically add cross-references to other objects from your API, and links to MathWorks documentation are generated for MATLAB builtin classes. 
 
 - **Recursive documentation of MATLAB [namespaces](https://mathworks.com/help/matlab/matlab_oop/namespaces.html) and folders:** 
   just add `+` to the identifer for namespaces or the relative path for folder, and you get documentation for the entire directory. You don't need to inject documentation for each class, function, and script. Additionaly, the directory documentation will be either extracted from the `Contents.m` or the `readme.md` file at the root of the namespace or folder.

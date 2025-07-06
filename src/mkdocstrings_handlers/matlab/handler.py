@@ -137,7 +137,7 @@ class MatlabHandler(BaseHandler):
 
         heading_level = options.heading_level
 
-        return template.render(
+        html = template.render(
             **{
                 "config": options,
                 data.kind.value: data,
@@ -146,6 +146,13 @@ class MatlabHandler(BaseHandler):
                 "locale": self.config.locale,
             },
         )
+
+        # if stash := self.env.filters["stash_crossref"].stash:
+        #     for key, value in stash.items():
+        #         html = re.sub(rf"\b{key}\b", value, html)
+        #     stash.clear()
+
+        return html
 
     def update_env(self, config: Any) -> None:  # noqa: ARG002
         """Update the Jinja environment with custom filters and tests.
@@ -157,7 +164,6 @@ class MatlabHandler(BaseHandler):
         self.env.lstrip_blocks = True
         self.env.keep_trailing_newline = False
         self.env.filters["order_members"] = rendering.do_order_members
-        self.env.filters["format_code"] = rendering.do_format_code
         self.env.filters["format_signature"] = rendering.do_format_signature
         self.env.filters["format_property"] = rendering.do_format_property
         self.env.filters["filter_objects"] = rendering.do_filter_objects

@@ -225,7 +225,6 @@ def test_matlab_specific_filters(handler: MatlabHandler) -> None:
     """Test that MATLAB-specific filters are registered."""
     expected_filters = [
         "order_members",
-        "format_code",
         "format_signature",
         "format_property",
         "filter_objects",

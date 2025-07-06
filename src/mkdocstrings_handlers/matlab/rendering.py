@@ -99,23 +99,6 @@ _order_map: dict[str, Callable[[Object | Alias], str | float]] = {
 }
 
 
-def do_format_code(code: str, line_length: int) -> str:
-    """Format code.
-
-    Parameters:
-        code: The code to format.
-        line_length: The line length.
-
-    Returns:
-        The same code, formatted.
-    """
-    code = code.strip()
-    if len(code) < line_length:
-        return code
-    # No formatter implemented for MATLAB
-    return code
-
-
 class _StashCrossRefFilter:
     stash: ClassVar[dict[str, str]] = {}
 
@@ -235,7 +218,6 @@ def do_format_property(
         )
         signature += f" = {value}"
 
-    signature = do_format_code(signature, line_length)
     signature = str(
         env.filters["highlight"](
             Markup.escape(signature),

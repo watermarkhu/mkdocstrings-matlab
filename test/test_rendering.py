@@ -4,56 +4,11 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 import pytest
 
 from mkdocstrings_handlers.matlab import rendering
-
-if TYPE_CHECKING:
-    from markupsafe import Markup
-
-
-@pytest.mark.parametrize(
-    "code",
-    [
-        "disp('Hello')",
-        "result = myfunction(param1, param2, 'Name', value) + data.field(index) || strcmp(str1, str2)",
-        "if condition; statement; end",
-        "for i = 1:10; array(i) = i^2; end",
-    ],
-)
-def test_format_code(code: str) -> None:
-    """Assert MATLAB code can be formatted.
-
-    Parameters:
-        code: MATLAB code to format.
-    """
-    for length in (5, 100):
-        formatted = rendering.do_format_code(code, length)
-        assert formatted
-        assert isinstance(formatted, str)
-
-
-@pytest.mark.parametrize(
-    ("name", "signature"),
-    [
-        ("myFunction", "function result = myFunction(param1, param2)"),
-        ("ClassName.method", "function obj = method(obj, varargin)"),
-    ],
-)
-def test_format_signature(name: Markup, signature: str) -> None:
-    """Assert MATLAB signatures can be formatted.
-
-    Parameters:
-        name: Function/method name.
-        signature: MATLAB signature to format.
-    """
-    # This would need actual Function objects for full testing
-    # For now, test the basic formatting functionality
-    for length in (5, 100):
-        formatted = rendering.do_format_code(signature, length)
-        assert formatted
 
 
 @dataclass
@@ -64,7 +19,6 @@ class _FakeMatlabObject:
     is_alias: bool = False
     is_private: bool = False
     is_hidden: bool = False
-    has_docstring: bool = True
     path: str = ""
 
     def __post_init__(self):

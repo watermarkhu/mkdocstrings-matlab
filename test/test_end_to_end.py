@@ -279,7 +279,7 @@ def test_end_to_end_no_docstring(
         "show_if_no_docstring": show_if_no_docstring,
     }
     html = _render_options(final_options) + _render(
-        session_handler, "moduleNamespace.internal.hidden_function", final_options
+        session_handler, "+moduleNamespace.internal", final_options
     )
     snapshot_key = tuple(sorted(final_options.items()))
     assert outsource(html, suffix=".html") == snapshots.no_docstring[snapshot_key]

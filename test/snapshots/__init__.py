@@ -394,8 +394,8 @@ members_class = snapshot(
 
 no_docstring = snapshot(
     {
-        (("show_if_no_docstring", True),): external("d47b443929cd*.html"),
-        (("show_if_no_docstring", False),): external("e2b0478cf1db*.html"),
+        (("show_if_no_docstring", True),): external("66202ff1710b*.html"),
+        (("show_if_no_docstring", False),): external("4553f4a72dcf*.html"),
     }
 )
 docstring_arguments = snapshot(

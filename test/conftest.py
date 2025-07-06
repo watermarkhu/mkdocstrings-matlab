@@ -65,7 +65,7 @@ def ext_markdown(mkdocs_conf: MkDocsConfig) -> Markdown:
 
 
 @pytest.fixture
-def handler(plugin: MkdocstringsPlugin, ext_markdown: Markdown) -> MatlabHandler:
+def handler(plugin: MkdocstringsPlugin, ext_markdown: Markdown) -> Iterator[MatlabHandler]:
     """Return a handler instance.
 
     Parameters:
@@ -74,7 +74,9 @@ def handler(plugin: MkdocstringsPlugin, ext_markdown: Markdown) -> MatlabHandler
     Returns:
         A handler instance.
     """
-    return helpers.handler(plugin, ext_markdown)
+    handler = helpers.handler(plugin, ext_markdown)
+    yield handler
+    assert len(handler.env.filters["stash_crossref"].stash) == 0
 
 
 # --------------------------------------------
@@ -127,7 +129,7 @@ def session_ext_markdown(session_mkdocs_conf: MkDocsConfig) -> Markdown:
 @pytest.fixture(scope="session")
 def session_handler(
     session_plugin: MkdocstringsPlugin, session_ext_markdown: Markdown
-) -> MatlabHandler:
+) -> Iterator[MatlabHandler]:
     """Return a handler instance.
 
     Parameters:
@@ -136,4 +138,6 @@ def session_handler(
     Returns:
         A handler instance.
     """
-    return helpers.handler(session_plugin, session_ext_markdown)
+    handler = helpers.handler(session_plugin, session_ext_markdown)
+    yield handler
+    assert len(handler.env.filters["stash_crossref"].stash) == 0

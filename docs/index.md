@@ -13,11 +13,9 @@ Let's us quickly see how auto-documentation works with mkdocstrings-matlab:
 --8<-- "docs/snippets/+mynamespace/typed_function.m"
 ```
 
-<div class="result" markdown>
+!!! note
 
-![Image title](img/preview_dark.png#only-dark){ align=left width=400 }
-
-![Image title](img/preview_light.png#only-light){ align=left width=400 }
+    Syntax highlighting of argument blocks is incorrect due to the outdated MATLAB lexer in [Pygments](https://github.com/pygments/pygments/) and will be resolved after [our PR](https://github.com/pygments/pygments/pull/2887) is merged. 
 
 Given the function above, the rendered documentation here is created from the following markdown document file,
 
@@ -25,7 +23,20 @@ Given the function above, the rendered documentation here is created from the fo
 ::: mynamespace.typed_function
     options:
       parse_arguments: true
+      separate_signature: true
+      show_signature_types: true
+      signature_crossrefs: true
 ```
+
+<div class="result" markdown>
+
+::: mynamespace.typed_function
+    options:
+      parse_arguments: true
+      separate_signature: true
+      show_signature_types: true
+      signature_crossrefs: true
+      docstring_section_style: list
 
 </div>
 
