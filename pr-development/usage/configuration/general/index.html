@@ -1352,13 +1352,13 @@
 
 
               <pre class="mermaid"><code>flowchart TB
-   myParent[myParent]
-   handle[handle]
    double[double]
    myClass[myClass]
-   myParent --&gt; myClass
+   handle[handle]
+   myParent[myParent]
    double --&gt; myParent
-   handle --&gt; myParent</code></pre>
+   handle --&gt; myParent
+   myParent --&gt; myClass</code></pre>
 
         <p>Docstring of myClass.</p>
 
