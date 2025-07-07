@@ -515,14 +515,14 @@
 <div class="tabbed-block">
 <div class="language-matlab highlight"><pre><span></span><code><span class="k">function</span><span class="w"> </span>output<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">typed_function</span><span class="p">(</span>input, options<span class="p">)</span>
 <span class="w">    </span><span class="c">% Example function with typed inputs and outputs</span>
-<span class="w">    </span><span class="nb">arguments</span><span class="w"> </span><span class="p">(</span><span class="n">Input</span><span class="p">)</span>
-<span class="w">        </span><span class="nb">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="nb">string</span><span class="w"> </span><span class="c">% The input variable</span>
-<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="nb">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Input<span class="p">)</span>
+<span class="w">        </span><span class="n">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="c">% The input variable</span>
+<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
 <span class="w">    </span><span class="k">end</span>
-<span class="w">    </span><span class="nb">arguments</span><span class="w"> </span><span class="p">(</span><span class="n">Output</span><span class="p">)</span>
-<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="c">% The output variable</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Output<span class="p">)</span>
+<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="n">char</span><span class="w"> </span><span class="c">% The output variable</span>
 <span class="w">    </span><span class="k">end</span>
-<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">char</span><span class="p">(</span><span class="nb">input</span><span class="p">);</span>
+<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">char</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
 <span class="k">end</span>
 </code></pre></div>
 </div>
@@ -530,7 +530,7 @@
 <div class="language-matlab highlight"><pre><span></span><code><span class="c">% This is an example script.</span>
 
 <span class="c">% This is a paragraph. </span>
-<span class="nb">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
+<span class="n">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
 </code></pre></div>
 </div>
 </div>
@@ -632,14 +632,14 @@
 <div class="tabbed-block">
 <div class="language-matlab highlight"><pre><span></span><code><span class="k">function</span><span class="w"> </span>output<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">typed_function</span><span class="p">(</span>input, options<span class="p">)</span>
 <span class="w">    </span><span class="c">% Example function with typed inputs and outputs</span>
-<span class="w">    </span><span class="nb">arguments</span><span class="w"> </span><span class="p">(</span><span class="n">Input</span><span class="p">)</span>
-<span class="w">        </span><span class="nb">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="nb">string</span><span class="w"> </span><span class="c">% The input variable</span>
-<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="nb">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Input<span class="p">)</span>
+<span class="w">        </span><span class="n">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="c">% The input variable</span>
+<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
 <span class="w">    </span><span class="k">end</span>
-<span class="w">    </span><span class="nb">arguments</span><span class="w"> </span><span class="p">(</span><span class="n">Output</span><span class="p">)</span>
-<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="c">% The output variable</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Output<span class="p">)</span>
+<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="n">char</span><span class="w"> </span><span class="c">% The output variable</span>
 <span class="w">    </span><span class="k">end</span>
-<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">char</span><span class="p">(</span><span class="nb">input</span><span class="p">);</span>
+<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">char</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
 <span class="k">end</span>
 </code></pre></div>
 </div>
@@ -647,7 +647,7 @@
 <div class="language-matlab highlight"><pre><span></span><code><span class="c">% This is an example script.</span>
 
 <span class="c">% This is a paragraph. </span>
-<span class="nb">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
+<span class="n">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
 </code></pre></div>
 </div>
 </div>
@@ -668,7 +668,7 @@
 
 
 <h3 id="mynamespace.typed_function" class="doc doc-heading">
-            <code class="highlight language-matlab"><span class="n">mynamespace</span><span class="p">.</span><span class="n">typed_function</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
+            <code class="highlight language-matlab"><span class="n">mynamespace</span><span class="p">.</span><span class="n">typed_function</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
 
 <a href="#mynamespace.typed_function" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -728,7 +728,7 @@
 
 
 <h3 id="mynamespace.typed_function" class="doc doc-heading">
-            <code class="highlight language-matlab"><span class="n">mynamespace</span><span class="p">.</span><span class="n">typed_function</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
+            <code class="highlight language-matlab"><span class="n">mynamespace</span><span class="p">.</span><span class="n">typed_function</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
 
 <a href="#mynamespace.typed_function" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -1114,14 +1114,14 @@
 <div class="tabbed-block">
 <div class="language-matlab highlight"><pre><span></span><code><span class="k">function</span><span class="w"> </span>output<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">typed_function</span><span class="p">(</span>input, options<span class="p">)</span>
 <span class="w">    </span><span class="c">% Example function with typed inputs and outputs</span>
-<span class="w">    </span><span class="nb">arguments</span><span class="w"> </span><span class="p">(</span><span class="n">Input</span><span class="p">)</span>
-<span class="w">        </span><span class="nb">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="nb">string</span><span class="w"> </span><span class="c">% The input variable</span>
-<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="nb">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Input<span class="p">)</span>
+<span class="w">        </span><span class="n">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="c">% The input variable</span>
+<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
 <span class="w">    </span><span class="k">end</span>
-<span class="w">    </span><span class="nb">arguments</span><span class="w"> </span><span class="p">(</span><span class="n">Output</span><span class="p">)</span>
-<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="c">% The output variable</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Output<span class="p">)</span>
+<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="n">char</span><span class="w"> </span><span class="c">% The output variable</span>
 <span class="w">    </span><span class="k">end</span>
-<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">char</span><span class="p">(</span><span class="nb">input</span><span class="p">);</span>
+<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">char</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
 <span class="k">end</span>
 </code></pre></div>
 </div>
@@ -1129,7 +1129,7 @@
 <div class="language-matlab highlight"><pre><span></span><code><span class="c">% This is an example script.</span>
 
 <span class="c">% This is a paragraph. </span>
-<span class="nb">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
+<span class="n">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
 </code></pre></div>
 </div>
 </div>
@@ -1542,14 +1542,14 @@ More text.
 <div class="tabbed-block">
 <div class="language-matlab highlight"><pre><span></span><code><span class="k">function</span><span class="w"> </span>output<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">typed_function</span><span class="p">(</span>input, options<span class="p">)</span>
 <span class="w">    </span><span class="c">% Example function with typed inputs and outputs</span>
-<span class="w">    </span><span class="nb">arguments</span><span class="w"> </span><span class="p">(</span><span class="n">Input</span><span class="p">)</span>
-<span class="w">        </span><span class="nb">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="nb">string</span><span class="w"> </span><span class="c">% The input variable</span>
-<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="nb">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Input<span class="p">)</span>
+<span class="w">        </span><span class="n">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="c">% The input variable</span>
+<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
 <span class="w">    </span><span class="k">end</span>
-<span class="w">    </span><span class="nb">arguments</span><span class="w"> </span><span class="p">(</span><span class="n">Output</span><span class="p">)</span>
-<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="c">% The output variable</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Output<span class="p">)</span>
+<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="n">char</span><span class="w"> </span><span class="c">% The output variable</span>
 <span class="w">    </span><span class="k">end</span>
-<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">char</span><span class="p">(</span><span class="nb">input</span><span class="p">);</span>
+<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">char</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
 <span class="k">end</span>
 </code></pre></div>
 </div>
@@ -1557,7 +1557,7 @@ More text.
 <div class="language-matlab highlight"><pre><span></span><code><span class="c">% This is an example script.</span>
 
 <span class="c">% This is a paragraph. </span>
-<span class="nb">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
+<span class="n">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
 </code></pre></div>
 </div>
 </div>
@@ -1774,14 +1774,14 @@ More text.
 <div class="tabbed-block">
 <div class="language-matlab highlight"><pre><span></span><code><span class="k">function</span><span class="w"> </span>output<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">typed_function</span><span class="p">(</span>input, options<span class="p">)</span>
 <span class="w">    </span><span class="c">% Example function with typed inputs and outputs</span>
-<span class="w">    </span><span class="nb">arguments</span><span class="w"> </span><span class="p">(</span><span class="n">Input</span><span class="p">)</span>
-<span class="w">        </span><span class="nb">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="nb">string</span><span class="w"> </span><span class="c">% The input variable</span>
-<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="nb">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Input<span class="p">)</span>
+<span class="w">        </span><span class="n">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="c">% The input variable</span>
+<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
 <span class="w">    </span><span class="k">end</span>
-<span class="w">    </span><span class="nb">arguments</span><span class="w"> </span><span class="p">(</span><span class="n">Output</span><span class="p">)</span>
-<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="c">% The output variable</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Output<span class="p">)</span>
+<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="n">char</span><span class="w"> </span><span class="c">% The output variable</span>
 <span class="w">    </span><span class="k">end</span>
-<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">char</span><span class="p">(</span><span class="nb">input</span><span class="p">);</span>
+<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">char</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
 <span class="k">end</span>
 </code></pre></div>
 </div>
@@ -1789,7 +1789,7 @@ More text.
 <div class="language-matlab highlight"><pre><span></span><code><span class="c">% This is an example script.</span>
 
 <span class="c">% This is a paragraph. </span>
-<span class="nb">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
+<span class="n">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
 </code></pre></div>
 </div>
 </div>
@@ -2180,7 +2180,7 @@ More text.
 
 
 <h4 id="mynamespace.typed_function" class="doc doc-heading">
-            <code class="highlight language-matlab"><span class="n">mynamespace</span><span class="p">.</span><span class="n">typed_function</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
+            <code class="highlight language-matlab"><span class="n">mynamespace</span><span class="p">.</span><span class="n">typed_function</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
 
 <a href="#mynamespace.typed_function" class="headerlink" title="Permanent link">¤</a></h4>
 
@@ -2404,7 +2404,7 @@ More text.
 
 
 <h4 id="mynamespace.typed_function" class="doc doc-heading">
-            <code class="highlight language-matlab"><span class="n">typed_function</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
+            <code class="highlight language-matlab"><span class="n">typed_function</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
 
 <a href="#mynamespace.typed_function" class="headerlink" title="Permanent link">¤</a></h4>
 
@@ -2517,14 +2517,14 @@ allowing you to link to them using their permalinks.</p>
 <div class="tabbed-block">
 <div class="language-matlab highlight"><pre><span></span><code><span class="k">function</span><span class="w"> </span>output<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">typed_function</span><span class="p">(</span>input, options<span class="p">)</span>
 <span class="w">    </span><span class="c">% Example function with typed inputs and outputs</span>
-<span class="w">    </span><span class="nb">arguments</span><span class="w"> </span><span class="p">(</span><span class="n">Input</span><span class="p">)</span>
-<span class="w">        </span><span class="nb">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="nb">string</span><span class="w"> </span><span class="c">% The input variable</span>
-<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="nb">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Input<span class="p">)</span>
+<span class="w">        </span><span class="n">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="c">% The input variable</span>
+<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
 <span class="w">    </span><span class="k">end</span>
-<span class="w">    </span><span class="nb">arguments</span><span class="w"> </span><span class="p">(</span><span class="n">Output</span><span class="p">)</span>
-<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="c">% The output variable</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Output<span class="p">)</span>
+<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="n">char</span><span class="w"> </span><span class="c">% The output variable</span>
 <span class="w">    </span><span class="k">end</span>
-<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">char</span><span class="p">(</span><span class="nb">input</span><span class="p">);</span>
+<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">char</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
 <span class="k">end</span>
 </code></pre></div>
 </div>
@@ -2532,7 +2532,7 @@ allowing you to link to them using their permalinks.</p>
 <div class="language-matlab highlight"><pre><span></span><code><span class="c">% This is an example script.</span>
 
 <span class="c">% This is a paragraph. </span>
-<span class="nb">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
+<span class="n">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
 </code></pre></div>
 </div>
 </div>
@@ -2729,7 +2729,7 @@ allowing you to link to them using their permalinks.</p>
 
 
 <h5 id="mynamespace.typed_function" class="doc doc-heading">
-            <code class="highlight language-matlab"><span class="n">typed_function</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
+            <code class="highlight language-matlab"><span class="n">typed_function</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
 
 <a href="#mynamespace.typed_function" class="headerlink" title="Permanent link">¤</a></h5>
 
@@ -2954,7 +2954,7 @@ allowing you to link to them using their permalinks.</p>
 
 
 <h4 id="mynamespace.typed_function" class="doc doc-heading">
-            <code class="highlight language-matlab"><span class="n">typed_function</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
+            <code class="highlight language-matlab"><span class="n">typed_function</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
 
 <a href="#mynamespace.typed_function" class="headerlink" title="Permanent link">¤</a></h4>
 
@@ -3068,14 +3068,14 @@ See also <a class="autorefs autorefs-internal" href="#show_symbol_type_toc"><cod
 <div class="tabbed-block">
 <div class="language-matlab highlight"><pre><span></span><code><span class="k">function</span><span class="w"> </span>output<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">typed_function</span><span class="p">(</span>input, options<span class="p">)</span>
 <span class="w">    </span><span class="c">% Example function with typed inputs and outputs</span>
-<span class="w">    </span><span class="nb">arguments</span><span class="w"> </span><span class="p">(</span><span class="n">Input</span><span class="p">)</span>
-<span class="w">        </span><span class="nb">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="nb">string</span><span class="w"> </span><span class="c">% The input variable</span>
-<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="nb">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Input<span class="p">)</span>
+<span class="w">        </span><span class="n">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="c">% The input variable</span>
+<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
 <span class="w">    </span><span class="k">end</span>
-<span class="w">    </span><span class="nb">arguments</span><span class="w"> </span><span class="p">(</span><span class="n">Output</span><span class="p">)</span>
-<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="c">% The output variable</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Output<span class="p">)</span>
+<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="n">char</span><span class="w"> </span><span class="c">% The output variable</span>
 <span class="w">    </span><span class="k">end</span>
-<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">char</span><span class="p">(</span><span class="nb">input</span><span class="p">);</span>
+<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">char</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
 <span class="k">end</span>
 </code></pre></div>
 </div>
@@ -3083,7 +3083,7 @@ See also <a class="autorefs autorefs-internal" href="#show_symbol_type_toc"><cod
 <div class="language-matlab highlight"><pre><span></span><code><span class="c">% This is an example script.</span>
 
 <span class="c">% This is a paragraph. </span>
-<span class="nb">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
+<span class="n">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
 </code></pre></div>
 </div>
 </div>
@@ -3312,7 +3312,7 @@ See also <a class="autorefs autorefs-internal" href="#show_symbol_type_toc"><cod
 
 
 <h5 id="mynamespace.typed_function" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <code class="highlight language-matlab"><span class="n">typed_function</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <code class="highlight language-matlab"><span class="n">typed_function</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
 
 <a href="#mynamespace.typed_function" class="headerlink" title="Permanent link">¤</a></h5>
 
@@ -3576,7 +3576,7 @@ See also <a class="autorefs autorefs-internal" href="#show_symbol_type_toc"><cod
 
 
 <h5 id="mynamespace.typed_function" class="doc doc-heading">
-            <code class="highlight language-matlab"><span class="n">typed_function</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
+            <code class="highlight language-matlab"><span class="n">typed_function</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
 
 <a href="#mynamespace.typed_function" class="headerlink" title="Permanent link">¤</a></h5>
 

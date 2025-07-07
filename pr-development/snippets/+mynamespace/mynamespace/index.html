@@ -490,14 +490,14 @@
 <div class="tabbed-block">
 <div class="language-matlab highlight"><pre><span></span><code><span class="k">function</span><span class="w"> </span>output<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">typed_function</span><span class="p">(</span>input, options<span class="p">)</span>
 <span class="w">    </span><span class="c">% Example function with typed inputs and outputs</span>
-<span class="w">    </span><span class="nb">arguments</span><span class="w"> </span><span class="p">(</span><span class="n">Input</span><span class="p">)</span>
-<span class="w">        </span><span class="nb">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="nb">string</span><span class="w"> </span><span class="c">% The input variable</span>
-<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="nb">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Input<span class="p">)</span>
+<span class="w">        </span><span class="n">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="c">% The input variable</span>
+<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
 <span class="w">    </span><span class="k">end</span>
-<span class="w">    </span><span class="nb">arguments</span><span class="w"> </span><span class="p">(</span><span class="n">Output</span><span class="p">)</span>
-<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="c">% The output variable</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Output<span class="p">)</span>
+<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="n">char</span><span class="w"> </span><span class="c">% The output variable</span>
 <span class="w">    </span><span class="k">end</span>
-<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">char</span><span class="p">(</span><span class="nb">input</span><span class="p">);</span>
+<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">char</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
 <span class="k">end</span>
 </code></pre></div>
 </div>
@@ -505,7 +505,7 @@
 <div class="language-matlab highlight"><pre><span></span><code><span class="c">% This is an example script.</span>
 
 <span class="c">% This is a paragraph. </span>
-<span class="nb">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
+<span class="n">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
 </code></pre></div>
 </div>
 </div>
