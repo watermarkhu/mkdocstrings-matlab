@@ -114,12 +114,9 @@ class MatlabHandler(BaseHandler):
         }
         options = {**self.global_options, **local_options, "extra": extra}
         try:
-            # YORE: Bump 2: Replace `opts =` with `return` within line.
-            opts = MatlabOptions.from_data(**options)
+            return MatlabOptions.from_data(**options)
         except Exception as error:
             raise PluginError(f"Invalid options: {error}") from error
-
-        return opts
 
     def render(self, data: CollectorItem, options: MatlabOptions) -> str:
         """Render a template using provided data and configuration options.
@@ -132,7 +129,7 @@ class MatlabHandler(BaseHandler):
             The rendered template as HTML.
         """
 
-        template_name = rendering.do_get_template(self.env, data)
+        template_name = rendering.do_get_template(data)
         template = self.env.get_template(template_name)
 
         heading_level = options.heading_level

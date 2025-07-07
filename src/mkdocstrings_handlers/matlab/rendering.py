@@ -8,7 +8,6 @@ import string
 import sys
 from contextlib import suppress
 from dataclasses import replace
-from pathlib import Path
 from re import Pattern
 from typing import TYPE_CHECKING, Any, Callable, ClassVar, Literal
 
@@ -33,7 +32,7 @@ from griffe import (
     DocstringSectionModules,
     DocstringSectionText,
 )
-from jinja2 import TemplateNotFound, pass_context, pass_environment
+from jinja2 import pass_context
 from markupsafe import Markup
 from maxx.enums import ArgumentKind
 from maxx.objects import (
@@ -50,7 +49,6 @@ from mkdocstrings import get_logger
 if TYPE_CHECKING:
     from collections.abc import Iterator, Sequence
 
-    from jinja2 import Environment
     from jinja2.runtime import Context
     from mkdocstrings import CollectorItem
 
@@ -459,11 +457,7 @@ def do_filter_objects(
     return objects
 
 
-# YORE: Bump 2: Remove line.
-@pass_environment
-# YORE: Bump 2: Replace `env: Environment, ` with `` within line.
-# YORE: Bump 2: Replace `str | ` with `` within line.
-def do_get_template(env: Environment, obj: str | Object) -> str:
+def do_get_template(obj: Object) -> str:
     """Get the template name used to render an object.
 
     Parameters:
@@ -479,19 +473,7 @@ def do_get_template(env: Environment, obj: str | Object) -> str:
         if name := extra_data.get("template", ""):
             return name
         name = obj.kind.value
-    # YORE: Bump 2: Replace block with `return f"{name}.html.jinja"`.
-    try:
-        template = env.get_template(f"{name}.html")
-    except TemplateNotFound:
-        return f"{name}.html.jinja"
-    our_template = Path(template.filename).is_relative_to(Path(__file__).parent.parent)  # type: ignore[arg-type]
-    if our_template:
-        return f"{name}.html.jinja"
-    _logger.warning(
-        f"DeprecationWarning: Overriding '{name}.html' is deprecated, override '{name}.html.jinja' instead. ",
-        once=True,
-    )
-    return f"{name}.html"
+    return f"{name}.html.jinja"
 
 
 @pass_context

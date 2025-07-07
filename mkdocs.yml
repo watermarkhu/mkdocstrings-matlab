@@ -15,24 +15,24 @@ validation:
 nav:
 - Home:
   - Overview: index.md
-#   - Changelog: changelog.md
-#   - Credits: credits.md
-#   - License: license.md
-# - Usage:
-#   - usage/index.md
-#   - Configuration options:
-#     - General: usage/configuration/general.md
-#     - Headings: usage/configuration/headings.md
-#     - Members: usage/configuration/members.md
-#     - Docstrings: usage/configuration/docstrings.md
-#     - Signatures: usage/configuration/signatures.md
-#   - Docstring styles:
-#     - Google: usage/docstrings/google.md
-#     - Numpy: usage/docstrings/numpy.md
-#     - Sphinx: usage/docstrings/sphinx.md
-# - API reference:
-#   - mkdocstrings_handlers:
-#     - matlab: api.md
+  - Changelog: changelog.md
+  - Credits: credits.md
+  - License: license.md
+- Usage:
+  - usage/index.md
+  - Configuration options:
+    - General: usage/configuration/general.md
+    - Headings: usage/configuration/headings.md
+    - Members: usage/configuration/members.md
+    - Docstrings: usage/configuration/docstrings.md
+    - Signatures: usage/configuration/signatures.md
+  - Docstring styles:
+    - Google: usage/docstrings/google.md
+    - Numpy: usage/docstrings/numpy.md
+    - Sphinx: usage/docstrings/sphinx.md
+- API reference:
+  - mkdocstrings_handlers:
+    - matlab: api.md
 
 - mkdocstrings: https://mkdocstrings.github.io/
 
