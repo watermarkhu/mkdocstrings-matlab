@@ -10,8 +10,7 @@
 [![documentation](https://img.shields.io/badge/docs-mkdocs-708FCC.svg?style=flat)](https://watermarkhu.nl/mkdocstrings-matlab)
 [![pypi version](https://img.shields.io/pypi/v/mkdocstrings-matlab.svg)](https://pypi.org/project/mkdocstrings-matlab/)
 
-The MATLAB handler uses [Tree-sitter](https://tree-sitter.github.io/tree-sitter/) and its [MATLAB parser](https://github.com/acristoffers/tree-sitter-matlab) to collect documentation from MATLAB source code. The AST information are imported as custom [Griffe](https://mkdocstrings.github.io/griffe/) objects and mocked for the [python handler](https://mkdocstrings.github.io/python/). 
-
+The MATLAB handler uses [maxx](https://github.com/watermarkhu/maxx) to collect documentation from MATLAB source code, which in turn uses [Tree-sitter](https://tree-sitter.github.io/tree-sitter/) and its [MATLAB parser](https://github.com/acristoffers/tree-sitter-matlab).
 
 You can install this handler by specifying it as a dependency:
 
