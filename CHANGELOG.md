@@ -1,6 +1,32 @@
 # CHANGELOG
 
 
+## v1.0.0 (2025-07-07)
+
+### Chores
+
+- **deps**: Update group-github-actions
+  ([#82](https://github.com/watermarkhu/mkdocstrings-matlab/pull/82),
+  [`030fba4`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/030fba4f350cad68f519d8078adffdb985caebd5))
+
+- **deps**: Update group-github-actions (major)
+  ([#82](https://github.com/watermarkhu/mkdocstrings-matlab/pull/82),
+  [`030fba4`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/030fba4f350cad68f519d8078adffdb985caebd5))
+
+- **deps**: Update group-github-actions to v10.2.0
+  ([#86](https://github.com/watermarkhu/mkdocstrings-matlab/pull/86),
+  [`afb71f9`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/afb71f9ebdb3a4a23338c6c5ab75b40b026d8959))
+
+### Refactoring
+
+- Decouple for mkdocstrings-python
+  ([`217840f`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/217840fc53a5cb6de4f2164adfe6382975ffeda7))
+
+### Breaking Changes
+
+- Configuration options have been updated to use MATLAB terminology
+
+
 ## v0.9.7 (2025-05-03)
 
 ### Bug Fixes
@@ -14,13 +40,9 @@
   ([#80](https://github.com/watermarkhu/mkdocstrings-matlab/pull/80),
   [`e9e6899`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/e9e689916e368d9c12f552f22445423888fb651d))
 
-Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
-
 - **deps**: Update group-github-actions to v9.21.0
   ([#75](https://github.com/watermarkhu/mkdocstrings-matlab/pull/75),
   [`f4c14e3`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/f4c14e321e12d84e79dc7d9da0e3f877921521c7))
-
-Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
 
 
 ## v0.9.6 (2025-02-14)
@@ -31,8 +53,6 @@ Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
   ([#70](https://github.com/watermarkhu/mkdocstrings-matlab/pull/70),
   [`5b512ab`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/5b512abd5656187ad888f5edf4a99aa9bff24141))
 
-Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
-
 
 ## v0.9.5 (2025-02-02)
 
@@ -41,10 +61,6 @@ Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
 - Handle line continuations gracefully
   ([#68](https://github.com/watermarkhu/mkdocstrings-matlab/pull/68),
   [`8a32df0`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/8a32df08f7ae8c4356db186e55d1ecdd3d537850))
-
-* handle line continuations gracefully
-
-* Update headings.md
 
 
 ## v0.9.4 (2025-02-01)
@@ -55,24 +71,21 @@ Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
   ([#69](https://github.com/watermarkhu/mkdocstrings-matlab/pull/69),
   [`e589881`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/e5898818ab7a7da1fd8e583dcc4f490b81e8e610))
 
-Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
-
 
 ## v0.9.3 (2025-01-29)
 
 ### Bug Fixes
 
+- Codegen pragma comments ([#67](https://github.com/watermarkhu/mkdocstrings-matlab/pull/67),
+  [`2ad48b7`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/2ad48b7940ba1bad548213a7681269f0f2e266b0))
+
+- Ignore `%#codegen` compilation directive
+  ([#67](https://github.com/watermarkhu/mkdocstrings-matlab/pull/67),
+  [`2ad48b7`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/2ad48b7940ba1bad548213a7681269f0f2e266b0))
+
 - Ignore `%#codegen` compilation directive
   ([#61](https://github.com/watermarkhu/mkdocstrings-matlab/pull/61),
   [`7239847`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/72398479b347ed778c516e4e1fdad6ab8b6ccdc1))
-
-* fix: Ignore `%#codegen` compilation directive
-
-* Exclude all pragmas instead of only %#codegen
-
-Co-authored-by: Mark Shui Hu <watermarkhu@gmail.com>
-
----------
 
 ### Chores
 
@@ -80,29 +93,27 @@ Co-authored-by: Mark Shui Hu <watermarkhu@gmail.com>
   ([#60](https://github.com/watermarkhu/mkdocstrings-matlab/pull/60),
   [`c3a9899`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/c3a9899a9b3c031a72880df1b50b09b28206890f))
 
-* Update docs.yaml
-
-* Update release.yaml
-
-* Update qualify.yaml
-
 
 ## v0.9.2 (2025-01-26)
 
 ### Bug Fixes
 
+- **deps**: Update dependency tree-sitter to v0.24.0
+  ([#59](https://github.com/watermarkhu/mkdocstrings-matlab/pull/59),
+  [`131c30c`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/131c30ca6046a85def35f37f5f2a3d48e9815f2d))
+
 - **deps**: Update deps ([#59](https://github.com/watermarkhu/mkdocstrings-matlab/pull/59),
   [`131c30c`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/131c30ca6046a85def35f37f5f2a3d48e9815f2d))
 
-* chore(deps): update python-semantic-release/python-semantic-release action to v9.17.0 (#55)
+### Chores
 
-Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
+- **deps**: Update python-semantic-release/publish-action action to v9.17.0
+  ([#59](https://github.com/watermarkhu/mkdocstrings-matlab/pull/59),
+  [`131c30c`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/131c30ca6046a85def35f37f5f2a3d48e9815f2d))
 
-* chore(deps): update python-semantic-release/publish-action action to v9.17.0 (#54)
-
-* fix(deps): update dependency tree-sitter to v0.24.0 (#53)
-
----------
+- **deps**: Update python-semantic-release/python-semantic-release action to v9.17.0
+  ([#59](https://github.com/watermarkhu/mkdocstrings-matlab/pull/59),
+  [`131c30c`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/131c30ca6046a85def35f37f5f2a3d48e9815f2d))
 
 
 ## v0.9.1 (2025-01-16)
@@ -115,14 +126,15 @@ Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
 
 ## v0.9.0 (2025-01-16)
 
+### Bug Fixes
+
+- Script does not have kind ([#51](https://github.com/watermarkhu/mkdocstrings-matlab/pull/51),
+  [`ecefc80`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/ecefc801e730cf3ab1d5889ecbfc400af0591385))
+
 ### Features
 
 - Add supports for scripts ([#51](https://github.com/watermarkhu/mkdocstrings-matlab/pull/51),
   [`ecefc80`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/ecefc801e730cf3ab1d5889ecbfc400af0591385))
-
-* fix: script does not have kind * fix: tree-sitter query fixes * fix: do not check for property
-  SetAccess for private * feat: add support for scripts * doc: update namespace contents * fix:
-  select only the first comment block as docstring
 
 
 ## v0.8.2 (2025-01-14)
@@ -144,6 +156,11 @@ Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
 
 ## v0.8.0 (2025-01-13)
 
+### Bug Fixes
+
+- Show correct symbols for dir ([#40](https://github.com/watermarkhu/mkdocstrings-matlab/pull/40),
+  [`8349f66`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/8349f66934896185b476df5e1e317366bb5d6e82))
+
 ### Features
 
 - Update dependencies ([#46](https://github.com/watermarkhu/mkdocstrings-matlab/pull/46),
@@ -158,28 +175,22 @@ Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
   ([#38](https://github.com/watermarkhu/mkdocstrings-matlab/pull/38),
   [`fc404c4`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/fc404c46af2830eaba288beb8635092174a21b3b))
 
-Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
-
 - **deps**: Update python-semantic-release/python-semantic-release action to v9.16.0
   ([#39](https://github.com/watermarkhu/mkdocstrings-matlab/pull/39),
   [`56e8f87`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/56e8f877d357deeaee3eb6cf31bee2b064ee2438))
 
-Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
+### Documentation
 
-Co-authored-by: Mark Shui Hu <watermarkhu@gmail.com>
+- Update readme ([#37](https://github.com/watermarkhu/mkdocstrings-matlab/pull/37),
+  [`81b551d`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/81b551d794804212c18645926d58121cf556c79d))
 
 ### Features
 
-- Folder modules ([#37](https://github.com/watermarkhu/mkdocstrings-matlab/pull/37),
+- Document folders ([#37](https://github.com/watermarkhu/mkdocstrings-matlab/pull/37),
   [`81b551d`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/81b551d794804212c18645926d58121cf556c79d))
 
-* remove redundant root object
-
-* feat: document folders
-
-* uv format
-
-* docs: update readme
+- Folder modules ([#37](https://github.com/watermarkhu/mkdocstrings-matlab/pull/37),
+  [`81b551d`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/81b551d794804212c18645926d58121cf556c79d))
 
 
 ## v0.6.0 (2025-01-04)
@@ -200,10 +211,6 @@ Co-authored-by: Mark Shui Hu <watermarkhu@gmail.com>
 - Show subnamespaces ([#36](https://github.com/watermarkhu/mkdocstrings-matlab/pull/36),
   [`509e793`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/509e7930f52f5656c9de1089daa4c0354ea170be))
 
-* add option show_subnamespaces
-
-* forward config
-
 
 ## v0.5.0 (2025-01-03)
 
@@ -217,11 +224,11 @@ Co-authored-by: Mark Shui Hu <watermarkhu@gmail.com>
 
 ### Bug Fixes
 
-- Automatic releases ([#29](https://github.com/watermarkhu/mkdocstrings-matlab/pull/29),
-  [`3d688d5`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/3d688d5ab145c6ec761f1c4830c1949974e2c20f))
-
 - Automatic releases ([#30](https://github.com/watermarkhu/mkdocstrings-matlab/pull/30),
   [`07819c2`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/07819c235551d1582a000fe9c6734f66cc131a84))
+
+- Automatic releases ([#29](https://github.com/watermarkhu/mkdocstrings-matlab/pull/29),
+  [`3d688d5`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/3d688d5ab145c6ec761f1c4830c1949974e2c20f))
 
 - Release artifact and documentation:
   ([#27](https://github.com/watermarkhu/mkdocstrings-matlab/pull/27),
@@ -236,8 +243,6 @@ Co-authored-by: Mark Shui Hu <watermarkhu@gmail.com>
   ([#11](https://github.com/watermarkhu/mkdocstrings-matlab/pull/11),
   [`651e25d`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/651e25db05fad867d51f360ab4b1c49ececce814))
 
-* fix default value of `parameter_headings` * add qualify workflow * documentation upgrades
-
 
 ## v0.4.0 (2025-01-02)
 
@@ -246,66 +251,8 @@ Co-authored-by: Mark Shui Hu <watermarkhu@gmail.com>
 - All options working ([#4](https://github.com/watermarkhu/mkdocstrings-matlab/pull/4),
   [`83d1588`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/83d15882e0a00252b91d2d88a19bb2f903674ca4))
 
-* add general docs
-
-* add back parameter_headings option
-
-* improve headings section
-
-* bump mkdocstrings-python
-
-* done with headings section
-
-* fix inherited members, member order
-
-* better docs
-
-* fix docstring parameter handling
-
-* fixes
-
-* first attempt at hiding hidden and private members
-
-* working hidden and private members
-
-* finalize hidden and private members
-
-* first attempt summaries
-
-* summaries almost working
-
-* comments
-
-* updates
-
-* merge constructor
-
-* docs
-
-* hide previews
-
-* docstrings section done
-
-* finalize signatures
-
-* update logo
-
-* first attempt at workflows
-
-* finalize workflow
-
 - Fix workflows ([#6](https://github.com/watermarkhu/mkdocstrings-matlab/pull/6),
   [`d90cf92`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/d90cf925c992f83bb7102e22981968615310328e))
-
-* fix workflows
-
-* set dummy git credentials
-
-* set permission
-
-* forgotten input
-
-* fix
 
 
 ## v0.3.3 (2024-12-19)
