@@ -176,6 +176,36 @@ def do_format_signature(
 
 
 @pass_context
+def do_format_arguments(
+    context: Context,
+    section_kind: str,
+    section: DocstringSectionParameters | DocstringSectionOtherParameters | DocstringSectionReturns,
+    *,
+    crossrefs: bool = False,
+) -> str:
+    env = context.environment
+
+    match str(section_kind).strip():
+        case "parameters":
+            template = env.get_template("docstring/input_arguments.html.jinja")
+        case "other parameters":
+            template = env.get_template("docstring/name_value_arguments.html.jinja")
+        case "returns":
+            template = env.get_template("docstring/output_arguments.html.jinja")
+        case _:
+            raise ValueError(f"Unknown section kind: {section_kind}")
+
+    html = template.render(context.parent, section=section)
+
+    if stash := env.filters["stash_crossref"].stash:
+        for key, value in stash.items():
+            html = re.sub(rf"\b{key}\b", value, html)
+        stash.clear()
+
+    return html
+
+
+@pass_context
 def do_format_property(
     context: Context,
     property_path: Markup,

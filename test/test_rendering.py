@@ -172,6 +172,7 @@ def test_stash_crossref_filter() -> None:
     assert len(key) == 10
     assert key in stash_filter.stash
     assert stash_filter.stash[key] == crossref
+    stash_filter.stash.clear()  # Clear stash after test
 
 
 def test_format_property() -> None:

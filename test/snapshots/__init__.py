@@ -44,7 +44,7 @@ headings_root = snapshot(
             ("show_root_full_path", True),
             ("show_root_heading", True),
             ("show_root_members_full_path", False),
-        ): external("64343ec348af*.html"),
+        ): external("1bee12073c85*.html"),
         (
             ("show_root_full_path", False),
             ("show_root_heading", False),
@@ -54,12 +54,12 @@ headings_root = snapshot(
             ("show_root_full_path", False),
             ("show_root_heading", True),
             ("show_root_members_full_path", True),
-        ): external("9f6d805fb9d4*.html"),
+        ): external("ed24953e42b5*.html"),
         (
             ("show_root_full_path", False),
             ("show_root_heading", True),
             ("show_root_members_full_path", False),
-        ): external("6c4ed4cef313*.html"),
+        ): external("cb822435f1c7*.html"),
         (
             ("show_root_full_path", True),
             ("show_root_heading", False),
@@ -74,7 +74,7 @@ headings_root = snapshot(
             ("show_root_full_path", True),
             ("show_root_heading", True),
             ("show_root_members_full_path", True),
-        ): external("de831be4bec5*.html"),
+        ): external("eae481d72fbb*.html"),
     }
 )
 
@@ -143,13 +143,13 @@ toc = snapshot(
 members = snapshot(
     {
         (("filters", ("module*",)), ("members", True), ("members_order", "source")): external(
-            "ef814ef15b29*.html"
+            "4d2b38c0244b*.html"
         ),
         (("filters", ("module*",)), ("members", True), ("members_order", "alphabetical")): external(
-            "94862983c762*.html"
+            "52223995be52*.html"
         ),
         (("filters", False), ("members", True), ("members_order", "alphabetical")): external(
-            "1e9ff0fa4b77*.html"
+            "0607f2f92756*.html"
         ),
         (
             ("filters", False),
@@ -191,12 +191,12 @@ members = snapshot(
             ("filters", ("!module_function",)),
             ("members", True),
             ("members_order", "source"),
-        ): external("ea09a0520de7*.html"),
+        ): external("6b25ca7450a0*.html"),
         (
             ("filters", ("!module_function",)),
             ("members", True),
             ("members_order", "alphabetical"),
-        ): external("2cd08af1cb73*.html"),
+        ): external("7370ef8a40f0*.html"),
         (("filters", False), ("members", False), ("members_order", "alphabetical")): external(
             "5836b3434a80*.html"
         ),
@@ -211,7 +211,7 @@ members = snapshot(
             ("members_order", "source"),
         ): external("c2e7d6b33a18*.html"),
         (("filters", False), ("members", True), ("members_order", "source")): external(
-            "6e4bac7b42b2*.html"
+            "a9d9ea6ade18*.html"
         ),
         (
             ("filters", ("module*",)),
@@ -404,62 +404,62 @@ docstring_arguments = snapshot(
             ("docstring_section_style", "table"),
             ("parse_arguments", True),
             ("show_docstring_examples", False),
-        ): external("bb970d5d56bc*.html"),
+        ): external("b71eed9760b2*.html"),
         (
             ("docstring_section_style", "list"),
             ("parse_arguments", False),
             ("show_docstring_examples", True),
-        ): external("61877524efcf*.html"),
+        ): external("4ff60a19a83f*.html"),
         (
             ("docstring_section_style", "spacy"),
             ("parse_arguments", False),
             ("show_docstring_examples", True),
-        ): external("5c5f91af98da*.html"),
+        ): external("ec243b72d558*.html"),
         (
             ("docstring_section_style", "table"),
             ("parse_arguments", False),
             ("show_docstring_examples", False),
-        ): external("705b5f3f36fd*.html"),
+        ): external("5804c78e81c6*.html"),
         (
             ("docstring_section_style", "spacy"),
             ("parse_arguments", False),
             ("show_docstring_examples", False),
-        ): external("43d6aff3bffc*.html"),
+        ): external("f404644a3530*.html"),
         (
             ("docstring_section_style", "spacy"),
             ("parse_arguments", True),
             ("show_docstring_examples", True),
-        ): external("5e86911da0a4*.html"),
+        ): external("7f7eb913b493*.html"),
         (
             ("docstring_section_style", "spacy"),
             ("parse_arguments", True),
             ("show_docstring_examples", False),
-        ): external("47ae9941659b*.html"),
+        ): external("caf26e655f45*.html"),
         (
             ("docstring_section_style", "list"),
             ("parse_arguments", False),
             ("show_docstring_examples", False),
-        ): external("bce570735dc1*.html"),
+        ): external("f2cd6131a0a4*.html"),
         (
             ("docstring_section_style", "table"),
             ("parse_arguments", False),
             ("show_docstring_examples", True),
-        ): external("42de9019cab4*.html"),
+        ): external("3d090f5629a3*.html"),
         (
             ("docstring_section_style", "list"),
             ("parse_arguments", True),
             ("show_docstring_examples", False),
-        ): external("bbb338707ba9*.html"),
+        ): external("9a93c504ffe4*.html"),
         (
             ("docstring_section_style", "table"),
             ("parse_arguments", True),
             ("show_docstring_examples", True),
-        ): external("8109aec26ddf*.html"),
+        ): external("b778a7ea7731*.html"),
         (
             ("docstring_section_style", "list"),
             ("parse_arguments", True),
             ("show_docstring_examples", True),
-        ): external("bf91ba59fb5b*.html"),
+        ): external("ef531ca34d9f*.html"),
     }
 )
 docstring_class = snapshot(
@@ -556,42 +556,42 @@ docstring_function = snapshot(
             ("show_docstring_input_arguments", False),
             ("show_docstring_name_value_arguments", True),
             ("show_docstring_output_arguments", False),
-        ): external("66c4fa77fbe8*.html"),
+        ): external("937be918ca8e*.html"),
         (
             ("show_docstring_input_arguments", False),
             ("show_docstring_name_value_arguments", False),
             ("show_docstring_output_arguments", False),
-        ): external("8162071006a5*.html"),
+        ): external("c39990faf729*.html"),
         (
             ("show_docstring_input_arguments", True),
             ("show_docstring_name_value_arguments", True),
             ("show_docstring_output_arguments", False),
-        ): external("7d1c71e70b39*.html"),
+        ): external("b2653a41ba93*.html"),
         (
             ("show_docstring_input_arguments", True),
             ("show_docstring_name_value_arguments", False),
             ("show_docstring_output_arguments", False),
-        ): external("22bd1ef93015*.html"),
+        ): external("0bd6af881267*.html"),
         (
             ("show_docstring_input_arguments", False),
             ("show_docstring_name_value_arguments", True),
             ("show_docstring_output_arguments", True),
-        ): external("0051991ba39c*.html"),
+        ): external("31a08e66f5f5*.html"),
         (
             ("show_docstring_input_arguments", True),
             ("show_docstring_name_value_arguments", True),
             ("show_docstring_output_arguments", True),
-        ): external("9acb987c01b1*.html"),
+        ): external("d90a318eff21*.html"),
         (
             ("show_docstring_input_arguments", True),
             ("show_docstring_name_value_arguments", False),
             ("show_docstring_output_arguments", True),
-        ): external("a4905938c541*.html"),
+        ): external("09c7fdb89963*.html"),
         (
             ("show_docstring_input_arguments", False),
             ("show_docstring_name_value_arguments", False),
             ("show_docstring_output_arguments", True),
-        ): external("bb97d10f6422*.html"),
+        ): external("30db8c53d0da*.html"),
     }
 )
 
@@ -601,41 +601,41 @@ signatures = snapshot(
             ("separate_signature", True),
             ("show_signature_annotations", False),
             ("signature_crossrefs", True),
-        ): external("0bbef9a6bd29*.html"),
+        ): external("eca6adea3d8c*.html"),
         (
             ("separate_signature", True),
             ("show_signature_annotations", True),
             ("signature_crossrefs", False),
-        ): external("db742dc7757e*.html"),
+        ): external("7708aaed83d9*.html"),
         (
             ("separate_signature", False),
             ("show_signature_annotations", False),
             ("signature_crossrefs", False),
-        ): external("2577034c6a1e*.html"),
+        ): external("9c01e3fe8d0d*.html"),
         (
             ("separate_signature", False),
             ("show_signature_annotations", True),
             ("signature_crossrefs", True),
-        ): external("7e910465b3ca*.html"),
+        ): external("4515d2d7d9ab*.html"),
         (
             ("separate_signature", True),
             ("show_signature_annotations", True),
             ("signature_crossrefs", True),
-        ): external("1d353b3d9ed0*.html"),
+        ): external("8ce247fdae67*.html"),
         (
             ("separate_signature", True),
             ("show_signature_annotations", False),
             ("signature_crossrefs", False),
-        ): external("9d4909309731*.html"),
+        ): external("228b2b0217dc*.html"),
         (
             ("separate_signature", False),
             ("show_signature_annotations", False),
             ("signature_crossrefs", True),
-        ): external("cb087c3d28e1*.html"),
+        ): external("f67486087072*.html"),
         (
             ("separate_signature", False),
             ("show_signature_annotations", True),
             ("signature_crossrefs", False),
-        ): external("9405f2231bc3*.html"),
+        ): external("1ca7f044dd90*.html"),
     }
 )

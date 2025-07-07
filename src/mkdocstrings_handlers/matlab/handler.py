@@ -147,10 +147,8 @@ class MatlabHandler(BaseHandler):
             },
         )
 
-        # if stash := self.env.filters["stash_crossref"].stash:
-        #     for key, value in stash.items():
-        #         html = re.sub(rf"\b{key}\b", value, html)
-        #     stash.clear()
+        if self.env.filters["stash_crossref"].stash:
+            pass
 
         return html
 
@@ -166,6 +164,7 @@ class MatlabHandler(BaseHandler):
         self.env.filters["order_members"] = rendering.do_order_members
         self.env.filters["format_signature"] = rendering.do_format_signature
         self.env.filters["format_property"] = rendering.do_format_property
+        self.env.filters["format_arguments"] = rendering.do_format_arguments
         self.env.filters["filter_objects"] = rendering.do_filter_objects
         self.env.filters["stash_crossref"] = rendering.do_stash_crossref
         self.env.filters["get_template"] = rendering.do_get_template

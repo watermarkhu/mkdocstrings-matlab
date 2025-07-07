@@ -31,11 +31,12 @@ dependencies = [
     "mkdocs-autorefs~=1.4",
     "charset-normalizer~=3.4",
     "typing-extensions>=4.0; python_version < '3.11'",
-    "tree-sitter", 
+    "tree-sitter",
 ]
 
 [tool.uv.sources]
 tree-sitter = { git = "https://github.com/tree-sitter/py-tree-sitter", branch = "master" }
+pygments = { git = "https://github.com/watermarkhu/pygments", branch = "matlab" }
 
 [dependency-groups]
 dev = [
@@ -49,6 +50,7 @@ dev = [
     "python-semantic-release~=10.0.0",
 ]
 docs = [
+    "pygments",
     "mkdocs-material~=9.5",
     "mkdocstrings-python~=1.16",
     "markdown-exec~=1.10",

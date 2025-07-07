@@ -32,11 +32,17 @@ Context:
       {% elif config.show_docstring_namespaces and section.kind.value == "modules" %}
         {% include "docstring/namespaces.html.jinja" with context %}
       {% elif config.show_docstring_input_arguments and section.kind.value == "parameters" %}
-        {% include "docstring/input_arguments.html.jinja" with context %}
+          {% filter format_arguments(section) %}
+            {{ section.kind.value }}
+          {% endfilter %}
       {% elif config.show_docstring_name_value_arguments and section.kind.value == "other parameters" %}
-        {% include "docstring/name_value_arguments.html.jinja" with context %}
+          {% filter format_arguments(section) %}
+            {{ section.kind.value }}
+          {% endfilter %}
       {% elif config.show_docstring_output_arguments and section.kind.value == "returns" %}
-        {% include "docstring/output_arguments.html.jinja" with context %}
+          {% filter format_arguments(section) %}
+            {{ section.kind.value }}
+          {% endfilter %}
       {% elif config.show_docstring_examples and section.kind.value == "examples" %}
         {% include "docstring/examples.html.jinja" with context %}
       {% elif config.show_docstring_description and section.kind.value == "admonition" %}
