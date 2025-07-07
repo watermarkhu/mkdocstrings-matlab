@@ -93,7 +93,7 @@ plugins:
 
 MATLAB's [classes](https://mathworks.com/help/matlab/matlab_oop/class-attributes.html), [methods](https://mathworks.com/help/matlab/matlab_oop/method-attributes.html) and [properties](https://mathworks.com/help/matlab/matlab_oop/property-attributes.html) can be hidden by setting its attributes to `Hidden` or `Hidden=true`. By default, members that are specified as hidden will not be documented. 
 
-This takes precedence over [`members`][] and [`filters`][], and also applies for [`inherited_members`][]. This means that for any hidden member to be shown, `hidden_members` must be enabled, and further selection is possible via [`members`][] and [`filters`][]. Hidden members will be labeled `Hidden`, this can be disabled in [`show_labels`][]. 
+This takes precedence over [`members`][] and [`filters`][], and also applies for [`inherited_members`][]. This means that for any hidden member to be shown, `hidden_members` must be enabled, and further selection is possible via [`members`][] and [`filters`][]. Hidden members will be labeled `Hidden`, this can be disabled in [`show_attributes`][]. 
 
 ```yaml title="in mkdocs.yml (global configuration)"
 plugins:
@@ -114,18 +114,6 @@ plugins:
 
 ???+ preview
 
-    === "With `hidden_members: true`"
-
-        ```markdown
-        ::: mymembers.ThisClass
-            options:
-              hidden_members: true
-        ```
-
-        ::: mymembers.ThisClass
-            options:
-              hidden_members: true
-
     === "With `hidden_members: false` or `hidden_members: []`"
 
         ```markdown
@@ -137,6 +125,18 @@ plugins:
         ::: mymembers.ThisClass
             options:
               hidden_members: false
+
+    === "With `hidden_members: true`"
+
+        ```markdown
+        ::: mymembers.ThisClass
+            options:
+              hidden_members: true
+        ```
+
+        ::: mymembers.ThisClass
+            options:
+              hidden_members: true
 
     === "With `hidden_members: ['hidden_method']`"
 
@@ -164,7 +164,7 @@ MATLAB's [methods](https://mathworks.com/help/matlab/matlab_oop/method-attribute
 4. *immutable* (only for `SetAccess`)
 5. List of classes that have access to the current method or property. 
 
-To simplify the definition here, any property or method that do not have attribute `Access` set to *public* is considered a private member. If the `GetAccess` and/or `SetAccess` attribute is set in stead of `Access` for a property, it is consisered a private member if either the `SetAccess` attribute is not *public* or *immutable* or if the `GetAccess` attribute is not *public*. 
+To simplify the definition here, any property or method that do not have attribute `Access` or `GetAccess` set to *public* is considered a private member.
 
 ```mermaid 
 flowchart TD
@@ -180,7 +180,7 @@ ga -- no --> private
 ga -- yes --> public
 ```
 
-This takes precedence over [`members`][] and [`filters`][], and also applies for [`inherited_members`][]. This means that for any private member to be shown, `private_members` must be enabled, and further selection is possible via [`members`][] and [`filters`][]. Private members will be labeled with it access attribute setting, this can be disabled in [`show_labels`][]. 
+This takes precedence over [`members`][] and [`filters`][], and also applies for [`inherited_members`][]. This means that for any private member to be shown, `private_members` must be enabled, and further selection is possible via [`members`][] and [`filters`][]. Private members will be labeled with it access attribute setting, this can be disabled in [`show_attributes`][]. 
 
 ```yaml title="in mkdocs.yml (global configuration)"
 plugins:
@@ -531,17 +531,33 @@ plugins:
 
 ???+ preview
 
-    === "With category grouping"
+    === "With category grouping and heading"
         
         ```markdown
         ::: +mymembers
             options:
               group_by_category: true
+              show_category_heading: true
         ```
 
         ::: +mymembers
             options:
               group_by_category: true
+              show_category_heading: true
+
+    === "With category grouping, no heading"
+        
+        ```markdown
+        ::: +mymembers
+            options:
+              group_by_category: true
+              show_category_heading: false
+        ```
+
+        ::: +mymembers
+            options:
+              group_by_category: true
+              show_category_heading: false
 
     === "Without category grouping"
 
@@ -699,12 +715,12 @@ plugins:
               summary:
                 functions: true
 
-## `show_labels`
+## `show_attributes`
 
 - **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
 <!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
 
-Whether to show labels of the members.
+Whether to show [property](https://mathworks.com/help/matlab/matlab_oop/property-attributes.html), [method](https://mathworks.com/help/matlab/matlab_oop/method-attributes.html) or [class](https://mathworks.com/help/matlab/matlab_oop/class-attributes.html) attributes of the members.
 
 ```yaml title="in mkdocs.yml (global configuration)"
 plugins:
@@ -712,43 +728,43 @@ plugins:
     handlers:
       matlab:
         options:
-          show_labels: true
+          show_attributes: true
 ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: mymembers.ThisClass
     options:
-      show_labels: false
+      show_attributes: false
 ```
 
 --8<-- "docs/snippets/+mymembers/mymembers.md"
 
 ???+ preview
 
-    === "With show labels"
+    === "With show attributes"
         
         ```markdown
         ::: mymembers.ThisClass
             options:
               private_members: true
-              show_labels: true
+              show_attributes: true
         ```
 
         ::: mymembers.ThisClass
             options:
               private_members: true
-              show_labels: true
+              show_attributes: true
 
-    === "Without show labels"
+    === "Without show attributes"
 
         ```markdown
         ::: mymembers.ThisClass
             options:
               private_members: true
-              show_labels: false
+              show_attributes: false
         ```
 
         ::: mymembers.ThisClass
             options:
               private_members: true
-              show_labels: false
+              show_attributes: false

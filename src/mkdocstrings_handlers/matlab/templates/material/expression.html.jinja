@@ -1,0 +1,55 @@
+{#- Template for expressions.
+
+This template renders a Griffe expression,
+which is a tree-like structure representing a Python expression.
+-#}
+
+{% block logs scoped %}
+  {#- Logging block.
+
+  This block can be used to log debug messages, deprecation messages, warnings, etc.
+  -#}
+{% endblock logs %}
+
+{%- macro render(expression, annotations_path, backlink_type="") -%}
+  {#- Render an expression.
+
+  Parameters:
+      expression (griffe.Expr): The expression to render.
+      annotations_path (str): Either "brief", "source", or "full".
+
+  Returns:
+      The rendered expression.
+  -#}
+  {%- if expression is string -%}
+    {%- if signature -%}{{ expression|safe }}{%- else -%}{{ expression }}{%- endif -%}
+  {%- elif expression.doc != "" -%}
+    {%- if config.signature_crossrefs -%}
+      {%- filter stash_crossref(length=expression|string|length) -%}
+        <a class="autorefs autorefs-external" href="{{ expression.doc }}">{{ expression|string }}</a>
+      {%- endfilter -%}
+    {%- else -%}
+      {{ expression|string }}
+    {%- endif -%}
+  {%- elif expression|string in paths_collection -%}
+    {%- with obj = paths_collection.get_member(expression|string) -%}
+      {%- if config.signature_crossrefs -%}
+        {%- if signature -%}
+          {%- filter stash_crossref(length=expression|string|length) -%}
+            <autoref identifier="{{ obj.canonical_path }}" optional hover>{{ expression|string }}</autoref>
+          {%- endfilter -%}
+        {%- else -%}
+          <autoref identifier="{{ obj.canonical_path }}" optional hover>{{ expression|string }}</autoref>
+        {%- endif -%}
+      {%- else -%}
+        {{ expression|string }}
+      {%- endif -%}
+    {%- endwith -%}
+  {%- else -%}
+    {%- for element in expression -%}
+      {{ render(element, annotations_path) }}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endmacro -%}
+
+{{ render(expression, config.annotations_path, backlink_type|default("")) }}

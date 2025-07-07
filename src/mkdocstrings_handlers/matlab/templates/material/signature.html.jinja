@@ -1,0 +1,105 @@
+{#- Template for signatures.
+
+This template renders the signature of a function or method.
+It iterates over the arguments of the function to rebuild the signature.
+The signature is the list of arguments of a function or method, including their names, default values, and types.
+
+Context:
+  function (mkdocstrings_handlers.matlab.models.Function): The function or method to render.
+  config (dict): The configuration options.
+-#}
+
+{%- if config.show_signature -%}
+  {%- block logs scoped -%}
+    {#- Logging block.
+
+    This block can be used to log debug messages, deprecation messages, warnings, etc.
+    -#}
+    {{ log.debug("Rendering signature") }}
+  {%- endblock logs -%}
+  {%- with -%}
+
+    {%- set ns = jinja_namespace(
+        type="",
+        equal="=",
+        default=False,
+      ) -%}
+
+    (
+    {%- for argument in function.arguments -%}
+      {%- if argument.name != "obj" or loop.index0 > 0 or not (function.parent and function.parent.is_class) -%}
+
+        {#- Prepare types. -#}
+        {%- if config.show_signature_types and argument.type is not none -%}
+          {%- set ns.equal = " = " -%}
+          {%- if config.separate_signature -%}
+            {%- with expression = argument.type -%}
+              {%- set ns.type -%}: {% with backlink_type = "used-by" -%}
+                {%- include "expression.html.jinja" with context -%}
+              {%- endwith -%}{%- endset -%}
+            {%- endwith -%}
+          {%- else -%}
+            {%- set ns.type = ": " + argument.type|safe -%}
+          {%- endif -%}
+        {%- else -%}
+          {%- set ns.equal = "=" -%}
+          {%- set ns.type = "" -%}
+        {%- endif -%}
+
+        {#- Prepare default value. -#}
+        {%- if argument.default is not none and argument.kind.value != "varargin" -%}
+          {%- set ns.default = True -%}
+        {%- else -%}
+          {%- set ns.default = False -%}
+        {%- endif -%}
+
+        {#- Render argument name with optional cross-reference to its heading. -#}
+        {%- if config.separate_signature and config.argument_headings and config.signature_crossrefs -%}
+          {%- filter stash_crossref(length=argument.name|length) -%}
+            {%- with func_path = function.path -%}
+              {%- if config.merge_constructor_into_class and function.parent and function.parent.is_class and function.name == function.parent.name -%}
+                {%- set func_path = func_path[:-((function.parent | length) + 1)] -%}
+              {%- endif -%}
+              <autoref identifier="{{ func_path }}({{ argument.name }})" optional>{{ argument.name }}</autoref>
+            {%- endwith -%}
+          {%- endfilter -%}
+        {%- else -%}
+          {{ argument.name }}
+        {%- endif -%}
+
+        {#- Render argument type. -#}
+        {{ ns.type }}
+
+        {#- Render argument default value. -#}
+        {%- if ns.default -%}
+          {{ ns.equal }}
+          {%- if config.signature_crossrefs and config.separate_signature -%}
+            {%- with expression = argument.default, backlink_type = "used-by" -%}
+              {%- include "expression.html.jinja" with context -%}
+            {%- endwith -%}
+          {%- else -%}
+            {{ argument.default|safe }}
+          {%- endif -%}
+        {%- endif -%}
+
+        {%- if not loop.last %}, {% endif -%}
+
+      {%- endif -%}
+    {%- endfor -%}
+    )
+
+    {#- Render return type. -#}
+    {%- if config.show_signature_types
+        and function.type
+        and not (config.merge_constructor_into_class and function.parent and function.parent.is_class and function.name == function.parent.name)
+      %} -> {% if config.separate_signature and config.signature_crossrefs -%}
+        {%- with expression = function.type, backlink_type = "returned-by" -%}
+          {%- include "expression.html.jinja" with context -%}
+        {%- endwith -%}
+      {%- else -%}
+        {{ function.type|safe }}
+      {%- endif -%}
+    {%- endif -%}
+
+  {%- endwith -%}
+{%- endif -%}

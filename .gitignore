@@ -195,3 +195,5 @@ codegen/
 # Octave session info
 octave-workspace
 
+.vscode/
+.python-version

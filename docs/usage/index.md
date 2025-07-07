@@ -27,14 +27,6 @@ plugins:
         ...  # the MATLAB handler configuration
 ```
 
-```yaml title="mkdocs.yml"
-plugins:
-- mkdocstrings:
-    default_handler: matlab
-    matlab:
-        ...  # the MATLAB handler configuration
-```
-
 ## Injecting documentation
 
 With the MATLAB handler installed and configured as default handler, you can inject documentation for a module, class, function, or any other MATLAB object with *mkdocstrings*' [autodoc syntax], in your Markdown pages:
@@ -188,10 +180,3 @@ in the following pages:
 - [Docstrings options](configuration/docstrings.md): options related to docstrings (parsing and rendering)
 - [Signature options](configuration/signatures.md): options related to signatures and type annotations
 
-#### Options summary
-
-::: mkdocstrings_handlers.matlab.handler.MatlabHandler.default_config
-    handler: python
-    options:
-      show_root_heading: false
-      show_root_toc_entry: false

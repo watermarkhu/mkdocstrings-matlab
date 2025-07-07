@@ -32,7 +32,7 @@ classdef ThisClass < mymembers.BaseClass
         hidden_property % Hidden property docstring
     end
 
-    properties (SetAccess = private)
+    properties (GetAccess = private)
         private_property % Private property docstring
     end
 end

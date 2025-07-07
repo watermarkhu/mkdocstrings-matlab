@@ -1,0 +1,53 @@
+{#- Template for docstrings.
+
+This template renders Python docstrings.
+Griffe parses docstrings into a list of sections, each with a `kind` and a `value`.
+This template can then iterate on these sections and render them according to the configuration.
+
+Context:
+  docstring_sections (list[griffe.DocstringSection]): The list of docstring sections.
+  config (dict): The configuration dictionary.
+  heading_level (int): The heading level to use for Markdown conversion.
+  html_id (str): The HTML ID to use for Markdown conversion.
+-#}
+
+{% if docstring_sections %}
+  {% block logs scoped %}
+    {#- Logging block.
+
+    This block can be used to log debug messages, deprecation messages, warnings, etc.
+    -#}
+    {{ log.debug("Rendering docstring") }}
+  {% endblock logs %}
+  {% with autoref_hook = AutorefsHook(obj, config) %}
+    {% for section in docstring_sections %}
+      {% if config.show_docstring_description and section.kind.value == "text" %}
+        {{ section.value|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
+      {% elif config.show_docstring_properties and section.kind.value == "attributes" %}
+        {% include "docstring/properties.html.jinja" with context %}
+      {% elif config.show_docstring_functions and section.kind.value == "functions" %}
+        {% include "docstring/functions.html.jinja" with context %}
+      {% elif config.show_docstring_classes and section.kind.value == "classes" %}
+        {% include "docstring/classes.html.jinja" with context %}
+      {% elif config.show_docstring_namespaces and section.kind.value == "modules" %}
+        {% include "docstring/namespaces.html.jinja" with context %}
+      {% elif config.show_docstring_input_arguments and section.kind.value == "parameters" %}
+          {% filter format_arguments(section) %}
+            {{ section.kind.value }}
+          {% endfilter %}
+      {% elif config.show_docstring_name_value_arguments and section.kind.value == "other parameters" %}
+          {% filter format_arguments(section) %}
+            {{ section.kind.value }}
+          {% endfilter %}
+      {% elif config.show_docstring_output_arguments and section.kind.value == "returns" %}
+          {% filter format_arguments(section) %}
+            {{ section.kind.value }}
+          {% endfilter %}
+      {% elif config.show_docstring_examples and section.kind.value == "examples" %}
+        {% include "docstring/examples.html.jinja" with context %}
+      {% elif config.show_docstring_description and section.kind.value == "admonition" %}
+        {% include "docstring/admonition.html.jinja" with context %}
+      {% endif %}
+    {% endfor %}
+  {% endwith %}
+{% endif %}

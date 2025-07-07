@@ -17,7 +17,7 @@ Context:
   {{ log.debug("Rendering " + script.path) }}
 {% endblock logs %}
 
-<div class="doc doc-object doc-function">
+<div class="doc doc-object doc-script">
   {% with obj = script, html_id = script.path %}
 
     {% if root %}
@@ -56,29 +56,7 @@ Context:
           {% endif %}
         {% endblock heading %}
 
-        {% block labels scoped %}
-          {#- Labels block.
-          
-          This block renders the labels for the script.
-          -#}
-          {% with labels = script.labels %}
-            {% include "labels"|get_template with context %}
-          {% endwith %}
-        {% endblock labels %}
-
       {% endfilter %}
-
-      {% block signature scoped %}
-        {#- Signature block.
-        
-        This block renders the signature for the script.
-        -#}
-        {% if config.separate_signature %}
-          {% filter format_signature(script, config.line_length, crossrefs=config.signature_crossrefs) %}
-            {{ script.name }}
-          {% endfilter %}
-        {% endif %}
-      {% endblock signature %}
 
     {% else %}
 
@@ -108,7 +86,7 @@ Context:
           This block renders the docstring for the script.
           -#}
           {% with docstring_sections = script.docstring.parsed %}
-            {% include "docstring"|get_template with context %}
+            {% include "docstring.html.jinja" with context %}
           {% endwith %}
         {% endblock docstring %}
 
@@ -126,7 +104,7 @@ Context:
                   {{ script.relative_filepath }}
                 {%- endif -%}
               </code></summary>
-              {{ script.source|highlight(language="python", linestart=script.lineno or 0, linenums=True) }}
+              {{ script.source|highlight(language="matlab", linestart=script.lineno or 0, linenums=True) }}
             </details>
           {% endif %}
         {% endblock source %}
