@@ -150,16 +150,14 @@ def test_end_to_end_toc(
         "show_root_toc_entry": show_root_toc_entry,
         "show_symbol_type_toc": show_symbol_type_toc,
     }
-    html = _render_options(final_options) + _render(
-        session_handler, "module_function", final_options
-    )
+    html = _render_options(final_options) + _render(session_handler, "fixture/", final_options)
     snapshot_key = tuple(sorted(final_options.items()))
     assert outsource(html, suffix=".html") == snapshots.toc[snapshot_key]
 
 
 @pytest.mark.parametrize("members_order", ["alphabetical", "source"])
-@pytest.mark.parametrize("members", [("module_function",), True, False])
-@pytest.mark.parametrize("filters", [("!module_function",), ("module*",), False])
+@pytest.mark.parametrize("members", [("method1",), True, False])
+@pytest.mark.parametrize("filters", [("!method1",), ("method*",), False])
 def test_end_to_end_for_members(
     session_handler: "MatlabHandler",
     members_order: str,
@@ -173,7 +171,7 @@ def test_end_to_end_for_members(
     }
     html = _render_options(final_options) + _render(
         session_handler,
-        "fixture/",
+        "moduleClass",
         final_options,  # Test folder identifier
     )
 

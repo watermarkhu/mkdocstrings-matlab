@@ -126,98 +126,92 @@ headings_namespace = snapshot(
 toc = snapshot(
     {
         (("show_root_toc_entry", False), ("show_symbol_type_toc", True)): external(
-            "28b045fddd69*.html"
+            "9bd9ef72e296*.html"
         ),
         (("show_root_toc_entry", False), ("show_symbol_type_toc", False)): external(
-            "80e72bdfd94d*.html"
+            "ef04d31ceca7*.html"
         ),
         (("show_root_toc_entry", True), ("show_symbol_type_toc", False)): external(
-            "6ad111b58e97*.html"
+            "f7dbef29e273*.html"
         ),
         (("show_root_toc_entry", True), ("show_symbol_type_toc", True)): external(
-            "4ebf140abb0c*.html"
+            "362705d62d57*.html"
         ),
     }
 )
 
 members = snapshot(
     {
-        (("filters", ("module*",)), ("members", True), ("members_order", "source")): external(
-            "4d2b38c0244b*.html"
-        ),
-        (("filters", ("module*",)), ("members", True), ("members_order", "alphabetical")): external(
-            "52223995be52*.html"
-        ),
         (("filters", False), ("members", True), ("members_order", "alphabetical")): external(
-            "0607f2f92756*.html"
+            "6706c4c2b230*.html"
         ),
-        (
-            ("filters", False),
-            ("members", ("module_function",)),
-            ("members_order", "source"),
-        ): external("bc5e793243e0*.html"),
-        (("filters", ("module*",)), ("members", False), ("members_order", "source")): external(
-            "579212ea9df2*.html"
-        ),
-        (
-            ("filters", ("!module_function",)),
-            ("members", False),
-            ("members_order", "alphabetical"),
-        ): external("d3c44aa187e2*.html"),
-        (
-            ("filters", ("!module_function",)),
-            ("members", ("module_function",)),
-            ("members_order", "source"),
-        ): external("771b23347315*.html"),
-        (
-            ("filters", ("!module_function",)),
-            ("members", ("module_function",)),
-            ("members_order", "alphabetical"),
-        ): external("63e3fa69c7ae*.html"),
-        (
-            ("filters", ("!module_function",)),
-            ("members", False),
-            ("members_order", "source"),
-        ): external("14268b525578*.html"),
-        (
-            ("filters", False),
-            ("members", ("module_function",)),
-            ("members_order", "alphabetical"),
-        ): external("d525e4eb8e89*.html"),
         (("filters", False), ("members", False), ("members_order", "source")): external(
-            "e21180482988*.html"
+            "e9c1f427f0f2*.html"
+        ),
+        (("filters", False), ("members", False), ("members_order", "alphabetical")): external(
+            "d2d9d8835ce8*.html"
+        ),
+        (("filters", False), ("members", True), ("members_order", "source")): external(
+            "bdb30635a29a*.html"
         ),
         (
-            ("filters", ("!module_function",)),
-            ("members", True),
-            ("members_order", "source"),
-        ): external("6b25ca7450a0*.html"),
+            ("filters", ("!method1",)),
+            ("members", ("method1",)),
+            ("members_order", "alphabetical"),
+        ): external("7adc17327715*.html"),
         (
-            ("filters", ("!module_function",)),
+            ("filters", ("!method1",)),
+            ("members", ("method1",)),
+            ("members_order", "source"),
+        ): external("64895074ca91*.html"),
+        (
+            ("filters", ("!method1",)),
             ("members", True),
             ("members_order", "alphabetical"),
-        ): external("7370ef8a40f0*.html"),
-        (("filters", False), ("members", False), ("members_order", "alphabetical")): external(
-            "5836b3434a80*.html"
+        ): external("023440412411*.html"),
+        (("filters", ("!method1",)), ("members", True), ("members_order", "source")): external(
+            "333e16cbe433*.html"
         ),
         (
-            ("filters", ("module*",)),
+            ("filters", ("!method1",)),
             ("members", False),
             ("members_order", "alphabetical"),
-        ): external("b0e788620a8e*.html"),
-        (
-            ("filters", ("module*",)),
-            ("members", ("module_function",)),
-            ("members_order", "source"),
-        ): external("c2e7d6b33a18*.html"),
-        (("filters", False), ("members", True), ("members_order", "source")): external(
-            "a9d9ea6ade18*.html"
+        ): external("5c17e6c18307*.html"),
+        (("filters", ("!method1",)), ("members", False), ("members_order", "source")): external(
+            "71dd7967eb6f*.html"
         ),
         (
-            ("filters", ("module*",)),
-            ("members", ("module_function",)),
+            ("filters", ("method*",)),
+            ("members", ("method1",)),
             ("members_order", "alphabetical"),
-        ): external("73a01ed8d4ea*.html"),
+        ): external("dd32030cebd3*.html"),
+        (
+            ("filters", ("method*",)),
+            ("members", ("method1",)),
+            ("members_order", "source"),
+        ): external("a7bdd2b6e3b1*.html"),
+        (("filters", ("method*",)), ("members", True), ("members_order", "alphabetical")): external(
+            "4f9a78cfaed3*.html"
+        ),
+        (("filters", ("method*",)), ("members", True), ("members_order", "source")): external(
+            "b17f148d1ef8*.html"
+        ),
+        (
+            ("filters", ("method*",)),
+            ("members", False),
+            ("members_order", "alphabetical"),
+        ): external("761c157953b9*.html"),
+        (("filters", ("method*",)), ("members", False), ("members_order", "source")): external(
+            "7afc87331df9*.html"
+        ),
+        (
+            ("filters", False),
+            ("members", ("method1",)),
+            ("members_order", "alphabetical"),
+        ): external("01858a0c02a6*.html"),
+        (("filters", False), ("members", ("method1",)), ("members_order", "source")): external(
+            "1a041b9d8b6a*.html"
+        ),
     }
 )
 

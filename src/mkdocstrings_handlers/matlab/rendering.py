@@ -355,7 +355,7 @@ def _remove_cycles(objects: list[Object | Alias]) -> Iterator[Object | Alias]:
     for obj in objects:
         if obj.is_alias:
             with suppress_errors:
-                if obj.path in _parents(obj):  # type: ignore[arg-type,union-attr]
+                if obj.parent and obj.path in _parents(obj):  # type: ignore[arg-type,union-attr]
                     continue
         yield obj
 
