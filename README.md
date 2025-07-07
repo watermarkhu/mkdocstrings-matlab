@@ -29,30 +29,28 @@ dependencies = [
 
 ## Features
 
-- **Data collection from source code**: collection of the object-tree and the docstrings is done thanks to
+- 🤖 **Data collection from source code**: collection of the object-tree and the docstrings is done thanks to
   [Tree-sitter](https://tree-sitter.github.io/tree-sitter/).
 
-- **Support for argument validation blocks:** Tree-sitter collects your [function and method argument validation](https://mathworks.com/help/matlab/matlab_prog/function-argument-validation-1.html)
+- ✨ **Support for argument validation blocks:** Tree-sitter collects your [function and method argument validation](https://mathworks.com/help/matlab/matlab_prog/function-argument-validation-1.html)
    blocks to display input and output argument types and default values. 
    It is even able to automatically add cross-references to other objects from your API, and links to MathWorks documentation are generated for MATLAB builtin classes. 
 
-- **Recursive documentation of MATLAB [namespaces](https://mathworks.com/help/matlab/matlab_oop/namespaces.html) and folders:** 
+- 🔁 **Recursive documentation of MATLAB [namespaces](https://mathworks.com/help/matlab/matlab_oop/namespaces.html) and folders:** 
   just add `+` to the identifer for namespaces or the relative path for folder, and you get documentation for the entire directory. You don't need to inject documentation for each class, function, and script. Additionaly, the directory documentation will be either extracted from the `Contents.m` or the `readme.md` file at the root of the namespace or folder.
 
-- **Support for documented properties:** properties definitions followed by a docstring will be recognized in classes. 
-
-- **Multiple docstring-styles support:** common support for Google-style, Numpydoc-style,
+- 📄 **Multiple docstring-styles support:** common support for Google-style, Numpydoc-style,
   and Sphinx-style docstrings. See [Griffe's documentation](https://mkdocstrings.github.io/griffe/docstrings/) on docstrings support.
 
-- **Admonition support in Google docstrings:** blocks like `Note:` or `Warning:` will be transformed
+- ⚠️ **Admonition support in Google docstrings:** blocks like `Note:` or `Warning:` will be transformed
   to their [admonition](https://squidfunk.github.io/mkdocs-material/reference/admonitions/) equivalent.
   *We do not support nested admonitions in docstrings!*
 
-- **Every object has a TOC entry:** we render a heading for each object, meaning *MkDocs* picks them into the Table
+- 🔗 **Every object has a TOC entry:** we render a heading for each object, meaning *MkDocs* picks them into the Table
   of Contents, which is nicely displayed by the Material theme. Thanks to *mkdocstrings* cross-reference ability,
   you can reference other objects within your docstrings, with the classic Markdown syntax:
   `[this object][namespace.subnamespace.object]` or directly with `[namespace.subnamespace.object][]`
 
-- **Source code display:** *mkdocstrings* can add a collapsible div containing the highlighted source code of the MATLAB object.
+- 📺 **Source code display:** *mkdocstrings* can add a collapsible div containing the highlighted source code of the MATLAB object.
 
 <!-- --8<-- [end:footer] -->
