@@ -174,7 +174,7 @@ jobs:
   document:
     name: Deploy documentation
     needs: [release]
-    if: needs.release.outputs.released == 'true' && github.event.pull_request.merged
+    if: github.event.pull_request.merged
     uses: ./.github/workflows/docs.yaml
     concurrency:
       group: gh-pages
