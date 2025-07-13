@@ -6,7 +6,7 @@
 
 <p align="center"><img width=300px src="logo.svg"></p>
 
-[![Qualify](https://github.com/watermarkhu/mkdocstrings-matlab/actions/workflows/qualify.yaml/badge.svg)](https://github.com/watermarkhu/mkdocstrings-matlab/actions/workflows/qualify.yaml)
+[![Qualify](https://github.com/watermarkhu/mkdocstrings-matlab/actions/workflows/qualify.yaml/badge.svg?branch=main)](https://github.com/watermarkhu/mkdocstrings-matlab/actions/workflows/qualify.yaml)
 [![documentation](https://img.shields.io/badge/docs-mkdocs-708FCC.svg?style=flat)](https://watermarkhu.nl/mkdocstrings-matlab)
 [![pypi version](https://img.shields.io/pypi/v/mkdocstrings-matlab.svg)](https://pypi.org/project/mkdocstrings-matlab/)
 
