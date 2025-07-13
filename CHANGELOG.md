@@ -1,6 +1,27 @@
 # CHANGELOG
 
 
+## v1.0.1 (2025-07-13)
+
+### Bug Fixes
+
+- Use mirror release of py-tree-sitter that supports language version 15
+  ([#91](https://github.com/watermarkhu/mkdocstrings-matlab/pull/91),
+  [`32f8af8`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/32f8af8b536e71490b112d97235a9d33440081ca))
+
+### Chores
+
+- Update `maxx` to v0.2.4, now using pypi release of py-tree-sitter
+  ([#91](https://github.com/watermarkhu/mkdocstrings-matlab/pull/91),
+  [`32f8af8`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/32f8af8b536e71490b112d97235a9d33440081ca))
+
+### Documentation
+
+- Refer to maxx and update credits
+  ([#90](https://github.com/watermarkhu/mkdocstrings-matlab/pull/90),
+  [`4c58809`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/4c588090dcea38468dbcc8248504ffc9e879a3d0))
+
+
 ## v1.0.0 (2025-07-07)
 
 ### Chores
