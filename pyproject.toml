@@ -26,12 +26,11 @@ classifiers = [
 ]
 
 dependencies = [
-    "maxx~=0.2.3",
+    "maxx~=0.2.4",
     "mkdocstrings~=0.29",
     "mkdocs-autorefs~=1.4",
     "charset-normalizer~=3.4",
     "typing-extensions>=4.0; python_version < '3.11'",
-    "tree-sitter-language-version-15~=0.25.0",
 ]
 
 [tool.uv.sources]
