@@ -1,0 +1,3664 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A MATLAB handler for mkdocstrings.">
+      
+      
+      
+        <link rel="canonical" href="https://watermarkhu.nl/mkdocstrings-matlab/v1.0.2/api/">
+      
+      
+        <link rel="prev" href="../usage/docstrings/sphinx/">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.15">
+    
+    
+      
+        <title>matlab - mkdocstrings-matlab</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_markdown_exec_pyodide.css">
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#mkdocstrings_handlers.matlab" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  You're not viewing the latest version.
+  <a href="../.."> 
+    <strong>Click here to go to latest.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),base=new URL(".."),outdated=__md_get("__outdated",sessionStorage,base);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="mkdocstrings-matlab" class="md-header__button md-logo" aria-label="mkdocstrings-matlab" data-md-component="logo">
+      
+  <img src="../logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            mkdocstrings-matlab
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              matlab
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="matlab" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="lime"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/watermarkhu/mkdocstrings-matlab" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    watermarkhu/mkdocstrings-matlab
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+    
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../usage/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Usage
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+    
+  
+  API reference
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="https://mkdocstrings.github.io/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  mkdocstrings
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="mkdocstrings-matlab" class="md-nav__button md-logo" aria-label="mkdocstrings-matlab" data-md-component="logo">
+      
+  <img src="../logo.svg" alt="logo">
+
+    </a>
+    mkdocstrings-matlab
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/watermarkhu/mkdocstrings-matlab" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    watermarkhu/mkdocstrings-matlab
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href=".." class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_1" id="__nav_1_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            Home
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Changelog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../credits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Credits
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../usage/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Usage
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Usage
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Configuration options
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Configuration options
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../usage/configuration/general/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    General
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../usage/configuration/headings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Headings
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../usage/configuration/members/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Members
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../usage/configuration/docstrings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Docstrings
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../usage/configuration/signatures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Signatures
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Docstring styles
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Docstring styles
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../usage/docstrings/google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Google
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../usage/docstrings/numpy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Numpy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../usage/docstrings/sphinx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sphinx
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    API reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            API reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    mkdocstrings_handlers
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            mkdocstrings_handlers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    matlab
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    matlab
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+<a href="#mkdocstrings_handlers.matlab.handler" class="md-nav__link">
+    <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-toc doc-symbol-module"></code>&nbsp;handler
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+    <nav class="md-nav" aria-label=" handler">
+    <ul class="md-nav__list">
+        
+        
+        <li class="md-nav__item">
+<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler" class="md-nav__link">
+    <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;MatlabHandler
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+</li>
+        
+        
+        
+        <li class="md-nav__item">
+<a href="#mkdocstrings_handlers.matlab.handler.get_handler" class="md-nav__link">
+    <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;get_handler
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+</li>
+        
+        
+    </ul>
+    </nav>
+
+</li>
+      
+        <li class="md-nav__item">
+<a href="#mkdocstrings_handlers.matlab.config" class="md-nav__link">
+    <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-toc doc-symbol-module"></code>&nbsp;config
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+    <nav class="md-nav" aria-label=" config">
+    <ul class="md-nav__list">
+        
+        
+        <li class="md-nav__item">
+<a href="#mkdocstrings_handlers.matlab.config.AutoStyleOptions" class="md-nav__link">
+    <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;AutoStyleOptions
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+</li>
+        
+        
+        
+        <li class="md-nav__item">
+<a href="#mkdocstrings_handlers.matlab.config.GoogleStyleOptions" class="md-nav__link">
+    <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;GoogleStyleOptions
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+</li>
+        
+        
+        
+        <li class="md-nav__item">
+<a href="#mkdocstrings_handlers.matlab.config.Inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;Inventory
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+</li>
+        
+        
+        
+        <li class="md-nav__item">
+<a href="#mkdocstrings_handlers.matlab.config.MatlabConfig" class="md-nav__link">
+    <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;MatlabConfig
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+</li>
+        
+        
+        
+        <li class="md-nav__item">
+<a href="#mkdocstrings_handlers.matlab.config.MatlabInputConfig" class="md-nav__link">
+    <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;MatlabInputConfig
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+</li>
+        
+        
+        
+        <li class="md-nav__item">
+<a href="#mkdocstrings_handlers.matlab.config.MatlabInputOptions" class="md-nav__link">
+    <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;MatlabInputOptions
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+</li>
+        
+        
+        
+        <li class="md-nav__item">
+<a href="#mkdocstrings_handlers.matlab.config.MatlabOptions" class="md-nav__link">
+    <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;MatlabOptions
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+</li>
+        
+        
+        
+        <li class="md-nav__item">
+<a href="#mkdocstrings_handlers.matlab.config.NumpyStyleOptions" class="md-nav__link">
+    <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;NumpyStyleOptions
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+</li>
+        
+        
+        
+        <li class="md-nav__item">
+<a href="#mkdocstrings_handlers.matlab.config.PerStyleOptions" class="md-nav__link">
+    <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;PerStyleOptions
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+</li>
+        
+        
+        
+        <li class="md-nav__item">
+<a href="#mkdocstrings_handlers.matlab.config.SphinxStyleOptions" class="md-nav__link">
+    <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;SphinxStyleOptions
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+</li>
+        
+        
+        
+        <li class="md-nav__item">
+<a href="#mkdocstrings_handlers.matlab.config.SummaryOption" class="md-nav__link">
+    <span class="md-ellipsis">
+    <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;SummaryOption
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+</li>
+        
+        
+    </ul>
+    </nav>
+
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://mkdocstrings.github.io/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    mkdocstrings
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/watermarkhu/mkdocstrings-matlab/edit/main/docs/api.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/watermarkhu/mkdocstrings-matlab/raw/main/docs/api.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h1 id="mkdocstrings_handlers.matlab" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">matlab</span>
+
+
+<a href="#mkdocstrings_handlers.matlab" class="headerlink" title="Permanent link">¤</a></h1>
+
+    <div class="doc doc-contents first">
+
+        <p>MATLAB handler for mkdocstrings.</p>
+
+
+
+
+
+
+<p><span class="doc-section-title">Modules:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-module&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-module-name&quot;&gt;handler&lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.handler&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.handler">handler</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>The mkdocstrings handler for processing MATLAB code documentation.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-module&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-module-name&quot;&gt;config&lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config">config</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Configuration and options dataclasses.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="mkdocstrings_handlers.matlab.handler" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">handler</span>
+
+
+<a href="#mkdocstrings_handlers.matlab.handler" class="headerlink" title="Permanent link">¤</a></h2>
+
+    <div class="doc doc-contents ">
+
+        <p>The mkdocstrings handler for processing MATLAB code documentation.</p>
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Classes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;MatlabHandler&lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.handler.MatlabHandler&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler">MatlabHandler</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>The <code>MatlabHandler</code> class is a handler for processing Matlab code documentation.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+<p><span class="doc-section-title">Functions:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-function&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;get_handler&lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.handler.get_handler&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.handler.get_handler">get_handler</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Create and return a MatlabHandler object with the specified configuration.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="mkdocstrings_handlers.matlab.handler.MatlabHandler" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">MatlabHandler</span>
+
+
+<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">MatlabHandler</span><span class="p">(</span>
+    <span class="n"><a class="autorefs autorefs-internal" title="&lt;b&gt;&lt;code&gt;config&lt;/code&gt;&lt;/b&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.handler.MatlabHandler(config)&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(config)">config</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;MatlabConfig&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.MatlabConfig&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.MatlabConfig">MatlabConfig</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;b&gt;&lt;code&gt;base_dir&lt;/code&gt;&lt;/b&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.handler.MatlabHandler(base_dir)&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(base_dir)">base_dir</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;pathlib.Path&lt;/code&gt;" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path">Path</a></span><span class="p">,</span> <span class="o">**</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;b&gt;&lt;code&gt;**kwargs&lt;/code&gt;&lt;/b&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.handler.MatlabHandler(**kwargs)&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(**kwargs)">kwargs</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <p>The <code>MatlabHandler</code> class is a handler for processing Matlab code documentation.</p>
+
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<h4 id="mkdocstrings_handlers.matlab.handler.MatlabHandler(config)" class="doc doc-heading doc-heading-parameter">              <b><code>config</code></b>
+<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(config)" class="headerlink" title="Permanent link">¤</a></h4>              (<code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;MatlabConfig&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.MatlabConfig&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.MatlabConfig">MatlabConfig</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The handler configuration.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h4 id="mkdocstrings_handlers.matlab.handler.MatlabHandler(base_dir)" class="doc doc-heading doc-heading-parameter">              <b><code>base_dir</code></b>
+<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(base_dir)" class="headerlink" title="Permanent link">¤</a></h4>              (<code><a class="autorefs autorefs-external" title="&lt;code&gt;pathlib.Path&lt;/code&gt;" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path">Path</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The base directory of the project.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h4 id="mkdocstrings_handlers.matlab.handler.MatlabHandler(**kwargs)" class="doc doc-heading doc-heading-parameter">              <b><code>**kwargs</code></b>
+<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler(**kwargs)" class="headerlink" title="Permanent link">¤</a></h4>              (<code><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></code>, default:
+                  <code>{}</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Arguments passed to the parent constructor.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code>None</code>
+          –
+          <div class="doc-md-description">
+            <p>None</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-method&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;collect&lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.handler.MatlabHandler.collect&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.collect">collect</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Collect data given an identifier and user configuration.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-method&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;get_options&lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.handler.MatlabHandler.get_options&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.get_options">get_options</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Get combined default, global and local options.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-method&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;render&lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.handler.MatlabHandler.render&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.render">render</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Render a template using provided data and configuration options.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-method&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;update_env&lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.handler.MatlabHandler.update_env&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.update_env">update_env</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Update the Jinja environment with custom filters and tests.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;domain&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-class-attribute&quot;&gt;&lt;code&gt;class-attribute&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.handler.MatlabHandler.domain&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.domain">domain</a></code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The cross-documentation domain/language for this handler.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;enable_inventory&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-class-attribute&quot;&gt;&lt;code&gt;class-attribute&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.handler.MatlabHandler.enable_inventory&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.enable_inventory">enable_inventory</a></code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Whether this handler is interested in enabling the creation of the <code>objects.inv</code> Sphinx inventory file.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;fallback_theme&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-class-attribute&quot;&gt;&lt;code&gt;class-attribute&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.handler.MatlabHandler.fallback_theme&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.fallback_theme">fallback_theme</a></code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The fallback theme.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;name&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-class-attribute&quot;&gt;&lt;code&gt;class-attribute&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.handler.MatlabHandler.name&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.name">name</a></code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The MATLAB handler class.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="mkdocstrings_handlers.matlab.handler.MatlabHandler.domain" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">domain</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.domain" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="n">domain</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s1">&#39;mat&#39;</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>The cross-documentation domain/language for this handler.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="mkdocstrings_handlers.matlab.handler.MatlabHandler.enable_inventory" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">enable_inventory</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.enable_inventory" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="n">enable_inventory</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Whether this handler is interested in enabling the creation of the <code>objects.inv</code> Sphinx inventory file.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="mkdocstrings_handlers.matlab.handler.MatlabHandler.fallback_theme" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">fallback_theme</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.fallback_theme" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="n">fallback_theme</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s1">&#39;material&#39;</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>The fallback theme.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="mkdocstrings_handlers.matlab.handler.MatlabHandler.name" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">name</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.name" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="n">name</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s1">&#39;matlab&#39;</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>The MATLAB handler class.</p>
+
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mkdocstrings_handlers.matlab.handler.MatlabHandler.collect" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">collect</span>
+
+
+<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.collect" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">collect</span><span class="p">(</span>
+    <span class="n"><a class="autorefs autorefs-internal" title="&lt;b&gt;&lt;code&gt;identifier&lt;/code&gt;&lt;/b&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.handler.MatlabHandler.collect(identifier)&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.collect(identifier)">identifier</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;b&gt;&lt;code&gt;options&lt;/code&gt;&lt;/b&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.handler.MatlabHandler.collect(options)&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.collect(options)">options</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;MatlabOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.MatlabOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.MatlabOptions">MatlabOptions</a></span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="mkdocstrings.CollectorItem">CollectorItem</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Collect data given an identifier and user configuration.</p>
+<p>In the implementation, you typically call a subprocess that returns JSON, and load that JSON again into
+a Python dictionary for example, though the implementation is completely free.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<h5 id="mkdocstrings_handlers.matlab.handler.MatlabHandler.collect(identifier)" class="doc doc-heading doc-heading-parameter">              <b><code>identifier</code></b>
+<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.collect(identifier)" class="headerlink" title="Permanent link">¤</a></h5>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>An identifier for which to collect data.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h5 id="mkdocstrings_handlers.matlab.handler.MatlabHandler.collect(options)" class="doc doc-heading doc-heading-parameter">              <b><code>options</code></b>
+<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.collect(options)" class="headerlink" title="Permanent link">¤</a></h5>              (<code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;MatlabOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.MatlabOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.MatlabOptions">MatlabOptions</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The handler's configuration options.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="mkdocstrings.CollectorItem">CollectorItem</span></code>
+          –
+          <div class="doc-md-description">
+            <p>CollectorItem</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mkdocstrings_handlers.matlab.handler.MatlabHandler.get_options" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">get_options</span>
+
+
+<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.get_options" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">get_options</span><span class="p">(</span>
+    <span class="n"><a class="autorefs autorefs-internal" title="&lt;b&gt;&lt;code&gt;local_options&lt;/code&gt;&lt;/b&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.handler.MatlabHandler.get_options(local_options)&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.get_options(local_options)">local_options</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;collections.abc.Mapping&lt;/code&gt;" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping">Mapping</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="mkdocstrings.HandlerOptions">HandlerOptions</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Get combined default, global and local options.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<h5 id="mkdocstrings_handlers.matlab.handler.MatlabHandler.get_options(local_options)" class="doc doc-heading doc-heading-parameter">              <b><code>local_options</code></b>
+<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.get_options(local_options)" class="headerlink" title="Permanent link">¤</a></h5>              (<code><a class="autorefs autorefs-external" title="&lt;code&gt;collections.abc.Mapping&lt;/code&gt;" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping">Mapping</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>, <a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a>]</code>)
+          –
+          <div class="doc-md-description">
+            <p>The local options.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="mkdocstrings.HandlerOptions">HandlerOptions</span></code>
+          –
+          <div class="doc-md-description">
+            <p>The combined options.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mkdocstrings_handlers.matlab.handler.MatlabHandler.render" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">render</span>
+
+
+<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.render" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">render</span><span class="p">(</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;b&gt;&lt;code&gt;data&lt;/code&gt;&lt;/b&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.handler.MatlabHandler.render(data)&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.render(data)">data</a></span><span class="p">:</span> <span class="n"><span title="mkdocstrings.CollectorItem">CollectorItem</span></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;b&gt;&lt;code&gt;options&lt;/code&gt;&lt;/b&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.handler.MatlabHandler.render(options)&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.render(options)">options</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;MatlabOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.MatlabOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.MatlabOptions">MatlabOptions</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Render a template using provided data and configuration options.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<h5 id="mkdocstrings_handlers.matlab.handler.MatlabHandler.render(data)" class="doc doc-heading doc-heading-parameter">              <b><code>data</code></b>
+<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.render(data)" class="headerlink" title="Permanent link">¤</a></h5>              (<code><span title="mkdocstrings.CollectorItem">CollectorItem</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>The collected data to render.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+<h5 id="mkdocstrings_handlers.matlab.handler.MatlabHandler.render(options)" class="doc doc-heading doc-heading-parameter">              <b><code>options</code></b>
+<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.render(options)" class="headerlink" title="Permanent link">¤</a></h5>              (<code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;MatlabOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.MatlabOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.MatlabOptions">MatlabOptions</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The handler's configuration options.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
+          –
+          <div class="doc-md-description">
+            <p>The rendered template as HTML.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mkdocstrings_handlers.matlab.handler.MatlabHandler.update_env" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">update_env</span>
+
+
+<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.update_env" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">update_env</span><span class="p">(</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;b&gt;&lt;code&gt;config&lt;/code&gt;&lt;/b&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.handler.MatlabHandler.update_env(config)&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.update_env(config)">config</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Update the Jinja environment with custom filters and tests.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<h5 id="mkdocstrings_handlers.matlab.handler.MatlabHandler.update_env(config)" class="doc doc-heading doc-heading-parameter">              <b><code>config</code></b>
+<a href="#mkdocstrings_handlers.matlab.handler.MatlabHandler.update_env(config)" class="headerlink" title="Permanent link">¤</a></h5>              (<code><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The SSG configuration.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocstrings_handlers.matlab.handler.get_handler" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <span class="doc doc-object-name doc-function-name">get_handler</span>
+
+
+<a href="#mkdocstrings_handlers.matlab.handler.get_handler" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">get_handler</span><span class="p">(</span>
+    <span class="n"><a class="autorefs autorefs-internal" title="&lt;b&gt;&lt;code&gt;handler_config&lt;/code&gt;&lt;/b&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.handler.get_handler(handler_config)&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.handler.get_handler(handler_config)">handler_config</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;collections.abc.MutableMapping&lt;/code&gt;" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.MutableMapping">MutableMapping</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">],</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.handler.get_handler(tool_config)">tool_config</span></span><span class="p">:</span> <span class="n"><span title="mkdocs.config.defaults.MkDocsConfig">MkDocsConfig</span></span><span class="p">,</span>
+    <span class="o">**</span><span class="n"><span title="mkdocstrings_handlers.matlab.handler.get_handler(**kwargs)">kwargs</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;MatlabHandler&lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.handler.MatlabHandler&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler">MatlabHandler</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Create and return a MatlabHandler object with the specified configuration.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<h4 id="mkdocstrings_handlers.matlab.handler.get_handler(handler_config)" class="doc doc-heading doc-heading-parameter">              <b><code>handler_config</code></b>
+<a href="#mkdocstrings_handlers.matlab.handler.get_handler(handler_config)" class="headerlink" title="Permanent link">¤</a></h4>              (<code><a class="autorefs autorefs-external" title="&lt;code&gt;collections.abc.MutableMapping&lt;/code&gt;" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.MutableMapping">MutableMapping</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>, <a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a>]</code>)
+          –
+          <div class="doc-md-description">
+            <p>The handler configuration.</p>
+          </div>
+        </li>
+    </ul>
+        <div class="language-text highlight"><pre><span></span><code>tool_config: The tool (SSG) configuration.
+</code></pre></div>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<b><code>MatlabHandler</code></b> (              <code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;MatlabHandler&lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.handler.MatlabHandler&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.handler.MatlabHandler">MatlabHandler</a></code>
+)          –
+          <div class="doc-md-description">
+            <p>An instance of MatlabHandler configured with the provided parameters.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="mkdocstrings_handlers.matlab.config" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">config</span>
+
+
+<a href="#mkdocstrings_handlers.matlab.config" class="headerlink" title="Permanent link">¤</a></h2>
+
+    <div class="doc doc-contents ">
+
+        <p>Configuration and options dataclasses.</p>
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Classes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;AutoStyleOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.AutoStyleOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.AutoStyleOptions">AutoStyleOptions</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Auto style docstring options.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;GoogleStyleOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.GoogleStyleOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.GoogleStyleOptions">GoogleStyleOptions</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Google style docstring options.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;Inventory&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.Inventory&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.Inventory">Inventory</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>An inventory.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;MatlabConfig&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.MatlabConfig&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.MatlabConfig">MatlabConfig</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>MATLAB handler configuration.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;MatlabInputConfig&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.MatlabInputConfig&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.MatlabInputConfig">MatlabInputConfig</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>MATLAB handler configuration.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;MatlabInputOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.MatlabInputOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.MatlabInputOptions">MatlabInputOptions</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Accepted input options.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;MatlabOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.MatlabOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.MatlabOptions">MatlabOptions</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Final options passed as template context.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;NumpyStyleOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.NumpyStyleOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.NumpyStyleOptions">NumpyStyleOptions</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Numpy style docstring options.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;PerStyleOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.PerStyleOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.PerStyleOptions">PerStyleOptions</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Per style options.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;SphinxStyleOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.SphinxStyleOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.SphinxStyleOptions">SphinxStyleOptions</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Sphinx style docstring options.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;SummaryOption&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.SummaryOption&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.SummaryOption">SummaryOption</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Summary option.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="mkdocstrings_handlers.matlab.config.AutoStyleOptions" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">AutoStyleOptions</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.config.AutoStyleOptions" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">AutoStyleOptions</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.AutoStyleOptions(method)">method</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Literal&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a></span><span class="p">[</span>
+        <span class="s2">&quot;heuristics&quot;</span><span class="p">,</span> <span class="s2">&quot;max_sections&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;heuristics&quot;</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.AutoStyleOptions(style_order)">style_order</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;sphinx&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;google&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;numpy&quot;</span><span class="p">,</span>
+    <span class="p">](),</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.AutoStyleOptions(default)">default</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.AutoStyleOptions(per_style_options)">per_style_options</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;PerStyleOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.PerStyleOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.PerStyleOptions">PerStyleOptions</a></span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;PerStyleOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.PerStyleOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.PerStyleOptions">PerStyleOptions</a></span><span class="p">(),</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <p>Auto style docstring options.</p>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-method&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;from_data&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-classmethod&quot;&gt;&lt;code&gt;classmethod&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.AutoStyleOptions.from_data&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.AutoStyleOptions.from_data">from_data</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Create an instance from a dictionary.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mkdocstrings_handlers.matlab.config.AutoStyleOptions.from_data" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">from_data</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.config.AutoStyleOptions.from_data" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">from_data</span><span class="p">(</span><span class="o">**</span><span class="n"><span title="mkdocstrings_handlers.matlab.config.AutoStyleOptions.from_data(**data)">data</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="typing_extensions.Self">Self</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Create an instance from a dictionary.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="mkdocstrings_handlers.matlab.config.GoogleStyleOptions" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">GoogleStyleOptions</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.config.GoogleStyleOptions" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">GoogleStyleOptions</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.GoogleStyleOptions(ignore_init_summary)">ignore_init_summary</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.GoogleStyleOptions(returns_multiple_items)">returns_multiple_items</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.GoogleStyleOptions(returns_named_value)">returns_named_value</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.GoogleStyleOptions(returns_type_in_property_summary)">returns_type_in_property_summary</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.GoogleStyleOptions(receives_multiple_items)">receives_multiple_items</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.GoogleStyleOptions(receives_named_value)">receives_named_value</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.GoogleStyleOptions(trim_doctest_flags)">trim_doctest_flags</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.GoogleStyleOptions(warn_unknown_params)">warn_unknown_params</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <p>Google style docstring options.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="mkdocstrings_handlers.matlab.config.Inventory" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">Inventory</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.config.Inventory" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">Inventory</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.Inventory(url)">url</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.Inventory(base)">base</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.Inventory(domains)">domains</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;py&quot;</span><span class="p">](),</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <p>An inventory.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="mkdocstrings_handlers.matlab.config.MatlabConfig" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">MatlabConfig</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.config.MatlabConfig" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">MatlabConfig</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabConfig(inventories)">inventories</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;Inventory&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.Inventory&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.Inventory">Inventory</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">(),</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabConfig(paths)">paths</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">](),</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabConfig(paths_recursive)">paths_recursive</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabConfig(options)">options</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span><span class="p">(),</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabConfig(locale)">locale</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <p>MATLAB handler configuration.</p>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-method&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;coerce&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-classmethod&quot;&gt;&lt;code&gt;classmethod&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.MatlabConfig.coerce&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.MatlabConfig.coerce">coerce</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Coerce data.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-method&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;from_data&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-classmethod&quot;&gt;&lt;code&gt;classmethod&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.MatlabConfig.from_data&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.MatlabConfig.from_data">from_data</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Create an instance from a dictionary.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mkdocstrings_handlers.matlab.config.MatlabConfig.coerce" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">coerce</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.config.MatlabConfig.coerce" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">coerce</span><span class="p">(</span><span class="o">**</span><span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabConfig.coerce(**data)">data</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;collections.abc.MutableMapping&lt;/code&gt;" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.MutableMapping">MutableMapping</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Coerce data.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mkdocstrings_handlers.matlab.config.MatlabConfig.from_data" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">from_data</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.config.MatlabConfig.from_data" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">from_data</span><span class="p">(</span><span class="o">**</span><span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabConfig.from_data(**data)">data</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="typing_extensions.Self">Self</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Create an instance from a dictionary.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="mkdocstrings_handlers.matlab.config.MatlabInputConfig" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">MatlabInputConfig</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.config.MatlabInputConfig" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">MatlabInputConfig</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputConfig(inventories)">inventories</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;Inventory&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.Inventory&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.Inventory">Inventory</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">(),</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputConfig(paths)">paths</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">](),</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputConfig(paths_recursive)">paths_recursive</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputConfig(options)">options</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;MatlabInputOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.MatlabInputOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.MatlabInputOptions">MatlabInputOptions</a></span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;MatlabInputOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.MatlabInputOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.MatlabInputOptions">MatlabInputOptions</a></span><span class="p">(),</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputConfig(locale)">locale</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <p>MATLAB handler configuration.</p>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-method&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;coerce&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-classmethod&quot;&gt;&lt;code&gt;classmethod&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.MatlabInputConfig.coerce&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.MatlabInputConfig.coerce">coerce</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Coerce data.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-method&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;from_data&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-classmethod&quot;&gt;&lt;code&gt;classmethod&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.MatlabInputConfig.from_data&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.MatlabInputConfig.from_data">from_data</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Create an instance from a dictionary.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mkdocstrings_handlers.matlab.config.MatlabInputConfig.coerce" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">coerce</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.config.MatlabInputConfig.coerce" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">coerce</span><span class="p">(</span><span class="o">**</span><span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputConfig.coerce(**data)">data</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;collections.abc.MutableMapping&lt;/code&gt;" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.MutableMapping">MutableMapping</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Coerce data.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mkdocstrings_handlers.matlab.config.MatlabInputConfig.from_data" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">from_data</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.config.MatlabInputConfig.from_data" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">from_data</span><span class="p">(</span><span class="o">**</span><span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputConfig.from_data(**data)">data</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="typing_extensions.Self">Self</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Create an instance from a dictionary.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="mkdocstrings_handlers.matlab.config.MatlabInputOptions" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">MatlabInputOptions</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.config.MatlabInputOptions" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">MatlabInputOptions</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(docstring_options)">docstring_options</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;GoogleStyleOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.GoogleStyleOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.GoogleStyleOptions">GoogleStyleOptions</a></span>
+    <span class="o">|</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;NumpyStyleOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.NumpyStyleOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.NumpyStyleOptions">NumpyStyleOptions</a></span>
+    <span class="o">|</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;SphinxStyleOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.SphinxStyleOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.SphinxStyleOptions">SphinxStyleOptions</a></span>
+    <span class="o">|</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;AutoStyleOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.AutoStyleOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.AutoStyleOptions">AutoStyleOptions</a></span>
+    <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(docstring_section_style)">docstring_section_style</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Literal&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a></span><span class="p">[</span>
+        <span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="s2">&quot;spacy&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;table&quot;</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(docstring_style)">docstring_style</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Literal&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a></span><span class="p">[</span>
+        <span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="s2">&quot;google&quot;</span><span class="p">,</span> <span class="s2">&quot;numpy&quot;</span><span class="p">,</span> <span class="s2">&quot;sphinx&quot;</span>
+    <span class="p">]</span>
+    <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="s2">&quot;google&quot;</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(parse_arguments)">parse_arguments</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(filters)">filters</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;!^delete$|^disp$&quot;</span><span class="p">](),</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(group_by_category)">group_by_category</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(heading)">heading</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(heading_level)">heading_level</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(hidden_members)">hidden_members</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(private_members)">private_members</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(inherited_members)">inherited_members</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(line_length)">line_length</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(members)">members</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(members_order)">members_order</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Literal&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a></span><span class="p">[</span>
+        <span class="s2">&quot;alphabetical&quot;</span><span class="p">,</span> <span class="s2">&quot;source&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;alphabetical&quot;</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(merge_constructor_into_class)">merge_constructor_into_class</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(argument_headings)">argument_headings</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(separate_signature)">separate_signature</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_bases)">show_bases</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_category_heading)">show_category_heading</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_docstring_classes)">show_docstring_classes</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_docstring_description)">show_docstring_description</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_docstring_examples)">show_docstring_examples</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_docstring_functions)">show_docstring_functions</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_docstring_namespaces)">show_docstring_namespaces</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_docstring_properties)">show_docstring_properties</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_docstring_input_arguments)">show_docstring_input_arguments</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_docstring_name_value_arguments)">show_docstring_name_value_arguments</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_docstring_output_arguments)">show_docstring_output_arguments</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_if_no_docstring)">show_if_no_docstring</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_inheritance_diagram)">show_inheritance_diagram</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_attributes)">show_attributes</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_object_full_path)">show_object_full_path</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_root_full_path)">show_root_full_path</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_root_heading)">show_root_heading</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_root_members_full_path)">show_root_members_full_path</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_root_toc_entry)">show_root_toc_entry</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_signature_types)">show_signature_types</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_signature)">show_signature</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_source)">show_source</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_subnamespaces)">show_subnamespaces</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_symbol_type_heading)">show_symbol_type_heading</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(show_symbol_type_toc)">show_symbol_type_toc</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(signature_crossrefs)">signature_crossrefs</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(summary)">summary</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;SummaryOption&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.SummaryOption&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.SummaryOption">SummaryOption</a></span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;SummaryOption&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.SummaryOption&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.SummaryOption">SummaryOption</a></span><span class="p">(),</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(toc_label)">toc_label</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions(extra)">extra</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span><span class="p">(),</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <p>Accepted input options.</p>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-method&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;coerce&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-classmethod&quot;&gt;&lt;code&gt;classmethod&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.MatlabInputOptions.coerce&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.MatlabInputOptions.coerce">coerce</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Coerce data.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-method&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;from_data&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-classmethod&quot;&gt;&lt;code&gt;classmethod&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.MatlabInputOptions.from_data&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.MatlabInputOptions.from_data">from_data</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Create an instance from a dictionary.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mkdocstrings_handlers.matlab.config.MatlabInputOptions.coerce" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">coerce</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.config.MatlabInputOptions.coerce" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">coerce</span><span class="p">(</span><span class="o">**</span><span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions.coerce(**data)">data</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;collections.abc.MutableMapping&lt;/code&gt;" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.MutableMapping">MutableMapping</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Coerce data.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mkdocstrings_handlers.matlab.config.MatlabInputOptions.from_data" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">from_data</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.config.MatlabInputOptions.from_data" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">from_data</span><span class="p">(</span><span class="o">**</span><span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabInputOptions.from_data(**data)">data</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="typing_extensions.Self">Self</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Create an instance from a dictionary.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="mkdocstrings_handlers.matlab.config.MatlabOptions" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">MatlabOptions</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.config.MatlabOptions" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">MatlabOptions</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(docstring_options)">docstring_options</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;GoogleStyleOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.GoogleStyleOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.GoogleStyleOptions">GoogleStyleOptions</a></span>
+    <span class="o">|</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;NumpyStyleOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.NumpyStyleOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.NumpyStyleOptions">NumpyStyleOptions</a></span>
+    <span class="o">|</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;SphinxStyleOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.SphinxStyleOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.SphinxStyleOptions">SphinxStyleOptions</a></span>
+    <span class="o">|</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;AutoStyleOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.AutoStyleOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.AutoStyleOptions">AutoStyleOptions</a></span>
+    <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(docstring_section_style)">docstring_section_style</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Literal&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a></span><span class="p">[</span>
+        <span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="s2">&quot;spacy&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;table&quot;</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(docstring_style)">docstring_style</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Literal&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a></span><span class="p">[</span>
+        <span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="s2">&quot;google&quot;</span><span class="p">,</span> <span class="s2">&quot;numpy&quot;</span><span class="p">,</span> <span class="s2">&quot;sphinx&quot;</span>
+    <span class="p">]</span>
+    <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="s2">&quot;google&quot;</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(parse_arguments)">parse_arguments</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(filters)">filters</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#tuple">tuple</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;re.Pattern&lt;/code&gt;" href="https://docs.python.org/3/library/re.html#re.Pattern">Pattern</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span><span class="p">]]</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">(),</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(group_by_category)">group_by_category</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(heading)">heading</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(heading_level)">heading_level</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(hidden_members)">hidden_members</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(private_members)">private_members</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(inherited_members)">inherited_members</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(line_length)">line_length</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(members)">members</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">]</span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(members_order)">members_order</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Literal&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a></span><span class="p">[</span>
+        <span class="s2">&quot;alphabetical&quot;</span><span class="p">,</span> <span class="s2">&quot;source&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;alphabetical&quot;</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(merge_constructor_into_class)">merge_constructor_into_class</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(argument_headings)">argument_headings</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(separate_signature)">separate_signature</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_bases)">show_bases</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_category_heading)">show_category_heading</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_docstring_classes)">show_docstring_classes</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_docstring_description)">show_docstring_description</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_docstring_examples)">show_docstring_examples</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_docstring_functions)">show_docstring_functions</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_docstring_namespaces)">show_docstring_namespaces</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_docstring_properties)">show_docstring_properties</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_docstring_input_arguments)">show_docstring_input_arguments</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_docstring_name_value_arguments)">show_docstring_name_value_arguments</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_docstring_output_arguments)">show_docstring_output_arguments</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_if_no_docstring)">show_if_no_docstring</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_inheritance_diagram)">show_inheritance_diagram</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_attributes)">show_attributes</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_object_full_path)">show_object_full_path</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_root_full_path)">show_root_full_path</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_root_heading)">show_root_heading</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_root_members_full_path)">show_root_members_full_path</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_root_toc_entry)">show_root_toc_entry</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_signature_types)">show_signature_types</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_signature)">show_signature</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_source)">show_source</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_subnamespaces)">show_subnamespaces</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_symbol_type_heading)">show_symbol_type_heading</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(show_symbol_type_toc)">show_symbol_type_toc</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(signature_crossrefs)">signature_crossrefs</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(summary)">summary</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;SummaryOption&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.SummaryOption&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.SummaryOption">SummaryOption</a></span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;SummaryOption&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.SummaryOption&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.SummaryOption">SummaryOption</a></span><span class="p">(),</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(toc_label)">toc_label</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions(extra)">extra</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span><span class="p">(),</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <p>Final options passed as template context.</p>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-method&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;coerce&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-classmethod&quot;&gt;&lt;code&gt;classmethod&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.MatlabOptions.coerce&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.MatlabOptions.coerce">coerce</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Create an instance from a dictionary.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-method&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;from_data&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-classmethod&quot;&gt;&lt;code&gt;classmethod&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.MatlabOptions.from_data&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.MatlabOptions.from_data">from_data</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Create an instance from a dictionary.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;filters&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-class-attribute&quot;&gt;&lt;code&gt;class-attribute&lt;/code&gt;&lt;/small&gt;
+      &lt;small class=&quot;doc doc-label doc-label-instance-attribute&quot;&gt;&lt;code&gt;instance-attribute&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.MatlabOptions.filters&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.MatlabOptions.filters">filters</a></code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#tuple">tuple</a>[<a class="autorefs autorefs-external" title="&lt;code&gt;re.Pattern&lt;/code&gt;" href="https://docs.python.org/3/library/re.html#re.Pattern">Pattern</a>, <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a>]]</code>)
+          –
+          <div class="doc-md-description">
+            <p>A list of filters applied to filter objects based on their name.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-attribute&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-attribute-name&quot;&gt;summary&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-class-attribute&quot;&gt;&lt;code&gt;class-attribute&lt;/code&gt;&lt;/small&gt;
+      &lt;small class=&quot;doc doc-label doc-label-instance-attribute&quot;&gt;&lt;code&gt;instance-attribute&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.MatlabOptions.summary&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.MatlabOptions.summary">summary</a></code></b>
+              (<code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;SummaryOption&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.SummaryOption&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.SummaryOption">SummaryOption</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Whether to render summaries of namespaces, classes, functions (methods) and properties.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="mkdocstrings_handlers.matlab.config.MatlabOptions.filters" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">filters</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.config.MatlabOptions.filters" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="n">filters</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#tuple">tuple</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;re.Pattern&lt;/code&gt;" href="https://docs.python.org/3/library/re.html#re.Pattern">Pattern</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span><span class="p">]]</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;dataclasses.field&lt;/code&gt;" href="https://docs.python.org/3/library/dataclasses.html#dataclasses.field">field</a></span><span class="p">(</span>
+    <span class="n"><span title="dataclasses.field(default_factory)">default_factory</span></span><span class="o">=</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>A list of filters applied to filter objects based on their name.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="mkdocstrings_handlers.matlab.config.MatlabOptions.summary" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">summary</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.config.MatlabOptions.summary" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="n">summary</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;SummaryOption&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.SummaryOption&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.SummaryOption">SummaryOption</a></span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;dataclasses.field&lt;/code&gt;" href="https://docs.python.org/3/library/dataclasses.html#dataclasses.field">field</a></span><span class="p">(</span>
+    <span class="n"><span title="dataclasses.field(default_factory)">default_factory</span></span><span class="o">=</span><span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;SummaryOption&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.SummaryOption&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.SummaryOption">SummaryOption</a></span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Whether to render summaries of namespaces, classes, functions (methods) and properties.</p>
+
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mkdocstrings_handlers.matlab.config.MatlabOptions.coerce" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">coerce</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.config.MatlabOptions.coerce" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">coerce</span><span class="p">(</span><span class="o">**</span><span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions.coerce(**data)">data</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;collections.abc.MutableMapping&lt;/code&gt;" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.MutableMapping">MutableMapping</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Create an instance from a dictionary.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mkdocstrings_handlers.matlab.config.MatlabOptions.from_data" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">from_data</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.config.MatlabOptions.from_data" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">from_data</span><span class="p">(</span><span class="o">**</span><span class="n"><span title="mkdocstrings_handlers.matlab.config.MatlabOptions.from_data(**data)">data</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="typing_extensions.Self">Self</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Create an instance from a dictionary.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="mkdocstrings_handlers.matlab.config.NumpyStyleOptions" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">NumpyStyleOptions</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.config.NumpyStyleOptions" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">NumpyStyleOptions</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.NumpyStyleOptions(ignore_init_summary)">ignore_init_summary</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.NumpyStyleOptions(trim_doctest_flags)">trim_doctest_flags</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.NumpyStyleOptions(warn_unknown_params)">warn_unknown_params</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <p>Numpy style docstring options.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="mkdocstrings_handlers.matlab.config.PerStyleOptions" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">PerStyleOptions</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.config.PerStyleOptions" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">PerStyleOptions</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.PerStyleOptions(google)">google</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;GoogleStyleOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.GoogleStyleOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.GoogleStyleOptions">GoogleStyleOptions</a></span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;GoogleStyleOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.GoogleStyleOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.GoogleStyleOptions">GoogleStyleOptions</a></span><span class="p">(),</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.PerStyleOptions(numpy)">numpy</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;NumpyStyleOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.NumpyStyleOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.NumpyStyleOptions">NumpyStyleOptions</a></span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;NumpyStyleOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.NumpyStyleOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.NumpyStyleOptions">NumpyStyleOptions</a></span><span class="p">(),</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.PerStyleOptions(sphinx)">sphinx</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;SphinxStyleOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.SphinxStyleOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.SphinxStyleOptions">SphinxStyleOptions</a></span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-class&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-class-name&quot;&gt;SphinxStyleOptions&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-dataclass&quot;&gt;&lt;code&gt;dataclass&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.SphinxStyleOptions&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.SphinxStyleOptions">SphinxStyleOptions</a></span><span class="p">(),</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <p>Per style options.</p>
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-heading doc-symbol-method&quot;&gt;&lt;/code&gt;            &lt;span class=&quot;doc doc-object-name doc-function-name&quot;&gt;from_data&lt;/span&gt;
+
+
+  &lt;span class=&quot;doc doc-labels&quot;&gt;
+      &lt;small class=&quot;doc doc-label doc-label-classmethod&quot;&gt;&lt;code&gt;classmethod&lt;/code&gt;&lt;/small&gt;
+  &lt;/span&gt; (&lt;code&gt;mkdocstrings_handlers.matlab.config.PerStyleOptions.from_data&lt;/code&gt;)" href="#mkdocstrings_handlers.matlab.config.PerStyleOptions.from_data">from_data</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Create an instance from a dictionary.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mkdocstrings_handlers.matlab.config.PerStyleOptions.from_data" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">from_data</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.config.PerStyleOptions.from_data" class="headerlink" title="Permanent link">¤</a></h4>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">from_data</span><span class="p">(</span><span class="o">**</span><span class="n"><span title="mkdocstrings_handlers.matlab.config.PerStyleOptions.from_data(**data)">data</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="&lt;code&gt;typing.Any&lt;/code&gt;" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="typing_extensions.Self">Self</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Create an instance from a dictionary.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="mkdocstrings_handlers.matlab.config.SphinxStyleOptions" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">SphinxStyleOptions</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.config.SphinxStyleOptions" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">SphinxStyleOptions</span><span class="p">()</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <p>Sphinx style docstring options.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="mkdocstrings_handlers.matlab.config.SummaryOption" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">SummaryOption</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#mkdocstrings_handlers.matlab.config.SummaryOption" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">SummaryOption</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.SummaryOption(properties)">properties</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.SummaryOption(functions)">functions</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.SummaryOption(classes)">classes</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="mkdocstrings_handlers.matlab.config.SummaryOption(namespaces)">namespaces</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+
+        <p>Summary option.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../usage/docstrings/sphinx/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Sphinx">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Sphinx
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 Mark Shui Hu
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "search.highlight", "search.suggest", "toc.follow", "toc.integrate"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.56ea9cef.min.js"></script>
+      
+        <script src="../assets/_markdown_exec_pyodide.js"></script>
+      
+    
+  </body>
+</html>
