@@ -792,25 +792,24 @@ class AutorefsHook(AutorefsHookInterface):
             The context.
         """
         role = {
-            "property": "data"
-            if self.current_object.parent and self.current_object.parent.is_module
-            else "attr",
+            "property": "prop",
             "class": "class",
             "function": "meth"
             if self.current_object.parent and self.current_object.parent.is_class
             else "func",
-            "module": "mod",
+            "namespace": "name",
+            "script": "script",
         }.get(self.current_object.kind.value.lower(), "obj")
         origin = self.current_object.path
         try:
-            filepath = self.current_object.docstring.parent.filepath  # type: ignore[union-attr]
-            lineno = self.current_object.docstring.lineno or 0  # type: ignore[union-attr]
+            filepath = self.current_object.docstring.parent.filepath
+            lineno = self.current_object.docstring.lineno or 0
         except AttributeError:
             filepath = self.current_object.filepath
             lineno = 0
 
         return AutorefsHookInterface.Context(
-            domain="py",
+            domain="mat",
             role=role,
             origin=origin,
             filepath=str(filepath),
