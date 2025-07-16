@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v1.0.2 (2025-07-16)
+
+### Bug Fixes
+
+- Fix autoref for matlab domain ([#92](https://github.com/watermarkhu/mkdocstrings-matlab/pull/92),
+  [`fc8c299`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/fc8c299cd5ad8b92a8d9a0247caa41a966941423))
+
+
 ## v1.0.1 (2025-07-13)
 
 ### Bug Fixes
