@@ -26,6 +26,7 @@ classifiers = [
 ]
 
 dependencies = [
+    "griffe~=1.12.1",
     "maxx~=0.2.9",
     "mkdocstrings~=0.29",
     "mkdocs-autorefs~=1.4",
