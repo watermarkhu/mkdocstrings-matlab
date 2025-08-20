@@ -11,13 +11,6 @@ from dataclasses import replace
 from re import Pattern
 from typing import TYPE_CHECKING, Any, Callable, ClassVar, Literal
 
-from griffe._internal.docstrings.models import (
-    DocstringParameter,
-    DocstringReturn,
-    DocstringSectionOtherParameters,
-    DocstringSectionParameters,
-    DocstringSectionReturns,
-)
 from griffe import (
     AliasResolutionError,
     CyclicAliasError,
@@ -31,6 +24,13 @@ from griffe import (
     DocstringSectionFunctions,
     DocstringSectionModules,
     DocstringSectionText,
+)
+from griffe._internal.docstrings.models import (
+    DocstringParameter,
+    DocstringReturn,
+    DocstringSectionOtherParameters,
+    DocstringSectionParameters,
+    DocstringSectionReturns,
 )
 from jinja2 import pass_context
 from markupsafe import Markup
