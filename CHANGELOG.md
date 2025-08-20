@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v1.0.3 (2025-08-20)
+
+### Bug Fixes
+
+- Griffe import ([#95](https://github.com/watermarkhu/mkdocstrings-matlab/pull/95),
+  [`5258ad8`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/5258ad8b326906282c5e40f1f2b7da80178c8fee))
+
+
 ## v1.0.2 (2025-07-16)
 
 ### Bug Fixes
