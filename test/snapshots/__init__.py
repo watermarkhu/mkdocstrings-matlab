@@ -1,6 +1,8 @@
 """"""
 
-from inline_snapshot import external, snapshot
+from inline_snapshot import external, register_format_alias, snapshot
+
+register_format_alias(".html", ".txt")
 
 signature_show = snapshot(
     {
