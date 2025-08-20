@@ -11,7 +11,7 @@ from dataclasses import replace
 from re import Pattern
 from typing import TYPE_CHECKING, Any, Callable, ClassVar, Literal
 
-from _griffe.docstrings.models import (
+from griffe._internal.docstrings.models import (
     DocstringParameter,
     DocstringReturn,
     DocstringSectionOtherParameters,
