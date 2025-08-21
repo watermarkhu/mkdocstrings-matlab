@@ -1,5 +1,10 @@
 [
   {
+    "version": "pr-logo",
+    "title": "pr-logo",
+    "aliases": []
+  },
+  {
     "version": "pr-fix",
     "title": "pr-fix",
     "aliases": []
