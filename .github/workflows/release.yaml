@@ -36,7 +36,7 @@ jobs:
         git config --global user.email '${{ steps.get-user-id.outputs.user-id }}+${{ steps.app-token.outputs.app-slug }}[bot]@users.noreply.github.com'
 
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0
         ref: ${{ github.sha }}
@@ -106,7 +106,7 @@ jobs:
       id-token: write
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         ref: ${{ needs.release.outputs.tag }}
 
@@ -141,7 +141,7 @@ jobs:
       contents: write
     steps:
       - name: checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with: 
           fetch-depth: 0 # Required to push to the documentation branch
 
