@@ -1,6 +1,15 @@
 # CHANGELOG
 
 
+## v1.0.4 (2025-08-21)
+
+### Bug Fixes
+
+- Change logo to not infringe on mkdocs material
+  ([#96](https://github.com/watermarkhu/mkdocstrings-matlab/pull/96),
+  [`33252a0`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/33252a02642a3e9318ff9793068e8c985cd492fc))
+
+
 ## v1.0.3 (2025-08-20)
 
 ### Bug Fixes
