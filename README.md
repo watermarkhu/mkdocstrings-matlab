@@ -4,7 +4,7 @@
 
 <p align="center">A MATLAB handler for <a href="https://github.com/mkdocstrings/mkdocstrings"><i>mkdocstrings</i></a>.</p>
 
-<p align="center"><img width=300px src="logo.svg"></p>
+<p align="center"><img width=300px src="logo.png"></p>
 
 [![Qualify](https://github.com/watermarkhu/mkdocstrings-matlab/actions/workflows/qualify.yaml/badge.svg?branch=main)](https://github.com/watermarkhu/mkdocstrings-matlab/actions/workflows/qualify.yaml)
 [![documentation](https://img.shields.io/badge/docs-mkdocs-708FCC.svg?style=flat)](https://watermarkhu.nl/mkdocstrings-matlab)
