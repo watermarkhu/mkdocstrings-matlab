@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import logging
 
-from _griffe.docstrings import google, numpy
-from _griffe.enumerations import DocstringSectionKind
+from griffe._internal.docstrings import google, numpy
+from griffe._internal.enumerations import DocstringSectionKind
 
 from mkdocstrings_handlers.matlab.config import MatlabConfig, MatlabOptions
 from mkdocstrings_handlers.matlab.handler import MatlabHandler, get_handler

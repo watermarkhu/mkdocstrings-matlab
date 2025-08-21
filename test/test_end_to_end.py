@@ -8,9 +8,13 @@ from typing import TYPE_CHECKING, Any
 
 import bs4
 import pytest
-from inline_snapshot import outsource
+from inline_snapshot import outsource, register_format_alias
 
 from test import snapshots
+
+# Can be declared in conftest.py
+register_format_alias(".html", ".txt")
+
 
 if TYPE_CHECKING:
     from mkdocstrings_handlers.matlab import MatlabHandler
