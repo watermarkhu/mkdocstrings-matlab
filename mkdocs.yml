@@ -38,7 +38,8 @@ nav:
 
 theme:
   name: material
-  logo: logo.svg
+  logo: logo.png
+  favicon: favicon.png
   custom_dir: docs/overrides
   features:
   - announce.dismiss
