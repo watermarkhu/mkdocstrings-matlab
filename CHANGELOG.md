@@ -1,6 +1,15 @@
 # CHANGELOG
 
 
+## v1.0.5 (2025-08-26)
+
+### Chores
+
+- **deps**: Update dependency griffe to ~=1.13.0
+  ([#97](https://github.com/watermarkhu/mkdocstrings-matlab/pull/97),
+  [`c038517`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/c0385175964145f48318cf8a8078a8c9663aaae7))
+
+
 ## v1.0.4 (2025-08-21)
 
 ### Bug Fixes
