@@ -1,6 +1,15 @@
 # CHANGELOG
 
 
+## v1.0.6 (2025-08-29)
+
+### Chores
+
+- **deps**: Update dependency maxx to ~=0.3.0
+  ([#98](https://github.com/watermarkhu/mkdocstrings-matlab/pull/98),
+  [`57d3711`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/57d371186eb4b28cd27c3f1824104e3646cc093a))
+
+
 ## v1.0.5 (2025-08-26)
 
 ### Chores
