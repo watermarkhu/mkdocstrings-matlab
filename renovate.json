@@ -8,7 +8,14 @@
         {
           "groupName": "group-github-actions",
           "description": "Group GitHub Action updates",
-          "matchManagers": ["github-actions"]
+          "matchManagers": ["github-actions"],
+          "semanticCommitType": "chore"
+        },
+        {
+          "groupName": "group-pyproject-toml",
+          "description": "Group pyproject.toml dependency updates",
+          "matchFiles": ["pyproject.toml"],
+          "semanticCommitType": "chore"
         }
     ]
 }
