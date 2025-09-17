@@ -4,7 +4,7 @@ site_url: "https://watermarkhu.nl/mkdocstrings-matlab"
 repo_url: "https://github.com/watermarkhu/mkdocstrings-matlab"
 repo_name: "watermarkhu/mkdocstrings-matlab"
 watch: [mkdocs.yml, README.md, src/mkdocstrings_handlers]
-copyright: Copyright &copy; 2024 Mark Shui Hu
+copyright: Copyright &copy; 2025 Mark Shui Hu
 edit_uri: edit/main/docs/
 
 validation:
@@ -16,8 +16,9 @@ nav:
 - Home:
   - Overview: index.md
   - Changelog: changelog.md
+  - Contributing: contributing.md
   - Credits: credits.md
-  - License: license.md
+  - License: license-page.md
 - Usage:
   - usage/index.md
   - Configuration options:
