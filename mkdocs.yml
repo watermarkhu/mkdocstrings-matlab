@@ -18,7 +18,7 @@ nav:
   - Changelog: changelog.md
   - Contributing: contributing.md
   - Credits: credits.md
-  - License: license.md
+  - License: license-page.md
 - Usage:
   - usage/index.md
   - Configuration options:
