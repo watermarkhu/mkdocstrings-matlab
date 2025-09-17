@@ -1,6 +1,15 @@
 # CHANGELOG
 
 
+## v1.0.7 (2025-09-17)
+
+### Chores
+
+- **deps**: Update group-pyproject-toml
+  ([#102](https://github.com/watermarkhu/mkdocstrings-matlab/pull/102),
+  [`2271a6d`](https://github.com/watermarkhu/mkdocstrings-matlab/commit/2271a6ddf73a2fe9ba6b7c58368f4e00a8b49365))
+
+
 ## v1.0.6 (2025-08-29)
 
 ### Chores
