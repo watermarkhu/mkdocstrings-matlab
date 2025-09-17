@@ -15,7 +15,7 @@ jobs:
     name: Semantic version release
     runs-on: ubuntu-latest
     outputs:
-      released: ${{ steps.semantic-release.outputs.released }}
+      released: ${{ steps.semantic-release.outputs.version != steps.semantic-release.outputs.previous_version }}
       tag: ${{ steps.semantic-release.outputs.tag }}
 
     steps:
