@@ -128,16 +128,16 @@ headings_namespace = snapshot(
 toc = snapshot(
     {
         (("show_root_toc_entry", False), ("show_symbol_type_toc", True)): external(
-            "9bd9ef72e296*.html"
+            "hash:f414b6cca720*.html"
         ),
         (("show_root_toc_entry", False), ("show_symbol_type_toc", False)): external(
-            "ef04d31ceca7*.html"
+            "hash:93981acd16ef*.html"
         ),
         (("show_root_toc_entry", True), ("show_symbol_type_toc", False)): external(
-            "f7dbef29e273*.html"
+            "hash:3b1fde5dcd20*.html"
         ),
         (("show_root_toc_entry", True), ("show_symbol_type_toc", True)): external(
-            "362705d62d57*.html"
+            "hash:be1304cf4315*.html"
         ),
     }
 )
@@ -300,13 +300,13 @@ members_class = snapshot(
             ("inherited_members", True),
             ("private_members", False),
             ("show_attributes", True),
-        ): external("dfbf8a2bdc12*.html"),
+        ): external("hash:7970f63ac5c2*.html"),
         (
             ("hidden_members", True),
             ("inherited_members", True),
             ("private_members", False),
             ("show_attributes", False),
-        ): external("d04b41ff753f*.html"),
+        ): external("hash:c63c5c60b7fb*.html"),
         (
             ("hidden_members", True),
             ("inherited_members", False),
@@ -372,13 +372,13 @@ members_class = snapshot(
             ("inherited_members", True),
             ("private_members", False),
             ("show_attributes", True),
-        ): external("9ec2f8446a3b*.html"),
+        ): external("hash:7ba5401b8186*.html"),
         (
             ("hidden_members", False),
             ("inherited_members", True),
             ("private_members", False),
             ("show_attributes", False),
-        ): external("f9c4d8a117d5*.html"),
+        ): external("hash:546b3bd89095*.html"),
         (
             ("hidden_members", True),
             ("inherited_members", False),

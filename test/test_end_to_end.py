@@ -146,9 +146,7 @@ def test_end_to_end_headings_namespace(
 @pytest.mark.parametrize("show_root_toc_entry", [True, False])
 @pytest.mark.parametrize("show_symbol_type_toc", [True, False])
 def test_end_to_end_toc(
-    session_handler: "MatlabHandler",
-    show_root_toc_entry: bool,
-    show_symbol_type_toc: bool,
+    session_handler: "MatlabHandler", show_root_toc_entry: bool, show_symbol_type_toc: bool
 ) -> None:
     final_options = {
         "show_root_toc_entry": show_root_toc_entry,
