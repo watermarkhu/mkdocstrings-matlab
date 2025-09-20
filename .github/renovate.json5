@@ -17,5 +17,8 @@
           "matchFiles": ["pyproject.toml"],
           "semanticCommitType": "chore"
         }
-    ]
+    ],
+    "pre-commit": {
+        "enabled": true
+    }
 }
