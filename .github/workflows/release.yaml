@@ -62,7 +62,7 @@ jobs:
       shell: bash
       env:
         GH_TOKEN: ${{ steps.app-token.outputs.token }}
-      run: 
+      run: |
         LAST_TAG=$(uv run semantic-release --noop version --print-last-released-tag)
         NEXT_TAG=$(uv run semantic-release --noop version --print-tag)
         if [ "$LAST_TAG" != "$NEXT_TAG" ]; then
