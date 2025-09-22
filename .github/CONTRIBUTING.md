@@ -12,15 +12,15 @@ uv sync --all-groups
 
 Learn more about uv: [uv documentation](https://github.com/astral-sh/uv)
 
-## 2. Pre-commit Hooks
+## 2. Pre-commit Hooks using prek
 
-Set up [pre-commit](https://pre-commit.com/) hooks to ensure code quality:
+Set up [prek](https://github.com/j178/prek) hooks to ensure code quality:
 
 ```sh
-uv run pre-commit install
+uv run prek install
 ```
 
-See: [pre-commit documentation](https://pre-commit.com/)
+See: [prek documentation](https://prek.j178.dev/)
 
 ## 3. Running Tests
 
