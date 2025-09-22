@@ -84,7 +84,7 @@ jobs:
 
   comment:
     name: Create or update comment
-    if: github.event.pull_request.merged == false
+    if: needs.release.outputs.released && !github.event.pull_request.merged 
     needs: release
     runs-on: ubuntu-latest
     permissions:
