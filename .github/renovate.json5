@@ -3,10 +3,6 @@
   extends: [
     "config:recommended",
   ],
-  "enabledManagers": {
-    // Disable poetry and let the PEP621 manager handle pyproject.toml
-    "poetry": false 
-  },
   automerge: true,
   semanticCommits: "enabled",
   branchPrefix: "renovate-",
@@ -84,4 +80,8 @@
   "pre-commit": {
     enabled: true,
   },
+  // Disable poetry and let the PEP621 manager handle pyproject.toml
+  "poetry": {
+    "enabled": false
+  }
 }
