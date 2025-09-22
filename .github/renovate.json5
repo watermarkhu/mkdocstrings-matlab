@@ -1,80 +1,80 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'config:recommended',
   ],
-  "automerge": true,
-  "semanticCommits": "enabled",
-  "branchPrefix": "renovate-",
-  "packageRules": [
+  automerge: true,
+  semanticCommits: 'enabled',
+  branchPrefix: 'renovate-',
+  packageRules: [
     {
-      "groupName": "group-github-actions",
-      "description": "Group GitHub Action updates",
-      "matchManagers": [
-        "github-actions"
+      groupName: 'group-github-actions',
+      description: 'Group GitHub Action updates',
+      matchManagers: [
+        'github-actions',
       ],
-      "semanticCommitType": "ci",
-      "semanticCommitScope": "deps"
+      semanticCommitType: 'ci',
+      semanticCommitScope: 'deps',
     },
     {
-      "groupName": "group-pre-commit",
-      "description": "Group pre-commit hook updates",
-      "matchManagers": [
-        "pre-commit"
+      groupName: 'group-pre-commit',
+      description: 'Group pre-commit hook updates',
+      matchManagers: [
+        'pre-commit',
       ],
-      "semanticCommitType": "build",
-      "semanticCommitScope": "deps"
+      semanticCommitType: 'build',
+      semanticCommitScope: 'deps',
     },
     {
-      "groupName": "group-pyproject",
-      "description": "Group dependency updates from pyproject.toml",
-      "matchFiles": [
-        "pyproject.toml"
+      groupName: 'group-pyproject',
+      description: 'Group dependency updates from pyproject.toml',
+      matchFileNames: [
+        'pyproject.toml',
       ],
-      "semanticCommitType": "chore",
-      "semanticCommitScope": "deps"
+      semanticCommitType: 'chore',
+      semanticCommitScope: 'deps',
     },
     {
-      "groupName": "group-pyproject-dev",
-      "description": "Group dev dependency updates from pyproject.toml",
-      "matchFiles": [
-        "pyproject.toml"
+      groupName: 'group-pyproject-dev',
+      description: 'Group dev dependency updates from pyproject.toml',
+      matchFileNames: [
+        'pyproject.toml',
       ],
-      "matchPackageNames": [
-        "ty",
-        "prek",
-        "ruff",
-        "pydantic",
-        "pytest",
-        "pytest-cov",
-        "beautifulsoup4",
-        "inline-snapshot",
-        "python-semantic-release"
+      matchPackageNames: [
+        'ty',
+        'prek',
+        'ruff',
+        'pydantic',
+        'pytest',
+        'pytest-cov',
+        'beautifulsoup4',
+        'inline-snapshot',
+        'python-semantic-release',
       ],
-      "semanticCommitType": "build",
-      "semanticCommitScope": "deps"
+      semanticCommitType: 'build',
+      semanticCommitScope: 'deps',
     },
     {
-      "groupName": "group-pyproject-docs",
-      "description": "Group docs dependency updates from pyproject.toml",
-      "matchFiles": [
-        "pyproject.toml"
+      groupName: 'group-pyproject-docs',
+      description: 'Group docs dependency updates from pyproject.toml',
+      matchFileNames: [
+        'pyproject.toml',
       ],
-      "matchPackageNames": [
-        "pygments",
-        "mkdocs-material",
-        "mkdocstrings-python",
-        "markdown-exec",
-        "mkdocs-callouts",
-        "mkdocs-git-revision-date-localized-plugin",
-        "mkdocs-minify-plugin",
-        "mike"
+      matchPackageNames: [
+        'pygments',
+        'mkdocs-material',
+        'mkdocstrings-python',
+        'markdown-exec',
+        'mkdocs-callouts',
+        'mkdocs-git-revision-date-localized-plugin',
+        'mkdocs-minify-plugin',
+        'mike',
       ],
-      "semanticCommitType": "docs",
-      "semanticCommitScope": "deps"
-    }
+      semanticCommitType: 'docs',
+      semanticCommitScope: 'deps',
+    },
   ],
-  "pre-commit": {
-    "enabled": true
-  }
+  'pre-commit': {
+    enabled: true,
+  },
 }
