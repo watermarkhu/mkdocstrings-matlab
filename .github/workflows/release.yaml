@@ -15,8 +15,8 @@ jobs:
     name: Semantic version release
     runs-on: ubuntu-latest
     outputs:
-      released: ${{ steps.semantic-release.outputs.version != steps.semantic-release.outputs.previous_version }}
-      tag: ${{ steps.semantic-release.outputs.tag }}
+      released: ${{ steps.get-version.outputs.released == 'true' }}
+      next-tag: ${{ steps.get-version.outputs.next-tag }}
 
     steps:
     - uses: actions/create-github-app-token@v2
@@ -47,18 +47,40 @@ jobs:
       run: |
         git checkout -B ${{ github.ref_name }} ${{ github.sha }}
 
-    - name: Update version and changelogs
-      id: semantic-release
-      uses: python-semantic-release/python-semantic-release@v10
-      with: 
-        build: false
-        changelog: true
-        commit: true
-        push: true
-        tag: true
-        vcs_release: true
-        github_token: ${{ steps.app-token.outputs.token }}
-        no_operation_mode: ${{ !github.event.pull_request.merged }}
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v6
+      with:
+        version: "latest"
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        uv sync --all-groups
+
+    - name: Get check version
+      id: get-version
+      shell: bash
+      env:
+        GH_TOKEN: ${{ steps.app-token.outputs.token }}
+      run: 
+        LAST_TAG=$(uv run semantic-release --noop version --print-last-released-tag)
+        NEXT_TAG=$(uv run semantic-release --noop version --print-tag)
+        if [ "$LAST_TAG" != "$NEXT_TAG" ]; then
+          RELEASED=true
+        else
+          RELEASED=false
+        fi
+        echo "last-tag=$LAST_TAG" >> $GITHUB_OUTPUT
+        echo "next-tag=$NEXT_TAG" >> $GITHUB_OUTPUT
+        echo "released=$RELEASED" >> $GITHUB_OUTPUT
+
+    - name: Create release
+      if: github.event.pull_request.merged && steps.get-version.outputs.released == 'true'
+      shell: bash
+      env:
+        GH_TOKEN: ${{ steps.app-token.outputs.token }}
+      run: |
+        uv run semantic-release -v version --commit --tag --push --changelog --vcs-release --skip-build
 
   comment:
     name: Create or update comment
@@ -82,7 +104,7 @@ jobs:
       with:
         issue-number: ${{ github.event.pull_request.number }}
         body: |
-          Next release: `${{ needs.release.outputs.tag }}`
+          Next release: `${{ needs.release.outputs.next-tag }}`
           <!-- This comment was written by a bot! -->
           
     - name: Update comment
@@ -92,7 +114,7 @@ jobs:
         comment-id: ${{ steps.fc.outputs.comment-id }}
         edit-mode: replace
         body: |
-          Next release: `${{ needs.release.outputs.tag }}`
+          Next release: `${{ needs.release.outputs.next-tag }}`
           <!-- This comment was written by a bot! -->
 
   deploy: 
@@ -108,7 +130,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v5
       with:
-        ref: ${{ needs.release.outputs.tag }}
+        ref: ${{ needs.release.outputs.next-tag }}
 
     - name: Install the latest version of uv
       uses: astral-sh/setup-uv@v6
@@ -125,7 +147,7 @@ jobs:
       id: publish-dist
       uses: softprops/action-gh-release@v2
       with:
-        tag_name: ${{ needs.release.outputs.tag }}
+        tag_name: ${{ needs.release.outputs.next-tag }}
         files: |
           dist/*.whl
           dist/*.tar.gz
@@ -183,8 +205,8 @@ jobs:
       contents: write
     secrets: inherit
     with:
-      version: ${{ needs.release.outputs.tag }}
+      version: ${{ needs.release.outputs.next-tag }}
       alias: latest
       set-default: true
-      ref: ${{ needs.release.outputs.tag }}
+      ref: ${{ needs.release.outputs.next-tag }}
       push: true
