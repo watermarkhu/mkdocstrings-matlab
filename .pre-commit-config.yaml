@@ -2,7 +2,7 @@ fail_fast: false
 
 repos:
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.7.3
+    rev: 0.8.19
     hooks:
       - id: uv-lock
 
