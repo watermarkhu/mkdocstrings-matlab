@@ -114,6 +114,11 @@ version_toml = [
     "pyproject.toml:project.version",
 ]
 
+[tool.semantic_release.branches.main]
+match = "(?s).*"
+prerelease_token = "rc"
+prerelease = false
+
 [tool.semantic_release.commit_parser_options]
 patch_tags = ["fix", "perf", "chore"]
 

@@ -65,10 +65,10 @@ jobs:
       run: |
         LAST_TAG=$(uv run semantic-release --noop version --print-last-released-tag)
         NEXT_TAG=$(uv run semantic-release --noop version --print-tag)
-        if [ "$LAST_TAG" != "$NEXT_TAG" ]; then
-          RELEASED=true
-        else
+        if [ "$LAST_TAG" == "$NEXT_TAG" ] || [ -z "$NEXT_TAG" ]; then
           RELEASED=false
+        else
+          RELEASED=true
         fi
         echo "last-tag=$LAST_TAG" >> $GITHUB_OUTPUT
         echo "next-tag=$NEXT_TAG" >> $GITHUB_OUTPUT
