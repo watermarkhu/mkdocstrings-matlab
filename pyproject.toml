@@ -41,13 +41,13 @@ pygments = { git = "https://github.com/watermarkhu/pygments", branch = "matlab" 
 dev = [
     "ty~=0.0.1a19",
     "prek>=0.2.1",
-    "ruff~=0.12.9",
+    "ruff~=0.13.1",
     "pydantic~=2.10",
     "pytest~=8.4.1",
-    "pytest-cov~=6.2.1",
+    "pytest-cov~=6.3.0",
     "beautifulsoup4>=4.13.3",
-    "inline-snapshot~=0.27.2",
-    "python-semantic-release~=10.3.0",
+    "inline-snapshot~=0.29.0",
+    "python-semantic-release~=10.4.1",
 ]
 docs = [
     "pygments",
