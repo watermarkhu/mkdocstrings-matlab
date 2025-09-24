@@ -1,24 +1,10 @@
 fail_fast: false
 
 repos:
-  - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.8.22
-    hooks:
-      - id: uv-lock
-
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
       - id: check-merge-conflict
-
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.13.1
-    hooks:
-      - id: ruff-format
-      - id: ruff
-        args: [--fix, --exit-non-zero-on-fix]
-        types_or: [python, pyi]
-        require_serial: true
 
   - repo: https://github.com/abravalheri/validate-pyproject
     rev: v0.24.1
@@ -27,7 +13,24 @@ repos:
 
   - repo: local
     hooks:
+      - id: uv
+        name: uv-lock
+        entry: uv lock
+        language: python
+        files: ^(uv\.lock|pyproject\.toml|uv\.toml)$
+        pass_filenames: false
+      - id: ruff-check
+        name: ruff check
+        entry: uv run ruff check --fix --exit-non-zero-on-fix
+        language: python
+        types_or: [python, pyi, jupyter]
+      - id: ruff-format
+        name: ruff format
+        entry: uv run ruff format --force-exclude
+        language: python
+        types_or: [python, pyi, jupyter]
       - id: ty
         name: ty check
-        entry: uvx ty check . --ignore unresolved-import
+        entry: uv run ty check . --ignore unresolved-import
         language: python
+        types_or: [python, pyi, jupyter]
