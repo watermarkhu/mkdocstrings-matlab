@@ -154,7 +154,7 @@ Context:
 
           This block renders the docstring for the class.
           -#}
-          {% with docstring_sections = class.docstring.parsed %}
+          {% with docstring_sections = class.docstring | parse_docstring(config.docstring_style, config.docstring_options) %}
             {% include "docstring.html.jinja" with context %}
           {% endwith %}
           {% if config.merge_constructor_into_class and class.constructor %}
@@ -163,7 +163,7 @@ Context:
             {% with check_members = all_members if (config.inherited_members is true or (config.inherited_members is iterable and class.constructor.name in config.inherited_members)) else class.members %}
               {% if class.constructor.name in check_members and class.constructor.has_docstring %}
                 {% with function = class.constructor %}
-                  {% with obj = function, docstring_sections = function | function_docstring(config.parse_arguments, config.show_docstring_input_arguments, config.show_docstring_name_value_arguments, config.show_docstring_output_arguments) %}
+                  {% with obj = function, docstring_sections = function | function_docstring(config.parse_arguments, config.show_docstring_input_arguments, config.show_docstring_name_value_arguments, config.show_docstring_output_arguments, config.docstring_style, config.docstring_options) %}
                     {% include "docstring.html.jinja" with context %}
                   {% endwith %}
                 {% endwith %}

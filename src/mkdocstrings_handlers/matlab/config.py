@@ -7,6 +7,7 @@ import sys
 from dataclasses import field, fields
 from typing import TYPE_CHECKING, Annotated, Any, Literal
 
+from griffe._internal.docstrings.parsers import DocstringStyle
 from mkdocstrings import get_logger
 
 # YORE: EOL 3.10: Replace block with line 2.
@@ -358,12 +359,12 @@ class MatlabInputOptions:
     ] = "table"
 
     docstring_style: Annotated[
-        Literal["google", "numpy", "sphinx"] | None,
+        DocstringStyle | None,
         Field(
             group="docstrings",
-            description="The docstring style to use: `google`, `numpy`, `sphinx`, or `None`.",
+            description="The docstring style to use: `auto`, `google`, `numpy`, `sphinx`, or `None`.",
         ),
-    ] = "google"
+    ] = "auto"
 
     parse_arguments: Annotated[
         bool,
