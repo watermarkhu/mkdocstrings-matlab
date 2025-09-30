@@ -230,6 +230,7 @@ def test_matlab_specific_filters(handler: MatlabHandler) -> None:
         "filter_objects",
         "stash_crossref",
         "get_template",
+        "parse_docstring",
         "function_docstring",
         "as_properties_section",
         "as_functions_section",

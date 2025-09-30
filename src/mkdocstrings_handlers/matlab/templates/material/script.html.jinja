@@ -85,7 +85,7 @@ Context:
           
           This block renders the docstring for the script.
           -#}
-          {% with docstring_sections = script.docstring.parsed %}
+          {% with docstring_sections = script.docstring | parse_docstring(config.docstring_style, config.docstring_options) %}
             {% include "docstring.html.jinja" with context %}
           {% endwith %}
         {% endblock docstring %}

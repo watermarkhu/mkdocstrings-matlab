@@ -114,7 +114,7 @@ Context:
 
           This block renders the docstring for the function.
           -#}
-          {% with docstring_sections = function | function_docstring(config.parse_arguments, config.show_docstring_input_arguments, config.show_docstring_name_value_arguments, config.show_docstring_output_arguments) %}
+          {% with docstring_sections = function | function_docstring(config.parse_arguments, config.show_docstring_input_arguments, config.show_docstring_name_value_arguments, config.show_docstring_output_arguments, config.docstring_style, config.docstring_options) %}
             {% include "docstring.html.jinja" with context %}
           {% endwith %}
         {% endblock docstring %}

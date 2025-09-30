@@ -6,15 +6,23 @@ register_format_alias(".html", ".txt")
 
 signature_show = snapshot(
     {
-        (("identifier", "classFolder"), ("show_signature", True)): external("9bdbcd111c2c*.html"),
-        (("identifier", "moduleClass"), ("show_signature", False)): external("0dc4897f65cf*.html"),
-        (("identifier", "classFolder"), ("show_signature", False)): external("92b0fb53d670*.html"),
-        (("identifier", "moduleClass"), ("show_signature", True)): external("7589cda3f729*.html"),
         (("identifier", "module_function"), ("show_signature", True)): external(
             "da2df1c0e3d9*.html"
         ),
         (("identifier", "module_function"), ("show_signature", False)): external(
             "d3f96b8d107b*.html"
+        ),
+        (("identifier", "moduleClass"), ("show_signature", True)): external(
+            "hash:7589cda3f729*.html"
+        ),
+        (("identifier", "moduleClass"), ("show_signature", False)): external(
+            "hash:0dc4897f65cf*.html"
+        ),
+        (("identifier", "classFolder"), ("show_signature", True)): external(
+            "hash:9bdbcd111c2c*.html"
+        ),
+        (("identifier", "classFolder"), ("show_signature", False)): external(
+            "hash:92b0fb53d670*.html"
         ),
     }
 )
@@ -144,17 +152,27 @@ toc = snapshot(
 
 members = snapshot(
     {
-        (("filters", False), ("members", True), ("members_order", "alphabetical")): external(
-            "hash:cd9476a4d9e9*.html"
-        ),
         (("filters", False), ("members", False), ("members_order", "source")): external(
             "hash:8aeecc7e575c*.html"
         ),
         (("filters", False), ("members", False), ("members_order", "alphabetical")): external(
             "hash:6fe7ef6969cc*.html"
         ),
-        (("filters", False), ("members", True), ("members_order", "source")): external(
-            "hash:7130f7ac88be*.html"
+        (
+            ("filters", ("!method1",)),
+            ("members", False),
+            ("members_order", "alphabetical"),
+        ): external("hash:b360046d413f*.html"),
+        (("filters", ("!method1",)), ("members", False), ("members_order", "source")): external(
+            "hash:abc017eefa9d*.html"
+        ),
+        (
+            ("filters", ("method*",)),
+            ("members", False),
+            ("members_order", "alphabetical"),
+        ): external("hash:bcbbdfbe7a0f*.html"),
+        (("filters", ("method*",)), ("members", False), ("members_order", "source")): external(
+            "hash:b42f328b72ea*.html"
         ),
         (
             ("filters", ("!method1",)),
@@ -175,14 +193,6 @@ members = snapshot(
             "hash:7f035d40c198*.html"
         ),
         (
-            ("filters", ("!method1",)),
-            ("members", False),
-            ("members_order", "alphabetical"),
-        ): external("hash:b360046d413f*.html"),
-        (("filters", ("!method1",)), ("members", False), ("members_order", "source")): external(
-            "hash:abc017eefa9d*.html"
-        ),
-        (
             ("filters", ("method*",)),
             ("members", ("method1",)),
             ("members_order", "alphabetical"),
@@ -199,20 +209,18 @@ members = snapshot(
             "hash:568c966787a0*.html"
         ),
         (
-            ("filters", ("method*",)),
-            ("members", False),
-            ("members_order", "alphabetical"),
-        ): external("hash:bcbbdfbe7a0f*.html"),
-        (("filters", ("method*",)), ("members", False), ("members_order", "source")): external(
-            "hash:b42f328b72ea*.html"
-        ),
-        (
             ("filters", False),
             ("members", ("method1",)),
             ("members_order", "alphabetical"),
         ): external("hash:510cec1edd58*.html"),
         (("filters", False), ("members", ("method1",)), ("members_order", "source")): external(
             "hash:01ca7e807eab*.html"
+        ),
+        (("filters", False), ("members", True), ("members_order", "alphabetical")): external(
+            "hash:cd9476a4d9e9*.html"
+        ),
+        (("filters", False), ("members", True), ("members_order", "source")): external(
+            "hash:7130f7ac88be*.html"
         ),
     }
 )
@@ -399,28 +407,43 @@ docstring_arguments = snapshot(
         (
             ("docstring_section_style", "table"),
             ("parse_arguments", True),
+            ("show_docstring_examples", True),
+        ): external("hash:201baee4ccea*.html"),
+        (
+            ("docstring_section_style", "table"),
+            ("parse_arguments", False),
+            ("show_docstring_examples", True),
+        ): external("hash:f5a8a9d05580*.html"),
+        (
+            ("docstring_section_style", "table"),
+            ("parse_arguments", True),
             ("show_docstring_examples", False),
         ): external("hash:433d68533719*.html"),
-        (
-            ("docstring_section_style", "list"),
-            ("parse_arguments", False),
-            ("show_docstring_examples", True),
-        ): external("hash:5ef4a55b645c*.html"),
-        (
-            ("docstring_section_style", "spacy"),
-            ("parse_arguments", False),
-            ("show_docstring_examples", True),
-        ): external("hash:5958a350dfbc*.html"),
         (
             ("docstring_section_style", "table"),
             ("parse_arguments", False),
             ("show_docstring_examples", False),
         ): external("hash:368f6d810e73*.html"),
         (
-            ("docstring_section_style", "spacy"),
+            ("docstring_section_style", "list"),
+            ("parse_arguments", True),
+            ("show_docstring_examples", True),
+        ): external("hash:ba50d6df9b5c*.html"),
+        (
+            ("docstring_section_style", "list"),
+            ("parse_arguments", False),
+            ("show_docstring_examples", True),
+        ): external("hash:5ef4a55b645c*.html"),
+        (
+            ("docstring_section_style", "list"),
+            ("parse_arguments", True),
+            ("show_docstring_examples", False),
+        ): external("hash:1271356810fe*.html"),
+        (
+            ("docstring_section_style", "list"),
             ("parse_arguments", False),
             ("show_docstring_examples", False),
-        ): external("hash:3307c670266e*.html"),
+        ): external("hash:ba986803c9e1*.html"),
         (
             ("docstring_section_style", "spacy"),
             ("parse_arguments", True),
@@ -428,34 +451,19 @@ docstring_arguments = snapshot(
         ): external("hash:d75158ca9780*.html"),
         (
             ("docstring_section_style", "spacy"),
+            ("parse_arguments", False),
+            ("show_docstring_examples", True),
+        ): external("hash:5958a350dfbc*.html"),
+        (
+            ("docstring_section_style", "spacy"),
             ("parse_arguments", True),
             ("show_docstring_examples", False),
         ): external("hash:3e7bbbc8686f*.html"),
         (
-            ("docstring_section_style", "list"),
+            ("docstring_section_style", "spacy"),
             ("parse_arguments", False),
             ("show_docstring_examples", False),
-        ): external("hash:ba986803c9e1*.html"),
-        (
-            ("docstring_section_style", "table"),
-            ("parse_arguments", False),
-            ("show_docstring_examples", True),
-        ): external("hash:f5a8a9d05580*.html"),
-        (
-            ("docstring_section_style", "list"),
-            ("parse_arguments", True),
-            ("show_docstring_examples", False),
-        ): external("hash:1271356810fe*.html"),
-        (
-            ("docstring_section_style", "table"),
-            ("parse_arguments", True),
-            ("show_docstring_examples", True),
-        ): external("hash:201baee4ccea*.html"),
-        (
-            ("docstring_section_style", "list"),
-            ("parse_arguments", True),
-            ("show_docstring_examples", True),
-        ): external("hash:ba50d6df9b5c*.html"),
+        ): external("hash:3307c670266e*.html"),
     }
 )
 docstring_class = snapshot(

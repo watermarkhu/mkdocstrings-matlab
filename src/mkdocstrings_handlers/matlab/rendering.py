@@ -14,6 +14,7 @@ from typing import TYPE_CHECKING, Any, Callable, ClassVar, Literal
 from griffe import (
     AliasResolutionError,
     CyclicAliasError,
+    Docstring,
     DocstringAttribute,
     DocstringClass,
     DocstringFunction,
@@ -32,6 +33,7 @@ from griffe._internal.docstrings.models import (
     DocstringSectionParameters,
     DocstringSectionReturns,
 )
+from griffe._internal.docstrings.parsers import DocstringStyle, parse
 from jinja2 import pass_context
 from markupsafe import Markup
 from maxx.enums import ArgumentKind
@@ -612,17 +614,30 @@ def do_as_namespaces_section(
     )
 
 
+def do_parse_docstring(
+    docstring: Docstring | None,
+    docstring_style: DocstringStyle,
+    docstring_options: dict[str, Any] | None,
+) -> list[DocstringSection]:
+    if docstring is None:
+        return []
+    options = docstring_options or {}
+    return parse(docstring, docstring_style, **options)
+
+
 def do_function_docstring(
     function: Function,
     parse_arguments: bool,
     show_docstring_input_arguments: bool,
     show_docstring_name_value_arguments: bool,
     show_docstring_output_arguments: bool,
+    docstring_style: DocstringStyle,
+    docstring_options: dict[str, Any] | None,
 ) -> list[DocstringSection]:
     if function.docstring is None:
         return []
 
-    docstring_sections = [section for section in function.docstring.parsed]
+    docstring_sections = do_parse_docstring(function.docstring, docstring_style, docstring_options)
     if not parse_arguments or not (
         show_docstring_input_arguments
         or show_docstring_name_value_arguments
