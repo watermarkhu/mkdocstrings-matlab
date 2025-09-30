@@ -604,6 +604,7 @@ docstring_style = snapshot(
         (("docstring_style", "google"),): external("hash:f55d6bb2445a*.html"),
         (("docstring_style", "numpy"),): external("hash:bc31b4ef3ece*.html"),
         (("docstring_style", None),): external("hash:c0e27b1c2fd2*.html"),
+        (("docstring_style", "sphinx"),): external("hash:56d44149e879*.html"),
     }
 )
 

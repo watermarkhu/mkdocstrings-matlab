@@ -6,14 +6,13 @@ toc_depth: 2
 
 ## `docstring_style`
 
-- **:octicons-package-24: Type [`str`][] :material-equal: `"auto"`{ title="default value" }**
+- **:octicons-package-24: Type [`str`][] :material-equal: `"google"`{ title="default value" }**
 <!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
 
 The docstring style to expect when parsing docstrings.
 
 Possible values:
 
-- `"auto"`: Automatically detemine the docstring style.
 - `"google"`: see [Google style](../docstrings/google.md).
 - `"numpy"`: see [Numpy style](../docstrings/numpy.md).
 - `"sphinx"`: see [Sphinx style](../docstrings/sphinx.md).

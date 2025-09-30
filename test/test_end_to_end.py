@@ -262,7 +262,7 @@ def test_end_to_end_docstring_arguments(
     assert outsource(html, suffix=".html") == snapshots.docstring_arguments[snapshot_key]
 
 
-@pytest.mark.parametrize("docstring_style", ["google", "numpy", None])
+@pytest.mark.parametrize("docstring_style", ["google", "numpy", "sphinx", None])
 def test_end_to_end_docstring_style(
     session_handler: "MatlabHandler",
     docstring_style: str | None,
