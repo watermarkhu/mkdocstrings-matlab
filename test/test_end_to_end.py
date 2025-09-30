@@ -272,7 +272,6 @@ def test_end_to_end_docstring_style(
     }
     html = _render(session_handler, "forced_docstring", final_options)
     snapshot_key = tuple(sorted(final_options.items()))
-    print(snapshot_key, final_options, html)
     assert outsource(html, suffix=".html") == snapshots.docstring_style[snapshot_key]
 
 
