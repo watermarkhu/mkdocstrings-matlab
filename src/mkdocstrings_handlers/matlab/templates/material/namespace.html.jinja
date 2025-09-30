@@ -82,7 +82,7 @@ Context:
 
           This block renders the docstring for the namespace.
           -#}
-          {% with docstring_sections = namespace.docstring | parse_docstring(config.docstring_style, config.docstring_options)  %}
+          {% with docstring_sections = namespace.docstring | parse_docstring(config.docstring_style, config.docstring_options) %}
             {% include "docstring.html.jinja" with context %}
           {% endwith %}
         {% endblock docstring %}
