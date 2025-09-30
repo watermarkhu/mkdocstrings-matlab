@@ -47,6 +47,10 @@ def _render(handler: "MatlabHandler", identifier: str, final_options: dict[str, 
     options = handler.get_options(handler_options)
     data = handler.collect(identifier, options)
 
+    if data.docstring:
+        if "parsed" in data.docstring.__dict__:
+            del data.docstring.__dict__["parsed"]
+
     html = handler.render(data, options)
 
     if stash := handler.env.filters["stash_crossref"].stash:
@@ -94,9 +98,7 @@ def test_end_to_end_headings(
     argument_headings: bool,
 ) -> None:
     final_options = {"heading_level": heading_level, "argument_headings": argument_headings}
-    html = _render_options(final_options) + _render(
-        session_handler, "module_function", final_options
-    )
+    html = _render(session_handler, "module_function", final_options)
     snapshot_key = tuple(sorted(final_options.items()))
     assert outsource(html, suffix=".html") == snapshots.headings[snapshot_key]
 
@@ -115,9 +117,7 @@ def test_end_to_end_headings_root(
         "show_root_full_path": show_root_full_path,
         "show_root_members_full_path": show_root_members_full_path,
     }
-    html = _render_options(final_options) + _render(
-        session_handler, "module_arguments", final_options
-    )
+    html = _render(session_handler, "module_arguments", final_options)
     snapshot_key = tuple(sorted(final_options.items()))
     assert outsource(html, suffix=".html") == snapshots.headings_root[snapshot_key]
 
@@ -136,9 +136,7 @@ def test_end_to_end_headings_namespace(
         "show_category_heading": show_category_heading,
         "show_symbol_type_heading": show_symbol_type_heading,
     }
-    html = _render_options(final_options) + _render(
-        session_handler, "+moduleNamespace", final_options
-    )
+    html = _render(session_handler, "+moduleNamespace", final_options)
     snapshot_key = tuple(sorted(final_options.items()))
     assert outsource(html, suffix=".html") == snapshots.headings_namespace[snapshot_key]
 
@@ -152,7 +150,7 @@ def test_end_to_end_toc(
         "show_root_toc_entry": show_root_toc_entry,
         "show_symbol_type_toc": show_symbol_type_toc,
     }
-    html = _render_options(final_options) + _render(session_handler, "fixture/", final_options)
+    html = _render(session_handler, "fixture/", final_options)
     snapshot_key = tuple(sorted(final_options.items()))
     assert outsource(html, suffix=".html") == snapshots.toc[snapshot_key]
 
@@ -171,7 +169,7 @@ def test_end_to_end_for_members(
         "members": members,
         "filters": filters,
     }
-    html = _render_options(final_options) + _render(
+    html = _render(
         session_handler,
         "moduleClass",
         final_options,  # Test folder identifier
@@ -195,9 +193,7 @@ def test_end_to_end_members_namespace(
         "hidden_members": hidden_members,
         "group_by_category": group_by_category,
     }
-    html = _render_options(final_options) + _render(
-        session_handler, "+moduleNamespace", final_options
-    )
+    html = _render(session_handler, "+moduleNamespace", final_options)
     snapshot_key = tuple(sorted(final_options.items()))
     assert outsource(html, suffix=".html") == snapshots.members_namespace[snapshot_key]
 
@@ -219,9 +215,7 @@ def test_end_to_end_members_summary(
     final_options = {
         "summary": summary,
     }
-    html = _render_options(final_options) + _render(
-        session_handler, "+moduleNamespace", final_options
-    )
+    html = _render(session_handler, "+moduleNamespace", final_options)
 
     snapshot_key = summary if isinstance(summary, bool) else tuple(sorted(summary.items()))
     assert outsource(html, suffix=".html") == snapshots.members_summary[snapshot_key]
@@ -244,7 +238,7 @@ def test_end_to_end_members_class(
         "show_attributes": show_attributes,
         "inherited_members": inherited_members,
     }
-    html = _render_options(final_options) + _render(session_handler, "subClass", final_options)
+    html = _render(session_handler, "subClass", final_options)
     snapshot_key = tuple(sorted(final_options.items()))
     assert outsource(html, suffix=".html") == snapshots.members_class[snapshot_key]
 
@@ -263,11 +257,22 @@ def test_end_to_end_docstring_arguments(
         "show_docstring_examples": show_docstring_examples,
         "docstring_section_style": docstring_section_style,
     }
-    html = _render_options(final_options) + _render(
-        session_handler, "module_arguments", final_options
-    )
+    html = _render(session_handler, "module_arguments", final_options)
     snapshot_key = tuple(sorted(final_options.items()))
     assert outsource(html, suffix=".html") == snapshots.docstring_arguments[snapshot_key]
+
+
+@pytest.mark.parametrize("docstring_style", ["google", "numpy", None])
+def test_end_to_end_docstring_style(
+    session_handler: "MatlabHandler",
+    docstring_style: str | None,
+) -> None:
+    final_options = {
+        "docstring_style": docstring_style,
+    }
+    html = _render(session_handler, "forced_docstring", final_options)
+    snapshot_key = tuple(sorted(final_options.items()))
+    assert outsource(html, suffix=".html") == snapshots.docstring_style[snapshot_key]
 
 
 @pytest.mark.parametrize("show_if_no_docstring", [True, False])
@@ -278,9 +283,7 @@ def test_end_to_end_no_docstring(
     final_options = {
         "show_if_no_docstring": show_if_no_docstring,
     }
-    html = _render_options(final_options) + _render(
-        session_handler, "+moduleNamespace.internal", final_options
-    )
+    html = _render(session_handler, "+moduleNamespace.internal", final_options)
     snapshot_key = tuple(sorted(final_options.items()))
     assert outsource(html, suffix=".html") == snapshots.no_docstring[snapshot_key]
 
@@ -299,7 +302,7 @@ def test_end_to_end_docstring_class(
         "show_docstring_description": show_docstring_description,
         "merge_constructor_into_class": merge_constructor_into_class,
     }
-    html = _render_options(final_options) + _render(session_handler, "subClass", final_options)
+    html = _render(session_handler, "subClass", final_options)
     snapshot_key = tuple(sorted(final_options.items()))
     assert outsource(html, suffix=".html") == snapshots.docstring_class[snapshot_key]
 
@@ -318,9 +321,7 @@ def test_end_to_end_docstring_namespace(
         "show_docstring_classes": show_docstring_classes,
         "show_docstring_namespaces": show_docstring_namespaces,
     }
-    html = _render_options(final_options) + _render(
-        session_handler, "+moduleNamespace", final_options
-    )
+    html = _render(session_handler, "+moduleNamespace", final_options)
     snapshot_key = tuple(sorted(final_options.items()))
     assert outsource(html, suffix=".html") == snapshots.docstring_namespace[snapshot_key]
 
@@ -339,9 +340,7 @@ def test_end_to_end_docstring_function(
         "show_docstring_name_value_arguments": show_docstring_name_value_arguments,
         "show_docstring_output_arguments": show_docstring_output_arguments,
     }
-    html = _render_options(final_options) + _render(
-        session_handler, "module_arguments", final_options
-    )
+    html = _render(session_handler, "module_arguments", final_options)
     snapshot_key = tuple(sorted(final_options.items()))
     assert outsource(html, suffix=".html") == snapshots.docstring_function[snapshot_key]
 
@@ -360,8 +359,6 @@ def test_end_to_end_for_signatures(
         "signature_crossrefs": signature_crossrefs,
         "separate_signature": separate_signature,
     }
-    html = _render_options(final_options) + _render(
-        session_handler, "module_arguments", final_options
-    )
+    html = _render(session_handler, "module_arguments", final_options)
     snapshot_key = tuple(sorted(final_options.items()))
     assert outsource(html, suffix=".html") == snapshots.signatures[snapshot_key]

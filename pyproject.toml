@@ -27,7 +27,7 @@ classifiers = [
 
 dependencies = [
     "griffe~=1.14.0",
-    "maxx~=0.4.1",
+    "maxx~=0.4.2",
     "mkdocstrings~=0.29",
     "mkdocs-autorefs~=1.4",
     "charset-normalizer~=3.4",
@@ -46,7 +46,7 @@ dev = [
     "pytest~=8.4.1",
     "pytest-cov~=7.0.0",
     "beautifulsoup4>=4.13.3",
-    "inline-snapshot~=0.29.0",
+    "inline-snapshot~=0.29.1",
     "python-semantic-release~=10.4.1",
 ]
 docs = [
@@ -89,8 +89,10 @@ quote-style = "double"
 indent-style = "space"
 
 [tool.inline-snapshot]
+test-dir = "test"
 storage-dir = "test/snapshots"
 format-command = "ruff format --config pyproject.toml --stdin-filename {filename}"
+default-flags=["create", "fix", "trim"]
 
 [tool.ty.src]
 include = ["src", "pyproject.toml"]
