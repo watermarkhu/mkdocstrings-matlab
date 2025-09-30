@@ -132,6 +132,9 @@ class MatlabHandler(BaseHandler):
         template_name = rendering.do_get_template(data)
         template = self.env.get_template(template_name)
 
+        if hasattr(data, "docstring") and data.docstring is not None:
+            data.docstring.parse()
+
         heading_level = options.heading_level
 
         html = template.render(

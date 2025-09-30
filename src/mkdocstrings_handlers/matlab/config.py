@@ -358,10 +358,10 @@ class MatlabInputOptions:
     ] = "table"
 
     docstring_style: Annotated[
-        Literal["auto", "google", "numpy", "sphinx"] | None,
+        Literal["google", "numpy", "sphinx"] | None,
         Field(
             group="docstrings",
-            description="The docstring style to use: `auto`, `google`, `numpy`, `sphinx`, or `None`.",
+            description="The docstring style to use: `google`, `numpy`, `sphinx`, or `None`.",
         ),
     ] = "google"
 
