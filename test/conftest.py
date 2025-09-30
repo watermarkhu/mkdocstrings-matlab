@@ -142,8 +142,10 @@ def session_handler(
     yield handler
     assert len(handler.env.filters["stash_crossref"].stash) == 0
 
+
 @pytest.fixture(autouse=True)
 def disable_cached_property(monkeypatch):
     def identity(x):
         return x
+
     monkeypatch.setattr("functools.cached_property", identity)

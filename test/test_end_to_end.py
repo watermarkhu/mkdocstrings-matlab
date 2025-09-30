@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Any
 
 import bs4
 import pytest
-from inline_snapshot import outsource, register_format_alias, external, snapshot
+from inline_snapshot import outsource, register_format_alias
 
 from test import snapshots
 
@@ -48,8 +48,8 @@ def _render(handler: "MatlabHandler", identifier: str, final_options: dict[str, 
     data = handler.collect(identifier, options)
 
     if data.docstring:
-        if 'parsed' in data.docstring.__dict__:
-            del data.docstring.__dict__['parsed']
+        if "parsed" in data.docstring.__dict__:
+            del data.docstring.__dict__["parsed"]
 
     html = handler.render(data, options)
 
