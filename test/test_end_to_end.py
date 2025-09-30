@@ -46,6 +46,11 @@ def _render(handler: "MatlabHandler", identifier: str, final_options: dict[str, 
 
     options = handler.get_options(handler_options)
     data = handler.collect(identifier, options)
+
+    if data.docstring:
+        if 'parsed' in data.docstring.__dict__:
+            del data.docstring.__dict__['parsed']
+
     html = handler.render(data, options)
 
     if stash := handler.env.filters["stash_crossref"].stash:
@@ -267,6 +272,7 @@ def test_end_to_end_docstring_style(
     }
     html = _render(session_handler, "forced_docstring", final_options)
     snapshot_key = tuple(sorted(final_options.items()))
+    print(snapshot_key, final_options, html)
     assert outsource(html, suffix=".html") == snapshots.docstring_style[snapshot_key]
 
 
