@@ -112,7 +112,9 @@ jobs:
 
     - name: Run tests
       run: |
-        if uv run pytest --cov mkdocstrings_handlers.matlab --tb=short -v --junit-xml=pytest.xml; then
+        if uv run pytest -v --tb=short --color=yes \
+          --cov mkdocstrings_handlers.matlab --cov-branch --cov-report=xml \
+          --junit-xml=pytest.xml; then
           echo '# ✅ Tests passed' >> $GITHUB_STEP_SUMMARY
         else
           echo '# ❌ Tests failed' >> $GITHUB_STEP_SUMMARY
@@ -129,8 +131,8 @@ jobs:
       if: (!cancelled())
       uses: actions/upload-artifact@v4
       with:
-        name: Test Results (Python ${{ matrix.python-version }})
-        path: pytest.xml
+        name: python${{ matrix.python-version }}
+        path: "*.xml"
 
   summary:
     runs-on: ubuntu-latest
@@ -138,18 +140,36 @@ jobs:
     if: (!cancelled())
     permissions:
       contents: read
-      pull-requests: write
       checks: write
+      id-token: write
+      pull-requests: write
     steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 2
+
       - name: Download Artifacts
         uses: actions/download-artifact@v5
         with:
-          path: artifacts
+          path: results
 
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
         with:
-          files: "artifacts/**/*.xml"
+          files: "results/**/pytest.xml"
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          use_oidc: true
+          directory: results
+
+      - name: Upload test results to Codecov
+        uses: codecov/test-results-action@v1
+        with:
+          use_oidc: true
+          directory: results
 
       - name: Check all jobs
         run: |

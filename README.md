@@ -9,6 +9,7 @@
 [![Qualify](https://github.com/watermarkhu/mkdocstrings-matlab/actions/workflows/qualify.yaml/badge.svg?branch=main)](https://github.com/watermarkhu/mkdocstrings-matlab/actions/workflows/qualify.yaml)
 [![documentation](https://img.shields.io/badge/docs-mkdocs-708FCC.svg?style=flat)](https://watermarkhu.nl/mkdocstrings-matlab)
 [![pypi version](https://img.shields.io/pypi/v/mkdocstrings-matlab.svg)](https://pypi.org/project/mkdocstrings-matlab/)
+[![codecov](https://codecov.io/github/watermarkhu/mkdocstrings-matlab/graph/badge.svg?token=T2csKmj2o2)](https://codecov.io/github/watermarkhu/mkdocstrings-matlab)
 
 The MATLAB handler uses [maxx](https://github.com/watermarkhu/maxx) to collect documentation from MATLAB source code, which in turn uses [Tree-sitter](https://tree-sitter.github.io/tree-sitter/) and its [MATLAB parser](https://github.com/acristoffers/tree-sitter-matlab).
 
