@@ -113,7 +113,7 @@ jobs:
     - name: Run tests
       run: |
         if uv run pytest -v --tb=short --color=yes \
-          --cov mkdocstrings_handlers.github --cov-branch --cov-report=xml \
+          --cov mkdocstrings_handlers.matlab --cov-branch --cov-report=xml \
           --junit-xml=pytest.xml; then
           echo '# ✅ Tests passed' >> $GITHUB_STEP_SUMMARY
         else
