@@ -46,7 +46,7 @@ dev = [
     "pytest~=8.4.1",
     "pytest-cov~=7.0.0",
     "beautifulsoup4>=4.13.3",
-    "inline-snapshot~=0.30.1",
+    "inline-snapshot~=0.31.0",
     "python-semantic-release~=10.4.1",
 ]
 docs = [
