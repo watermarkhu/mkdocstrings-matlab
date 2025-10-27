@@ -37,16 +37,7 @@ from griffe._internal.docstrings.parsers import DocstringStyle, parse
 from jinja2 import pass_context
 from markupsafe import Markup
 from maxx.enums import ArgumentKind
-from maxx.objects import (
-    Alias,
-    Class,
-    Folder,
-    Function,
-    Namespace,
-    Object,
-    Property,
-    Script
-)
+from maxx.objects import Alias, Class, Folder, Function, Namespace, Object, Property, Script
 from mkdocs_autorefs import AutorefsHookInterface
 from mkdocstrings import get_logger
 
@@ -162,16 +153,16 @@ def do_format_signature(
 
     signature = template.render(new_context, function=function, signature=True)
     signature = str(
-        env.filters["highlight"]( # type: ignore
+        env.filters["highlight"](  # type: ignore
             Markup.escape(signature),
-            language="matlab",   # type: ignore
-            inline=False,    # type: ignore
-            classes=["doc-signature"],   # type: ignore
+            language="matlab",  # type: ignore
+            inline=False,  # type: ignore
+            classes=["doc-signature"],  # type: ignore
             linenums=False,  # type: ignore
         ),
     )
 
-    if stash := env.filters["stash_crossref"].stash: # ty: ignore[possibly-missing-attribute]
+    if stash := env.filters["stash_crossref"].stash:  # ty: ignore[possibly-missing-attribute]
         for key, value in stash.items():
             signature = re.sub(rf"\b{key}\b", value, signature)
         stash.clear()
@@ -201,7 +192,7 @@ def do_format_arguments(
 
     html = template.render(context.parent, section=section)
 
-    if stash := env.filters["stash_crossref"].stash:    # ty: ignore[possibly-missing-attribute]
+    if stash := env.filters["stash_crossref"].stash:  # ty: ignore[possibly-missing-attribute]
         for key, value in stash.items():
             html = re.sub(rf"\b{key}\b", value, html)
         stash.clear()
@@ -253,16 +244,16 @@ def do_format_property(
         signature += f" = {value}"
 
     signature = str(
-        env.filters["highlight"](    # type: ignore
+        env.filters["highlight"](  # type: ignore
             Markup.escape(signature),
-            language="matlab",   # type: ignore
-            inline=False,    # type: ignore
-            classes=["doc-signature"],   # type: ignore
+            language="matlab",  # type: ignore
+            inline=False,  # type: ignore
+            classes=["doc-signature"],  # type: ignore
             linenums=False,  # type: ignore
         ),
     )
 
-    if stash := env.filters["stash_crossref"].stash:    # ty: ignore[possibly-missing-attribute]
+    if stash := env.filters["stash_crossref"].stash:  # ty: ignore[possibly-missing-attribute]
         for key, value in stash.items():
             signature = re.sub(rf"\b{key}\b", value, signature)
         stash.clear()
@@ -821,7 +812,7 @@ class AutorefsHook(AutorefsHookInterface):
         }.get(self.current_object.kind.value.lower(), "obj")
         origin = self.current_object.path
         try:
-            filepath = self.current_object.docstring.parent.filepath    # ty: ignore[possibly-missing-attribute]
+            filepath = self.current_object.docstring.parent.filepath  # ty: ignore[possibly-missing-attribute]
             lineno = self.current_object.docstring.lineno or 0  # ty: ignore[possibly-missing-attribute]
         except AttributeError:
             filepath = self.current_object.filepath
