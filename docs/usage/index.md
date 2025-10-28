@@ -20,12 +20,18 @@ or explicitely set the MATLAB handler as default by defining the `default_handle
 configuration option of `mkdocstrings` in `mkdocs.yml`:
 
 ```yaml title="mkdocs.yml"
+theme:
+  name: material
 plugins:
 - mkdocstrings:
     default_handler: matlab
     matlab:
         ...  # the MATLAB handler configuration
 ```
+
+!!! note
+
+    Currently, only the [Material for MkDocs](https://github.com/squidfunk/mkdocs-material) theme is supported.
 
 ## Injecting documentation
 
@@ -43,7 +49,7 @@ If another handler was defined as default handler, you can explicitely ask for t
 ```
 ### Namespaces
 
-Entire [namespaces](https://mathworks.com/help/matlab/matlab_oop/namespaces.html) can be fully documented by prefixing the `+` character to the namespace that is to be documented. E.g. the following namespace 
+Entire [namespaces](https://mathworks.com/help/matlab/matlab_oop/namespaces.html) can be fully documented by prefixing the `+` character to the namespace that is to be documented. E.g. the following namespace
 
 ```tree
 +mynamespace
@@ -62,7 +68,7 @@ is documented with:
 
 The docstring of the namespace is taken from either the [`Contents.m`](https://mathworks.com/help/matlab/matlab_prog/create-a-help-summary-contents-m.html) or a `readme.md` that resides at the root level of the namespace, with `Contents.m` taking precedence over `readme.md`.
 
-Documenting a nested namespace requires only a single prefixed `+` at the start of the fully resolved path, e.g. 
+Documenting a nested namespace requires only a single prefixed `+` at the start of the fully resolved path, e.g.
 
 ```md
 ::: +mynamespace.subnamespace
@@ -92,9 +98,9 @@ is documented with:
 ::: src/module
 ```
 
-In the case above the function `module/submodule/myfunction.m` overshadows the function `module/myfunction.m` on the MATLAB path. This means that in the global namespace myfunction will always call `module/submodule/myfunction.m`, which is the function to be documented by `::: myfunction`. 
+In the case above the function `module/submodule/myfunction.m` overshadows the function `module/myfunction.m` on the MATLAB path. This means that in the global namespace myfunction will always call `module/submodule/myfunction.m`, which is the function to be documented by `::: myfunction`.
 
-While this kind of behavior is strictly recommended against, mkdocstrings-matlab does support documenting the shadowed function by using its path. The file extension is now stricty required. 
+While this kind of behavior is strictly recommended against, mkdocstrings-matlab does support documenting the shadowed function by using its path. The file extension is now stricty required.
 
 ```markdown
 ::: src/module/myfunction.m
@@ -102,15 +108,15 @@ While this kind of behavior is strictly recommended against, mkdocstrings-matlab
 
 !!! tip
 
-    A folder identifier must strictly contain the `/` character. For a folder `foo` that is in the same directory with `mkdocs.yml`, use `::: ./foo`. 
+    A folder identifier must strictly contain the `/` character. For a folder `foo` that is in the same directory with `mkdocs.yml`, use `::: ./foo`.
 
 !!! tip
 
-    If the `mkdocs.yml` lives inside of a subdirectly that does not contain source code, use relative paths e.g. `../src/module`. 
+    If the `mkdocs.yml` lives inside of a subdirectly that does not contain source code, use relative paths e.g. `../src/module`.
 
 !!! tip
 
-    Sub-selecting folder members are possible with the [members](./configuration/members.md) options. 
+    Sub-selecting folder members are possible with the [members](./configuration/members.md) options.
 
 ### Global-only options
 
@@ -123,6 +129,8 @@ This option is used to set the [MATLAB search path](https://mathworks.com/help/m
 Non-absolute paths are computed as relative to MkDocs configuration file. Example:
 
 ```yaml title="mkdocs.yml"
+theme:
+  name: material
 plugins:
 - mkdocstrings:
     handlers:
@@ -138,6 +146,8 @@ This option allows you to specify whether the handler should recursively search 
 Example:
 
 ```yaml title="mkdocs.yml"
+theme:
+  name: material
 plugins:
 - mkdocstrings:
     handlers:
@@ -152,6 +162,8 @@ The other options can be used both globally *and* locally, under the `options` k
 For example, globally:
 
 ```yaml title="mkdocs.yml"
+theme:
+  name: material
 plugins:
 - mkdocstrings:
     handlers:
@@ -179,4 +191,3 @@ in the following pages:
     in the generated documentation
 - [Docstrings options](configuration/docstrings.md): options related to docstrings (parsing and rendering)
 - [Signature options](configuration/signatures.md): options related to signatures and type annotations
-
