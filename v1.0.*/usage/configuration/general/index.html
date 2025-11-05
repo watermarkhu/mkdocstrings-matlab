@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
     
     
       
@@ -1377,13 +1377,13 @@
 
 
               <pre class="mermaid"><code>flowchart TB
-   myParent[myParent]
+   myClass[myClass]
    handle[handle]
    double[double]
-   myClass[myClass]
+   myParent[myParent]
+   double --&gt; myParent
    myParent --&gt; myClass
-   handle --&gt; myParent
-   double --&gt; myParent</code></pre>
+   handle --&gt; myParent</code></pre>
 
         <p>Docstring of myClass.</p>
 
