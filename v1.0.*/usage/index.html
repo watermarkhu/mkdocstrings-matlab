@@ -1161,11 +1161,11 @@ configuration option of <code>mkdocstrings</code> in <code>mkdocs.yml</code>:</p
 <h3 id="namespaces">Namespaces<a class="headerlink" href="#namespaces" title="Permanent link">¤</a></h3>
 <p>Entire <a href="https://mathworks.com/help/matlab/matlab_oop/namespaces.html">namespaces</a> can be fully documented by prefixing the <code>+</code> character to the namespace that is to be documented. E.g. the following namespace </p>
 <div class="language-bash highlight"><pre><span></span><code>📁<span class="w"> </span>+mynamespace
-├──<span class="w"> </span>📄<span class="w"> </span>Contents.m
-├──<span class="w"> </span>📄<span class="w"> </span>readme.md
-├──<span class="w"> </span>📄<span class="w"> </span>myclass.m
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>Contents.m
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22.27 19.385H1.73A1.73 1.73 0 0 1 0 17.655V6.345a1.73 1.73 0 0 1 1.73-1.73h20.54A1.73 1.73 0 0 1 24 6.345v11.308a1.73 1.73 0 0 1-1.73 1.731zM5.769 15.923v-4.5l2.308 2.885 2.307-2.885v4.5h2.308V8.078h-2.308l-2.307 2.885-2.308-2.885H3.46v7.847zM21.232 12h-2.309V8.077h-2.307V12h-2.308l3.461 4.039z"/></svg></span><span class="w"> </span>readme.md
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>myclass.m
 └──<span class="w"> </span>📁<span class="w"> </span>+subnamespace
-<span class="w">    </span>└──<span class="w"> </span>📄<span class="w"> </span>mfunction.m
+<span class="w">    </span>└──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>mfunction.m
 </code></pre></div>
 <p>is documented with:</p>
 <div class="language-md highlight"><pre><span></span><code>::: +mynamespace
@@ -1178,15 +1178,15 @@ configuration option of <code>mkdocstrings</code> in <code>mkdocs.yml</code>:</p
 <p>Similarly to namepaces, all contents of a folder can be fully documented by specifying the relative path of a folder with respect to the <code>mkdocs.yml</code> config file. E.g. the following repository</p>
 <div class="language-bash highlight"><pre><span></span><code>📁<span class="w"> </span>src
 └──<span class="w"> </span>📁<span class="w"> </span>module
-<span class="w">    </span>├──<span class="w"> </span>📄<span class="w"> </span>myfunction.m
-<span class="w">    </span>├──<span class="w"> </span>📄<span class="w"> </span>myClass.m
+<span class="w">    </span>├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>myfunction.m
+<span class="w">    </span>├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>myClass.m
 <span class="w">    </span>├──<span class="w"> </span>📁<span class="w"> </span>submodule
-<span class="w">    </span>│<span class="w">   </span>└──<span class="w"> </span>📄<span class="w"> </span>myfunction.m
+<span class="w">    </span>│<span class="w">   </span>└──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>myfunction.m
 <span class="w">    </span>└──<span class="w"> </span>📁<span class="w"> </span>+mynamespace
-<span class="w">        </span>└──<span class="w"> </span>📄<span class="w"> </span>namespacefunction.m
+<span class="w">        </span>└──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>namespacefunction.m
 📁<span class="w"> </span>docs
-└──<span class="w"> </span>📄<span class="w"> </span>index.md
-📄<span class="w"> </span>mkdocs.yml
+└──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22.27 19.385H1.73A1.73 1.73 0 0 1 0 17.655V6.345a1.73 1.73 0 0 1 1.73-1.73h20.54A1.73 1.73 0 0 1 24 6.345v11.308a1.73 1.73 0 0 1-1.73 1.731zM5.769 15.923v-4.5l2.308 2.885 2.307-2.885v4.5h2.308V8.078h-2.308l-2.307 2.885-2.308-2.885H3.46v7.847zM21.232 12h-2.309V8.077h-2.307V12h-2.308l3.461 4.039z"/></svg></span><span class="w"> </span>index.md
+<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m0 .97 4.111 6.453v4.09h2.638v-4.09L11.053.969H8.214L5.58 5.125 2.965.969Zm12.093.024-4.47 10.544h2.114l.97-2.345h4.775l.804 2.345h2.26L14.255.994Zm1.133 2.225 1.463 3.87h-3.096zm3.06 9.475v10.29H24v-2.199h-5.454v-8.091zm-12.175.002v10.335h2.217v-7.129l2.32 4.792h1.746l2.4-4.96v7.295h2.127V12.696h-2.904L9.44 17.37l-2.455-4.674Z"/></svg></span><span class="w"> </span>mkdocs.yml
 </code></pre></div>
 <p>is documented with:</p>
 <div class="language-markdown highlight"><pre><span></span><code>::: src/module
