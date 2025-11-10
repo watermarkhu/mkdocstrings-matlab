@@ -1145,6 +1145,7 @@
 <span class="w">    </span><span class="s2">&quot;mkdocstrings-matlab&gt;=0.X.Y&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 </code></pre></div>
+<p>To get started, checkout the <a href="https://watermarkhu.github.io/mkdocstrings-matlab/">📝 documentation</a>.</p>
 <h2 id="preview">Preview<a class="headerlink" href="#preview" title="Permanent link">¤</a></h2>
 <p>Let's us quickly see how auto-documentation works with mkdocstrings-matlab:</p>
 <div class="language-matlab highlight"><span class="filename">Function making use of Argument Validation in namespace +mynamespace</span><pre><span></span><code><span class="k">function</span><span class="w"> </span>output<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">typed_function</span><span class="p">(</span>input, options<span class="p">)</span>
@@ -1242,11 +1243,11 @@
 </li>
 <li>
 <p>✨ <strong>Support for argument validation blocks:</strong> Tree-sitter collects your <a href="https://mathworks.com/help/matlab/matlab_prog/function-argument-validation-1.html">function and method argument validation</a>
-   blocks to display input and output argument types and default values. 
-   It is even able to automatically add cross-references to other objects from your API, and links to MathWorks documentation are generated for MATLAB builtin classes. </p>
+   blocks to display input and output argument types and default values.
+   It is even able to automatically add cross-references to other objects from your API, and links to MathWorks documentation are generated for MATLAB builtin classes.</p>
 </li>
 <li>
-<p>🔁 <strong>Recursive documentation of MATLAB <a href="https://mathworks.com/help/matlab/matlab_oop/namespaces.html">namespaces</a> and folders:</strong> 
+<p>🔁 <strong>Recursive documentation of MATLAB <a href="https://mathworks.com/help/matlab/matlab_oop/namespaces.html">namespaces</a> and folders:</strong>
   just add <code>+</code> to the identifer for namespaces or the relative path for folder, and you get documentation for the entire directory. You don't need to inject documentation for each class, function, and script. Additionaly, the directory documentation will be either extracted from the <code>Contents.m</code> or the <code>readme.md</code> file at the root of the namespace or folder.</p>
 </li>
 <li>
