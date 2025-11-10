@@ -28,7 +28,7 @@ classifiers = [
 
 dependencies = [
     "griffe~=1.15.0",
-    "maxx~=0.5.0",
+    "maxx~=0.5.5",
     "mkdocstrings~=0.29",
     "mkdocs-autorefs~=1.4",
     "charset-normalizer~=3.4",
@@ -69,6 +69,16 @@ build-backend = "hatchling.build"
 default-groups = ["dev", "docs"]
 managed = true
 
+[tool.pytest]
+minversion = "9.0"
+addopts = ["-v", "--tb=short", "--color=yes"]
+pythonpath = [
+    "test"
+]
+markers = [
+    "without_handler"
+]
+
 [tool.ruff]
 target-version = "py310"
 line-length = 100
@@ -93,7 +103,7 @@ indent-style = "space"
 test-dir = "test"
 storage-dir = "test/snapshots"
 format-command = "ruff format --config pyproject.toml --stdin-filename {filename}"
-default-flags=["create", "fix", "trim"]
+default-flags=["create", "trim"]
 
 [tool.ty.src]
 include = ["src", "pyproject.toml"]
@@ -124,11 +134,3 @@ prerelease = false
 
 [tool.semantic_release.commit_parser_options]
 patch_tags = ["fix", "perf", "chore"]
-
-[tool.pytest.ini_options]
-pythonpath = [
-    "test"
-]
-markers = [
-    "without_handler"
-]
