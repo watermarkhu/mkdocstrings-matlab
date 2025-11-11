@@ -146,7 +146,9 @@ Context:
         {# This block renders the inheritance diagram #}
           {% if config.show_inheritance_diagram and class.bases %}
             {% with section = class | as_inheritance_diagram_section %}
-              {{ section.value|convert_markdown(heading_level, html_id) }}
+              {% if section %}
+                {{ section.value|convert_markdown(heading_level, html_id) }}
+              {% endif %}
             {% endwith %}
           {% endif %}
         {% block docstring scoped %}
