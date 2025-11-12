@@ -10,7 +10,7 @@ hide:
 Let's us quickly see how auto-documentation works with mkdocstrings-matlab:
 
 ```matlab title="Function making use of Argument Validation in namespace +mynamespace"
---8<-- "docs/snippets/+mynamespace/typed_function.m"
+--8<-- "docs/src/snippets/+mynamespace/typed_function.m"
 ```
 
 Given the function above, the rendered documentation here is created from the following markdown document file,

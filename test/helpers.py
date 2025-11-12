@@ -39,7 +39,7 @@ def mkdocs_conf(request: pytest.FixtureRequest, tmp_path: Path) -> Iterator[MkDo
     mkdocstring_config = {"default_handler": "matlab"}
     marker = request.node.get_closest_marker("without_handler")
     if marker is None:
-        mkdocstring_config["handlers"] = {"matlab": {"paths": ["fixture"]}}
+        mkdocstring_config["handlers"] = {"matlab": {"paths": ["."], "paths_recursive": True}}
 
     conf = MkDocsConfig()
     conf_dict = {

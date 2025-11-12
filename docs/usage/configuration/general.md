@@ -29,7 +29,7 @@ plugins:
 ??? code ":material-file-code: `myClass.m`"
 
     ```matlab
-    --8<-- "docs/snippets/myClass.m"
+    --8<-- "docs/src/snippets/myClass.m"
     ```
 
 ???+ preview
@@ -93,11 +93,11 @@ plugins:
 ??? code ":material-file-code: Source files"
 
     ```matlab title='myClass.m'
-    --8<-- "docs/snippets/myClass.m"
+    --8<-- "docs/src/snippets/myClass.m"
     ```
 
     ```matlab title='myParent.m'
-    --8<-- "docs/snippets/myParent.m"
+    --8<-- "docs/src/snippets/myParent.m"
     ```
 
 ???+ preview
@@ -134,7 +134,7 @@ plugins:
 ??? code ":material-file-code: `myfunction.m`"
 
     ```matlab
-    --8<-- "docs/snippets/myfunction.m"
+    --8<-- "docs/src/snippets/myfunction.m"
     ```
 
 ???+ preview

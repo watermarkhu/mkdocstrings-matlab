@@ -240,7 +240,7 @@ plugins:
       parse_arguments: true
 ```
 
---8<-- "docs/snippets/+mynamespace/mynamespace.md"
+--8<-- "docs/src/snippets/+mynamespace/mynamespace.md"
 
 ???+ preview "Preview: Cross-references"
 
@@ -299,7 +299,7 @@ plugins:
 ??? code ":material-file-code: `Thing.m`"
 
     ```matlab
-    --8<-- "docs/snippets/Thing.m"
+    --8<-- "docs/src/snippets/Thing.m"
     ```
 
 ???+ preview
@@ -360,7 +360,7 @@ plugins:
       show_if_no_docstring: true
 ```
 
---8<-- "docs/snippets/+undocumented/undocumented.md"
+--8<-- "docs/src/snippets/+undocumented/undocumented.md"
 
 ???+ preview
 
@@ -413,7 +413,7 @@ plugins:
 ??? code ":material-file-code: `Class.m`"
 
     ```matlab
-    --8<-- "docs/snippets/Class.m"
+    --8<-- "docs/src/snippets/Class.m"
     ```
 
 ???+ preview
@@ -464,7 +464,7 @@ plugins:
       show_docstring_functions: false
 ```
 
---8<-- "docs/snippets/+module/module.md"
+--8<-- "docs/src/snippets/+module/module.md"
 
 ???+ preview
 
@@ -542,7 +542,7 @@ plugins:
       show_docstring_classes: false
 ```
 
---8<-- "docs/snippets/+module/module.md"
+--8<-- "docs/src/snippets/+module/module.md"
 
 ???+ preview
 
@@ -597,7 +597,7 @@ plugins:
       show_docstring_namespaces: false
 ```
 
---8<-- "docs/snippets/+module/module.md"
+--8<-- "docs/src/snippets/+module/module.md"
 
 ???+ preview
 
@@ -654,7 +654,7 @@ plugins:
 ??? code ":material-file-code: `Class.m`"
 
     ```matlab
-    --8<-- "docs/snippets/Class.m"
+    --8<-- "docs/src/snippets/Class.m"
     ```
 
 ???+ preview
@@ -708,7 +708,7 @@ plugins:
 ??? code ":material-file-code: `print_hello.m`"
 
     ```matlab
-    --8<-- "docs/snippets/print_hello.m"
+    --8<-- "docs/src/snippets/print_hello.m"
     ```
 
 ???+ preview
@@ -762,7 +762,7 @@ plugins:
 ??? code ":material-file-code: `do_something.m`"
 
     ```matlab
-    --8<-- "docs/snippets/do_something.m"
+    --8<-- "docs/src/snippets/do_something.m"
     ```
 
 ???+ preview
@@ -820,7 +820,7 @@ plugins:
 ??? code ":material-file-code: `do_varargin.m`"
 
     ```matlab
-    --8<-- "docs/snippets/do_varargin.m"
+    --8<-- "docs/src/snippets/do_varargin.m"
     ```
 
 ???+ preview
@@ -878,7 +878,7 @@ plugins:
 ??? code ":material-file-code: `do_output.m`"
 
     ```matlab
-    --8<-- "docs/snippets/do_output.m"
+    --8<-- "docs/src/snippets/do_output.m"
     ```
 
 ???+ preview

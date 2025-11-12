@@ -693,6 +693,14 @@ class MatlabInputOptions:
         ),
     ] = False
 
+    show_subfolders: Annotated[
+        bool,
+        Field(
+            group="members",
+            description="When rendering a folder, show its subfolders recursively.",
+        ),
+    ] = True
+
     show_symbol_type_heading: Annotated[
         bool,
         Field(

@@ -40,7 +40,7 @@ plugins:
       - this_function
 ```
 
---8<-- "docs/snippets/+mymembers/mymembers.md"
+--8<-- "docs/src/snippets/+mymembers/mymembers.md"
 
 ???+ preview
 
@@ -110,7 +110,7 @@ plugins:
       hidden_members: true
 ```
 
---8<-- "docs/snippets/+mymembers/mymembers.md"
+--8<-- "docs/src/snippets/+mymembers/mymembers.md"
 
 ???+ preview
 
@@ -197,7 +197,7 @@ plugins:
       private_members: true
 ```
 
---8<-- "docs/snippets/+mymembers/mymembers.md"
+--8<-- "docs/src/snippets/+mymembers/mymembers.md"
 
 ???+ preview
 
@@ -336,7 +336,7 @@ plugins:
       inherited_members: true
 ```
 
---8<-- "docs/snippets/+mymembers/mymembers.md"
+--8<-- "docs/src/snippets/+mymembers/mymembers.md"
 
 ???+ preview
 
@@ -394,7 +394,7 @@ plugins:
       members_order: source
 ```
 
---8<-- "docs/snippets/+mymembers/mymembers.md"
+--8<-- "docs/src/snippets/+mymembers/mymembers.md"
 
 ???+ preview
 
@@ -462,7 +462,7 @@ plugins:
       filters: []
 ```
 
---8<-- "docs/snippets/+mymembers/mymembers.md"
+--8<-- "docs/src/snippets/+mymembers/mymembers.md"
 
 ???+ preview
 
@@ -527,7 +527,7 @@ plugins:
       group_by_category: false
 ```
 
---8<-- "docs/snippets/+mymembers/mymembers.md"
+--8<-- "docs/src/snippets/+mymembers/mymembers.md"
 
 ???+ preview
 
@@ -594,7 +594,7 @@ plugins:
       show_subnamespaces: false
 ```
 
---8<-- "docs/snippets/+module/module.md"
+--8<-- "docs/src/snippets/+module/module.md"
 
 ???+ preview
 
@@ -627,6 +627,85 @@ plugins:
               show_docstring_namespaces: false
               show_docstring_classes: false
               show_docstring_functions: false
+
+## `show_subfolders`
+
+- **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
+
+When rendering a folder, show its subfolders recursively.
+
+This is false by default, because most of the time we render only one directory per page, and when rendering a full directory on a single page, we quickly run out of [heading levels][heading_level].
+
+```yaml title="in mkdocs.yml (global configuration)"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        options:
+          show_subfolders: true
+```
+
+```md title="or in docs/some_page.md (local configuration)"
+::: +matlab_namespace
+    options:
+      show_subfolders: false
+```
+
+??? code "Source files"
+
+    === ":material-file-tree: tree"
+
+        ```tree
+        subdir
+            subsubdir
+                nested.m
+                README.md
+            Contents.m
+        ```
+
+    === ":material-file-code: `nested.m`"
+
+        ```matlab
+        --8<-- "docs/src/snippets/subdir/subsubdir/nested.m"
+        ```
+    === ":material-file-code: `README.md`"
+
+        ```matlab
+        --8<-- "docs/src/snippets/subdir/subsubdir/README.md"
+        ```
+    === ":material-file-code: `Contents.m`"
+
+        ```matlab
+        --8<-- "docs/src/snippets/subdir/Contents.m"
+        ```
+
+???+ preview
+
+    === "With show subfolders"
+        
+        ```markdown
+        ::: ./subdir
+            options:
+              show_subfolders: true
+        ```
+
+        ::: ./docs/src/snippets/subdir
+            options:
+              show_subfolders: true
+              show_symbol_type_heading: true
+
+    === "Without show subfolders"
+
+        ```markdown
+        ::: ./subdir
+            options:
+              show_subfolders: false
+        ```
+
+        ::: ./docs/src/snippets/subdir
+            options:
+              show_subfolders: false
+              show_symbol_type_heading: true
 
 ## `summary`
 
@@ -673,7 +752,7 @@ plugins:
       summary: false
 ```
 
---8<-- "docs/snippets/+mymembers/mymembers.md"
+--8<-- "docs/src/snippets/+mymembers/mymembers.md"
 
 ???+ preview
 
@@ -737,7 +816,7 @@ plugins:
       show_attributes: false
 ```
 
---8<-- "docs/snippets/+mymembers/mymembers.md"
+--8<-- "docs/src/snippets/+mymembers/mymembers.md"
 
 ???+ preview
 

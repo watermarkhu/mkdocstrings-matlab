@@ -31,7 +31,7 @@ plugins:
 ??? code ":material-file-code: `myfunction.m`"
 
     ```matlab
-    --8<-- "docs/snippets/myfunction.m"
+    --8<-- "docs/src/snippets/myfunction.m"
     ```
 
 ???+ preview
@@ -87,7 +87,7 @@ plugins:
 ??? code ":material-file-code: `myfunction.m`"
 
     ```matlab
-    --8<-- "docs/snippets/myfunction.m"
+    --8<-- "docs/src/snippets/myfunction.m"
     ```
 
 ???+ preview
@@ -146,7 +146,7 @@ plugins:
 ??? code ":material-file-code: `myfunction.m`"
 
     ```matlab
-    --8<-- "docs/snippets/myfunction.m"
+    --8<-- "docs/src/snippets/myfunction.m"
     ```
 
 ???+ preview
@@ -207,7 +207,7 @@ plugins:
 ??? code ":material-file-code: `myfunction.m`"
 
     ```matlab
-    --8<-- "docs/snippets/myfunction.m"
+    --8<-- "docs/src/snippets/myfunction.m"
     ```
 
 ???+ preview
