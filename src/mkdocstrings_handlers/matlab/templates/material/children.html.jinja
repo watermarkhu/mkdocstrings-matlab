@@ -145,6 +145,28 @@ Context:
           {% endwith %}
         {% endif %}
 
+        {% if config.show_subfolders %}
+          {% with folders = obj.folders|filter_objects(
+              filters=config.filters,
+              members_list=members_list,
+              inherited_members=config.inherited_members,
+              private_members=config.private_members,
+              hidden_members=config.hidden_members,
+              keep_no_docstrings=config.show_if_no_docstring,
+            ) %}
+            {% if folders %}
+              {% if config.show_category_heading %}
+                {% filter heading(heading_level, id=html_id ~ "-folders") %}Folders{% endfilter %}
+              {% endif %}
+              {% with heading_level = heading_level + extra_level %}
+                {% for folder in folders|order_members("alphabetical", members_list) %}
+                  {% include folder|get_template %}
+                {% endfor %}
+              {% endwith %}
+            {% endif %}
+          {% endwith %}
+        {% endif %}
+
       {% endwith %}
 
     {% else %}
@@ -186,6 +208,11 @@ Context:
           {% elif (child.is_namespace and config.show_subnamespaces) or obj.is_folder %}
             {% with namespace = child %}
               {% include namespace|get_template %}
+            {% endwith %}
+
+          {% elif (child.is_folder and config.show_subfolders) %}
+            {% with folder = child %}
+              {% include folder|get_template %}
             {% endwith %}
 
           {% endif %}

@@ -179,4 +179,3 @@ in the following pages:
     in the generated documentation
 - [Docstrings options](configuration/docstrings.md): options related to docstrings (parsing and rendering)
 - [Signature options](configuration/signatures.md): options related to signatures and type annotations
-

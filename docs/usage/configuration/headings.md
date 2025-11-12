@@ -32,7 +32,7 @@ plugins:
       heading_level: 3
 ```
 
---8<-- "docs/snippets/+mynamespace/mynamespace.md"
+--8<-- "docs/src/snippets/+mynamespace/mynamespace.md"
 
 ???+ preview 
 
@@ -91,7 +91,7 @@ plugins:
       argument_headings: true
 ```
 
---8<-- "docs/snippets/+mynamespace/mynamespace.md"
+--8<-- "docs/src/snippets/+mynamespace/mynamespace.md"
 
 ???+ preview "Preview: Cross-references"
 
@@ -191,7 +191,7 @@ plugins:
       show_root_heading: true
 ```
 
---8<-- "docs/snippets/+mynamespace/mynamespace.md"
+--8<-- "docs/src/snippets/+mynamespace/mynamespace.md"
 
 ???+ preview
 
@@ -303,7 +303,7 @@ plugins:
       show_root_full_path: false
 ```
 
---8<-- "docs/snippets/+mynamespace/mynamespace.md"
+--8<-- "docs/src/snippets/+mynamespace/mynamespace.md"
 
 ???+ preview
 
@@ -357,7 +357,7 @@ plugins:
       show_root_members_full_path: false
 ```
 
---8<-- "docs/snippets/+mynamespace/mynamespace.md"
+--8<-- "docs/src/snippets/+mynamespace/mynamespace.md"
 
 ???+ preview
 
@@ -476,7 +476,7 @@ plugins:
       show_category_heading: false
 ```
 
---8<-- "docs/snippets/+mynamespace/mynamespace.md"
+--8<-- "docs/src/snippets/+mynamespace/mynamespace.md"
 
 ???+ preview
 
@@ -544,21 +544,21 @@ plugins:
       show_symbol_type_heading: false
 ```
 
---8<-- "docs/snippets/+mynamespace/mynamespace.md"
+--8<-- "docs/src/snippets/+mynamespace/mynamespace.md"
 
 ???+ preview
 
     === "With symbol type in headings"
 
         ```markdown
-        ::: docs/snippets
+        ::: docs/src/snippets
             options:
               members:
                 - mynamespace
               show_symbol_type_heading: true
         ```
 
-        ::: docs/snippets
+        ::: docs/src/snippets
             options:
               members: 
                 - mynamespace
@@ -569,14 +569,14 @@ plugins:
     === "Without symbol type in headings"
 
         ```markdown
-        ::: docs/snippets
+        ::: docs/src/snippets
             options:
               members:
                 - mynamespace
               show_symbol_type_heading: false
         ```
 
-        ::: docs/snippets
+        ::: docs/src/snippets
             options:
               members:
                 - mynamespace
