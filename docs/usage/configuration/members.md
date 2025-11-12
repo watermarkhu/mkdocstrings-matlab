@@ -646,7 +646,7 @@ plugins:
 ```
 
 ```md title="or in docs/some_page.md (local configuration)"
-::: +matlab_namespace
+::: ./path-from-working-directory
     options:
       show_subfolders: false
 ```
