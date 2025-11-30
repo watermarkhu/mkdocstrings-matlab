@@ -22,8 +22,9 @@ from mkdocstrings_handlers.matlab import rendering
 from mkdocstrings_handlers.matlab.config import MatlabConfig, MatlabOptions
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping, MutableMapping
+    from collections.abc import Mapping, MutableMapping, Sequence
 
+    from markdown.core import Extension
     from mkdocs.config.defaults import MkDocsConfig
 
 
@@ -49,7 +50,11 @@ class MatlabHandler(BaseHandler):
         self,
         config: MatlabConfig,
         base_dir: Path,
-        **kwargs: Any,
+        *,
+        theme: str,
+        custom_templates: str | None,
+        mdx: Sequence[str | Extension],
+        mdx_config: Mapping[str, Any],
     ) -> None:
         """
         Initialize the handler with the given configuration.
@@ -57,12 +62,17 @@ class MatlabHandler(BaseHandler):
         Args:
             config: The handler configuration.
             base_dir: The base directory of the project.
-            **kwargs: Arguments passed to the parent constructor.
+            theme: The theme name.
+            custom_templates: The path to custom templates.
+            mdx: The markdown extensions.
+            mdx_config: The markdown extensions configuration.
 
         Returns:
             None
         """
-        super().__init__(**kwargs)
+        super().__init__(
+            theme=theme, custom_templates=custom_templates, mdx=mdx, mdx_config=mdx_config
+        )
 
         self.config = config
         self.base_dir = base_dir
@@ -118,12 +128,15 @@ class MatlabHandler(BaseHandler):
         except Exception as error:
             raise PluginError(f"Invalid options: {error}") from error
 
-    def render(self, data: CollectorItem, options: MatlabOptions) -> str:
+    def render(
+        self, data: CollectorItem, options: MatlabOptions, *, locale: str | None = None
+    ) -> str:
         """Render a template using provided data and configuration options.
 
         Arguments:
             data: The collected data to render.
             options: The handler's configuration options.
+            locale: The locale to use for rendering.
 
         Returns:
             The rendered template as HTML.
@@ -250,7 +263,11 @@ class MatlabHandler(BaseHandler):
 def get_handler(
     handler_config: MutableMapping[str, Any],
     tool_config: MkDocsConfig,
-    **kwargs: Any,
+    *,
+    theme: str,
+    custom_templates: str | None,
+    mdx: Sequence[str | Extension],
+    mdx_config: Mapping[str, Any],
 ) -> MatlabHandler:
     """
     Create and return a MatlabHandler object with the specified configuration.
@@ -258,6 +275,10 @@ def get_handler(
     Parameters:
          handler_config: The handler configuration.
         tool_config: The tool (SSG) configuration.
+        theme: The theme name.
+        custom_templates: The path to custom templates.
+        mdx: The markdown extensions.
+        mdx_config: The markdown extensions configuration.
 
     Returns:
         MatlabHandler: An instance of MatlabHandler configured with the provided parameters.
@@ -266,5 +287,8 @@ def get_handler(
     return MatlabHandler(
         config=MatlabConfig.from_data(**handler_config),
         base_dir=base_dir,
-        **kwargs,
+        theme=theme,
+        custom_templates=custom_templates,
+        mdx=mdx,
+        mdx_config=mdx_config,
     )
