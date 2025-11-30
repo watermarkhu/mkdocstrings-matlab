@@ -53,7 +53,7 @@ dev = [
 docs = [
     "pygments",
     "mkdocs-material~=9.5",
-    "mkdocstrings-python~=1.16",
+    "mkdocstrings-python~=2.0",
     "markdown-exec~=1.10",
     "mkdocs-callouts~=1.15",
     "mkdocs-git-revision-date-localized-plugin~=1.3",
