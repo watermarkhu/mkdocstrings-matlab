@@ -1,0 +1,4873 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A MATLAB handler for mkdocstrings.">
+      
+      
+      
+        <link rel="canonical" href="https://watermarkhu.nl/mkdocstrings-matlab/v2.0.*/usage/configuration/headings/">
+      
+      
+        <link rel="prev" href="../general/">
+      
+      
+        <link rel="next" href="../members/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Headings - mkdocstrings-matlab</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_markdown_exec_pyodide.css">
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#headings-options" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  You're not viewing the latest version.
+  <a href="../../../.."> 
+    <strong>Click here to go to latest.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),base=new URL("../../.."),outdated=__md_get("__outdated",sessionStorage,base);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="mkdocstrings-matlab" class="md-header__button md-logo" aria-label="mkdocstrings-matlab" data-md-component="logo">
+      
+  <img src="../../../logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            mkdocstrings-matlab
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Headings
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="matlab" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="lime"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/watermarkhu/mkdocstrings-matlab" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    watermarkhu/mkdocstrings-matlab
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../.." class="md-tabs__link">
+          
+  
+  
+    
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Usage
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../api/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  API reference
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="https://mkdocstrings.github.io/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  mkdocstrings
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="mkdocstrings-matlab" class="md-nav__button md-logo" aria-label="mkdocstrings-matlab" data-md-component="logo">
+      
+  <img src="../../../logo.png" alt="logo">
+
+    </a>
+    mkdocstrings-matlab
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/watermarkhu/mkdocstrings-matlab" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    watermarkhu/mkdocstrings-matlab
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../.." class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_1" id="__nav_1_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Home
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../credits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Credits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../license-page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    License
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Usage
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration options
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Configuration options
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../general/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    General
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Headings
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Headings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+<a href="#heading_level" class="md-nav__link">
+    <span class="md-ellipsis">
+    heading_level
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+</li>
+      
+        <li class="md-nav__item">
+<a href="#argument_headings" class="md-nav__link">
+    <span class="md-ellipsis">
+    argument_headings
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+    <nav class="md-nav" aria-label="argument_headings">
+    <ul class="md-nav__list">
+        
+        
+        
+        
+        
+    </ul>
+    </nav>
+
+</li>
+      
+        <li class="md-nav__item">
+<a href="#show_root_heading" class="md-nav__link">
+    <span class="md-ellipsis">
+    show_root_heading
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+    <nav class="md-nav" aria-label="show_root_heading">
+    <ul class="md-nav__list">
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </ul>
+    </nav>
+
+</li>
+      
+        <li class="md-nav__item">
+<a href="#show_root_toc_entry" class="md-nav__link">
+    <span class="md-ellipsis">
+    show_root_toc_entry
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+</li>
+      
+        <li class="md-nav__item">
+<a href="#show_root_full_path" class="md-nav__link">
+    <span class="md-ellipsis">
+    show_root_full_path
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+    <nav class="md-nav" aria-label="show_root_full_path">
+    <ul class="md-nav__list">
+        
+        
+        
+        
+        
+    </ul>
+    </nav>
+
+</li>
+      
+        <li class="md-nav__item">
+<a href="#show_root_members_full_path" class="md-nav__link">
+    <span class="md-ellipsis">
+    show_root_members_full_path
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+    <nav class="md-nav" aria-label="show_root_members_full_path">
+    <ul class="md-nav__list">
+        
+        
+        
+        
+        
+    </ul>
+    </nav>
+
+</li>
+      
+        <li class="md-nav__item">
+<a href="#show_object_full_path" class="md-nav__link">
+    <span class="md-ellipsis">
+    show_object_full_path
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+    <nav class="md-nav" aria-label="show_object_full_path">
+    <ul class="md-nav__list">
+        
+        
+        
+        
+        
+    </ul>
+    </nav>
+
+</li>
+      
+        <li class="md-nav__item">
+<a href="#show_category_heading" class="md-nav__link">
+    <span class="md-ellipsis">
+    show_category_heading
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+    <nav class="md-nav" aria-label="show_category_heading">
+    <ul class="md-nav__list">
+        
+        
+        
+        
+        
+    </ul>
+    </nav>
+
+</li>
+      
+        <li class="md-nav__item">
+<a href="#show_symbol_type_heading" class="md-nav__link">
+    <span class="md-ellipsis">
+    show_symbol_type_heading
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+    <nav class="md-nav" aria-label="show_symbol_type_heading">
+    <ul class="md-nav__list">
+        
+        
+        
+        
+        
+    </ul>
+    </nav>
+
+</li>
+      
+        <li class="md-nav__item">
+<a href="#show_symbol_type_toc" class="md-nav__link">
+    <span class="md-ellipsis">
+    show_symbol_type_toc
+    </span>
+</a>
+
+<!-- Table of contents list -->
+
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../members/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Members
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docstrings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docstrings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../signatures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Signatures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docstring styles
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Docstring styles
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../docstrings/google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Google
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../docstrings/numpy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Numpy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../docstrings/sphinx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sphinx
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mkdocstrings_handlers
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    mkdocstrings_handlers
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    matlab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://mkdocstrings.github.io/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mkdocstrings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/watermarkhu/mkdocstrings-matlab/edit/main/docs/usage/configuration/headings.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/watermarkhu/mkdocstrings-matlab/raw/main/docs/usage/configuration/headings.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="headings-options">Headings options<a class="headerlink" href="#headings-options" title="Permanent link">¤</a></h1>
+<h2 id="heading_level"><code>heading_level</code><a class="headerlink" href="#heading_level" title="Permanent link">¤</a></h2>
+<ul>
+<li><strong><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.876.64V.639l8.25 4.763c.541.313.875.89.875 1.515v9.525a1.75 1.75 0 0 1-.875 1.516l-8.25 4.762a1.75 1.75 0 0 1-1.75 0l-8.25-4.763a1.75 1.75 0 0 1-.875-1.515V6.917c0-.625.334-1.202.875-1.515L11.126.64a1.75 1.75 0 0 1 1.75 0m-1 1.298L4.251 6.34l7.75 4.474 7.75-4.474-7.625-4.402a.25.25 0 0 0-.25 0m.875 19.123 7.625-4.402a.25.25 0 0 0 .125-.216V7.639l-7.75 4.474ZM3.501 7.64v8.803c0 .09.048.172.125.216l7.625 4.402v-8.947Z"/></svg></span> Type <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int"><code>int</code></a> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 10H5V8h14zm0 6H5v-2h14z"/></svg></span> <code title="default value">2</code></strong></li>
+</ul>
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+<p>The initial heading level to use.</p>
+<p>When injecting documentation for an object, the object itself and its members are rendered. For each layer of objects, we increase the heading level by 1.</p>
+<p>The initial heading level will be used for the first layer. If you set it to 3, then headings will start with <code>&lt;h3&gt;</code>.</p>
+<p>If the <a class="autorefs autorefs-internal" title="show_root_heading" href="#show_root_heading">heading for the root object</a> is not shown, then the initial heading level is used for its members.</p>
+<div class="language-yaml highlight"><span class="filename">in mkdocs.yml (global configuration)</span><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mkdocstrings</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">handlers</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">matlab</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">options</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">heading_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+</code></pre></div>
+<div class="language-md highlight"><span class="filename">or in docs/some_page.md (local configuration)</span><pre><span></span><code>::: matlab_callable
+    options:
+      heading_level: 3
+</code></pre></div>
+<details class="code">
+<summary>Source files</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:6"><input checked="checked" id="tree" name="__tabbed_1" type="radio" /><input id="readmemd" name="__tabbed_1" type="radio" /><input id="classam" name="__tabbed_1" type="radio" /><input id="classbm" name="__tabbed_1" type="radio" /><input id="typed_functionm" name="__tabbed_1" type="radio" /><input id="myscriptm" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="tree"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 3h6v4H3zm12 7h6v4h-6zm0 7h6v4h-6zm-2-4H7v5h6v2H5V9h2v2h6z"/></svg></span> tree</label><label for="readmemd"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>readme.md</code></label><label for="classam"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>classA.m</code></label><label for="classbm"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>classB.m</code></label><label for="typed_functionm"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>typed_function.m</code></label><label for="myscriptm"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>myscript.m</code></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-bash highlight"><pre><span></span><code>📁<span class="w"> </span>+mynamespace
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22.27 19.385H1.73A1.73 1.73 0 0 1 0 17.655V6.345a1.73 1.73 0 0 1 1.73-1.73h20.54A1.73 1.73 0 0 1 24 6.345v11.308a1.73 1.73 0 0 1-1.73 1.731zM5.769 15.923v-4.5l2.308 2.885 2.307-2.885v4.5h2.308V8.078h-2.308l-2.307 2.885-2.308-2.885H3.46v7.847zM21.232 12h-2.309V8.077h-2.307V12h-2.308l3.461 4.039z"/></svg></span><span class="w"> </span>readme.md
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>classA.m
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>classB.m
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>typed_function.m
+└──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>myscript.m
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="n">This</span><span class="w"> </span><span class="s">is</span><span class="w"> </span><span class="s">the</span><span class="w"> </span><span class="s">docstring</span><span class="w"> </span><span class="s">for</span><span class="w"> </span><span class="s">mynamespace.</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="k">classdef</span><span class="w"> </span><span class="n">classA</span>
+<span class="w">    </span><span class="c">% Docstring of class A.</span>
+
+<span class="w">    </span><span class="k">methods</span>
+<span class="w">        </span><span class="k">function</span><span class="w"> </span>obj<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">method_a</span><span class="p">(</span>inputArg1<span class="p">)</span>
+<span class="w">            </span><span class="c">% Docstring of the method.</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="k">classdef</span><span class="w"> </span><span class="n">classB</span>
+<span class="w">    </span><span class="c">% Docstring of class B.</span>
+<span class="w">    </span><span class="k">properties</span>
+<span class="w">        </span><span class="n">prop_b</span><span class="w">   </span><span class="c">% Docstring of the property.</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="k">methods</span>
+<span class="w">        </span><span class="k">function</span><span class="w"> </span>obj<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">method_b</span><span class="p">(</span>inputArg1<span class="p">)</span>
+<span class="w">            </span><span class="c">% Docstring of the method.</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="k">function</span><span class="w"> </span>output<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">typed_function</span><span class="p">(</span>input, options<span class="p">)</span>
+<span class="w">    </span><span class="c">% Example function with typed inputs and outputs</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Input<span class="p">)</span>
+<span class="w">        </span><span class="n">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="c">% The input variable</span>
+<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Output<span class="p">)</span>
+<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="n">char</span><span class="w"> </span><span class="c">% The output variable</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">char</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="k">end</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="c">% This is an example script.</span>
+
+<span class="c">% This is a paragraph. </span>
+<span class="n">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+</details>
+<details class="preview" open="open">
+<summary>Preview</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="with-level-3-and-root-heading" name="__tabbed_2" type="radio" /><input id="with-level-3-without-root-heading" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="with-level-3-and-root-heading">With level 3 and root heading</label><label for="with-level-3-without-root-heading">With level 3, without root heading</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><h3><code>mynamespace</code> (3)</h3>
+<p>Docstring of the package namespace.</p>
+<h4><code>ClassA</code> (4)</h4>
+<p>Docstring of class A.</p>
+<h4><code>ClassB</code> (4)</h4>
+<p>Docstring of class B.</p>
+<h5><code>myfunction</code> (5)</h5>
+<p>Docstring of the function.</p></p>
+</div>
+<div class="tabbed-block">
+<p><p>Docstring of the package namespace.</p>
+<h3><code>ClassA</code> (3)</h3>
+<p>Docstring of class A.</p>
+<h3><code>ClassB</code> (3)</h3>
+<p>Docstring of class B.</p>
+<h4><code>myfunction</code> (4)</h4>
+<p>Docstring of the function.</p></p>
+</div>
+</div>
+</div>
+</details>
+<h2 id="argument_headings"><code>argument_headings</code><a class="headerlink" href="#argument_headings" title="Permanent link">¤</a></h2>
+<ul>
+<li><strong><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.876.64V.639l8.25 4.763c.541.313.875.89.875 1.515v9.525a1.75 1.75 0 0 1-.875 1.516l-8.25 4.762a1.75 1.75 0 0 1-1.75 0l-8.25-4.763a1.75 1.75 0 0 1-.875-1.515V6.917c0-.625.334-1.202.875-1.515L11.126.64a1.75 1.75 0 0 1 1.75 0m-1 1.298L4.251 6.34l7.75 4.474 7.75-4.474-7.625-4.402a.25.25 0 0 0-.25 0m.875 19.123 7.625-4.402a.25.25 0 0 0 .125-.216V7.639l-7.75 4.474ZM3.501 7.64v8.803c0 .09.048.172.125.216l7.625 4.402v-8.947Z"/></svg></span> Type <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool"><code>bool</code></a> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 10H5V8h14zm0 6H5v-2h14z"/></svg></span> <code title="default value">False</code></strong></li>
+</ul>
+<p>Whether to render headings for function/method parameters.</p>
+<p>With this option enabled, each function/method parameter (including parameters of the constructor methods merged in their parent class with the <a class="autorefs autorefs-internal" href="../docstrings/#merge_constructor_into_class"><code>merge_constructor_into_class</code></a> option) gets a permalink, an entry in the Table of Contents, and an entry in the generated objects inventory. The permalink and inventory entry allow cross-references from internal and external pages.</p>
+<p>The identifier used in the permalink and inventory is of the following form: <code>path.to.function(param_name)</code>. To manually cross-reference a parameter, you can therefore use this Markdown syntax:</p>
+<div class="language-md highlight"><pre><span></span><code><span class="k">-</span><span class="w"> </span>Class argument: [<span class="sb">`param`</span>][package.module.Class(param)]
+<span class="k">-</span><span class="w"> </span>Method argument: [<span class="sb">`param`</span>][package.module.Class.method(param)]
+<span class="k">-</span><span class="w"> </span>Function argument: [<span class="sb">`param`</span>][package.module.function(param)]
+<span class="k">-</span><span class="w"> </span>Name-value arguments): [<span class="sb">`name`</span>][package.module.function(name)]
+<span class="k">-</span><span class="w"> </span>Varargin: [<span class="sb">`varargin`</span>][package.module.function(varargin)]
+</code></pre></div>
+<div class="language-yaml highlight"><span class="filename">in mkdocs.yml (global configuration)</span><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mkdocstrings</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">handlers</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">matlab</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">options</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">argument_headings</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+<div class="language-md highlight"><span class="filename">or in docs/some_page.md (local configuration)</span><pre><span></span><code>::: matlab_callable
+    options:
+      argument_headings: true
+</code></pre></div>
+<details class="code">
+<summary>Source files</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:6"><input checked="checked" id="tree_1" name="__tabbed_3" type="radio" /><input id="readmemd_1" name="__tabbed_3" type="radio" /><input id="classam_1" name="__tabbed_3" type="radio" /><input id="classbm_1" name="__tabbed_3" type="radio" /><input id="typed_functionm_1" name="__tabbed_3" type="radio" /><input id="myscriptm_1" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="tree_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 3h6v4H3zm12 7h6v4h-6zm0 7h6v4h-6zm-2-4H7v5h6v2H5V9h2v2h6z"/></svg></span> tree</label><label for="readmemd_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>readme.md</code></label><label for="classam_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>classA.m</code></label><label for="classbm_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>classB.m</code></label><label for="typed_functionm_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>typed_function.m</code></label><label for="myscriptm_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>myscript.m</code></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-bash highlight"><pre><span></span><code>📁<span class="w"> </span>+mynamespace
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22.27 19.385H1.73A1.73 1.73 0 0 1 0 17.655V6.345a1.73 1.73 0 0 1 1.73-1.73h20.54A1.73 1.73 0 0 1 24 6.345v11.308a1.73 1.73 0 0 1-1.73 1.731zM5.769 15.923v-4.5l2.308 2.885 2.307-2.885v4.5h2.308V8.078h-2.308l-2.307 2.885-2.308-2.885H3.46v7.847zM21.232 12h-2.309V8.077h-2.307V12h-2.308l3.461 4.039z"/></svg></span><span class="w"> </span>readme.md
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>classA.m
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>classB.m
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>typed_function.m
+└──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>myscript.m
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="n">This</span><span class="w"> </span><span class="s">is</span><span class="w"> </span><span class="s">the</span><span class="w"> </span><span class="s">docstring</span><span class="w"> </span><span class="s">for</span><span class="w"> </span><span class="s">mynamespace.</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="k">classdef</span><span class="w"> </span><span class="n">classA</span>
+<span class="w">    </span><span class="c">% Docstring of class A.</span>
+
+<span class="w">    </span><span class="k">methods</span>
+<span class="w">        </span><span class="k">function</span><span class="w"> </span>obj<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">method_a</span><span class="p">(</span>inputArg1<span class="p">)</span>
+<span class="w">            </span><span class="c">% Docstring of the method.</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="k">classdef</span><span class="w"> </span><span class="n">classB</span>
+<span class="w">    </span><span class="c">% Docstring of class B.</span>
+<span class="w">    </span><span class="k">properties</span>
+<span class="w">        </span><span class="n">prop_b</span><span class="w">   </span><span class="c">% Docstring of the property.</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="k">methods</span>
+<span class="w">        </span><span class="k">function</span><span class="w"> </span>obj<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">method_b</span><span class="p">(</span>inputArg1<span class="p">)</span>
+<span class="w">            </span><span class="c">% Docstring of the method.</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="k">function</span><span class="w"> </span>output<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">typed_function</span><span class="p">(</span>input, options<span class="p">)</span>
+<span class="w">    </span><span class="c">% Example function with typed inputs and outputs</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Input<span class="p">)</span>
+<span class="w">        </span><span class="n">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="c">% The input variable</span>
+<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Output<span class="p">)</span>
+<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="n">char</span><span class="w"> </span><span class="c">% The output variable</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">char</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="k">end</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="c">% This is an example script.</span>
+
+<span class="c">% This is a paragraph. </span>
+<span class="n">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+</details>
+<details class="preview" open="open">
+<summary>Preview: Cross-references</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="with-parameter-headings" name="__tabbed_4" type="radio" /><input id="without-parameter-headings" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="with-parameter-headings">With parameter headings</label><label for="without-parameter-headings">Without parameter headings</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-markdown highlight"><pre><span></span><code>::: mynamespace.typed_function
+    options:
+      argument_headings: true
+</code></pre></div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mynamespace.typed_function" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">mynamespace</span><span class="p">.</span><span class="n">typed_function</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+<a href="#mynamespace.typed_function" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Example function with typed inputs and outputs</p>
+
+<p><span class="doc-section-title">Input arguments:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<h4 id="mynamespace.typed_function(input)" class="doc doc-heading doc-heading-argument">              <b><code>input</code></b>
+<a href="#mynamespace.typed_function(input)" class="headerlink" title="Permanent link">¤</a></h4>              (<code>string</code>)
+          –
+          <div class="doc-md-description">
+            <p>The input variable</p>
+          </div>
+        </li>
+    </ul>
+
+<p><span class="doc-section-title">Name-value arguments:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<h4 id="mynamespace.typed_function(keyword)" class="doc doc-heading doc-heading-argument">              <b><code>keyword</code></b>
+<a href="#mynamespace.typed_function(keyword)" class="headerlink" title="Permanent link">¤</a></h4>              (<code>double</code>)
+          –
+          <div class="doc-md-description">
+            <p>An optional keyword argument</p>
+          </div>
+        </li>
+    </ul>
+
+<p><span class="doc-section-title">Output arguments:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+<h4 id="mynamespace.typed_function(output)" class="doc doc-heading doc-heading-argument">              <b><code>output</code></b>
+<a href="#mynamespace.typed_function(output)" class="headerlink" title="Permanent link">¤</a></h4> (              <code>char</code>
+)          –
+          <div class="doc-md-description">
+            <p>The output variable</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div></div>
+<div class="tabbed-block">
+<div class="language-markdown highlight"><pre><span></span><code>::: mynamespace.typed_function
+    options:
+      argument_headings: false
+</code></pre></div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mynamespace.typed_function" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">mynamespace</span><span class="p">.</span><span class="n">typed_function</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+<a href="#mynamespace.typed_function" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Example function with typed inputs and outputs</p>
+
+<p><span class="doc-section-title">Input arguments:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>input</code></b>
+              (<code>string</code>)
+          –
+          <div class="doc-md-description">
+            <p>The input variable</p>
+          </div>
+        </li>
+    </ul>
+
+<p><span class="doc-section-title">Name-value arguments:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>keyword</code></b>
+              (<code>double</code>)
+          –
+          <div class="doc-md-description">
+            <p>An optional keyword argument</p>
+          </div>
+        </li>
+    </ul>
+
+<p><span class="doc-section-title">Output arguments:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>output</code></b>
+ (              <code>char</code>
+)          –
+          <div class="doc-md-description">
+            <p>The output variable</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div></div>
+</div>
+</div>
+</details>
+<details class="preview" open="open">
+<summary>Preview: Parameter sections</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:3"><input checked="checked" id="table-style" name="__tabbed_5" type="radio" /><input id="list-style" name="__tabbed_5" type="radio" /><input id="spacy-style" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="table-style">Table style</label><label for="list-style">List style</label><label for="spacy-style">Spacy style</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+    <div class="doc doc-contents first">
+
+
+<p><span class="doc-section-title">Input arguments:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>input</code>
+            </td>
+            <td>
+                  <code>string</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The input variable</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+<p><span class="doc-section-title">Name-value arguments:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>keyword</code>
+            </td>
+            <td>
+                  <code>double</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An optional keyword argument</p>
+              </div>
+            </td>
+            <td>
+                  <code>0</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+<p><span class="doc-section-title">Output arguments:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>output</code>
+            </td>
+            <td>
+                  <code>char</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The output variable</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div></div>
+<div class="tabbed-block">
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+    <div class="doc doc-contents first">
+
+
+<p><span class="doc-section-title">Input arguments:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>input</code></b>
+              (<code>string</code>)
+          –
+          <div class="doc-md-description">
+            <p>The input variable</p>
+          </div>
+        </li>
+    </ul>
+
+<p><span class="doc-section-title">Name-value arguments:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>keyword</code></b>
+              (<code>double</code>)
+          –
+          <div class="doc-md-description">
+            <p>An optional keyword argument</p>
+          </div>
+        </li>
+    </ul>
+
+<p><span class="doc-section-title">Output arguments:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>output</code></b>
+ (              <code>char</code>
+)          –
+          <div class="doc-md-description">
+            <p>The output variable</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div></div>
+<div class="tabbed-block">
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+    <div class="doc doc-contents first">
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">INPUT ARGUMENT</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>input</code>
+            </td>
+            <td class="doc-argument-details">
+              <div class="doc-md-description">
+                <p>The input variable</p>
+              </div>
+              <p>
+                  <span class="doc-argument-annotation">
+                    <b>TYPE:</b>
+                      <code>string</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title"></span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>keyword</code>
+            </td>
+            <td class="doc-argument-details">
+              <div class="doc-md-description">
+                <p>An optional keyword argument</p>
+              </div>
+              <p>
+                  <span class="doc-argument-annotation">
+                    <b>TYPE:</b>
+                      <code>double</code>
+                  </span>
+                  <span class="doc-argument-default">
+                    <b>DEFAULT:</b>
+                      <code>0</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">OUTPUT ARGUMENT</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>output</code>
+            </td>
+            <td class="doc-argument-details">
+              <div class="doc-md-description">
+                <p>The output variable</p>
+              </div>
+                <p>
+                  <span class="doc-argument-annotation">
+                    <b>TYPE:</b>
+                      <code>char</code>
+                  </span>
+                </p>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div></div>
+</div>
+</div>
+</details>
+<details class="preview" open="open">
+<summary>Preview: Table of contents (with symbol types)</summary>
+<p><code class="doc-symbol doc-symbol-toc doc-symbol-function"></code> typed_function<br>
+<code class="doc-symbol doc-symbol-toc doc-symbol-argument" style="margin-left: 16px;"></code> input</p>
+</details>
+<h2 id="show_root_heading"><code>show_root_heading</code><a class="headerlink" href="#show_root_heading" title="Permanent link">¤</a></h2>
+<ul>
+<li><strong><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.876.64V.639l8.25 4.763c.541.313.875.89.875 1.515v9.525a1.75 1.75 0 0 1-.875 1.516l-8.25 4.762a1.75 1.75 0 0 1-1.75 0l-8.25-4.763a1.75 1.75 0 0 1-.875-1.515V6.917c0-.625.334-1.202.875-1.515L11.126.64a1.75 1.75 0 0 1 1.75 0m-1 1.298L4.251 6.34l7.75 4.474 7.75-4.474-7.625-4.402a.25.25 0 0 0-.25 0m.875 19.123 7.625-4.402a.25.25 0 0 0 .125-.216V7.639l-7.75 4.474ZM3.501 7.64v8.803c0 .09.048.172.125.216l7.625 4.402v-8.947Z"/></svg></span> Type <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool"><code>bool</code></a> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 10H5V8h14zm0 6H5v-2h14z"/></svg></span> <code title="default value">False</code></strong></li>
+</ul>
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+<p>Show the heading of the object at the root of the documentation tree (i.e. the object referenced by the identifier after <code>:::</code>).</p>
+<p>It is pretty common to inject documentation for one module per page. Since each page already has a title, usually being the module's name, we can spare one heading level by not showing the heading for the module itself (heading levels are limited to 6 by the HTML specification).</p>
+<p>Sparing that extra level can be helpful when your objects tree is deeply nested (e.g. method in a class in a class in a module). If your objects tree is not deeply nested, and you are injecting documentation for many different objects on a single page, it might be preferable to render the heading of each object.</p>
+<div class="language-yaml highlight"><span class="filename">in mkdocs.yml (global configuration)</span><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mkdocstrings</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">handlers</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">matlab</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">options</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">show_root_heading</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+<div class="language-md highlight"><span class="filename">or in docs/some_page.md (local configuration)</span><pre><span></span><code>::: mynamespace.ClassA
+    options:
+      show_root_heading: true
+
+::: mynamespace.ClassB
+    options:
+      show_root_heading: true
+</code></pre></div>
+<details class="code">
+<summary>Source files</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:6"><input checked="checked" id="tree_2" name="__tabbed_6" type="radio" /><input id="readmemd_2" name="__tabbed_6" type="radio" /><input id="classam_2" name="__tabbed_6" type="radio" /><input id="classbm_2" name="__tabbed_6" type="radio" /><input id="typed_functionm_2" name="__tabbed_6" type="radio" /><input id="myscriptm_2" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="tree_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 3h6v4H3zm12 7h6v4h-6zm0 7h6v4h-6zm-2-4H7v5h6v2H5V9h2v2h6z"/></svg></span> tree</label><label for="readmemd_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>readme.md</code></label><label for="classam_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>classA.m</code></label><label for="classbm_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>classB.m</code></label><label for="typed_functionm_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>typed_function.m</code></label><label for="myscriptm_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>myscript.m</code></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-bash highlight"><pre><span></span><code>📁<span class="w"> </span>+mynamespace
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22.27 19.385H1.73A1.73 1.73 0 0 1 0 17.655V6.345a1.73 1.73 0 0 1 1.73-1.73h20.54A1.73 1.73 0 0 1 24 6.345v11.308a1.73 1.73 0 0 1-1.73 1.731zM5.769 15.923v-4.5l2.308 2.885 2.307-2.885v4.5h2.308V8.078h-2.308l-2.307 2.885-2.308-2.885H3.46v7.847zM21.232 12h-2.309V8.077h-2.307V12h-2.308l3.461 4.039z"/></svg></span><span class="w"> </span>readme.md
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>classA.m
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>classB.m
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>typed_function.m
+└──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>myscript.m
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="n">This</span><span class="w"> </span><span class="s">is</span><span class="w"> </span><span class="s">the</span><span class="w"> </span><span class="s">docstring</span><span class="w"> </span><span class="s">for</span><span class="w"> </span><span class="s">mynamespace.</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="k">classdef</span><span class="w"> </span><span class="n">classA</span>
+<span class="w">    </span><span class="c">% Docstring of class A.</span>
+
+<span class="w">    </span><span class="k">methods</span>
+<span class="w">        </span><span class="k">function</span><span class="w"> </span>obj<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">method_a</span><span class="p">(</span>inputArg1<span class="p">)</span>
+<span class="w">            </span><span class="c">% Docstring of the method.</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="k">classdef</span><span class="w"> </span><span class="n">classB</span>
+<span class="w">    </span><span class="c">% Docstring of class B.</span>
+<span class="w">    </span><span class="k">properties</span>
+<span class="w">        </span><span class="n">prop_b</span><span class="w">   </span><span class="c">% Docstring of the property.</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="k">methods</span>
+<span class="w">        </span><span class="k">function</span><span class="w"> </span>obj<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">method_b</span><span class="p">(</span>inputArg1<span class="p">)</span>
+<span class="w">            </span><span class="c">% Docstring of the method.</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="k">function</span><span class="w"> </span>output<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">typed_function</span><span class="p">(</span>input, options<span class="p">)</span>
+<span class="w">    </span><span class="c">% Example function with typed inputs and outputs</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Input<span class="p">)</span>
+<span class="w">        </span><span class="n">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="c">% The input variable</span>
+<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Output<span class="p">)</span>
+<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="n">char</span><span class="w"> </span><span class="c">% The output variable</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">char</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="k">end</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="c">% This is an example script.</span>
+
+<span class="c">% This is a paragraph. </span>
+<span class="n">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+</details>
+<details class="preview" open="open">
+<summary>Preview</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="checked" id="with-root-heading" name="__tabbed_7" type="radio" /><input id="without-root-heading" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="with-root-heading">With root heading</label><label for="without-root-heading">Without root heading</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="mynamespace.classA" class="doc doc-heading">
+            <code>mynamespace.classA</code>
+
+
+<a href="#mynamespace.classA" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>Docstring of class A.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mynamespace.classA.method_a" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">method_a</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="mynamespace.classB" class="doc doc-heading">
+            <code>mynamespace.classB</code>
+
+
+<a href="#mynamespace.classB" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>Docstring of class B.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-property">
+
+
+
+<h4 id="mynamespace.classB.prop_b" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">prop_b</span></code>
+
+<a href="#mynamespace.classB.prop_b" class="headerlink" title="Permanent link">¤</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the property.</p>
+
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mynamespace.classB.method_b" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">method_b</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classB.method_b" class="headerlink" title="Permanent link">¤</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div></div>
+<div class="tabbed-block">
+
+
+<div class="doc doc-object doc-class">
+
+
+
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>Docstring of class A.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mynamespace.classA.method_a" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">method_a</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>Docstring of class B.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-property">
+
+
+
+<h3 id="mynamespace.classB.prop_b" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">prop_b</span></code>
+
+<a href="#mynamespace.classB.prop_b" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the property.</p>
+
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mynamespace.classB.method_b" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">method_b</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classB.method_b" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div></div>
+</div>
+</div>
+</details>
+<h2 id="show_root_toc_entry"><code>show_root_toc_entry</code><a class="headerlink" href="#show_root_toc_entry" title="Permanent link">¤</a></h2>
+<ul>
+<li><strong><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.876.64V.639l8.25 4.763c.541.313.875.89.875 1.515v9.525a1.75 1.75 0 0 1-.875 1.516l-8.25 4.762a1.75 1.75 0 0 1-1.75 0l-8.25-4.763a1.75 1.75 0 0 1-.875-1.515V6.917c0-.625.334-1.202.875-1.515L11.126.64a1.75 1.75 0 0 1 1.75 0m-1 1.298L4.251 6.34l7.75 4.474 7.75-4.474-7.625-4.402a.25.25 0 0 0-.25 0m.875 19.123 7.625-4.402a.25.25 0 0 0 .125-.216V7.639l-7.75 4.474ZM3.501 7.64v8.803c0 .09.048.172.125.216l7.625 4.402v-8.947Z"/></svg></span> Type <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool"><code>bool</code></a> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 10H5V8h14zm0 6H5v-2h14z"/></svg></span> <code title="default value">True</code></strong></li>
+</ul>
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+<p>If the root heading is not shown, at least add a ToC entry for it.</p>
+<p>If you inject documentation for an object in the middle of a page, after long paragraphs, and without showing the <a class="autorefs autorefs-internal" title="show_root_heading" href="#show_root_heading">root heading</a>, then you will not be able to link to this particular object as it won't have a permalink and will be "lost" in the middle of text. In that case, it is useful to add a hidden anchor to the document, which will also appear in the table of contents.</p>
+<p>In other cases, you might want to disable the entry to avoid polluting the ToC. It is not possible to show the root heading <em>and</em> hide the ToC entry.</p>
+<div class="language-yaml highlight"><span class="filename">in mkdocs.yml (global configuration)</span><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mkdocstrings</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">handlers</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">matlab</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">options</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">show_root_toc_entry</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<div class="language-md highlight"><span class="filename">or in docs/some_page.md (local configuration)</span><pre><span></span><code><span class="gu">## Some heading</span>
+
+Lots of text.
+
+::: matlab_callable
+    options:
+      show_root_toc_entry: false
+
+<span class="gu">## Other heading.</span>
+
+More text.
+</code></pre></div>
+<details class="preview" open="open">
+<summary>Preview</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="8:2"><input checked="checked" id="with-toc-entry" name="__tabbed_8" type="radio" /><input id="without-toc-entry" name="__tabbed_8" type="radio" /><div class="tabbed-labels"><label for="with-toc-entry">With ToC entry</label><label for="without-toc-entry">Without ToC entry</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-markdown highlight"><pre><span></span><code>::: matlab_callable
+    options:
+      show_root_toc_entry: true
+</code></pre></div>
+<p><strong>Table of contents</strong><br />
+<a href="#permalink-to-some-heading" title="#permalink-to-some-heading">Some heading</a><br />
+<a href="#permalink-to-object" title="#permalink-to-object"><code>matlab_callable</code></a> <br />
+<a href="#permalink-to-other-heading" title="#permalink-to-other-heading">Other heading</a> </p>
+</div>
+<div class="tabbed-block">
+<div class="language-markdown highlight"><pre><span></span><code>::: matlab_callable
+    options:
+      show_root_toc_entry: false
+</code></pre></div>
+<p><strong>Table of contents</strong><br />
+<a href="#permalink-to-some-heading" title="#permalink-to-some-heading">Some heading</a><br />
+<a href="#permalink-to-other-heading" title="#permalink-to-other-heading">Other heading</a></p>
+</div>
+</div>
+</div>
+</details>
+<h2 id="show_root_full_path"><code>show_root_full_path</code><a class="headerlink" href="#show_root_full_path" title="Permanent link">¤</a></h2>
+<ul>
+<li><strong><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.876.64V.639l8.25 4.763c.541.313.875.89.875 1.515v9.525a1.75 1.75 0 0 1-.875 1.516l-8.25 4.762a1.75 1.75 0 0 1-1.75 0l-8.25-4.763a1.75 1.75 0 0 1-.875-1.515V6.917c0-.625.334-1.202.875-1.515L11.126.64a1.75 1.75 0 0 1 1.75 0m-1 1.298L4.251 6.34l7.75 4.474 7.75-4.474-7.625-4.402a.25.25 0 0 0-.25 0m.875 19.123 7.625-4.402a.25.25 0 0 0 .125-.216V7.639l-7.75 4.474ZM3.501 7.64v8.803c0 .09.048.172.125.216l7.625 4.402v-8.947Z"/></svg></span> Type <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool"><code>bool</code></a> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 10H5V8h14zm0 6H5v-2h14z"/></svg></span> <code title="default value">True</code></strong></li>
+</ul>
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+<p>Show the full namespace path for the root object heading.</p>
+<p>The namespace path of a MATLAB object is the dot-separated list of names under which it is accessible, for example <code>namespace.Class.method</code>.</p>
+<p>With this option you can choose to show the full path of the object you inject documentation for, or just its name. This option impacts only the object you specify, not its members. For members, see the two other options <a class="autorefs autorefs-internal" href="#show_root_members_full_path"><code>show_root_members_full_path</code></a> and <a class="autorefs autorefs-internal" href="#show_object_full_path"><code>show_object_full_path</code></a>.</p>
+<div class="language-yaml highlight"><span class="filename">in mkdocs.yml (global configuration)</span><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mkdocstrings</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">handlers</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">matlab</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">options</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">show_root_full_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<div class="language-md highlight"><span class="filename">or in docs/some_page.md (local configuration)</span><pre><span></span><code>::: mynamespace.classA
+    options:
+      show_root_full_path: false
+</code></pre></div>
+<details class="code">
+<summary>Source files</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="9:6"><input checked="checked" id="tree_3" name="__tabbed_9" type="radio" /><input id="readmemd_3" name="__tabbed_9" type="radio" /><input id="classam_3" name="__tabbed_9" type="radio" /><input id="classbm_3" name="__tabbed_9" type="radio" /><input id="typed_functionm_3" name="__tabbed_9" type="radio" /><input id="myscriptm_3" name="__tabbed_9" type="radio" /><div class="tabbed-labels"><label for="tree_3"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 3h6v4H3zm12 7h6v4h-6zm0 7h6v4h-6zm-2-4H7v5h6v2H5V9h2v2h6z"/></svg></span> tree</label><label for="readmemd_3"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>readme.md</code></label><label for="classam_3"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>classA.m</code></label><label for="classbm_3"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>classB.m</code></label><label for="typed_functionm_3"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>typed_function.m</code></label><label for="myscriptm_3"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>myscript.m</code></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-bash highlight"><pre><span></span><code>📁<span class="w"> </span>+mynamespace
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22.27 19.385H1.73A1.73 1.73 0 0 1 0 17.655V6.345a1.73 1.73 0 0 1 1.73-1.73h20.54A1.73 1.73 0 0 1 24 6.345v11.308a1.73 1.73 0 0 1-1.73 1.731zM5.769 15.923v-4.5l2.308 2.885 2.307-2.885v4.5h2.308V8.078h-2.308l-2.307 2.885-2.308-2.885H3.46v7.847zM21.232 12h-2.309V8.077h-2.307V12h-2.308l3.461 4.039z"/></svg></span><span class="w"> </span>readme.md
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>classA.m
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>classB.m
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>typed_function.m
+└──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>myscript.m
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="n">This</span><span class="w"> </span><span class="s">is</span><span class="w"> </span><span class="s">the</span><span class="w"> </span><span class="s">docstring</span><span class="w"> </span><span class="s">for</span><span class="w"> </span><span class="s">mynamespace.</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="k">classdef</span><span class="w"> </span><span class="n">classA</span>
+<span class="w">    </span><span class="c">% Docstring of class A.</span>
+
+<span class="w">    </span><span class="k">methods</span>
+<span class="w">        </span><span class="k">function</span><span class="w"> </span>obj<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">method_a</span><span class="p">(</span>inputArg1<span class="p">)</span>
+<span class="w">            </span><span class="c">% Docstring of the method.</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="k">classdef</span><span class="w"> </span><span class="n">classB</span>
+<span class="w">    </span><span class="c">% Docstring of class B.</span>
+<span class="w">    </span><span class="k">properties</span>
+<span class="w">        </span><span class="n">prop_b</span><span class="w">   </span><span class="c">% Docstring of the property.</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="k">methods</span>
+<span class="w">        </span><span class="k">function</span><span class="w"> </span>obj<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">method_b</span><span class="p">(</span>inputArg1<span class="p">)</span>
+<span class="w">            </span><span class="c">% Docstring of the method.</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="k">function</span><span class="w"> </span>output<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">typed_function</span><span class="p">(</span>input, options<span class="p">)</span>
+<span class="w">    </span><span class="c">% Example function with typed inputs and outputs</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Input<span class="p">)</span>
+<span class="w">        </span><span class="n">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="c">% The input variable</span>
+<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Output<span class="p">)</span>
+<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="n">char</span><span class="w"> </span><span class="c">% The output variable</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">char</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="k">end</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="c">% This is an example script.</span>
+
+<span class="c">% This is a paragraph. </span>
+<span class="n">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+</details>
+<details class="preview" open="open">
+<summary>Preview</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="10:2"><input checked="checked" id="with-root-full-path" name="__tabbed_10" type="radio" /><input id="without-root-full-path" name="__tabbed_10" type="radio" /><div class="tabbed-labels"><label for="with-root-full-path">With root full path</label><label for="without-root-full-path">Without root full path</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-markdown highlight"><pre><span></span><code>::: mynamespace.classA
+    options:
+      show_root_full_path: true
+</code></pre></div>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="mynamespace.classA" class="doc doc-heading">
+            <code>mynamespace.classA</code>
+
+
+<a href="#mynamespace.classA" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>Docstring of class A.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mynamespace.classA.method_a" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">method_a</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div></div>
+<div class="tabbed-block">
+<div class="language-markdown highlight"><pre><span></span><code>::: mynamespace.classA
+    options:
+      show_root_full_path: false
+</code></pre></div>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="mynamespace.classA" class="doc doc-heading">
+            <code>classA</code>
+
+
+<a href="#mynamespace.classA" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>Docstring of class A.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mynamespace.classA.method_a" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">method_a</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div></div>
+</div>
+</div>
+</details>
+<h2 id="show_root_members_full_path"><code>show_root_members_full_path</code><a class="headerlink" href="#show_root_members_full_path" title="Permanent link">¤</a></h2>
+<ul>
+<li><strong><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.876.64V.639l8.25 4.763c.541.313.875.89.875 1.515v9.525a1.75 1.75 0 0 1-.875 1.516l-8.25 4.762a1.75 1.75 0 0 1-1.75 0l-8.25-4.763a1.75 1.75 0 0 1-.875-1.515V6.917c0-.625.334-1.202.875-1.515L11.126.64a1.75 1.75 0 0 1 1.75 0m-1 1.298L4.251 6.34l7.75 4.474 7.75-4.474-7.625-4.402a.25.25 0 0 0-.25 0m.875 19.123 7.625-4.402a.25.25 0 0 0 .125-.216V7.639l-7.75 4.474ZM3.501 7.64v8.803c0 .09.048.172.125.216l7.625 4.402v-8.947Z"/></svg></span> Type <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool"><code>bool</code></a> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 10H5V8h14zm0 6H5v-2h14z"/></svg></span> <code title="default value">False</code></strong></li>
+</ul>
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+<p>Show the full namespace path of the root members.</p>
+<p>This option does the same thing as <a class="autorefs autorefs-internal" href="#show_root_full_path"><code>show_root_full_path</code></a>, but for direct members  of the root object instead of the root object itself.</p>
+<p>To show the full path for every member recursively, see <a class="autorefs autorefs-internal" href="#show_object_full_path"><code>show_object_full_path</code></a>.</p>
+<div class="language-yaml highlight"><span class="filename">in mkdocs.yml (global configuration)</span><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mkdocstrings</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">handlers</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">matlab</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">options</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">show_root_members_full_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<div class="language-md highlight"><span class="filename">or in docs/some_page.md (local configuration)</span><pre><span></span><code>::: mynamespace.classA
+    options:
+      show_root_members_full_path: false
+</code></pre></div>
+<details class="code">
+<summary>Source files</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="11:6"><input checked="checked" id="tree_4" name="__tabbed_11" type="radio" /><input id="readmemd_4" name="__tabbed_11" type="radio" /><input id="classam_4" name="__tabbed_11" type="radio" /><input id="classbm_4" name="__tabbed_11" type="radio" /><input id="typed_functionm_4" name="__tabbed_11" type="radio" /><input id="myscriptm_4" name="__tabbed_11" type="radio" /><div class="tabbed-labels"><label for="tree_4"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 3h6v4H3zm12 7h6v4h-6zm0 7h6v4h-6zm-2-4H7v5h6v2H5V9h2v2h6z"/></svg></span> tree</label><label for="readmemd_4"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>readme.md</code></label><label for="classam_4"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>classA.m</code></label><label for="classbm_4"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>classB.m</code></label><label for="typed_functionm_4"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>typed_function.m</code></label><label for="myscriptm_4"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>myscript.m</code></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-bash highlight"><pre><span></span><code>📁<span class="w"> </span>+mynamespace
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22.27 19.385H1.73A1.73 1.73 0 0 1 0 17.655V6.345a1.73 1.73 0 0 1 1.73-1.73h20.54A1.73 1.73 0 0 1 24 6.345v11.308a1.73 1.73 0 0 1-1.73 1.731zM5.769 15.923v-4.5l2.308 2.885 2.307-2.885v4.5h2.308V8.078h-2.308l-2.307 2.885-2.308-2.885H3.46v7.847zM21.232 12h-2.309V8.077h-2.307V12h-2.308l3.461 4.039z"/></svg></span><span class="w"> </span>readme.md
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>classA.m
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>classB.m
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>typed_function.m
+└──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>myscript.m
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="n">This</span><span class="w"> </span><span class="s">is</span><span class="w"> </span><span class="s">the</span><span class="w"> </span><span class="s">docstring</span><span class="w"> </span><span class="s">for</span><span class="w"> </span><span class="s">mynamespace.</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="k">classdef</span><span class="w"> </span><span class="n">classA</span>
+<span class="w">    </span><span class="c">% Docstring of class A.</span>
+
+<span class="w">    </span><span class="k">methods</span>
+<span class="w">        </span><span class="k">function</span><span class="w"> </span>obj<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">method_a</span><span class="p">(</span>inputArg1<span class="p">)</span>
+<span class="w">            </span><span class="c">% Docstring of the method.</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="k">classdef</span><span class="w"> </span><span class="n">classB</span>
+<span class="w">    </span><span class="c">% Docstring of class B.</span>
+<span class="w">    </span><span class="k">properties</span>
+<span class="w">        </span><span class="n">prop_b</span><span class="w">   </span><span class="c">% Docstring of the property.</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="k">methods</span>
+<span class="w">        </span><span class="k">function</span><span class="w"> </span>obj<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">method_b</span><span class="p">(</span>inputArg1<span class="p">)</span>
+<span class="w">            </span><span class="c">% Docstring of the method.</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="k">function</span><span class="w"> </span>output<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">typed_function</span><span class="p">(</span>input, options<span class="p">)</span>
+<span class="w">    </span><span class="c">% Example function with typed inputs and outputs</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Input<span class="p">)</span>
+<span class="w">        </span><span class="n">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="c">% The input variable</span>
+<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Output<span class="p">)</span>
+<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="n">char</span><span class="w"> </span><span class="c">% The output variable</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">char</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="k">end</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="c">% This is an example script.</span>
+
+<span class="c">% This is a paragraph. </span>
+<span class="n">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+</details>
+<details class="preview" open="open">
+<summary>Preview</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="12:2"><input checked="checked" id="with-root-members-full-path" name="__tabbed_12" type="radio" /><input id="without-root-members-full-path" name="__tabbed_12" type="radio" /><div class="tabbed-labels"><label for="with-root-members-full-path">With root members full path</label><label for="without-root-members-full-path">Without root members full path</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-markdown highlight"><pre><span></span><code>::: mynamespace.classA
+    options:
+      show_root_members_full_path: true
+</code></pre></div>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="mynamespace.classA" class="doc doc-heading">
+            <code>mynamespace.classA</code>
+
+
+<a href="#mynamespace.classA" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>Docstring of class A.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mynamespace.classA.method_a" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">mynamespace</span><span class="p">.</span><span class="n">classA</span><span class="p">.</span><span class="n">method_a</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div></div>
+<div class="tabbed-block">
+<div class="language-markdown highlight"><pre><span></span><code>::: mynamespace.classA
+    options:
+      show_root_members_full_path: false
+</code></pre></div>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="mynamespace.classA" class="doc doc-heading">
+            <code>mynamespace.classA</code>
+
+
+<a href="#mynamespace.classA" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>Docstring of class A.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mynamespace.classA.method_a" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">method_a</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div></div>
+</div>
+</div>
+</details>
+<h2 id="show_object_full_path"><code>show_object_full_path</code><a class="headerlink" href="#show_object_full_path" title="Permanent link">¤</a></h2>
+<ul>
+<li><strong><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.876.64V.639l8.25 4.763c.541.313.875.89.875 1.515v9.525a1.75 1.75 0 0 1-.875 1.516l-8.25 4.762a1.75 1.75 0 0 1-1.75 0l-8.25-4.763a1.75 1.75 0 0 1-.875-1.515V6.917c0-.625.334-1.202.875-1.515L11.126.64a1.75 1.75 0 0 1 1.75 0m-1 1.298L4.251 6.34l7.75 4.474 7.75-4.474-7.625-4.402a.25.25 0 0 0-.25 0m.875 19.123 7.625-4.402a.25.25 0 0 0 .125-.216V7.639l-7.75 4.474ZM3.501 7.64v8.803c0 .09.048.172.125.216l7.625 4.402v-8.947Z"/></svg></span> Type <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool"><code>bool</code></a> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 10H5V8h14zm0 6H5v-2h14z"/></svg></span> <code title="default value">False</code></strong></li>
+</ul>
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+<p>Show the full namespace path of every object.</p>
+<p>Same as for <a class="autorefs autorefs-internal" href="#show_root_members_full_path"><code>show_root_members_full_path</code></a>, but for every member, recursively. This option takes precedence over <a class="autorefs autorefs-internal" href="#show_root_members_full_path"><code>show_root_members_full_path</code></a>:</p>
+<table>
+<thead>
+<tr>
+<th><code>show_root_members_full_path</code></th>
+<th><code>show_object_full_path</code></th>
+<th>Direct root members path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>False</td>
+<td>False</td>
+<td>Name only</td>
+</tr>
+<tr>
+<td>False</td>
+<td>True</td>
+<td>Full</td>
+</tr>
+<tr>
+<td>True</td>
+<td>False</td>
+<td>Full</td>
+</tr>
+<tr>
+<td>True</td>
+<td>True</td>
+<td>Full</td>
+</tr>
+</tbody>
+</table>
+<div class="language-yaml highlight"><span class="filename">in mkdocs.yml (global configuration)</span><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mkdocstrings</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">handlers</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">matlab</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">options</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">show_object_full_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<div class="language-md highlight"><span class="filename">or in docs/some_page.md (local configuration)</span><pre><span></span><code>::: +mynamespace
+    options:
+      show_object_full_path: false
+</code></pre></div>
+<details class="preview" open="open">
+<summary>Preview</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="13:2"><input checked="checked" id="with-object-full-path" name="__tabbed_13" type="radio" /><input id="without-object-full-path" name="__tabbed_13" type="radio" /><div class="tabbed-labels"><label for="with-object-full-path">With object full path</label><label for="without-object-full-path">Without object full path</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-markdown highlight"><pre><span></span><code>::: +mynamespace
+    options:
+      show_object_full_path: true
+</code></pre></div>
+
+
+<div class="doc doc-object doc-namespace">
+
+
+
+<h3 id="++mynamespace" class="doc doc-heading">
+            <code>+mynamespace.*</code>
+
+<a href="#++mynamespace" class="headerlink" title="Permanent link">¤</a></h3>
+
+    <div class="doc doc-contents first">
+
+        <p>This is the docstring for mynamespace.</p>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="mynamespace.classA" class="doc doc-heading">
+            <code>mynamespace.classA</code>
+
+
+<a href="#mynamespace.classA" class="headerlink" title="Permanent link">¤</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Docstring of class A.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="mynamespace.classA.method_a" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">mynamespace</span><span class="p">.</span><span class="n">classA</span><span class="p">.</span><span class="n">method_a</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="mynamespace.classB" class="doc doc-heading">
+            <code>mynamespace.classB</code>
+
+
+<a href="#mynamespace.classB" class="headerlink" title="Permanent link">¤</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Docstring of class B.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-property">
+
+
+
+<h5 id="mynamespace.classB.prop_b" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">mynamespace</span><span class="o">.</span><span class="n">classB</span><span class="o">.</span><span class="n">prop_b</span></code>
+
+<a href="#mynamespace.classB.prop_b" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the property.</p>
+
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="mynamespace.classB.method_b" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">mynamespace</span><span class="p">.</span><span class="n">classB</span><span class="p">.</span><span class="n">method_b</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classB.method_b" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mynamespace.typed_function" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">mynamespace</span><span class="p">.</span><span class="n">typed_function</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+<a href="#mynamespace.typed_function" class="headerlink" title="Permanent link">¤</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Example function with typed inputs and outputs</p>
+
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-script">
+
+
+
+<h4 id="mynamespace.myscript" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">mynamespace</span><span class="p">.</span><span class="n">myscript</span></code>
+<a href="#mynamespace.myscript" class="headerlink" title="Permanent link">¤</a></h4>
+
+    <div class="doc doc-contents ">
+
+        <p>This is an example script.</p>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div></div>
+<div class="tabbed-block">
+<div class="language-markdown highlight"><pre><span></span><code>::: +mynamespace
+    options:
+      show_object_full_path: false
+</code></pre></div>
+
+
+<div class="doc doc-object doc-namespace">
+
+
+
+<h3 id="++mynamespace" class="doc doc-heading">
+            <code>+mynamespace.*</code>
+
+<a href="#++mynamespace" class="headerlink" title="Permanent link">¤</a></h3>
+
+    <div class="doc doc-contents first">
+
+        <p>This is the docstring for mynamespace.</p>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="mynamespace.classA" class="doc doc-heading">
+            <code>classA</code>
+
+
+<a href="#mynamespace.classA" class="headerlink" title="Permanent link">¤</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Docstring of class A.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="mynamespace.classA.method_a" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">method_a</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="mynamespace.classB" class="doc doc-heading">
+            <code>classB</code>
+
+
+<a href="#mynamespace.classB" class="headerlink" title="Permanent link">¤</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Docstring of class B.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-property">
+
+
+
+<h5 id="mynamespace.classB.prop_b" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">prop_b</span></code>
+
+<a href="#mynamespace.classB.prop_b" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the property.</p>
+
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="mynamespace.classB.method_b" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">method_b</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classB.method_b" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mynamespace.typed_function" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">typed_function</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+<a href="#mynamespace.typed_function" class="headerlink" title="Permanent link">¤</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Example function with typed inputs and outputs</p>
+
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-script">
+
+
+
+<h4 id="mynamespace.myscript" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">myscript</span></code>
+<a href="#mynamespace.myscript" class="headerlink" title="Permanent link">¤</a></h4>
+
+    <div class="doc doc-contents ">
+
+        <p>This is an example script.</p>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div></div>
+</div>
+</div>
+</details>
+<h2 id="show_category_heading"><code>show_category_heading</code><a class="headerlink" href="#show_category_heading" title="Permanent link">¤</a></h2>
+<ul>
+<li><strong><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.876.64V.639l8.25 4.763c.541.313.875.89.875 1.515v9.525a1.75 1.75 0 0 1-.875 1.516l-8.25 4.762a1.75 1.75 0 0 1-1.75 0l-8.25-4.763a1.75 1.75 0 0 1-.875-1.515V6.917c0-.625.334-1.202.875-1.515L11.126.64a1.75 1.75 0 0 1 1.75 0m-1 1.298L4.251 6.34l7.75 4.474 7.75-4.474-7.625-4.402a.25.25 0 0 0-.25 0m.875 19.123 7.625-4.402a.25.25 0 0 0 .125-.216V7.639l-7.75 4.474ZM3.501 7.64v8.803c0 .09.048.172.125.216l7.625 4.402v-8.947Z"/></svg></span> Type <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool"><code>bool</code></a> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 10H5V8h14zm0 6H5v-2h14z"/></svg></span> <code title="default value">False</code></strong></li>
+</ul>
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+<p>When <a class="autorefs autorefs-internal" title="group_by_category" href="../members/#group_by_category">grouped by categories</a>, show a heading for each category.
+These category headings will appear in the table of contents,
+allowing you to link to them using their permalinks.</p>
+<div class="admonition warning">
+<p class="admonition-title">Not recommended with deeply nested object</p>
+<p>When injecting documentation for deeply nested objects, you'll quickly run out of heading levels, and the objects at the bottom of the tree risk all getting documented using H6 headings, which might decrease the readability of your API docs. </p>
+</div>
+<div class="language-yaml highlight"><span class="filename">in mkdocs.yml (global configuration)</span><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mkdocstrings</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">handlers</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">matlab</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">options</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">group_by_category</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">          </span><span class="nt">show_category_heading</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<div class="language-md highlight"><span class="filename">or in docs/some_page.md (local configuration)</span><pre><span></span><code>::: matlab_callable
+    options:
+      group_by_category: true
+      show_category_heading: false
+</code></pre></div>
+<details class="code">
+<summary>Source files</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="14:6"><input checked="checked" id="tree_5" name="__tabbed_14" type="radio" /><input id="readmemd_5" name="__tabbed_14" type="radio" /><input id="classam_5" name="__tabbed_14" type="radio" /><input id="classbm_5" name="__tabbed_14" type="radio" /><input id="typed_functionm_5" name="__tabbed_14" type="radio" /><input id="myscriptm_5" name="__tabbed_14" type="radio" /><div class="tabbed-labels"><label for="tree_5"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 3h6v4H3zm12 7h6v4h-6zm0 7h6v4h-6zm-2-4H7v5h6v2H5V9h2v2h6z"/></svg></span> tree</label><label for="readmemd_5"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>readme.md</code></label><label for="classam_5"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>classA.m</code></label><label for="classbm_5"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>classB.m</code></label><label for="typed_functionm_5"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>typed_function.m</code></label><label for="myscriptm_5"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>myscript.m</code></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-bash highlight"><pre><span></span><code>📁<span class="w"> </span>+mynamespace
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22.27 19.385H1.73A1.73 1.73 0 0 1 0 17.655V6.345a1.73 1.73 0 0 1 1.73-1.73h20.54A1.73 1.73 0 0 1 24 6.345v11.308a1.73 1.73 0 0 1-1.73 1.731zM5.769 15.923v-4.5l2.308 2.885 2.307-2.885v4.5h2.308V8.078h-2.308l-2.307 2.885-2.308-2.885H3.46v7.847zM21.232 12h-2.309V8.077h-2.307V12h-2.308l3.461 4.039z"/></svg></span><span class="w"> </span>readme.md
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>classA.m
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>classB.m
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>typed_function.m
+└──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>myscript.m
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="n">This</span><span class="w"> </span><span class="s">is</span><span class="w"> </span><span class="s">the</span><span class="w"> </span><span class="s">docstring</span><span class="w"> </span><span class="s">for</span><span class="w"> </span><span class="s">mynamespace.</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="k">classdef</span><span class="w"> </span><span class="n">classA</span>
+<span class="w">    </span><span class="c">% Docstring of class A.</span>
+
+<span class="w">    </span><span class="k">methods</span>
+<span class="w">        </span><span class="k">function</span><span class="w"> </span>obj<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">method_a</span><span class="p">(</span>inputArg1<span class="p">)</span>
+<span class="w">            </span><span class="c">% Docstring of the method.</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="k">classdef</span><span class="w"> </span><span class="n">classB</span>
+<span class="w">    </span><span class="c">% Docstring of class B.</span>
+<span class="w">    </span><span class="k">properties</span>
+<span class="w">        </span><span class="n">prop_b</span><span class="w">   </span><span class="c">% Docstring of the property.</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="k">methods</span>
+<span class="w">        </span><span class="k">function</span><span class="w"> </span>obj<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">method_b</span><span class="p">(</span>inputArg1<span class="p">)</span>
+<span class="w">            </span><span class="c">% Docstring of the method.</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="k">function</span><span class="w"> </span>output<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">typed_function</span><span class="p">(</span>input, options<span class="p">)</span>
+<span class="w">    </span><span class="c">% Example function with typed inputs and outputs</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Input<span class="p">)</span>
+<span class="w">        </span><span class="n">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="c">% The input variable</span>
+<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Output<span class="p">)</span>
+<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="n">char</span><span class="w"> </span><span class="c">% The output variable</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">char</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="k">end</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="c">% This is an example script.</span>
+
+<span class="c">% This is a paragraph. </span>
+<span class="n">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+</details>
+<details class="preview" open="open">
+<summary>Preview</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="15:2"><input checked="checked" id="with-category-headings" name="__tabbed_15" type="radio" /><input id="without-category-headings" name="__tabbed_15" type="radio" /><div class="tabbed-labels"><label for="with-category-headings">With category headings</label><label for="without-category-headings">Without category headings</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-markdown highlight"><pre><span></span><code>::: +mynamespace
+    options:
+      group_by_category: true
+      show_category_heading: true
+</code></pre></div>
+
+
+<div class="doc doc-object doc-namespace">
+
+
+
+<h3 id="++mynamespace" class="doc doc-heading">
+            <code>+mynamespace.*</code>
+
+<a href="#++mynamespace" class="headerlink" title="Permanent link">¤</a></h3>
+
+    <div class="doc doc-contents first">
+
+        <p>This is the docstring for mynamespace.</p>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+<h4 id="++mynamespace-classes">Classes<a href="#++mynamespace-classes" class="headerlink" title="Permanent link">¤</a></h4>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="mynamespace.classA" class="doc doc-heading">
+            <code>classA</code>
+
+
+<a href="#mynamespace.classA" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Docstring of class A.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<h6 id="mynamespace.classA-methods">Methods<a href="#mynamespace.classA-methods" class="headerlink" title="Permanent link">¤</a></h6>
+
+<div class="doc doc-object doc-function">
+
+
+<h7 id="mynamespace.classA.method_a" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">method_a</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h7>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="mynamespace.classB" class="doc doc-heading">
+            <code>classB</code>
+
+
+<a href="#mynamespace.classB" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Docstring of class B.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+<h6 id="mynamespace.classB-properties">Properties<a href="#mynamespace.classB-properties" class="headerlink" title="Permanent link">¤</a></h6>
+
+<div class="doc doc-object doc-property">
+
+
+
+<h7 id="mynamespace.classB.prop_b" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">prop_b</span></code>
+
+<a href="#mynamespace.classB.prop_b" class="headerlink" title="Permanent link">¤</a></h7>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the property.</p>
+
+    </div>
+
+</div>
+
+<h6 id="mynamespace.classB-methods">Methods<a href="#mynamespace.classB-methods" class="headerlink" title="Permanent link">¤</a></h6>
+
+<div class="doc doc-object doc-function">
+
+
+<h7 id="mynamespace.classB.method_b" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">method_b</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classB.method_b" class="headerlink" title="Permanent link">¤</a></h7>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+<h4 id="++mynamespace-functions">Functions<a href="#++mynamespace-functions" class="headerlink" title="Permanent link">¤</a></h4>
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="mynamespace.typed_function" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">typed_function</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+<a href="#mynamespace.typed_function" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Example function with typed inputs and outputs</p>
+
+
+    </div>
+
+</div>
+<h4 id="++mynamespace-scripts">Scripts<a href="#++mynamespace-scripts" class="headerlink" title="Permanent link">¤</a></h4>
+
+<div class="doc doc-object doc-script">
+
+
+
+<h5 id="mynamespace.myscript" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">myscript</span></code>
+<a href="#mynamespace.myscript" class="headerlink" title="Permanent link">¤</a></h5>
+
+    <div class="doc doc-contents ">
+
+        <p>This is an example script.</p>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div></div>
+<div class="tabbed-block">
+<div class="language-markdown highlight"><pre><span></span><code>::: +mynamespace
+    options:
+      group_by_category: true
+      show_category_heading: false
+</code></pre></div>
+
+
+<div class="doc doc-object doc-namespace">
+
+
+
+<h3 id="++mynamespace" class="doc doc-heading">
+            <code>+mynamespace.*</code>
+
+<a href="#++mynamespace" class="headerlink" title="Permanent link">¤</a></h3>
+
+    <div class="doc doc-contents first">
+
+        <p>This is the docstring for mynamespace.</p>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="mynamespace.classA" class="doc doc-heading">
+            <code>classA</code>
+
+
+<a href="#mynamespace.classA" class="headerlink" title="Permanent link">¤</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Docstring of class A.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="mynamespace.classA.method_a" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">method_a</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="mynamespace.classB" class="doc doc-heading">
+            <code>classB</code>
+
+
+<a href="#mynamespace.classB" class="headerlink" title="Permanent link">¤</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Docstring of class B.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-property">
+
+
+
+<h5 id="mynamespace.classB.prop_b" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">prop_b</span></code>
+
+<a href="#mynamespace.classB.prop_b" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the property.</p>
+
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="mynamespace.classB.method_b" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">method_b</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classB.method_b" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mynamespace.typed_function" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">typed_function</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+<a href="#mynamespace.typed_function" class="headerlink" title="Permanent link">¤</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Example function with typed inputs and outputs</p>
+
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-script">
+
+
+
+<h4 id="mynamespace.myscript" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">myscript</span></code>
+<a href="#mynamespace.myscript" class="headerlink" title="Permanent link">¤</a></h4>
+
+    <div class="doc doc-contents ">
+
+        <p>This is an example script.</p>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div></div>
+</div>
+</div>
+</details>
+<h2 id="show_symbol_type_heading"><code>show_symbol_type_heading</code><a class="headerlink" href="#show_symbol_type_heading" title="Permanent link">¤</a></h2>
+<ul>
+<li><strong><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.876.64V.639l8.25 4.763c.541.313.875.89.875 1.515v9.525a1.75 1.75 0 0 1-.875 1.516l-8.25 4.762a1.75 1.75 0 0 1-1.75 0l-8.25-4.763a1.75 1.75 0 0 1-.875-1.515V6.917c0-.625.334-1.202.875-1.515L11.126.64a1.75 1.75 0 0 1 1.75 0m-1 1.298L4.251 6.34l7.75 4.474 7.75-4.474-7.625-4.402a.25.25 0 0 0-.25 0m.875 19.123 7.625-4.402a.25.25 0 0 0 .125-.216V7.639l-7.75 4.474ZM3.501 7.64v8.803c0 .09.048.172.125.216l7.625 4.402v-8.947Z"/></svg></span> Type <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool"><code>bool</code></a> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 10H5V8h14zm0 6H5v-2h14z"/></svg></span> <code title="default value">False</code></strong></li>
+</ul>
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+<p>Show the symbol type in headings.</p>
+<p>This option will prefix headings with
+<code class="doc-symbol doc-symbol-property"></code>,
+<code class="doc-symbol doc-symbol-function"></code>,
+<code class="doc-symbol doc-symbol-method"></code>,
+<code class="doc-symbol doc-symbol-class"></code>,
+<code class="doc-symbol doc-symbol-script"></code>,
+<code class="doc-symbol doc-symbol-namespace"></code> or.
+<code class="doc-symbol doc-symbol-folder"></code> types.
+See also <a class="autorefs autorefs-internal" href="#show_symbol_type_toc"><code>show_symbol_type_toc</code></a>.</p>
+<div class="language-yaml highlight"><span class="filename">in mkdocs.yml (global configuration)</span><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mkdocstrings</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">handlers</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">matlab</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">options</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">show_symbol_type_heading</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<div class="language-md highlight"><span class="filename">or in docs/some_page.md (local configuration)</span><pre><span></span><code>::: matlab_callable
+    options:
+      show_symbol_type_heading: false
+</code></pre></div>
+<details class="code">
+<summary>Source files</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="16:6"><input checked="checked" id="tree_6" name="__tabbed_16" type="radio" /><input id="readmemd_6" name="__tabbed_16" type="radio" /><input id="classam_6" name="__tabbed_16" type="radio" /><input id="classbm_6" name="__tabbed_16" type="radio" /><input id="typed_functionm_6" name="__tabbed_16" type="radio" /><input id="myscriptm_6" name="__tabbed_16" type="radio" /><div class="tabbed-labels"><label for="tree_6"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 3h6v4H3zm12 7h6v4h-6zm0 7h6v4h-6zm-2-4H7v5h6v2H5V9h2v2h6z"/></svg></span> tree</label><label for="readmemd_6"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>readme.md</code></label><label for="classam_6"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>classA.m</code></label><label for="classbm_6"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>classB.m</code></label><label for="typed_functionm_6"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>typed_function.m</code></label><label for="myscriptm_6"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> <code>myscript.m</code></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-bash highlight"><pre><span></span><code>📁<span class="w"> </span>+mynamespace
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22.27 19.385H1.73A1.73 1.73 0 0 1 0 17.655V6.345a1.73 1.73 0 0 1 1.73-1.73h20.54A1.73 1.73 0 0 1 24 6.345v11.308a1.73 1.73 0 0 1-1.73 1.731zM5.769 15.923v-4.5l2.308 2.885 2.307-2.885v4.5h2.308V8.078h-2.308l-2.307 2.885-2.308-2.885H3.46v7.847zM21.232 12h-2.309V8.077h-2.307V12h-2.308l3.461 4.039z"/></svg></span><span class="w"> </span>readme.md
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>classA.m
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>classB.m
+├──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>typed_function.m
+└──<span class="w"> </span><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/></svg></span><span class="w"> </span>myscript.m
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="n">This</span><span class="w"> </span><span class="s">is</span><span class="w"> </span><span class="s">the</span><span class="w"> </span><span class="s">docstring</span><span class="w"> </span><span class="s">for</span><span class="w"> </span><span class="s">mynamespace.</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="k">classdef</span><span class="w"> </span><span class="n">classA</span>
+<span class="w">    </span><span class="c">% Docstring of class A.</span>
+
+<span class="w">    </span><span class="k">methods</span>
+<span class="w">        </span><span class="k">function</span><span class="w"> </span>obj<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">method_a</span><span class="p">(</span>inputArg1<span class="p">)</span>
+<span class="w">            </span><span class="c">% Docstring of the method.</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="k">classdef</span><span class="w"> </span><span class="n">classB</span>
+<span class="w">    </span><span class="c">% Docstring of class B.</span>
+<span class="w">    </span><span class="k">properties</span>
+<span class="w">        </span><span class="n">prop_b</span><span class="w">   </span><span class="c">% Docstring of the property.</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="k">methods</span>
+<span class="w">        </span><span class="k">function</span><span class="w"> </span>obj<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">method_b</span><span class="p">(</span>inputArg1<span class="p">)</span>
+<span class="w">            </span><span class="c">% Docstring of the method.</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="k">function</span><span class="w"> </span>output<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">typed_function</span><span class="p">(</span>input, options<span class="p">)</span>
+<span class="w">    </span><span class="c">% Example function with typed inputs and outputs</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Input<span class="p">)</span>
+<span class="w">        </span><span class="n">input</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="c">% The input variable</span>
+<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">keyword</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">% An optional keyword argument</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="k">arguments</span><span class="w"> </span><span class="p">(</span>Output<span class="p">)</span>
+<span class="w">        </span><span class="n">output</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,:)</span><span class="w"> </span><span class="n">char</span><span class="w"> </span><span class="c">% The output variable</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">char</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="k">end</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-matlab highlight"><pre><span></span><code><span class="c">% This is an example script.</span>
+
+<span class="c">% This is a paragraph. </span>
+<span class="n">disp</span><span class="p">(</span><span class="s">&#39;hello world&#39;</span><span class="p">);</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+</details>
+<details class="preview" open="open">
+<summary>Preview</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="17:2"><input checked="checked" id="with-symbol-type-in-headings" name="__tabbed_17" type="radio" /><input id="without-symbol-type-in-headings" name="__tabbed_17" type="radio" /><div class="tabbed-labels"><label for="with-symbol-type-in-headings">With symbol type in headings</label><label for="without-symbol-type-in-headings">Without symbol type in headings</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-markdown highlight"><pre><span></span><code>::: docs/src/snippets
+    options:
+      members:
+<span class="w">        </span><span class="k">-</span><span class="w"> </span>mynamespace
+      show_symbol_type_heading: true
+</code></pre></div>
+
+
+<div class="doc doc-object doc-folder">
+
+
+
+<h3 id="/snippets" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-folder"></code>            <code>/snippets</code>
+<a href="#/snippets" class="headerlink" title="Permanent link">¤</a></h3>
+
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-namespace">
+
+
+
+<h4 id="++mynamespace" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-namespace"></code>            <code>mynamespace.*</code>
+
+<a href="#++mynamespace" class="headerlink" title="Permanent link">¤</a></h4>
+
+    <div class="doc doc-contents ">
+
+        <p>This is the docstring for mynamespace.</p>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="mynamespace.classA" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <code>classA</code>
+
+
+<a href="#mynamespace.classA" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Docstring of class A.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h6 id="mynamespace.classA.method_a" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-matlab"><span class="n">method_a</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h6>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="mynamespace.classB" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <code>classB</code>
+
+
+<a href="#mynamespace.classB" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Docstring of class B.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-property">
+
+
+
+<h6 id="mynamespace.classB.prop_b" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-property"></code>            <code class="highlight language-python"><span class="n">prop_b</span></code>
+
+<a href="#mynamespace.classB.prop_b" class="headerlink" title="Permanent link">¤</a></h6>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the property.</p>
+
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h6 id="mynamespace.classB.method_b" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-matlab"><span class="n">method_b</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classB.method_b" class="headerlink" title="Permanent link">¤</a></h6>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="mynamespace.typed_function" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <code class="highlight language-matlab"><span class="n">typed_function</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+<a href="#mynamespace.typed_function" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Example function with typed inputs and outputs</p>
+
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-script">
+
+
+
+<h5 id="mynamespace.myscript" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-script"></code>            <code class="highlight language-matlab"><span class="n">myscript</span></code>
+<a href="#mynamespace.myscript" class="headerlink" title="Permanent link">¤</a></h5>
+
+    <div class="doc doc-contents ">
+
+        <p>This is an example script.</p>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div></div>
+<div class="tabbed-block">
+<div class="language-markdown highlight"><pre><span></span><code>::: docs/src/snippets
+    options:
+      members:
+<span class="w">        </span><span class="k">-</span><span class="w"> </span>mynamespace
+      show_symbol_type_heading: false
+</code></pre></div>
+
+
+<div class="doc doc-object doc-folder">
+
+
+
+<h3 id="/snippets" class="doc doc-heading">
+            <code>/snippets</code>
+<a href="#/snippets" class="headerlink" title="Permanent link">¤</a></h3>
+
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-namespace">
+
+
+
+<h4 id="++mynamespace" class="doc doc-heading">
+            <code>mynamespace.*</code>
+
+<a href="#++mynamespace" class="headerlink" title="Permanent link">¤</a></h4>
+
+    <div class="doc doc-contents ">
+
+        <p>This is the docstring for mynamespace.</p>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="mynamespace.classA" class="doc doc-heading">
+            <code>classA</code>
+
+
+<a href="#mynamespace.classA" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Docstring of class A.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h6 id="mynamespace.classA.method_a" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">method_a</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h6>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="mynamespace.classB" class="doc doc-heading">
+            <code>classB</code>
+
+
+<a href="#mynamespace.classB" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Docstring of class B.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-property">
+
+
+
+<h6 id="mynamespace.classB.prop_b" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">prop_b</span></code>
+
+<a href="#mynamespace.classB.prop_b" class="headerlink" title="Permanent link">¤</a></h6>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the property.</p>
+
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h6 id="mynamespace.classB.method_b" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">method_b</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classB.method_b" class="headerlink" title="Permanent link">¤</a></h6>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="mynamespace.typed_function" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">typed_function</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">keyword</span><span class="p">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+<a href="#mynamespace.typed_function" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Example function with typed inputs and outputs</p>
+
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-script">
+
+
+
+<h5 id="mynamespace.myscript" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">myscript</span></code>
+<a href="#mynamespace.myscript" class="headerlink" title="Permanent link">¤</a></h5>
+
+    <div class="doc doc-contents ">
+
+        <p>This is an example script.</p>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div></div>
+</div>
+</div>
+</details>
+<h2 id="show_symbol_type_toc"><code>show_symbol_type_toc</code><a class="headerlink" href="#show_symbol_type_toc" title="Permanent link">¤</a></h2>
+<ul>
+<li><strong><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.876.64V.639l8.25 4.763c.541.313.875.89.875 1.515v9.525a1.75 1.75 0 0 1-.875 1.516l-8.25 4.762a1.75 1.75 0 0 1-1.75 0l-8.25-4.763a1.75 1.75 0 0 1-.875-1.515V6.917c0-.625.334-1.202.875-1.515L11.126.64a1.75 1.75 0 0 1 1.75 0m-1 1.298L4.251 6.34l7.75 4.474 7.75-4.474-7.625-4.402a.25.25 0 0 0-.25 0m.875 19.123 7.625-4.402a.25.25 0 0 0 .125-.216V7.639l-7.75 4.474ZM3.501 7.64v8.803c0 .09.048.172.125.216l7.625 4.402v-8.947Z"/></svg></span> Type <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool"><code>bool</code></a> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 10H5V8h14zm0 6H5v-2h14z"/></svg></span> <code title="default value">False</code></strong></li>
+</ul>
+<!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
+
+<p>Show the symbol type in the Table of Contents.</p>
+<p>This option will prefix items in the ToC with
+<code class="doc-symbol doc-symbol-property"></code>,
+<code class="doc-symbol doc-symbol-function"></code>,
+<code class="doc-symbol doc-symbol-method"></code>,
+<code class="doc-symbol doc-symbol-class"></code>,
+<code class="doc-symbol doc-symbol-script"></code>,
+<code class="doc-symbol doc-symbol-namespace"></code> or.
+<code class="doc-symbol doc-symbol-folder"></code> types.
+See also <a class="autorefs autorefs-internal" href="#show_symbol_type_heading"><code>show_symbol_type_heading</code></a>.</p>
+<div class="language-yaml highlight"><span class="filename">in mkdocs.yml (global configuration)</span><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mkdocstrings</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">handlers</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">matlab</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">options</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">show_symbol_type_toc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<div class="language-md highlight"><span class="filename">or in docs/some_page.md (local configuration)</span><pre><span></span><code>::: matlab_callable
+    options:
+      show_symbol_type_toc: false
+</code></pre></div>
+<details class="preview" open="open">
+<summary>Preview</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="18:2"><input checked="checked" id="with-symbol-type-in-toc" name="__tabbed_18" type="radio" /><input id="without-symbol-type-in-toc" name="__tabbed_18" type="radio" /><div class="tabbed-labels"><label for="with-symbol-type-in-toc">With symbol type in ToC</label><label for="without-symbol-type-in-toc">Without symbol type in ToC</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><ul style="list-style: none;">
+  <li><code class="doc-symbol doc-symbol-folder"></code> folder</li>
+  <li><code class="doc-symbol doc-symbol-namespace"></code> namespace</li>
+  <li><code class="doc-symbol doc-symbol-script"></code> script</li>
+  <li><code class="doc-symbol doc-symbol-function"></code> function</li>
+  <li><code class="doc-symbol doc-symbol-class"></code> class
+    <ul style="list-style: none;">
+      <li><code class="doc-symbol doc-symbol-method"></code> method</li>
+      <li><code class="doc-symbol doc-symbol-property"></code> property</li>
+    </ul>
+  </li>
+</ul></p>
+</div>
+<div class="tabbed-block">
+<p><ul style="list-style: none;">
+  <li>folder</li>
+  <li>namespace</li>
+  <li>script</li>
+  <li>function</li>
+  <li>class
+    <ul style="list-style: none;">
+      <li>method</li>
+      <li>property</li>
+    </ul>
+  </li>
+</ul></p>
+</div>
+</div>
+</div>
+</details>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../general/" class="md-footer__link md-footer__link--prev" aria-label="Previous: General">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                General
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../members/" class="md-footer__link md-footer__link--next" aria-label="Next: Members">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Members
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Mark Shui Hu
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "search.highlight", "search.suggest", "toc.follow", "toc.integrate"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "provider": "mike"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+        <script src="../../../assets/_markdown_exec_pyodide.js"></script>
+      
+    
+  </body>
+</html>
