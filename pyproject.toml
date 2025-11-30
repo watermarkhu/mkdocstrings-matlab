@@ -29,7 +29,7 @@ classifiers = [
 dependencies = [
     "griffe~=1.15.0",
     "maxx~=0.6.0",
-    "mkdocstrings~=0.29",
+    "mkdocstrings~=1.0",
     "mkdocs-autorefs~=1.4",
     "charset-normalizer~=3.4",
     "typing-extensions>=4.0; python_version < '3.11'",
@@ -40,8 +40,8 @@ pygments = { git = "https://github.com/watermarkhu/pygments", branch = "matlab" 
 
 [dependency-groups]
 dev = [
-    "ty~=0.0.1a24",
-    "prek>=0.2.1",
+    "ty~=0.0.1a29",
+    "prek>=0.2.19",
     "ruff~=0.14.0",
     "pydantic~=2.10",
     "pytest~=9.0.0",
@@ -53,7 +53,7 @@ dev = [
 docs = [
     "pygments",
     "mkdocs-material~=9.5",
-    "mkdocstrings-python~=1.16",
+    "mkdocstrings-python~=2.0",
     "markdown-exec~=1.10",
     "mkdocs-callouts~=1.15",
     "mkdocs-git-revision-date-localized-plugin~=1.3",

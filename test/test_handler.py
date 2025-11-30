@@ -121,6 +121,8 @@ def test_give_precedence_to_user_paths(tmp_path: Path) -> None:
     handler = MatlabHandler(
         base_dir=Path("."),
         config=MatlabConfig.from_data(paths=[str(test_path)]),
+        theme="material",
+        custom_templates=None,
         mdx=[],
         mdx_config={},
     )
@@ -203,6 +205,8 @@ def test_invalid_paths_configuration() -> None:
         MatlabHandler(
             base_dir=Path("."),
             config=MatlabConfig.from_data(paths=["/nonexistent/path"]),
+            theme="material",
+            custom_templates=None,
             mdx=[],
             mdx_config={},
         )

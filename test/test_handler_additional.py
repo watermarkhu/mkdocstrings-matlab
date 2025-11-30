@@ -30,9 +30,10 @@ def test_handler_with_custom_templates_base_override_warning(tmp_path: Path, cap
     _ = MatlabHandler(
         base_dir=tmp_path,
         config=MatlabConfig.from_data(),
+        theme="material",
+        custom_templates=str(custom_templates),
         mdx=[],
         mdx_config={},
-        custom_templates=str(custom_templates),
     )
 
     # Check that warning was logged
@@ -49,6 +50,8 @@ def test_handler_with_glob_paths(tmp_path: Path) -> None:
     handler = MatlabHandler(
         base_dir=tmp_path,
         config=MatlabConfig.from_data(paths=["src_*"]),
+        theme="material",
+        custom_templates=None,
         mdx=[],
         mdx_config={},
     )
@@ -64,6 +67,8 @@ def test_handler_with_empty_paths() -> None:
     handler = MatlabHandler(
         base_dir=Path("."),
         config=MatlabConfig.from_data(paths=[]),
+        theme="material",
+        custom_templates=None,
         mdx=[],
         mdx_config={},
     )
@@ -146,7 +151,9 @@ def test_get_handler_function(tmp_path: Path) -> None:
         config_file_path = str(tmp_path / "mkdocs.yml")
 
     handler_config = {"paths": ["."]}
-    handler = get_handler(handler_config, MockConfig())  # type: ignore[arg-type]
+    handler = get_handler(
+        handler_config, MockConfig(), theme="material", custom_templates=None, mdx=[], mdx_config={}
+    )  # type: ignore[arg-type]
 
     assert isinstance(handler, MatlabHandler)
     assert handler.base_dir == tmp_path
@@ -160,7 +167,9 @@ def test_get_handler_with_no_config_file_path() -> None:
         config_file_path = None
 
     handler_config = {}
-    handler = get_handler(handler_config, MockConfig())  # type: ignore[arg-type]
+    handler = get_handler(
+        handler_config, MockConfig(), theme="material", custom_templates=None, mdx=[], mdx_config={}
+    )  # type: ignore[arg-type]
 
     assert isinstance(handler, MatlabHandler)
     # Should default to current directory
