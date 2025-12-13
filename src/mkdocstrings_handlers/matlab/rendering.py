@@ -153,12 +153,12 @@ def do_format_signature(
 
     signature = template.render(new_context, function=function, signature=True)
     signature = str(
-        env.filters["highlight"](  # type: ignore
-            Markup.escape(signature),
-            language="matlab",  # type: ignore
-            inline=False,  # type: ignore
-            classes=["doc-signature"],  # type: ignore
-            linenums=False,  # type: ignore
+        env.filters["highlight"](  # ty: ignore
+            Markup.escape(signature),  # ty: ignore
+            language="matlab",  # ty: ignore
+            inline=False,  # ty: ignore
+            classes=["doc-signature"],  # ty: ignore
+            linenums=False,  # ty: ignore
         ),
     )
 
@@ -244,12 +244,12 @@ def do_format_property(
         signature += f" = {value}"
 
     signature = str(
-        env.filters["highlight"](  # type: ignore
-            Markup.escape(signature),
-            language="matlab",  # type: ignore
-            inline=False,  # type: ignore
-            classes=["doc-signature"],  # type: ignore
-            linenums=False,  # type: ignore
+        env.filters["highlight"](  # ty: ignore
+            Markup.escape(signature),  # ty: ignore
+            language="matlab",  # ty: ignore
+            inline=False,  # ty: ignore
+            classes=["doc-signature"],  # ty: ignore
+            linenums=False,  # ty: ignore
         ),
     )
 
