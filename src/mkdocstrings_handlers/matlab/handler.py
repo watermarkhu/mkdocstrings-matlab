@@ -191,8 +191,8 @@ class MatlabHandler(BaseHandler):
             rendering.do_as_inheritance_diagram_section
         )
         self.env.globals["AutorefsHook"] = rendering.AutorefsHook
-        self.env.tests["existing_template"] = (
-            lambda template_name: template_name in self.env.list_templates()
+        self.env.tests["existing_template"] = lambda template_name: (
+            template_name in self.env.list_templates()
         )
         # The following is required since in MATLAB there is a concept called namespace
         # This is used as a variable in Jinja templates and would overwrite the namespace macro
