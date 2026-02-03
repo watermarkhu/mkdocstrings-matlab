@@ -793,10 +793,10 @@ class MatlabInputOptions:
 
 
 @dataclass(frozen=True, kw_only=True)
-class MatlabOptions(MatlabInputOptions):  # type: ignore[override,unused-ignore]
+class MatlabOptions(MatlabInputOptions):
     """Final options passed as template context."""
 
-    filters: list[tuple[re.Pattern, bool]] = field(default_factory=list)  # type: ignore[assignment]
+    filters: list[tuple[re.Pattern, bool]] = field(default_factory=list)
     """A list of filters applied to filter objects based on their name."""
 
     summary: SummaryOption = field(default_factory=SummaryOption)
@@ -887,8 +887,8 @@ class MatlabInputConfig:
 
 
 @dataclass(frozen=True, kw_only=True)
-class MatlabConfig(MatlabInputConfig):  # type: ignore[override,unused-ignore]
+class MatlabConfig(MatlabInputConfig):
     """MATLAB handler configuration."""
 
-    inventories: list[Inventory] = field(default_factory=list)  # type: ignore[assignment]
-    options: dict[str, Any] = field(default_factory=dict)  # type: ignore[assignment]
+    inventories: list[Inventory] = field(default_factory=list)
+    options: dict[str, Any] = field(default_factory=dict)
