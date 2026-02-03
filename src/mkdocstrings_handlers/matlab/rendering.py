@@ -328,7 +328,7 @@ def _parents(obj: Alias) -> set[str]:
     Returns:
         A set of parent path strings.
     """
-    parent: Object | Alias = obj.parent  # type: ignore[assignment]
+    parent: Object | Alias = obj.parent
     parents = {parent.path}
     while parent.parent:
         parent = parent.parent
