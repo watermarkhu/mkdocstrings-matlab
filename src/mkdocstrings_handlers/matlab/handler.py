@@ -160,7 +160,7 @@ class MatlabHandler(BaseHandler):
             },
         )
 
-        if self.env.filters["stash_crossref"].stash:  # ty: ignore[possibly-missing-attribute]
+        if self.env.filters["stash_crossref"].stash:  # ty: ignore[unresolved-attribute]
             pass
 
         return html
