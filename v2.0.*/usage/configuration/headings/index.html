@@ -1502,7 +1502,7 @@
 <p>The initial heading level to use.</p>
 <p>When injecting documentation for an object, the object itself and its members are rendered. For each layer of objects, we increase the heading level by 1.</p>
 <p>The initial heading level will be used for the first layer. If you set it to 3, then headings will start with <code>&lt;h3&gt;</code>.</p>
-<p>If the <a class="autorefs autorefs-internal" title="show_root_heading" href="#show_root_heading">heading for the root object</a> is not shown, then the initial heading level is used for its members.</p>
+<p>If the <a class="autorefs autorefs-internal" href="#show_root_heading">heading for the root object</a> is not shown, then the initial heading level is used for its members.</p>
 <div class="language-yaml highlight"><span class="filename">in mkdocs.yml (global configuration)</span><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mkdocstrings</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">handlers</span><span class="p">:</span>
@@ -2478,7 +2478,7 @@
 <!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
 
 <p>If the root heading is not shown, at least add a ToC entry for it.</p>
-<p>If you inject documentation for an object in the middle of a page, after long paragraphs, and without showing the <a class="autorefs autorefs-internal" title="show_root_heading" href="#show_root_heading">root heading</a>, then you will not be able to link to this particular object as it won't have a permalink and will be "lost" in the middle of text. In that case, it is useful to add a hidden anchor to the document, which will also appear in the table of contents.</p>
+<p>If you inject documentation for an object in the middle of a page, after long paragraphs, and without showing the <a class="autorefs autorefs-internal" href="#show_root_heading">root heading</a>, then you will not be able to link to this particular object as it won't have a permalink and will be "lost" in the middle of text. In that case, it is useful to add a hidden anchor to the document, which will also appear in the table of contents.</p>
 <p>In other cases, you might want to disable the entry to avoid polluting the ToC. It is not possible to show the root heading <em>and</em> hide the ToC entry.</p>
 <div class="language-yaml highlight"><span class="filename">in mkdocs.yml (global configuration)</span><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mkdocstrings</span><span class="p">:</span>
@@ -3088,70 +3088,6 @@ More text.
 
 
 
-<h4 id="mynamespace.classA" class="doc doc-heading">
-            <code>mynamespace.classA</code>
-
-
-<a href="#mynamespace.classA" class="headerlink" title="Permanent link">¤</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-
-
-        <p>Docstring of class A.</p>
-
-
-
-
-
-
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-<h5 id="mynamespace.classA.method_a" class="doc doc-heading">
-            <code class="highlight language-matlab"><span class="n">mynamespace</span><span class="p">.</span><span class="n">classA</span><span class="p">.</span><span class="n">method_a</span><span class="p">()</span></code>
-
-<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h5>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Docstring of the method.</p>
-
-
-    </div>
-
-</div>
-
-
-
-
-
-  </div>
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
 <h4 id="mynamespace.classB" class="doc doc-heading">
             <code>mynamespace.classB</code>
 
@@ -3209,6 +3145,70 @@ More text.
             <code class="highlight language-matlab"><span class="n">mynamespace</span><span class="p">.</span><span class="n">classB</span><span class="p">.</span><span class="n">method_b</span><span class="p">()</span></code>
 
 <a href="#mynamespace.classB.method_b" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="mynamespace.classA" class="doc doc-heading">
+            <code>mynamespace.classA</code>
+
+
+<a href="#mynamespace.classA" class="headerlink" title="Permanent link">¤</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Docstring of class A.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="mynamespace.classA.method_a" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">mynamespace</span><span class="p">.</span><span class="n">classA</span><span class="p">.</span><span class="n">method_a</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h5>
 
 
     <div class="doc doc-contents ">
@@ -3315,70 +3315,6 @@ More text.
 
 
 
-<h4 id="mynamespace.classA" class="doc doc-heading">
-            <code>classA</code>
-
-
-<a href="#mynamespace.classA" class="headerlink" title="Permanent link">¤</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-
-
-        <p>Docstring of class A.</p>
-
-
-
-
-
-
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-<h5 id="mynamespace.classA.method_a" class="doc doc-heading">
-            <code class="highlight language-matlab"><span class="n">method_a</span><span class="p">()</span></code>
-
-<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h5>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Docstring of the method.</p>
-
-
-    </div>
-
-</div>
-
-
-
-
-
-  </div>
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
 <h4 id="mynamespace.classB" class="doc doc-heading">
             <code>classB</code>
 
@@ -3457,6 +3393,70 @@ More text.
 
 </div>
 
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="mynamespace.classA" class="doc doc-heading">
+            <code>classA</code>
+
+
+<a href="#mynamespace.classA" class="headerlink" title="Permanent link">¤</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Docstring of class A.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="mynamespace.classA.method_a" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">method_a</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -3510,7 +3510,7 @@ More text.
 </ul>
 <!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
 
-<p>When <a class="autorefs autorefs-internal" title="group_by_category" href="../members/#group_by_category">grouped by categories</a>, show a heading for each category.
+<p>When <a class="autorefs autorefs-internal" href="../members/#group_by_category">grouped by categories</a>, show a heading for each category.
 These category headings will appear in the table of contents,
 allowing you to link to them using their permalinks.</p>
 <div class="admonition warning">
@@ -3643,70 +3643,6 @@ allowing you to link to them using their permalinks.</p>
 
 
 
-<h5 id="mynamespace.classA" class="doc doc-heading">
-            <code>classA</code>
-
-
-<a href="#mynamespace.classA" class="headerlink" title="Permanent link">¤</a></h5>
-
-
-    <div class="doc doc-contents ">
-
-
-
-        <p>Docstring of class A.</p>
-
-
-
-
-
-
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-<h6 id="mynamespace.classA-methods">Methods<a href="#mynamespace.classA-methods" class="headerlink" title="Permanent link">¤</a></h6>
-
-<div class="doc doc-object doc-function">
-
-
-<h7 id="mynamespace.classA.method_a" class="doc doc-heading">
-            <code class="highlight language-matlab"><span class="n">method_a</span><span class="p">()</span></code>
-
-<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h7>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Docstring of the method.</p>
-
-
-    </div>
-
-</div>
-
-
-
-
-
-  </div>
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
 <h5 id="mynamespace.classB" class="doc doc-heading">
             <code>classB</code>
 
@@ -3764,6 +3700,70 @@ allowing you to link to them using their permalinks.</p>
             <code class="highlight language-matlab"><span class="n">method_b</span><span class="p">()</span></code>
 
 <a href="#mynamespace.classB.method_b" class="headerlink" title="Permanent link">¤</a></h7>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="mynamespace.classA" class="doc doc-heading">
+            <code>classA</code>
+
+
+<a href="#mynamespace.classA" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Docstring of class A.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<h6 id="mynamespace.classA-methods">Methods<a href="#mynamespace.classA-methods" class="headerlink" title="Permanent link">¤</a></h6>
+
+<div class="doc doc-object doc-function">
+
+
+<h7 id="mynamespace.classA.method_a" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">method_a</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h7>
 
 
     <div class="doc doc-contents ">
@@ -3871,70 +3871,6 @@ allowing you to link to them using their permalinks.</p>
 
 
 
-<h4 id="mynamespace.classA" class="doc doc-heading">
-            <code>classA</code>
-
-
-<a href="#mynamespace.classA" class="headerlink" title="Permanent link">¤</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-
-
-        <p>Docstring of class A.</p>
-
-
-
-
-
-
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-<h5 id="mynamespace.classA.method_a" class="doc doc-heading">
-            <code class="highlight language-matlab"><span class="n">method_a</span><span class="p">()</span></code>
-
-<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h5>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Docstring of the method.</p>
-
-
-    </div>
-
-</div>
-
-
-
-
-
-  </div>
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
 <h4 id="mynamespace.classB" class="doc doc-heading">
             <code>classB</code>
 
@@ -3992,6 +3928,70 @@ allowing you to link to them using their permalinks.</p>
             <code class="highlight language-matlab"><span class="n">method_b</span><span class="p">()</span></code>
 
 <a href="#mynamespace.classB.method_b" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="mynamespace.classA" class="doc doc-heading">
+            <code>classA</code>
+
+
+<a href="#mynamespace.classA" class="headerlink" title="Permanent link">¤</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Docstring of class A.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="mynamespace.classA.method_a" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">method_a</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h5>
 
 
     <div class="doc doc-contents ">
@@ -4232,70 +4232,6 @@ See also <a class="autorefs autorefs-internal" href="#show_symbol_type_toc"><cod
 
 
 
-<h5 id="mynamespace.classA" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <code>classA</code>
-
-
-<a href="#mynamespace.classA" class="headerlink" title="Permanent link">¤</a></h5>
-
-
-    <div class="doc doc-contents ">
-
-
-
-        <p>Docstring of class A.</p>
-
-
-
-
-
-
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-<h6 id="mynamespace.classA.method_a" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-matlab"><span class="n">method_a</span><span class="p">()</span></code>
-
-<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h6>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Docstring of the method.</p>
-
-
-    </div>
-
-</div>
-
-
-
-
-
-  </div>
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
 <h5 id="mynamespace.classB" class="doc doc-heading">
 <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <code>classB</code>
 
@@ -4353,6 +4289,70 @@ See also <a class="autorefs autorefs-internal" href="#show_symbol_type_toc"><cod
 <code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-matlab"><span class="n">method_b</span><span class="p">()</span></code>
 
 <a href="#mynamespace.classB.method_b" class="headerlink" title="Permanent link">¤</a></h6>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="mynamespace.classA" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <code>classA</code>
+
+
+<a href="#mynamespace.classA" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Docstring of class A.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h6 id="mynamespace.classA.method_a" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-matlab"><span class="n">method_a</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h6>
 
 
     <div class="doc doc-contents ">
@@ -4500,70 +4500,6 @@ See also <a class="autorefs autorefs-internal" href="#show_symbol_type_toc"><cod
 
 
 
-<h5 id="mynamespace.classA" class="doc doc-heading">
-            <code>classA</code>
-
-
-<a href="#mynamespace.classA" class="headerlink" title="Permanent link">¤</a></h5>
-
-
-    <div class="doc doc-contents ">
-
-
-
-        <p>Docstring of class A.</p>
-
-
-
-
-
-
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-<h6 id="mynamespace.classA.method_a" class="doc doc-heading">
-            <code class="highlight language-matlab"><span class="n">method_a</span><span class="p">()</span></code>
-
-<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h6>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Docstring of the method.</p>
-
-
-    </div>
-
-</div>
-
-
-
-
-
-  </div>
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
 <h5 id="mynamespace.classB" class="doc doc-heading">
             <code>classB</code>
 
@@ -4621,6 +4557,70 @@ See also <a class="autorefs autorefs-internal" href="#show_symbol_type_toc"><cod
             <code class="highlight language-matlab"><span class="n">method_b</span><span class="p">()</span></code>
 
 <a href="#mynamespace.classB.method_b" class="headerlink" title="Permanent link">¤</a></h6>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Docstring of the method.</p>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="mynamespace.classA" class="doc doc-heading">
+            <code>classA</code>
+
+
+<a href="#mynamespace.classA" class="headerlink" title="Permanent link">¤</a></h5>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Docstring of class A.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h6 id="mynamespace.classA.method_a" class="doc doc-heading">
+            <code class="highlight language-matlab"><span class="n">method_a</span><span class="p">()</span></code>
+
+<a href="#mynamespace.classA.method_a" class="headerlink" title="Permanent link">¤</a></h6>
 
 
     <div class="doc doc-contents ">
