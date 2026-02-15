@@ -162,7 +162,7 @@ def do_format_signature(
         ),
     )
 
-    if stash := env.filters["stash_crossref"].stash:  # ty: ignore[possibly-missing-attribute]
+    if stash := env.filters["stash_crossref"].stash:  # ty: ignore[unresolved-attribute]
         for key, value in stash.items():
             signature = re.sub(rf"\b{key}\b", value, signature)
         stash.clear()
@@ -192,7 +192,7 @@ def do_format_arguments(
 
     html = template.render(context.parent, section=section)
 
-    if stash := env.filters["stash_crossref"].stash:  # ty: ignore[possibly-missing-attribute]
+    if stash := env.filters["stash_crossref"].stash:  # ty: ignore[unresolved-attribute]
         for key, value in stash.items():
             html = re.sub(rf"\b{key}\b", value, html)
         stash.clear()
@@ -253,7 +253,7 @@ def do_format_property(
         ),
     )
 
-    if stash := env.filters["stash_crossref"].stash:  # ty: ignore[possibly-missing-attribute]
+    if stash := env.filters["stash_crossref"].stash:  # ty: ignore[unresolved-attribute]
         for key, value in stash.items():
             signature = re.sub(rf"\b{key}\b", value, signature)
         stash.clear()
@@ -812,8 +812,8 @@ class AutorefsHook(AutorefsHookInterface):
         }.get(self.current_object.kind.value.lower(), "obj")
         origin = self.current_object.path
         try:
-            filepath = self.current_object.docstring.parent.filepath  # ty: ignore[possibly-missing-attribute]
-            lineno = self.current_object.docstring.lineno or 0  # ty: ignore[possibly-missing-attribute]
+            filepath = self.current_object.docstring.parent.filepath  # ty: ignore[unresolved-attribute]
+            lineno = self.current_object.docstring.lineno or 0  # ty: ignore[unresolved-attribute]
         except AttributeError:
             filepath = self.current_object.filepath
             lineno = 0
