@@ -40,7 +40,7 @@ pygments = { git = "https://github.com/watermarkhu/pygments", branch = "matlab" 
 
 [dependency-groups]
 dev = [
-    "ty~=0.0.1a29",
+    "ty~=0.0.23",
     "prek>=0.2.19",
     "ruff~=0.15.0",
     "pydantic~=2.10",

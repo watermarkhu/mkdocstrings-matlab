@@ -190,7 +190,7 @@ class MatlabHandler(BaseHandler):
         self.env.filters["as_inheritance_diagram_section"] = (
             rendering.do_as_inheritance_diagram_section
         )
-        self.env.globals["AutorefsHook"] = rendering.AutorefsHook
+        self.env.globals["AutorefsHook"] = rendering.AutorefsHook  # ty: ignore[invalid-assignment]
         self.env.tests["existing_template"] = lambda template_name: (
             template_name in self.env.list_templates()
         )
@@ -198,7 +198,7 @@ class MatlabHandler(BaseHandler):
         # This is used as a variable in Jinja templates and would overwrite the namespace macro
         # Thus we create an alias for this.
         self.env.globals["jinja_namespace"] = self.env.globals["namespace"]
-        self.env.globals["paths_collection"] = self._paths_collection
+        self.env.globals["paths_collection"] = self._paths_collection  # ty: ignore[invalid-assignment]
 
     def collect(self, identifier: str, options: MatlabOptions) -> CollectorItem:
         """Collect data given an identifier and user configuration.
