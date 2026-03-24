@@ -37,6 +37,7 @@ dependencies = [
 
 [tool.uv.sources]
 pygments = { git = "https://github.com/watermarkhu/pygments", branch = "matlab" }
+maxx = { path = "../maxx" }
 
 [dependency-groups]
 dev = [

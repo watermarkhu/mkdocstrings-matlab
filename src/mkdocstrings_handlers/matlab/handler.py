@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING, Any, ClassVar
 
 from griffe import AliasResolutionError, Parser
 from maxx.collection import LinesCollection, PathsCollection
+from maxx.logger import configure as configure_maxx_logger
 from mkdocs.exceptions import PluginError
 from mkdocstrings import (
     BaseHandler,
@@ -77,6 +78,8 @@ class MatlabHandler(BaseHandler):
         self.config = config
         self.base_dir = base_dir
         self.global_options = config.options
+
+        configure_maxx_logger(level=config.tree_sitter_logging_level)
 
         # Warn if user overrides base templates.
         if self.custom_templates:

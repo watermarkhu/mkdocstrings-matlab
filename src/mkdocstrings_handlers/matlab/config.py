@@ -16,7 +16,6 @@ if sys.version_info >= (3, 11):
 else:
     from typing_extensions import Self
 
-
 logger = get_logger(__name__)
 
 
@@ -874,6 +873,14 @@ class MatlabInputConfig:
         str | None,
         Field(description="The locale to use when translating template strings."),
     ] = None
+
+    tree_sitter_logging_level: Annotated[
+        Literal["TRACE", "DEBUG", "INFO", "SUCCESS", "WARNING", "ERROR", "CRITICAL"],
+        Field(
+            group="general",
+            description="The logging level for tree-sitter parsing.",
+        ),
+    ] = "WARNING"
 
     @classmethod
     def coerce(cls, **data: Any) -> MutableMapping[str, Any]:
