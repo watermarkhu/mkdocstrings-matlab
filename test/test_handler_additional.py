@@ -15,8 +15,10 @@ if TYPE_CHECKING:
     pass
 
 
-def test_handler_with_custom_templates_base_override_warning(tmp_path: Path, caplog) -> None:
+def test_handler_with_custom_templates_base_override_warning(tmp_path: Path) -> None:
     """Test warning when user overrides base templates."""
+    from unittest.mock import patch
+
     # Create a custom templates directory with a _base subdirectory
     custom_templates = tmp_path / "templates"
     matlab_dir = custom_templates / "matlab"
@@ -27,17 +29,20 @@ def test_handler_with_custom_templates_base_override_warning(tmp_path: Path, cap
     # Create a dummy template file
     (base_dir / "test.html.jinja").write_text("test")
 
-    _ = MatlabHandler(
-        base_dir=tmp_path,
-        config=MatlabConfig.from_data(),
-        theme="material",
-        custom_templates=str(custom_templates),
-        mdx=[],
-        mdx_config={},
-    )
+    with patch("mkdocstrings_handlers.matlab.handler._logger.warning") as mock_warning:
+        _ = MatlabHandler(
+            base_dir=tmp_path,
+            config=MatlabConfig.from_data(),
+            theme="material",
+            custom_templates=str(custom_templates),
+            mdx=[],
+            mdx_config={},
+        )
 
-    # Check that warning was logged
-    assert any("Overriding base template" in record.message for record in caplog.records)
+        # Check that warning was logged
+        assert any(
+            "Overriding base template" in str(call.args[0]) for call in mock_warning.call_args_list
+        )
 
 
 def test_handler_with_glob_paths(tmp_path: Path) -> None:

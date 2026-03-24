@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING, Any, ClassVar
 
 from griffe import AliasResolutionError, Parser
 from maxx.collection import LinesCollection, PathsCollection
+from maxx.config import ParserConfig
 from maxx.logger import configure as configure_maxx_logger
 from mkdocs.exceptions import PluginError
 from mkdocstrings import (
@@ -106,8 +107,16 @@ class MatlabHandler(BaseHandler):
             )
 
         self._paths = full_paths
+        parser_config = ParserConfig(
+            docstring_before_properties=config.docstring_before_properties,
+            docstring_before_arguments=config.docstring_before_arguments,
+            docstring_before_enumerations=config.docstring_before_enumerations,
+        )
         self._paths_collection: PathsCollection = PathsCollection(
-            full_paths, recursive=config.paths_recursive, working_directory=base_dir
+            full_paths,
+            recursive=config.paths_recursive,
+            working_directory=base_dir,
+            parser_config=parser_config,
         )
         self._lines_collection: LinesCollection = self._paths_collection.lines_collection
 

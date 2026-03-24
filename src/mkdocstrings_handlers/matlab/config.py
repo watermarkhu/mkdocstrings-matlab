@@ -882,6 +882,30 @@ class MatlabInputConfig:
         ),
     ] = "WARNING"
 
+    docstring_before_properties: Annotated[
+        bool,
+        Field(
+            group="docstrings",
+            description="If True, docstrings for properties must come BEFORE the property definition. If False (default), docstrings come AFTER the property definition.",
+        ),
+    ] = False
+
+    docstring_before_arguments: Annotated[
+        bool,
+        Field(
+            group="docstrings",
+            description="If True, docstrings for function arguments must come BEFORE the argument definition. If False (default), docstrings come AFTER the argument definition.",
+        ),
+    ] = False
+
+    docstring_before_enumerations: Annotated[
+        bool,
+        Field(
+            group="docstrings",
+            description="If True, docstrings for enumerations must come BEFORE the enumeration definition. If False (default), docstrings come AFTER the enumeration definition.",
+        ),
+    ] = False
+
     @classmethod
     def coerce(cls, **data: Any) -> MutableMapping[str, Any]:
         """Coerce data."""
