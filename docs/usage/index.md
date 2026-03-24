@@ -146,6 +146,30 @@ plugins:
         paths_recursive: true  # search recursively in subfolders
 ```
 
+#### `tree_sitter_logging_level`
+
+This option controls the logging level for tree-sitter parsing. The tree-sitter parser is used to extract documentation from MATLAB source files. Adjusting this level can help with debugging parsing issues.
+
+Possible values (from most to least verbose):
+
+- `"TRACE"`: Very detailed logging, including all parsing steps
+- `"DEBUG"`: Detailed logging for debugging
+- `"INFO"`: General informational messages
+- `"SUCCESS"`: Success messages only
+- `"WARNING"`: Warnings and errors (default)
+- `"ERROR"`: Errors only
+- `"CRITICAL"`: Critical errors only
+
+Example:
+
+```yaml title="mkdocs.yml"
+plugins:
+- mkdocstrings:
+    handlers:
+      matlab:
+        tree_sitter_logging_level: DEBUG  # show debug messages during parsing
+```
+
 ### Global/local options
 
 The other options can be used both globally *and* locally, under the `options` key.
