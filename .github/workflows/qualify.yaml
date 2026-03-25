@@ -135,7 +135,7 @@ jobs:
         if: (!cancelled())
         uses: actions/upload-artifact@v7
         with:
-          name: python${{ matrix.python-version }}
+          name: python${{ matrix.python-version }}-${{ matrix.resolution }}
           path: "*.xml"
 
   summary:
