@@ -19,7 +19,6 @@ watch:
 nav:
   - Home:
       - Overview: index.md
-      - Changelog: changelog.md
       - Contributing: contributing.md
       - Credits: credits.md
       - License: license-page.md
@@ -106,7 +105,6 @@ markdown_extensions:
   - pymdownx.magiclink
   - pymdownx.snippets:
       # auto_append: [docs/.glossary.md]
-      base_path: [!relative $config_dir]
       check_paths: true
   - pymdownx.superfences:
       custom_fences:
@@ -125,7 +123,6 @@ markdown_extensions:
       toc_depth: 3
 
 plugins:
-  - callouts
   - autorefs
   - search
   - markdown-exec
@@ -199,16 +196,3 @@ plugins:
             signature_crossrefs: true
             summary: true
             unwrap_annotated: true
-
-  - minify:
-      minify_html: !ENV [DEPLOY, false]
-
-  - git-revision-date-localized:
-      enabled: !ENV [DEPLOY, false]
-      enable_creation_date: true
-      type: timeago
-
-extra:
-  version:
-    provider: mike
-    alias: true

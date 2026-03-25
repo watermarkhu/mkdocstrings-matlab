@@ -21,20 +21,19 @@ concurrency:
 
 jobs:
   docs:
-    if: contains(github.event.pull_request.labels.*.name, 'documentation')
     name: Test deploy documentation
     uses: ./.github/workflows/docs.yaml
-    concurrency:
-      group: gh-pages
-      cancel-in-progress: false
-    permissions: 
-      contents: write
+    strategy:
+      matrix:
+        type: [mkdocs, zensical]
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     secrets: inherit
     with:
-      version: ${{ format('pr-{0}', github.head_ref) || 'test' }}
-      alias: ""
-      set-default: false
-      push: true
+      push: false
+      type: ${{ matrix.type }}
 
   setup:
     runs-on: ubuntu-latest
@@ -43,19 +42,19 @@ jobs:
     outputs:
       python-versions: ${{ steps.get-versions.outputs.python-versions }}
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v6
-    
-    - name: Get Python versions from pyproject.toml
-      id: get-versions
-      run: |
-        # Extract Python versions from classifiers
-        versions=$(grep -E "Programming Language :: Python :: 3\.[0-9]+" pyproject.toml | \
-                  sed -E 's/.*Python :: (3\.[0-9]+).*/\1/' | \
-                  sort -V | \
-                  jq -R -s -c 'split("\n")[:-1]')
-        echo "python-versions=$versions" >> $GITHUB_OUTPUT
-        echo "Found Python versions: $versions"
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Get Python versions from pyproject.toml
+        id: get-versions
+        run: |
+          # Extract Python versions from classifiers
+          versions=$(grep -E "Programming Language :: Python :: 3\.[0-9]+" pyproject.toml | \
+                    sed -E 's/.*Python :: (3\.[0-9]+).*/\1/' | \
+                    sort -V | \
+                    jq -R -s -c 'split("\n")[:-1]')
+          echo "python-versions=$versions" >> $GITHUB_OUTPUT
+          echo "Found Python versions: $versions"
 
   test:
     name: Run checks and tests
@@ -66,73 +65,78 @@ jobs:
       fail-fast: false
       matrix:
         python-version: ${{ fromJson(needs.setup.outputs.python-versions) }}
+        resolution: [highest, lowest]
+
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v6
+      - name: Checkout code
+        uses: actions/checkout@v6
 
-    - name: Set up uv
-      uses: astral-sh/setup-uv@v7
-      with:
-        version: "latest"
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "latest"
 
-    - name: Install dependencies
-      run: |
-        uv sync --all-groups --python ${{ matrix.python-version }}
+      - name: Install dependencies
+        env:
+          PYTHON_VERSION: ${{ matrix.python-version }}
+          UV_RESOLUTION: ${{ matrix.resolution }}
+        run: |
+          uv sync --dev --python ${PYTHON_VERSION} --resolution ${UV_RESOLUTION}
 
-    - name: Run ruff linting
-      run: |
-        echo "## 🔍 Ruff Linting Results" >> $GITHUB_STEP_SUMMARY
-        if uv run ruff check --output-format=github .; then
-          echo "✅ No linting errors found" >> $GITHUB_STEP_SUMMARY
-        else
-          echo "❌ Linting errors found" >> $GITHUB_STEP_SUMMARY
-          exit 1
-        fi
+      - name: Run ruff linting
+        run: |
+          echo "## 🔍 Ruff Linting Results" >> $GITHUB_STEP_SUMMARY
+          if uv run ruff check --output-format=github .; then
+            echo "✅ No linting errors found" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Linting errors found" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
 
-    - name: Run ruff formatting check
-      run: |
-        echo "## 🎨 Code Formatting Check" >> $GITHUB_STEP_SUMMARY
-        if uv run ruff format --check .; then
-          echo "✅ Code formatting is correct" >> $GITHUB_STEP_SUMMARY
-        else
-          echo "❌ Code formatting issues found" >> $GITHUB_STEP_SUMMARY
-          exit 1
-        fi
+      - name: Run ruff formatting check
+        run: |
+          echo "## 🎨 Code Formatting Check" >> $GITHUB_STEP_SUMMARY
+          if uv run ruff format --check .; then
+            echo "✅ Code formatting is correct" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Code formatting issues found" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
 
-    - name: Run Ty type checking
-      run: |
-        echo "## 🔧 Ty Type Checking Results" >> $GITHUB_STEP_SUMMARY
-        if uv run ty check; then
-          echo "✅ No type errors found" >> $GITHUB_STEP_SUMMARY
-        else
-          echo "❌ Type errors found" >> $GITHUB_STEP_SUMMARY
-          exit 1
-        fi
+      - name: Run Ty type checking
+        run: |
+          echo "## 🔧 Ty Type Checking Results" >> $GITHUB_STEP_SUMMARY
+          if uv run ty check; then
+            echo "✅ No type errors found" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Type errors found" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
 
-    - name: Run tests
-      run: |
-        if uv run pytest -v --tb=short --color=yes \
-          --cov mkdocstrings_handlers.matlab --cov-branch --cov-report=xml \
-          --junit-xml=pytest.xml; then
-          echo '# ✅ Tests passed' >> $GITHUB_STEP_SUMMARY
-        else
-          echo '# ❌ Tests failed' >> $GITHUB_STEP_SUMMARY
-          exit 1
-        fi
+      - name: Run tests
+        run: |
+          if uv run pytest -v --tb=short --color=yes \
+            --cov mkdocstrings_handlers.matlab --cov-branch --cov-report=xml \
+            --junit-xml=pytest.xml; then
+            echo '# ✅ Tests passed' >> $GITHUB_STEP_SUMMARY
+          else
+            echo '# ❌ Tests failed' >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
 
-    - name: Generate test coverage report
-      if: (!cancelled())
-      run: |
-        echo '### Test Coverage Summary' >> $GITHUB_STEP_SUMMARY
-        uv run coverage report --show-missing --format=markdown >> $GITHUB_STEP_SUMMARY
+      - name: Generate test coverage report
+        if: (!cancelled())
+        run: |
+          echo '### Test Coverage Summary' >> $GITHUB_STEP_SUMMARY
+          uv run coverage report --show-missing --format=markdown >> $GITHUB_STEP_SUMMARY
 
-    - name: Upload Test Results
-      if: (!cancelled())
-      uses: actions/upload-artifact@v7
-      with:
-        name: python${{ matrix.python-version }}
-        path: "*.xml"
+      - name: Upload Test Results
+        if: (!cancelled())
+        uses: actions/upload-artifact@v7
+        with:
+          name: python${{ matrix.python-version }}
+          path: "*.xml"
 
   summary:
     runs-on: ubuntu-latest
