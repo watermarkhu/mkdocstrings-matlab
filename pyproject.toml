@@ -43,6 +43,7 @@ dev = [
     "prek>=0.2.19",
     "ruff~=0.15.0",
     "pydantic~=2.10",
+    "pydantic-core>=2.35.0",
     "pytest~=9.0.0",
     "pytest-cov~=7.1.0",
     "beautifulsoup4>=4.13.3",
