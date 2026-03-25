@@ -1,6 +1,6 @@
 [project]
 name = "mkdocstrings-matlab"
-version = "2.0.4"
+version = "0.0.0"
 description = "A MATLAB handler for mkdocstrings"
 authors = [
     { name = "Mark Hu", email = "watermarkhu@gmail.com" }
@@ -47,6 +47,7 @@ dev = [
     "pytest-cov~=7.1.0",
     "beautifulsoup4>=4.13.3",
     "inline-snapshot~=0.32.0",
+    "mkdocs-material~=9.5",
 ]
 docs = [
     "pygments",
@@ -58,7 +59,6 @@ mkdocs = [
     "mkdocs<2",
     "mkdocs-material~=9.5",
     "mkdocstrings-python~=2.0",
-    "markdown-exec~=1.10",
 ]
 
 [build-system]
