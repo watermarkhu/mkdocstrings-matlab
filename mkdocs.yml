@@ -24,7 +24,8 @@ nav:
       - License: license-page.md
   - Usage:
       - usage/index.md
-      - Configuration options:
+      - Global options: usage/global.md
+      - Global/local options:
           - General: usage/configuration/general.md
           - Headings: usage/configuration/headings.md
           - Members: usage/configuration/members.md

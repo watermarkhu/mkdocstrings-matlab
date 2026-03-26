@@ -27,11 +27,11 @@ classifiers = [
 ]
 
 dependencies = [
-    "griffe~=2.0.0",
-    "maxx~=0.8.0",
-    "mkdocstrings~=1.0",
-    "mkdocs-autorefs~=1.4",
-    "charset-normalizer~=3.4",
+    "griffe>=2.0.0,<3",
+    "maxx>=0.8.0,<1",
+    "mkdocstrings>=1.0,<2",
+    "mkdocs-autorefs>=1.4,<2",
+    "charset-normalizer>=3.4,<4",
     "typing-extensions>=4.0; python_version < '3.11'",
 ]
 
@@ -39,27 +39,27 @@ dependencies = [
 pygments = { git = "https://github.com/watermarkhu/pygments", branch = "matlab" }
 [dependency-groups]
 dev = [
-    "ty~=0.0.25",
-    "prek>=0.2.19",
-    "ruff~=0.15.0",
-    "pydantic~=2.10",
-    "pydantic-core>=2.35.0",
-    "pytest~=9.0.0",
-    "pytest-cov~=7.1.0",
-    "beautifulsoup4>=4.13.3",
-    "inline-snapshot~=0.32.0",
-    "mkdocs-material~=9.5",
+    "ty>=0.0.25,<1",
+    "prek>=0.2.19,<1",
+    "ruff>=0.15.0,<1",
+    "pydantic>=2.10,<2.12.4",
+    "pydantic-core>=2.35.0,<3",
+    "pytest>=9.0.0,<10",
+    "pytest-cov>=7.1.0,<8",
+    "beautifulsoup4>=4.13.3,<5",
+    "inline-snapshot>=0.32.0,<1",
+    "mkdocs-material>=9.5,<10",
 ]
 docs = [
     "pygments",
-    "mkdocstrings-python~=2.0",
+    "mkdocstrings-python>=2.0",
     "zensical>=0.0.29",
 ]
 mkdocs = [
     "pygments",
     "mkdocs<2",
-    "mkdocs-material~=9.5",
-    "mkdocstrings-python~=2.0",
+    "mkdocs-material>=9.5",
+    "mkdocstrings-python>=2.0",
 ]
 
 [build-system]
