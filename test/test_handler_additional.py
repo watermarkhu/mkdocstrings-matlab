@@ -120,7 +120,7 @@ def test_collect_with_empty_options(handler: MatlabHandler) -> None:
     """Test collect with empty options dict triggers default options."""
     # When options is an empty dict, it should use get_options({})
     with pytest.raises(CollectionError):
-        handler.collect("nonexistent", {})  # type: ignore[arg-type]
+        handler.collect("nonexistent", {})  # ty: ignore[invalid-assignment]
 
 
 def test_handler_update_env_jinja_namespace_alias(handler: MatlabHandler) -> None:
@@ -158,7 +158,7 @@ def test_get_handler_function(tmp_path: Path) -> None:
     handler_config = {"paths": ["."]}
     handler = get_handler(
         handler_config, MockConfig(), theme="material", custom_templates=None, mdx=[], mdx_config={}
-    )  # type: ignore[arg-type]
+    )  # ty: ignore[invalid-assignment]
 
     assert isinstance(handler, MatlabHandler)
     assert handler.base_dir == tmp_path
@@ -174,7 +174,7 @@ def test_get_handler_with_no_config_file_path() -> None:
     handler_config = {}
     handler = get_handler(
         handler_config, MockConfig(), theme="material", custom_templates=None, mdx=[], mdx_config={}
-    )  # type: ignore[arg-type]
+    )  # ty: ignore[invalid-assignment]
 
     assert isinstance(handler, MatlabHandler)
     # Should default to current directory

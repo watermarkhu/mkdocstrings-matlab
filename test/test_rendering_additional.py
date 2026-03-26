@@ -168,7 +168,7 @@ def test_parents() -> None:
     middle = Obj(path="root.middle", parent=root)
     leaf = Obj(path="root.middle.leaf", parent=middle)
 
-    parents = rendering._parents(leaf)  # type: ignore[arg-type]
+    parents = rendering._parents(leaf)  # ty: ignore[invalid-assignment]
     assert "root.middle" in parents
     assert "root" in parents
 
@@ -314,7 +314,7 @@ def test_do_as_inheritance_diagram_section_no_bases() -> None:
                 self.bases = []
 
     cls = SimpleClass(name="MyClass")
-    result = rendering.do_as_inheritance_diagram_section(cls)  # type: ignore[arg-type]
+    result = rendering.do_as_inheritance_diagram_section(cls)  # ty: ignore[invalid-assignment]
     assert result is None
 
 
@@ -326,17 +326,17 @@ def test_do_as_inheritance_diagram_section_no_bases_attribute() -> None:
         name: str
 
     cls = SimpleClass(name="MyClass")
-    result = rendering.do_as_inheritance_diagram_section(cls)  # type: ignore[arg-type]
+    result = rendering.do_as_inheritance_diagram_section(cls)  # ty: ignore[invalid-assignment]
     assert result is None
 
 
 def test_do_get_template() -> None:
     """Test template name generation."""
     # Test with string input
-    result = rendering.do_get_template("class")  # type: ignore[arg-type]
+    result = rendering.do_get_template("class")  # ty: ignore[invalid-assignment]
     assert result == "class.html.jinja"
 
-    result = rendering.do_get_template("function")  # type: ignore[arg-type]
+    result = rendering.do_get_template("function")  # ty: ignore[invalid-assignment]
     assert result == "function.html.jinja"
 
 
@@ -352,7 +352,7 @@ def test_autorefs_hook_expand_identifier() -> None:
         parent: None = None
 
     obj = Obj(kind=MagicMock(value="function"), path="test.function")
-    hook = rendering.AutorefsHook(obj, {})  # type: ignore[arg-type]
+    hook = rendering.AutorefsHook(obj, {})  # ty: ignore[invalid-assignment]
 
     # expand_identifier should return the identifier unchanged
     assert hook.expand_identifier("some.identifier") == "some.identifier"
@@ -374,7 +374,7 @@ def test_autorefs_hook_get_context() -> None:
     obj.docstring.parent.filepath = "test.m"
     obj.docstring.lineno = 10
 
-    hook = rendering.AutorefsHook(obj, {})  # type: ignore[arg-type]
+    hook = rendering.AutorefsHook(obj, {})  # ty: ignore[invalid-assignment]
     context = hook.get_context()
 
     assert context.domain == "mat"
@@ -405,7 +405,7 @@ def test_autorefs_hook_get_context_method() -> None:
     obj.docstring.parent.filepath = "test.m"
     obj.docstring.lineno = 20
 
-    hook = rendering.AutorefsHook(obj, {})  # type: ignore[arg-type]
+    hook = rendering.AutorefsHook(obj, {})  # ty: ignore[invalid-assignment]
     context = hook.get_context()
 
     assert context.role == "meth"  # Should be method, not func
@@ -423,7 +423,7 @@ def test_autorefs_hook_get_context_no_docstring() -> None:
         parent: None = None
 
     obj = Obj(kind=MagicMock(value="class"), path="test.MyClass")
-    hook = rendering.AutorefsHook(obj, {})  # type: ignore[arg-type]
+    hook = rendering.AutorefsHook(obj, {})  # ty: ignore[invalid-assignment]
     context = hook.get_context()
 
     assert context.domain == "mat"

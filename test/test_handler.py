@@ -90,7 +90,7 @@ def test_expand_globs(tmp_path: Path, plugin: MkdocstringsPlugin) -> None:
     for d in globbed_dirs:
         d.mkdir()
     plugin.handlers._tool_config.config_file_path = str(tmp_path.joinpath("mkdocs.yml"))
-    handler: MatlabHandler = plugin.handlers.get_handler("matlab", {"paths": ["*exp*"]})  # type: ignore[assignment]
+    handler: MatlabHandler = plugin.handlers.get_handler("matlab", {"paths": ["*exp*"]})  # ty: ignore[invalid-assignment]
     # Check that paths containing the glob pattern are included
     expanded_paths = [str(d) for d in globbed_dirs if "exp" in d.name]
     for expanded_path in set(expanded_paths):

@@ -77,6 +77,13 @@ jobs:
         with:
           version: "latest"
 
+      - name: Cache uv
+        id: cache-uv
+        uses: actions/cache@v5
+        with:
+          path: .venv
+          key: ${{ runner.os }}-qualify-uv-${{ matrix.python-version }}-${{ matrix.resolution }}-${{ github.head_ref || github.ref_name }}-${{ hashFiles('pyproject.toml') }}
+
       - name: Install dependencies
         env:
           PYTHON_VERSION: ${{ matrix.python-version }}
