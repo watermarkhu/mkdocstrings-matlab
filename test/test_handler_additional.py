@@ -15,8 +15,10 @@ if TYPE_CHECKING:
     pass
 
 
-def test_handler_with_custom_templates_base_override_warning(tmp_path: Path, caplog) -> None:
+def test_handler_with_custom_templates_base_override_warning(tmp_path: Path) -> None:
     """Test warning when user overrides base templates."""
+    from unittest.mock import patch
+
     # Create a custom templates directory with a _base subdirectory
     custom_templates = tmp_path / "templates"
     matlab_dir = custom_templates / "matlab"
@@ -27,17 +29,20 @@ def test_handler_with_custom_templates_base_override_warning(tmp_path: Path, cap
     # Create a dummy template file
     (base_dir / "test.html.jinja").write_text("test")
 
-    _ = MatlabHandler(
-        base_dir=tmp_path,
-        config=MatlabConfig.from_data(),
-        theme="material",
-        custom_templates=str(custom_templates),
-        mdx=[],
-        mdx_config={},
-    )
+    with patch("mkdocstrings_handlers.matlab.handler._logger.warning") as mock_warning:
+        _ = MatlabHandler(
+            base_dir=tmp_path,
+            config=MatlabConfig.from_data(),
+            theme="material",
+            custom_templates=str(custom_templates),
+            mdx=[],
+            mdx_config={},
+        )
 
-    # Check that warning was logged
-    assert any("Overriding base template" in record.message for record in caplog.records)
+        # Check that warning was logged
+        assert any(
+            "Overriding base template" in str(call.args[0]) for call in mock_warning.call_args_list
+        )
 
 
 def test_handler_with_glob_paths(tmp_path: Path) -> None:
@@ -115,7 +120,7 @@ def test_collect_with_empty_options(handler: MatlabHandler) -> None:
     """Test collect with empty options dict triggers default options."""
     # When options is an empty dict, it should use get_options({})
     with pytest.raises(CollectionError):
-        handler.collect("nonexistent", {})  # type: ignore[arg-type]
+        handler.collect("nonexistent", {})  # ty: ignore[invalid-assignment]
 
 
 def test_handler_update_env_jinja_namespace_alias(handler: MatlabHandler) -> None:
@@ -153,7 +158,7 @@ def test_get_handler_function(tmp_path: Path) -> None:
     handler_config = {"paths": ["."]}
     handler = get_handler(
         handler_config, MockConfig(), theme="material", custom_templates=None, mdx=[], mdx_config={}
-    )  # type: ignore[arg-type]
+    )  # ty: ignore[invalid-assignment]
 
     assert isinstance(handler, MatlabHandler)
     assert handler.base_dir == tmp_path
@@ -169,7 +174,7 @@ def test_get_handler_with_no_config_file_path() -> None:
     handler_config = {}
     handler = get_handler(
         handler_config, MockConfig(), theme="material", custom_templates=None, mdx=[], mdx_config={}
-    )  # type: ignore[arg-type]
+    )  # ty: ignore[invalid-assignment]
 
     assert isinstance(handler, MatlabHandler)
     # Should default to current directory

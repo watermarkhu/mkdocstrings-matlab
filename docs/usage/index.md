@@ -112,39 +112,9 @@ While this kind of behavior is strictly recommended against, mkdocstrings-matlab
 
     Sub-selecting folder members are possible with the [members](./configuration/members.md) options. 
 
-### Global-only options
+### Global only options
 
-Some options are **global only**, and go directly under the handler's name.
-
-#### `paths`
-
-This option is used to set the [MATLAB search path](https://mathworks.com/help/matlab/matlab_env/what-is-the-matlab-search-path.html).  The MATLAB search path is a subset of all the folders in the file system. The order of folders on the search path is important.  When files with the same name appear in multiple folders on the search path,  MATLAB uses the one found in the folder nearest to the top of the search path.
-
-Non-absolute paths are computed as relative to MkDocs configuration file. Example:
-
-```yaml title="mkdocs.yml"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        paths: [src]  # search files in the src folder
-```
-
-
-#### `paths_recursive`
-
-This option allows you to specify whether the handler should recursively search through the directories specified in the `paths` option. When set to `true`, the handler will look for MATLAB files in all subdirectories of the specified paths.
-
-Example:
-
-```yaml title="mkdocs.yml"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        paths: [src]  # search files in the src folder
-        paths_recursive: true  # search recursively in subfolders
-```
+Some options are **global only**, and go directly under the handler's name. See all global only options [here](./global.md).
 
 ### Global/local options
 

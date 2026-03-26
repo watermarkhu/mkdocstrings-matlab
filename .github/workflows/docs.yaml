@@ -4,21 +4,6 @@ name: Docs
 on:
   workflow_call:
     inputs:
-      version:
-        description: >-
-          Version of the documentation to publish
-        type: string
-        required: true
-      alias:
-        description: >-
-          (Versioned) Alias to use when publishing the versioned documentation with mike
-        type: string
-        default: "latest"
-      set-default:
-        description: >-
-          Set the alias as the default version
-        type: boolean
-        default: true
       ref:
         description: >-
           The ref to checkout and use to create docs
@@ -29,55 +14,51 @@ on:
           Push the documentation to the remote branch
         type: boolean
         default: true
+      type:
+        description: >-
+          MkDocs or zensical
+        type: string
+        default: zensical
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/configure-pages@v5
+
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0 # Required to push to the documentation branch
-          ref: ${{ inputs.ref }} 
+          ref: ${{ inputs.ref }}
 
       - name: Install the latest version of uv
         uses: astral-sh/setup-uv@v7
         with:
           version: "latest"
-  
+
       - name: Sync dependencies
+        if: inputs.type == 'zensical'
         run: |
           uv sync --no-dev --group docs
+          uv run zensical build --clean
 
-      - name: Configure Git Credentials
+      - name: Build documentation
+        if: inputs.type == 'mkdocs'
         run: |
-          git config --global user.name github-actions[bot]
-          git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
-  
-      - name: Build documentation with mike
-        shell: bash
-        env:
-          PUSH_DEPLOY: ${{ fromJson(inputs.push) && '--push' || '' }}
-          GH_TOKEN: ${{ github.token }}
-          VERSION: ${{ inputs.version }}
-        run: |
-          if [[ $VERSION =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
-            VERSION="v${BASH_REMATCH[1]}.${BASH_REMATCH[2]}.*"
-            echo "Patching version "${{ inputs.version }}" to $VERSION"
-          fi
-          uv run mike deploy ${PUSH_DEPLOY} \
-            --update-aliases \
-            --branch gh-pages \
-            --alias-type symlink \
-            "$VERSION" "${{ inputs.alias }}"
-      
-      - name: Set default alias for mike 
-        if: ${{ fromJson(inputs.set-default) }}
-        run: >
-          uv run mike set-default
-          --branch gh-pages 
-          --push
-          ${{ inputs.alias }}
+          uv sync --no-dev --group mkdocs
+          uv run mkdocs build --clean
+
+      - uses: actions/upload-pages-artifact@v4
+        if: ${{ inputs.push }}
+        with:
+          path: site
+
+      - uses: actions/deploy-pages@v4
+        if: ${{ inputs.push }}
+        id: deployment

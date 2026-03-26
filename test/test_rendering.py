@@ -67,7 +67,7 @@ def test_filter_objects(
             obj.is_hidden = True
         objects[name] = obj
 
-    filtered = rendering.do_filter_objects(objects, **filter_params)  # type: ignore[arg-type]
+    filtered = rendering.do_filter_objects(objects, **filter_params)  # ty: ignore[invalid-assignment]
     filtered_names = {obj.name for obj in filtered}
     assert set(filtered_names) == set(expected_names)
 
@@ -156,7 +156,7 @@ def test_ordering_members(
             self.lineno = lineno
 
     members = [MatlabObj("funcA", 10), MatlabObj("funcB", 9), MatlabObj("funcC", 8)]
-    ordered = rendering.do_order_members(members, order, members_list)  # type: ignore[arg-type]
+    ordered = rendering.do_order_members(members, order, members_list)  # ty: ignore[invalid-assignment]
     assert [obj.name for obj in ordered] == expected_names
 
 

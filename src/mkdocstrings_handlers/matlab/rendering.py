@@ -9,7 +9,7 @@ import sys
 from contextlib import suppress
 from dataclasses import replace
 from re import Pattern
-from typing import TYPE_CHECKING, Any, Callable, ClassVar, Literal
+from typing import TYPE_CHECKING, Any, Callable, ClassVar, Literal, cast
 
 from griffe import (
     AliasResolutionError,
@@ -350,7 +350,7 @@ def _remove_cycles(objects: list[MEMBERS]) -> Iterator[MEMBERS]:
     for obj in objects:
         if obj.is_alias:
             with suppress_errors:
-                if obj.parent and obj.path in _parents(obj):  # type: ignore[arg-type,union-attr]
+                if obj.parent and obj.path in _parents(cast(Alias, obj)):
                     continue
         yield obj
 
@@ -506,7 +506,7 @@ def do_as_properties_section(
                 name=property.name,
                 description=_parse_docstring_summary(property),
                 annotation=str(property.type),
-                value=property.default,  # type: ignore[arg-type]
+                value=property.default,  # ty: ignore[invalid-argument-type]
             )
             for property in properties
             if not check_public or not property.is_private

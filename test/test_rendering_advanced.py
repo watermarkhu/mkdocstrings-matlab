@@ -51,7 +51,7 @@ def test_do_function_docstring_with_keyword_arguments() -> None:
     func.docstring = Docstring("Function description", lineno=1, endlineno=1)
 
     sections = rendering.do_function_docstring(
-        func,  # type: ignore[arg-type]
+        func,  # ty: ignore[invalid-assignment]
         parse_arguments=True,
         show_docstring_input_arguments=True,
         show_docstring_name_value_arguments=True,
@@ -69,7 +69,7 @@ def test_do_function_docstring_no_docstring() -> None:
     func = _FakeFunction(name="test_func")
 
     sections = rendering.do_function_docstring(
-        func,  # type: ignore[arg-type]
+        func,  # ty: ignore[invalid-assignment]
         parse_arguments=True,
         show_docstring_input_arguments=True,
         show_docstring_name_value_arguments=True,
@@ -93,7 +93,7 @@ def test_do_as_inheritance_diagram_with_single_class() -> None:
     mock_class = MockClass(name="ChildClass", bases=["ParentClass"])
     mock_class.paths_collection = None  # type: ignore[attr-defined]
 
-    _ = rendering.do_as_inheritance_diagram_section(mock_class)  # type: ignore[arg-type]
+    _ = rendering.do_as_inheritance_diagram_section(mock_class)  # ty: ignore[invalid-assignment]
 
     # When there's only one node (the class itself), should return None
     # Note: This might not work as expected without proper Class objects
@@ -118,7 +118,7 @@ def test_filter_objects_with_no_docstrings() -> None:
     }
 
     # Test with keep_no_docstrings=False
-    result = rendering.do_filter_objects(objects, keep_no_docstrings=False)  # type: ignore[arg-type]
+    result = rendering.do_filter_objects(objects, keep_no_docstrings=False)  # ty: ignore[invalid-assignment]
     assert len(result) == 1
     assert result[0].name == "with_doc"
 
@@ -145,7 +145,7 @@ def test_filter_objects_with_inherited_members_list() -> None:
     result = rendering.do_filter_objects(
         objects,
         inherited_members=["inherited1"],
-        members_list=["regular"],  # type: ignore[arg-type]
+        members_list=["regular"],  # ty: ignore[invalid-assignment]
     )
 
     # Should include regular + inherited1
@@ -176,7 +176,7 @@ def test_filter_objects_with_private_members_list() -> None:
     # Test with specific private members list
     result = rendering.do_filter_objects(
         objects,
-        private_members=["_private1"],  # type: ignore[arg-type]
+        private_members=["_private1"],  # ty: ignore[invalid-assignment]
     )
 
     # Should include all public + _private1
@@ -207,7 +207,7 @@ def test_filter_objects_with_hidden_members_list() -> None:
     # Test with specific hidden members list
     result = rendering.do_filter_objects(
         objects,
-        hidden_members=["__hidden1"],  # type: ignore[arg-type]
+        hidden_members=["__hidden1"],  # ty: ignore[invalid-assignment]
     )
 
     # Should include all normal + __hidden1
