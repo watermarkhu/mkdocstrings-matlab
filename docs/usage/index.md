@@ -2,34 +2,48 @@
 
 ## Installation
 
-You can install this handler by specifying it as a dependency:
+You can install this handler by installing is as a dependency
 
-```toml title="pyproject.toml"
-# PEP 621 dependencies declaration
-# adapt to your dependencies manager
-[project]
-dependencies = [
-    "mkdocstrings-matlab>=0.X.Y",
-]
+```shell
+uv add mkdocstrings-matlab --group docs
+```
+or 
+
+```shell
+pip install mkdocstrings-matlab
 ```
 
 ## Configuration
 
+The current package serves as an language extension to [mkdocstrings](https://mkdocstrings.github.io/), an auto-documentation framework that is compatible with both MkDocs and [Zensical](https://zensical.org/about/) (a continueation of [Material for MkDocs](https://squidfunk.github.io/mkdocs-material)). MkDocs uses `mkdocs.yml` for the project configuration. Zensical introduces a `zensical.toml`, but is compatible with `mkdocs.yml` as well.
+
 For *mkdocstrings* the default will be the Python handler. You can change the default handler,
 or explicitely set the MATLAB handler as default by defining the `default_handler`
-configuration option of `mkdocstrings` in `mkdocs.yml`:
+configuration option of `mkdocstrings` in `mkdocs.yml` or `zensical.toml`:
 
-```yaml title="mkdocs.yml"
-plugins:
-- mkdocstrings:
-    default_handler: matlab
-    matlab:
-        ...  # the MATLAB handler configuration
-```
+=== "mkdocs.yml"
+
+    ```yaml title="mkdocs.yml"
+    plugins:
+    - mkdocstrings:
+        default_handler: matlab
+        matlab:
+            ...  # the MATLAB handler configuration
+    ```
+    
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings]
+    default_handler = "matlab"
+    
+    [project.plugins.mkdocstrings.matlab]
+    # The MATLAB handler configuration
+    ```
 
 ## Injecting documentation
 
-With the MATLAB handler installed and configured as default handler, you can inject documentation for a module, class, function, or any other MATLAB object with *mkdocstrings*' [autodoc syntax], in your Markdown pages:
+With the MATLAB handler installed and configured as default handler, you can inject documentation for a module, class, function, or any other MATLAB object with *mkdocstrings*' `[autodoc syntax]`, in your Markdown pages:
 
 ```md
 ::: path.to.object
@@ -45,13 +59,13 @@ If another handler was defined as default handler, you can explicitely ask for t
 
 Entire [namespaces](https://mathworks.com/help/matlab/matlab_oop/namespaces.html) can be fully documented by prefixing the `+` character to the namespace that is to be documented. E.g. the following namespace 
 
-```tree
+```text
 +mynamespace
-    Contents.m
-    readme.md
-    myclass.m
-    +subnamespace
-        mfunction.m
+├── Contents.m
+├── readme.md
+├── myclass.m
+└── +subnamespace
+    └── mfunction.m
 ```
 
 is documented with:
@@ -70,20 +84,21 @@ Documenting a nested namespace requires only a single prefixed `+` at the start 
 
 ### Folders
 
-Similarly to namepaces, all contents of a folder can be fully documented by specifying the relative path of a folder with respect to the `mkdocs.yml` config file. E.g. the following repository
+Similarly to namepaces, all contents of a folder can be fully documented by specifying the relative path of a folder with respect to the config file. E.g. the following repository
 
-```tree
+```text
 src
-    module
-        myfunction.m
-        myClass.m
-        submodule
-            myfunction.m
-        +mynamespace
-            namespacefunction.m
+└── module
+    ├── myfunction.m
+    ├── myClass.m
+    ├── submodule
+    │   └── myfunction.m
+    └── +mynamespace
+        └── namespacefunction.m
 docs
-    index.md
-mkdocs.yml
+└── index.md
+mkdocs.yml # or
+zensical.toml
 ```
 
 is documented with:
@@ -102,11 +117,11 @@ While this kind of behavior is strictly recommended against, mkdocstrings-matlab
 
 !!! tip
 
-    A folder identifier must strictly contain the `/` character. For a folder `foo` that is in the same directory with `mkdocs.yml`, use `::: ./foo`. 
+    A folder identifier must strictly contain the `/` character. For a folder `foo` that is in the same directory containing `mkdocs.yml` or `zensical.toml`, use `::: ./foo`. 
 
 !!! tip
 
-    If the `mkdocs.yml` lives inside of a subdirectly that does not contain source code, use relative paths e.g. `../src/module`. 
+    If `mkdocs.yml` or `zensical.toml` lives inside of a subdirectly that does not contain source code, use relative paths e.g. `../src/module`. 
 
 !!! tip
 
@@ -116,19 +131,27 @@ While this kind of behavior is strictly recommended against, mkdocstrings-matlab
 
 Some options are **global only**, and go directly under the handler's name. See all global only options [here](./global.md).
 
-### Global/local options
+### Global and local options
 
 The other options can be used both globally *and* locally, under the `options` key.
 For example, globally:
 
-```yaml title="mkdocs.yml"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          do_something: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              do_something: true
+    ```
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    do_something = true
+    ```
 
 ...and locally, overriding the global configuration:
 

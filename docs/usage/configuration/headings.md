@@ -17,14 +17,23 @@ The initial heading level will be used for the first layer. If you set it to 3, 
 
 If the [heading for the root object][show_root_heading] is not shown, then the initial heading level is used for its members.
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          heading_level: 2
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              heading_level: 2
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    heading_level = 2
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
@@ -76,14 +85,23 @@ The identifier used in the permalink and inventory is of the following form: `pa
 - Varargin: [`varargin`][package.module.function(varargin)]
 ```
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          argument_headings: false
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              argument_headings: false
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    argument_headings = false
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
@@ -172,14 +190,23 @@ It is pretty common to inject documentation for one module per page. Since each 
 
 Sparing that extra level can be helpful when your objects tree is deeply nested (e.g. method in a class in a class in a module). If your objects tree is not deeply nested, and you are injecting documentation for many different objects on a single page, it might be preferable to render the heading of each object.
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_root_heading: false
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_root_heading: false
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_root_heading = false
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: mynamespace.ClassA
@@ -227,14 +254,23 @@ If you inject documentation for an object in the middle of a page, after long pa
 
 In other cases, you might want to disable the entry to avoid polluting the ToC. It is not possible to show the root heading *and* hide the ToC entry.
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_root_toc_entry: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_root_toc_entry: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_root_toc_entry = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ## Some heading
@@ -288,14 +324,23 @@ The namespace path of a MATLAB object is the dot-separated list of names under w
 
 With this option you can choose to show the full path of the object you inject documentation for, or just its name. This option impacts only the object you specify, not its members. For members, see the two other options [`show_root_members_full_path`][] and [`show_object_full_path`][].
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_root_full_path: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_root_full_path: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_root_full_path = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: mynamespace.classA
@@ -342,14 +387,23 @@ This option does the same thing as [`show_root_full_path`][], but for direct mem
 
 To show the full path for every member recursively, see [`show_object_full_path`][].
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_root_members_full_path: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_root_members_full_path: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_root_members_full_path = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: mynamespace.classA
@@ -401,14 +455,23 @@ False                         | True                    | Full
 True                          | False                   | Full
 True                          | True                    | Full
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_object_full_path: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_object_full_path: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_object_full_path = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: +mynamespace
@@ -459,15 +522,25 @@ allowing you to link to them using their permalinks.
 
     When injecting documentation for deeply nested objects, you'll quickly run out of heading levels, and the objects at the bottom of the tree risk all getting documented using H6 headings, which might decrease the readability of your API docs. 
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          group_by_category: true
-          show_category_heading: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              group_by_category: true
+              show_category_heading: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    group_by_category = true
+    show_category_heading = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
@@ -529,14 +602,23 @@ This option will prefix headings with
 <code class="doc-symbol doc-symbol-folder"></code> types.
 See also [`show_symbol_type_toc`][show_symbol_type_toc].
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_symbol_type_heading: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_symbol_type_heading: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_symbol_type_heading = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
@@ -601,14 +683,23 @@ This option will prefix items in the ToC with
 <code class="doc-symbol doc-symbol-folder"></code> types.
 See also [`show_symbol_type_heading`][show_symbol_type_heading].
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_symbol_type_toc: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_symbol_type_toc: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_symbol_type_toc = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable

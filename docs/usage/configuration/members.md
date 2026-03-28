@@ -20,15 +20,24 @@ Passing a falsy value (`no`, `false` in YAML) or an empty list (`[]`) will tell 
 
 Any given value, except for an explicit `None` (`null` in YAML) will tell the handler to ignore [`filters`][] for the object's members. Filters will still be applied to the next layers of members (grand-children).
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          members:
-          - hello  # (1)
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              members:
+              - hello  # (1)
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    members = ["hello"]
+    ```
 
 1. :warning: Most of the time it won't make sense to use this option at the global level.
 
@@ -95,14 +104,23 @@ MATLAB's [classes](https://mathworks.com/help/matlab/matlab_oop/class-attributes
 
 This takes precedence over [`members`][] and [`filters`][], and also applies for [`inherited_members`][]. This means that for any hidden member to be shown, `hidden_members` must be enabled, and further selection is possible via [`members`][] and [`filters`][]. Hidden members will be labeled `Hidden`, this can be disabled in [`show_attributes`][]. 
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          hidden_members: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              hidden_members: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    hidden_members = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: mymembers.ThisClass
@@ -182,14 +200,23 @@ ga -- yes --> public
 
 This takes precedence over [`members`][] and [`filters`][], and also applies for [`inherited_members`][]. This means that for any private member to be shown, `private_members` must be enabled, and further selection is possible via [`members`][] and [`filters`][]. Private members will be labeled with it access attribute setting, this can be disabled in [`show_attributes`][]. 
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          private_members: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              private_members: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    private_members = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: mymembers.ThisClass
@@ -321,14 +348,23 @@ members: true
 
 The general rule is that declared or inherited members specified in lists are never filtered out.
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          inherited_members: false
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              inherited_members: false
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    inherited_members = false
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: mymembers.ThisClass
@@ -379,14 +415,23 @@ The order will be ignored for members that are explicitely sorted using the [`me
 **Note that members will still be grouped by category,
 according to the [`group_by_category`][] option.**
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          members_order: alphabetical
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              members_order: alphabetical
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    members_order = "alphabetical"
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: mymembers.ThisClass
@@ -446,15 +491,24 @@ If there are no negative filters, the handler considers that everything is **uns
 
 An empty list of filters tells the MATLAB handler to render every object. The [`members`][] option takes precedence over filters (filters will still be applied recursively to lower members in the hierarchy).
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          filters:
-          - "!^delete$|^disp$"
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              filters:
+              - "!^delete$|^disp$"
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    filters = ["!^delete$|^disp$"]
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
@@ -512,14 +566,23 @@ Group the object members by categories: properties, classes, functions, and name
 
 Members within a same category will be ordered according to the [`members_order`][] option. You can use the [`show_category_heading`][] option to also render a heading for each category.
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          group_by_category: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              group_by_category: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    group_by_category = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: +mymembers
@@ -579,14 +642,23 @@ When rendering a namespace, show its subnamespaces recursively.
 
 This is false by default, because most of the time we render only one namespace per page, and when rendering a full package (a tree of namespaces and their members) on a single page, we quickly run out of [heading levels][heading_level].
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_subnamespaces: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_subnamespaces: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_subnamespaces = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: +matlab_namespace
@@ -636,14 +708,23 @@ When rendering a folder, show its subfolders recursively.
 
 This is false by default, because most of the time we render only one directory per page, and when rendering a full directory on a single page, we quickly run out of [heading levels][heading_level].
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_subfolders: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_subfolders: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_subfolders = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: ./path-from-working-directory
@@ -737,14 +818,23 @@ Summaries will be rendered as the corresponding docstring sections. For example,
 
 Hidden and private members will not be rendered in the summary, no matter the setting in [`hidden_members`][] and [`private_members`][].
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          summary: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              summary: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    summary = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: mymembers.ThisClass
@@ -801,14 +891,23 @@ plugins:
 
 Whether to show [property](https://mathworks.com/help/matlab/matlab_oop/property-attributes.html), [method](https://mathworks.com/help/matlab/matlab_oop/method-attributes.html) or [class](https://mathworks.com/help/matlab/matlab_oop/class-attributes.html) attributes of the members.
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_attributes: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_attributes: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_attributes = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: mymembers.ThisClass

@@ -11,14 +11,23 @@ toc_depth: 2
 
 Show the base classes of a class.
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_bases: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_bases: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_bases = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
@@ -75,14 +84,23 @@ extra_javascript:
 - https://unpkg.com/mermaid@10.9.0/dist/mermaid.min.js
 ```
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_inheritance_diagram: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_inheritance_diagram: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_inheritance_diagram = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
@@ -116,14 +134,23 @@ plugins:
 
 Show the source code of this object.
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_source: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_source: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_source = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
