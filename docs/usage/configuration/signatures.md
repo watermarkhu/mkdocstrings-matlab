@@ -13,14 +13,23 @@ Show methods and functions signatures.
 
 Without it, just the function/method name is rendered.
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_signature: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_signature: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_signature = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
@@ -69,14 +78,23 @@ Show the type annotations in methods and functions signatures.
 
 Since the heading can become quite long when annotations are rendered, it is usually best to [separate the signature][separate_signature] from the heading.
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_signature_types: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_signature_types: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_signature_types = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: path.to.module
@@ -128,14 +146,23 @@ plugins:
 
 Whether to put the whole signature in a code block below the heading.
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      python:
-        options:
-          separate_signature: false
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              separate_signature: false
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    separate_signature = false
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: path.to.module
@@ -185,16 +212,27 @@ Whether to render cross-references for type annotations in signatures.
 
 When signatures are separated from headings with the [`separate_signature`][] option and type annotations are shown with the [`show_signature_types`][] option, this option will render a cross-reference (link) for each type annotation in the signature.
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          separate_signature: true
-          show_signature_types: true
-          signature_crossrefs: false
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              separate_signature: true
+              show_signature_types: true
+              signature_crossrefs: false
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    separate_signature = true
+    show_signature_types = true
+    signature_crossrefs = false
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: path.to.module

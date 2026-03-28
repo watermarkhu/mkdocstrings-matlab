@@ -18,14 +18,23 @@ Possible values:
 - `"sphinx"`: see [Sphinx style](../docstrings/sphinx.md).
 - `None` (`null` or `~` in YAML): no style at all, parse as regular text.
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          docstring_style: google
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              docstring_style: google
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    docstring_style = "google"
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
@@ -100,15 +109,24 @@ The Sphinx style does not offer any option.
 
 Most of the options in the linked pages will not have an effect to mkdocstrings-matlab, since here the objects are mocked as Python objects are docstrings are injected into the mocked objects. 
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          docstring_options:
-            warn_unknown_params: false
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              docstring_options:
+                warn_unknown_params: false
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    docstring_options = { warn_unknown_params = false }
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
@@ -132,14 +150,23 @@ Sections are parsed as structured data and can therefore be rendered in differen
 - `"list"`: a simple list, akin to what you get with the [ReadTheDocs Sphinx theme]{ .external }
 - `"spacy"`: a poor implementation of the amazing tables in [Spacy's documentation]{ .external }
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          docstring_section_style: table
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              docstring_section_style: table
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    docstring_section_style = "table"
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
@@ -225,14 +252,23 @@ end
 The mkdocstrings-matlab plugin is able to parse the argument blocks and extract the type and default information, and any comment after each Argument Definition will be parsed as the argument docstring. If if `parse_arguments` is enabled, sections will be rendered for the parameters, name-value pairs and the return arguments of functions and methods. These sections can be individually toggled with [`show_docstring_input_arguments`][], [`show_docstring_name_value_arguments`][] and [`show_docstring_output_arguments`][].
 
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          parse_arguments: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              parse_arguments: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    parse_arguments = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: mynamespace.typed_function
@@ -281,14 +317,23 @@ Whether to merge the constructor method into the class' signature and docstring.
 
 By default, only the class name is rendered in headings. When merging, the constructor method parameters are added after the class name, like a signature, and the constructor method docstring is appended to the class' docstring. 
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          merge_constructor_into_class: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              merge_constructor_into_class: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    merge_constructor_into_class = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
@@ -345,14 +390,23 @@ Without an explicit list of [`members`][], members are selected based on [`filte
 
 With this option you can tell the Python handler to skip the docstring check.
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_if_no_docstring: false
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_if_no_docstring: false
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_if_no_docstring = false
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: +undocumented
@@ -395,14 +449,23 @@ plugins:
 
 Whether to render the "Properties" sections of docstrings.
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_docstring_properties: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_docstring_properties: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_docstring_properties = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
@@ -449,14 +512,23 @@ plugins:
 
 Whether to render the "Functions" or "Methods" sections of docstrings.
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      python:
-        options:
-          show_docstring_functions: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          python:
+            options:
+              show_docstring_functions: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.python.options]
+    show_docstring_functions = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: path.to.module
@@ -527,14 +599,23 @@ plugins:
 
 Whether to render the "Classes" sections of docstrings.
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_docstring_classes: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_docstring_classes: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_docstring_classes = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: +matlab_namespace
@@ -582,14 +663,23 @@ plugins:
 
 Whether to render the "Namespaces" sections of docstrings.
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_docstring_namespaces: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_docstring_namespaces: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_docstring_namespaces = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: +matlab_namespace
@@ -636,14 +726,23 @@ plugins:
 
 Whether to render the textual blocks (including admonitions) of docstrings.
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_docstring_description: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_docstring_description: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_docstring_description = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
@@ -690,14 +789,23 @@ plugins:
 
 Whether to render the "Examples" sections of docstrings.
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_docstring_examples: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_docstring_examples: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_docstring_examples = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
@@ -744,14 +852,23 @@ plugins:
 
 Whether to render the "Parameters" sections of docstrings. The accepted title headings are `inputs` or `input arguments` (case-insensitive). 
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_docstring_input_arguments: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_docstring_input_arguments: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_docstring_input_arguments = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
@@ -802,14 +919,23 @@ plugins:
 
 Whether to render the "Name-value pairs" sections of docstrings. The accepted title headings are `name-value pairs` or `name-value arguments` (case-insensitive). 
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_docstring_name_value_arguments: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_docstring_name_value_arguments: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_docstring_name_value_arguments = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable
@@ -860,14 +986,23 @@ plugins:
 
 Whether to render the "Returns" sections of docstrings. The accepted title headings are `outputs` or `output arguments` (case-insensitive). 
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          show_docstring_output_arguments: true
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              show_docstring_output_arguments: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    show_docstring_output_arguments = true
+    ```
 
 ```md title="or in docs/some_page.md (local configuration)"
 ::: matlab_callable

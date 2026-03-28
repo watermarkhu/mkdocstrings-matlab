@@ -12,6 +12,7 @@ validation:
   unrecognized_links: warn
 
 watch:
+  - README.md
   - mkdocs.yml
   - docs
   - src
@@ -25,7 +26,7 @@ nav:
   - Usage:
       - usage/index.md
       - Global options: usage/global.md
-      - Global/local options:
+      - Global and local options:
           - General: usage/configuration/general.md
           - Headings: usage/configuration/headings.md
           - Members: usage/configuration/members.md

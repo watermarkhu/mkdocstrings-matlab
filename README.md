@@ -2,7 +2,7 @@
 
 <h1 align="center">mkdocstrings-matlab</h1>
 
-<p align="center">A MATLAB handler for <a href="https://github.com/mkdocstrings/mkdocstrings"><i>mkdocstrings</i></a>.</p>
+<p align="center">A MATLAB handler for <a href="https://github.com/mkdocstrings/mkdocstrings"><i>mkdocstrings</i></a>,</br>compatible with <a href="https://squidfunk.github.io/mkdocs-material">Material for MkDocs</a> and <a href="https://zensical.org/about/">Zensical</a>.</p>
 
 <p align="center"><img width=300px src="logo.png"></p>
 
@@ -30,6 +30,8 @@ To get started, checkout the [📝 documentation](https://watermarkhu.github.io/
 <!-- --8<-- [start:footer] -->
 
 ## Features
+
+- Compatible with both [Material for Mkdocs](https://squidfunk.github.io/mkdocs-material) and [Zensical](https://zensical.org/about/).
 
 - 🤖 **Data collection from source code**: collection of the object-tree and the docstrings is done thanks to
   [Tree-sitter](https://tree-sitter.github.io/tree-sitter/).

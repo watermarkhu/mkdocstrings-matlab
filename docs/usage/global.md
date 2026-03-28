@@ -6,13 +6,22 @@ This option is used to set the [MATLAB search path](https://mathworks.com/help/m
 
 Non-absolute paths are computed as relative to MkDocs configuration file. Example:
 
-```yaml title="mkdocs.yml"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        paths: [src]  # search files in the src folder
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            paths: [src]  # search files in the src folder
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab]
+    paths = ["src"]  # search files in the src folder
+    ```
 
 
 ## `paths_recursive`
@@ -21,14 +30,25 @@ This option allows you to specify whether the handler should recursively search 
 
 Example:
 
-```yaml title="mkdocs.yml"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        paths: [src]  # search files in the src folder
-        paths_recursive: true  # search recursively in subfolders
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            paths: [src]  # search files in the src folder
+            paths_recursive: true  # search recursively in subfolders
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab]
+    paths = ["src"]  # search files in the src folder
+    paths_recursive = true  # search recursively in subfolders
+    ```
+
 
 ## `tree_sitter_logging_level`
 
@@ -46,13 +66,22 @@ Possible values (from most to least verbose):
 
 Example:
 
-```yaml title="mkdocs.yml"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        tree_sitter_logging_level: DEBUG  # show debug messages during parsing
-```
+=== "mkdocs.yml"
+
+    ```yaml
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            tree_sitter_logging_level: DEBUG  # show debug messages during parsing
+    ```
+
+=== "zensical.toml"
+
+    ```toml
+    [project.plugins.mkdocstrings.handlers.matlab]
+    tree_sitter_logging_level = "DEBUG"  # show debug messages during parsing
+    ```
 
 
 ## `docstring_before_properties`
@@ -87,16 +116,25 @@ classdef MyClass
 end
 ```
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          docstring_before_properties: true
-```
+=== "mkdocs.yml"
 
-```md title="or in docs/some_page.md (local configuration)"
+    ```yaml title="global configuration"
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              docstring_before_properties: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml title="global configuration"
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    docstring_before_properties = true
+    ```
+
+```md title="local configuration"
 ::: matlab_class
     options:
       docstring_before_properties: true
@@ -136,16 +174,25 @@ function result = myFunction(arg1, arg2)
 end
 ```
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          docstring_before_arguments: true
-```
+=== "mkdocs.yml"
 
-```md title="or in docs/some_page.md (local configuration)"
+    ```yaml title="global configuration"
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              docstring_before_arguments: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml title="global configuration"
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    docstring_before_arguments = true
+    ```
+
+```md title="local configuration"
 ::: matlab_function
     options:
       docstring_before_arguments: true
@@ -183,16 +230,25 @@ classdef MyEnum
 end
 ```
 
-```yaml title="in mkdocs.yml (global configuration)"
-plugins:
-- mkdocstrings:
-    handlers:
-      matlab:
-        options:
-          docstring_before_enumerations: true
-```
+=== "mkdocs.yml"
 
-```md title="or in docs/some_page.md (local configuration)"
+    ```yaml title="global configuration"
+    plugins:
+    - mkdocstrings:
+        handlers:
+          matlab:
+            options:
+              docstring_before_enumerations: true
+    ```
+
+=== "zensical.toml"
+
+    ```toml title="global configuration"
+    [project.plugins.mkdocstrings.handlers.matlab.options]
+    docstring_before_enumerations = true
+    ```
+
+```md title="local configuration"
 ::: matlab_enumeration
     options:
       docstring_before_enumerations: true
