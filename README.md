@@ -11,7 +11,7 @@
 [![pypi version](https://img.shields.io/pypi/v/mkdocstrings-matlab.svg)](https://pypi.org/project/mkdocstrings-matlab/)
 [![codecov](https://codecov.io/github/watermarkhu/mkdocstrings-matlab/graph/badge.svg?token=T2csKmj2o2)](https://codecov.io/github/watermarkhu/mkdocstrings-matlab)
 
-**A modern documentation framework for MATLAB.** Automatically generate beautiful documentation pages from your MATLAB code's comments and DOCSTRINGS, harnessing the power of Markdown for advanced formatting.
+**A modern documentation framework for MATLAB.** Automatically generate beautiful documentation pages from your MATLAB code's comments and docstrings, harnessing the power of Markdown for advanced formatting.
 
 The MATLAB handler uses [maxx](https://github.com/watermarkhu/maxx) to collect documentation from MATLAB source code, which in turn uses [Tree-sitter](https://tree-sitter.github.io/tree-sitter/) and its [MATLAB parser](https://github.com/acristoffers/tree-sitter-matlab).
 
