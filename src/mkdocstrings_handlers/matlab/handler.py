@@ -236,7 +236,9 @@ class MatlabHandler(BaseHandler):
 
         try:
             if "/" in identifier or identifier.lower().endswith(".mlx"):
-                # If the identifier contains a slash or ends with .mlx, it is a path to a file or folder.
+                # If the identifier contains a slash or ends with .mlx, it is a path to a file
+                # or folder.  Path-based identifiers support live scripts (.mlx and R2025a .m)
+                # as well as MATLAB folder objects.
                 path = (self.base_dir / identifier).resolve()
                 if path.is_file() and path.suffix.lower() in (".mlx", ".m"):
                     # Parse as a MATLAB live script (binary .mlx or plain-text R2025a .m format).

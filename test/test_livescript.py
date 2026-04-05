@@ -57,7 +57,7 @@ def test_strip_livescript_comments_mixed() -> None:
 # ---------------------------------------------------------------------------
 
 
-def test_collect_livescript_plaintext(tmp_path: Path) -> None:
+def test_collect_livescript_plaintext() -> None:
     """Assert a R2025a plain-text live script .m file can be collected by path."""
     repo_root = Path(__file__).parent.parent
 
@@ -77,7 +77,7 @@ def test_collect_livescript_plaintext(tmp_path: Path) -> None:
     assert len(model.sections) > 0
 
 
-def test_collect_livescript_sections(tmp_path: Path) -> None:
+def test_collect_livescript_sections() -> None:
     """Assert collected live script has correctly classified sections."""
     repo_root = Path(__file__).parent.parent
 
@@ -100,7 +100,7 @@ def test_collect_livescript_sections(tmp_path: Path) -> None:
 
 
 def test_collect_livescript_not_found(tmp_path: Path) -> None:
-    """Assert CollectionError is raised for a non-existent live script."""
+    """Assert CollectionError is raised for a non-existent live script path."""
     handler = MatlabHandler(
         base_dir=tmp_path,
         config=MatlabConfig.from_data(paths=["."]),
@@ -110,12 +110,12 @@ def test_collect_livescript_not_found(tmp_path: Path) -> None:
         mdx_config={},
     )
 
-    with pytest.raises(CollectionError):
+    with pytest.raises(CollectionError, match="is not a valid path"):
         handler.collect("nonexistent/livescript.mlx", handler.get_options({}))
 
 
 def test_collect_livescript_mlx(tmp_path: Path) -> None:
-    """Assert a binary .mlx live script can be collected by path."""
+    """Assert a plain-text .mlx live script can be collected by path."""
     from maxx.livescript import LiveScriptParser
 
     # Create a minimal plain-text .mlx file (not binary ZIP) for testing
@@ -138,7 +138,7 @@ def test_collect_livescript_mlx(tmp_path: Path) -> None:
 
 
 def test_collect_livescript_invalid_mlx(tmp_path: Path) -> None:
-    """Assert CollectionError is raised for an invalid binary .mlx file."""
+    """Assert CollectionError with message is raised for an invalid binary .mlx file."""
     # Write a file that claims to be a binary ZIP .mlx but is not valid
     mlx_file = tmp_path / "bad.mlx"
     mlx_file.write_bytes(b"PK\x03\x04invalid content")
@@ -152,7 +152,7 @@ def test_collect_livescript_invalid_mlx(tmp_path: Path) -> None:
         mdx_config={},
     )
 
-    with pytest.raises(CollectionError):
+    with pytest.raises(CollectionError, match="bad.mlx"):
         handler.collect("bad.mlx", handler.get_options({}))
 
 

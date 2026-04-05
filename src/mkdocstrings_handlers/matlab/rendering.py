@@ -95,7 +95,11 @@ _order_map: dict[str, Callable[[Object | Alias], str | float]] = {
 
 
 _COMMENT_PREFIX_RE = re.compile(r"^\s*%( ?)")
-"""Pattern to match a leading MATLAB comment prefix ``%`` or ``% ``."""
+"""Pattern to match a leading MATLAB comment prefix ``%`` or ``% ``.
+
+The pattern intentionally includes any leading whitespace (``\\s*``) so that
+indented comment lines (e.g., ``  % text``) are also stripped cleanly.
+"""
 
 
 def do_strip_livescript_comments(content: str) -> str:
