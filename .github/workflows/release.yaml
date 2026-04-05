@@ -23,7 +23,7 @@ jobs:
       version: ${{ steps.get-version.outputs.version }}
     steps:
       - name: Get semantic version
-        uses: RonaldPhilipsen/semVersie@v2.3.0
+        uses: RonaldPhilipsen/semVersie@v2.3.1
         id: get-version
         with:
           add-pr-label: true
