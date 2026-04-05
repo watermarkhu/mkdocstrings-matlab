@@ -94,11 +94,12 @@ _order_map: dict[str, Callable[[Object | Alias], str | float]] = {
 }
 
 
-_COMMENT_PREFIX_RE = re.compile(r"^\s*%( ?)")
-"""Pattern to match a leading MATLAB comment prefix ``%`` or ``% ``.
+_COMMENT_PREFIX_RE = re.compile(r"^\s*% ?")
+"""Pattern to match a leading MATLAB comment prefix (``%`` or ``% ``) with any preceding whitespace.
 
-The pattern intentionally includes any leading whitespace (``\\s*``) so that
-indented comment lines (e.g., ``  % text``) are also stripped cleanly.
+Matches ``%`` optionally followed by a single space, anchored at the start of the line
+(including any leading whitespace).  Used by :func:`do_strip_livescript_comments` to
+remove comment syntax from R2025a plain-text live script text sections.
 """
 
 
@@ -121,9 +122,9 @@ def do_strip_livescript_comments(content: str) -> str:
     """
     lines = []
     for line in content.splitlines():
-        m = _COMMENT_PREFIX_RE.match(line)
-        if m:
-            lines.append(line[m.end() :])
+        match = _COMMENT_PREFIX_RE.match(line)
+        if match:
+            lines.append(line[match.end() :])
         else:
             lines.append(line)
     return "\n".join(lines)

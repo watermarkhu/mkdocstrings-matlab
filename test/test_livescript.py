@@ -3,16 +3,12 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 import pytest
 from mkdocstrings import CollectionError
 
 from mkdocstrings_handlers.matlab import MatlabConfig, MatlabHandler
 from mkdocstrings_handlers.matlab.rendering import do_strip_livescript_comments
-
-if TYPE_CHECKING:
-    pass
 
 
 # ---------------------------------------------------------------------------
