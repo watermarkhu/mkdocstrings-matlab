@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Any, ClassVar
 from griffe import AliasResolutionError, Parser
 from maxx.collection import LinesCollection, PathsCollection
 from maxx.config import ParserConfig
+from maxx.livescript import LiveScriptParser
 from maxx.logger import configure as configure_maxx_logger
 from mkdocs.exceptions import PluginError
 from mkdocstrings import (
@@ -116,6 +117,7 @@ class MatlabHandler(BaseHandler):
             full_paths,
             recursive=config.paths_recursive,
             working_directory=base_dir,
+            parse_live_scripts=config.parse_live_scripts,
             parser_config=parser_config,
         )
         self._lines_collection: LinesCollection = self._paths_collection.lines_collection
@@ -202,6 +204,7 @@ class MatlabHandler(BaseHandler):
         self.env.filters["as_inheritance_diagram_section"] = (
             rendering.do_as_inheritance_diagram_section
         )
+        self.env.filters["strip_livescript_comments"] = rendering.do_strip_livescript_comments
         self.env.globals["AutorefsHook"] = rendering.AutorefsHook  # ty: ignore[invalid-assignment]
         self.env.tests["existing_template"] = lambda template_name: (
             template_name in self.env.list_templates()
@@ -232,11 +235,17 @@ class MatlabHandler(BaseHandler):
             options = self.get_options({})
 
         try:
-            if "/" in identifier:
-                # If the identifier contains a slash, it is a path to a file.
-                # We use the lines collection to get the model.
+            if "/" in identifier or identifier.lower().endswith(".mlx"):
+                # If the identifier contains a slash or ends with .mlx, it is a path to a file or folder.
                 path = (self.base_dir / identifier).resolve()
-                if path in self._paths_collection._folders:
+                if path.is_file() and path.suffix.lower() in (".mlx", ".m"):
+                    # Parse as a MATLAB live script (binary .mlx or plain-text R2025a .m format).
+                    try:
+                        parser = LiveScriptParser(path, paths_collection=self._paths_collection)
+                        model = parser.parse()
+                    except (ValueError, FileNotFoundError) as ex:
+                        raise CollectionError(str(ex)) from ex
+                elif path in self._paths_collection._folders:
                     # If the path is a folder, we return the folder model.
                     model = self._paths_collection._folders[path]
                 else:
