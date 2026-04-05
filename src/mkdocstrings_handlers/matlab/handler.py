@@ -203,7 +203,7 @@ class MatlabHandler(BaseHandler):
             rendering.do_as_inheritance_diagram_section
         )
         self.env.globals["AutorefsHook"] = rendering.AutorefsHook  # ty: ignore[invalid-assignment]
-        self.env.tests["existing_template"] = lambda template_name: (
+        self.env.tests["existing_template"] = lambda template_name: (  # ty: ignore[invalid-assignment]
             template_name in self.env.list_templates()
         )
         # The following is required since in MATLAB there is a concept called namespace
