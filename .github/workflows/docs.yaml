@@ -54,7 +54,7 @@ jobs:
           uv sync --no-dev --group mkdocs
           uv run mkdocs build --clean
 
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v5
         if: ${{ inputs.push }}
         with:
           path: site
