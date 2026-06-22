@@ -32,7 +32,7 @@ jobs:
     steps:
       - uses: actions/configure-pages@v6
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0 # Required to push to the documentation branch
           ref: ${{ inputs.ref }}
