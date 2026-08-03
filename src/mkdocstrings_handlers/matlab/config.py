@@ -750,7 +750,7 @@ class MatlabInputOptions:
 
     @classmethod
     def _extract_extra(cls, data: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
-        field_names = {field.name for field in fields(cls)}
+        field_names = {field.name for field in fields(cls)}  # ty: ignore[invalid-argument-type]
         copy = data.copy()
         return {name: copy.pop(name) for name in data if name not in field_names}, copy
 

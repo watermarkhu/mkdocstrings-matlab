@@ -153,16 +153,16 @@ def do_format_signature(
 
     signature = template.render(new_context, function=function, signature=True)
     signature = str(
-        env.filters["highlight"](  # ty: ignore
-            Markup.escape(signature),  # ty: ignore
-            language="matlab",  # ty: ignore
-            inline=False,  # ty: ignore
-            classes=["doc-signature"],  # ty: ignore
-            linenums=False,  # ty: ignore
+        env.filters["highlight"](
+            Markup.escape(signature),
+            language="matlab",
+            inline=False,
+            classes=["doc-signature"],
+            linenums=False,
         ),
     )
 
-    if stash := env.filters["stash_crossref"].stash:  # ty: ignore[unresolved-attribute]
+    if stash := env.filters["stash_crossref"].stash:
         for key, value in stash.items():
             signature = re.sub(rf"\b{key}\b", value, signature)
         stash.clear()
@@ -192,7 +192,7 @@ def do_format_arguments(
 
     html = template.render(context.parent, section=section)
 
-    if stash := env.filters["stash_crossref"].stash:  # ty: ignore[unresolved-attribute]
+    if stash := env.filters["stash_crossref"].stash:
         for key, value in stash.items():
             html = re.sub(rf"\b{key}\b", value, html)
         stash.clear()
@@ -244,16 +244,16 @@ def do_format_property(
         signature += f" = {value}"
 
     signature = str(
-        env.filters["highlight"](  # ty: ignore
-            Markup.escape(signature),  # ty: ignore
-            language="matlab",  # ty: ignore
-            inline=False,  # ty: ignore
-            classes=["doc-signature"],  # ty: ignore
-            linenums=False,  # ty: ignore
+        env.filters["highlight"](
+            Markup.escape(signature),
+            language="matlab",
+            inline=False,
+            classes=["doc-signature"],
+            linenums=False,
         ),
     )
 
-    if stash := env.filters["stash_crossref"].stash:  # ty: ignore[unresolved-attribute]
+    if stash := env.filters["stash_crossref"].stash:
         for key, value in stash.items():
             signature = re.sub(rf"\b{key}\b", value, signature)
         stash.clear()
