@@ -73,13 +73,13 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@v8.3.2
+        uses: astral-sh/setup-uv@v9.0.0
         with:
           version: "latest"
 
       - name: Cache uv
         id: cache-uv
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: .venv
           key: ${{ runner.os }}-qualify-uv-${{ matrix.python-version }}-${{ matrix.resolution }}-${{ github.head_ref || github.ref_name }}-${{ hashFiles('pyproject.toml') }}
