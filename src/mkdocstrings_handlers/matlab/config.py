@@ -864,6 +864,11 @@ class MatlabInputConfig:
         Field(description="Whether add all paths recursively."),
     ] = False
 
+    parse_live_scripts: Annotated[
+        bool,
+        Field(description="Whether to index ``.mlx`` live script files in the MATLAB path collection."),
+    ] = False
+
     options: Annotated[
         MatlabInputOptions,
         Field(description="Configuration options for collecting and rendering objects."),

@@ -37,7 +37,7 @@ from griffe._internal.docstrings.parsers import DocstringStyle, parse
 from jinja2 import pass_context
 from markupsafe import Markup
 from maxx.enums import ArgumentKind
-from maxx.objects import Alias, Class, Folder, Function, Namespace, Object, Property, Script
+from maxx.objects import Alias, Class, Folder, Function, LiveScript, Namespace, Object, Property, Script
 from mkdocs_autorefs import AutorefsHookInterface
 from mkdocstrings import get_logger
 
@@ -47,7 +47,7 @@ if TYPE_CHECKING:
     from jinja2.runtime import Context
     from mkdocstrings import CollectorItem
 
-    MEMBERS = Alias | Class | Folder | Function | Namespace | Property | Script
+    MEMBERS = Alias | Class | Folder | Function | LiveScript | Namespace | Property | Script
 
 _logger = get_logger(__name__)
 
@@ -92,6 +92,43 @@ _order_map: dict[str, Callable[[Object | Alias], str | float]] = {
     "alphabetical": _sort_key_alphabetical,
     "source": _sort_key_source,
 }
+
+
+_COMMENT_PREFIX_RE = re.compile(r"^\s*% ?")
+"""Pattern to match a leading MATLAB comment prefix (``%`` or ``% ``) with any preceding whitespace.
+
+Matches ``%`` optionally followed by a single space, anchored at the start of the line
+(including any leading whitespace).  Used by :func:`do_strip_livescript_comments` to
+remove comment syntax from R2025a plain-text live script text sections.
+"""
+
+
+def do_strip_livescript_comments(content: str) -> str:
+    """Strip leading MATLAB comment prefixes from live script text section lines.
+
+    In R2025a plain-text live code files, text sections are encoded as
+    ``%``-prefixed comment lines.  This filter removes the leading ``%``
+    (and an optional single following space) so the content can be rendered
+    as plain markdown.
+
+    Binary ``.mlx`` text content is already clean (no ``%`` prefix), so
+    this filter is a no-op for those lines.
+
+    Parameters:
+        content: The raw text-section content from a :class:`~maxx.objects.LiveScriptSection`.
+
+    Returns:
+        The content with leading ``%`` comment prefixes stripped.
+    """
+    lines = []
+    for line in content.splitlines():
+        match = _COMMENT_PREFIX_RE.match(line)
+        if match:
+            lines.append(line[match.end() :])
+        else:
+            lines.append(line)
+    return "\n".join(lines)
+
 
 
 class _StashCrossRefFilter:
@@ -809,6 +846,7 @@ class AutorefsHook(AutorefsHookInterface):
             else "func",
             "namespace": "name",
             "script": "script",
+            "live_script": "live_script",
         }.get(self.current_object.kind.value.lower(), "obj")
         origin = self.current_object.path
         try:
