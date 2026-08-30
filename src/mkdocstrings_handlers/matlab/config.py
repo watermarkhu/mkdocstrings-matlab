@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 import sys
 from dataclasses import field, fields
-from typing import TYPE_CHECKING, Annotated, Any, Literal
+from typing import TYPE_CHECKING, Annotated, Any, Literal, cast
 
 from griffe._internal.docstrings.parsers import DocstringStyle
 from mkdocstrings import get_logger
@@ -750,7 +750,9 @@ class MatlabInputOptions:
 
     @classmethod
     def _extract_extra(cls, data: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
-        field_names = {field.name for field in fields(cls)}
+        # `MatlabInputOptions` is a dataclass, but when Pydantic is installed its `@dataclass`
+        # decorator is Pydantic's, which `ty` does not recognize as a stdlib `DataclassInstance`.
+        field_names = {field.name for field in fields(cast(Any, cls))}
         copy = data.copy()
         return {name: copy.pop(name) for name in data if name not in field_names}, copy
 
