@@ -11,4 +11,3 @@
       members:
         - handler
         - config
-

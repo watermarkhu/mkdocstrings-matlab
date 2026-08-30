@@ -7,7 +7,8 @@ You can install this handler by installing is as a dependency
 ```shell
 uv add mkdocstrings-matlab --group docs
 ```
-or 
+
+or
 
 ```shell
 pip install mkdocstrings-matlab
@@ -30,13 +31,13 @@ configuration option of `mkdocstrings` in `mkdocs.yml` or `zensical.toml`:
         matlab:
             ...  # the MATLAB handler configuration
     ```
-    
+
 === "zensical.toml"
 
     ```toml
     [project.plugins.mkdocstrings]
     default_handler = "matlab"
-    
+
     [project.plugins.mkdocstrings.matlab]
     # The MATLAB handler configuration
     ```
@@ -55,9 +56,10 @@ If another handler was defined as default handler, you can explicitely ask for t
 ::: path.to.object
     handler: matlab
 ```
+
 ### Namespaces
 
-Entire [namespaces](https://mathworks.com/help/matlab/matlab_oop/namespaces.html) can be fully documented by prefixing the `+` character to the namespace that is to be documented. E.g. the following namespace 
+Entire [namespaces](https://mathworks.com/help/matlab/matlab_oop/namespaces.html) can be fully documented by prefixing the `+` character to the namespace that is to be documented. E.g. the following namespace
 
 ```text
 +mynamespace
@@ -76,7 +78,7 @@ is documented with:
 
 The docstring of the namespace is taken from either the [`Contents.m`](https://mathworks.com/help/matlab/matlab_prog/create-a-help-summary-contents-m.html) or a `readme.md` that resides at the root level of the namespace, with `Contents.m` taking precedence over `readme.md`.
 
-Documenting a nested namespace requires only a single prefixed `+` at the start of the fully resolved path, e.g. 
+Documenting a nested namespace requires only a single prefixed `+` at the start of the fully resolved path, e.g.
 
 ```md
 ::: +mynamespace.subnamespace
@@ -107,9 +109,9 @@ is documented with:
 ::: src/module
 ```
 
-In the case above the function `module/submodule/myfunction.m` overshadows the function `module/myfunction.m` on the MATLAB path. This means that in the global namespace myfunction will always call `module/submodule/myfunction.m`, which is the function to be documented by `::: myfunction`. 
+In the case above the function `module/submodule/myfunction.m` overshadows the function `module/myfunction.m` on the MATLAB path. This means that in the global namespace myfunction will always call `module/submodule/myfunction.m`, which is the function to be documented by `::: myfunction`.
 
-While this kind of behavior is strictly recommended against, mkdocstrings-matlab does support documenting the shadowed function by using its path. The file extension is now stricty required. 
+While this kind of behavior is strictly recommended against, mkdocstrings-matlab does support documenting the shadowed function by using its path. The file extension is now stricty required.
 
 ```markdown
 ::: src/module/myfunction.m
@@ -117,19 +119,19 @@ While this kind of behavior is strictly recommended against, mkdocstrings-matlab
 
 !!! tip
 
-    A folder identifier must strictly contain the `/` character. For a folder `foo` that is in the same directory containing `mkdocs.yml` or `zensical.toml`, use `::: ./foo`. 
+    A folder identifier must strictly contain the `/` character. For a folder `foo` that is in the same directory containing `mkdocs.yml` or `zensical.toml`, use `::: ./foo`.
 
 !!! tip
 
-    If `mkdocs.yml` or `zensical.toml` lives inside of a subdirectly that does not contain source code, use relative paths e.g. `../src/module`. 
+    If `mkdocs.yml` or `zensical.toml` lives inside of a subdirectly that does not contain source code, use relative paths e.g. `../src/module`.
 
 !!! tip
 
-    Sub-selecting folder members are possible with the [members](./configuration/members.md) options. 
+    Sub-selecting folder members are possible with the [members](./configuration/members.md) options.
 
 ### Global only options
 
-Some options are **global only**, and go directly under the handler's name. See all global only options [here](./global.md).
+Some options are **global only**, and go directly under the handler's name. See all [global-only options](./global.md).
 
 ### Global and local options
 
