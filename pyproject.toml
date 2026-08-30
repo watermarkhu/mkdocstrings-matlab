@@ -28,7 +28,7 @@ classifiers = [
 
 dependencies = [
     "griffe>=2.0.0,<3",
-    "maxx>=0.8.0,<1",
+    "maxx>=0.10.0,<1",
     "mkdocstrings>=1.0,<2",
     "mkdocs-autorefs>=1.4,<2",
     "charset-normalizer>=3.4,<4",

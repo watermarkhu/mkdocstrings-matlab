@@ -8,6 +8,7 @@
             classA.m
             classB.m
             typed_function.m
+            typed_class_property.m
             myscript.m
         ```
 
@@ -33,6 +34,12 @@
 
         ```matlab
         --8<-- "docs/src/snippets/+mynamespace/typed_function.m"
+        ```
+
+    === ":material-file-code: `typed_class_property.m`"
+
+        ```matlab
+        --8<-- "docs/src/snippets/+mynamespace/typed_class_property.m"
         ```
 
     === ":material-file-code: `myscript.m`"

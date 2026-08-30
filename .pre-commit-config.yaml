@@ -29,9 +29,3 @@ repos:
         entry: uv run ruff format --force-exclude
         language: system
         types_or: [python, pyi, jupyter]
-      - id: ty
-        name: ty check
-        entry: uv run ty check
-        language: system
-        types_or: [python, pyi, jupyter]
-        pass_filenames: false

@@ -212,6 +212,8 @@ Whether to render cross-references for type annotations in signatures.
 
 When signatures are separated from headings with the [`separate_signature`][] option and type annotations are shown with the [`show_signature_types`][] option, this option will render a cross-reference (link) for each type annotation in the signature.
 
+Name-value arguments from [class properties](../configuration/docstrings.md#name-value-arguments-from-class-properties) are typed with their class path, which is cross-referenced to the collected class as well.
+
 === "mkdocs.yml"
 
     ```yaml

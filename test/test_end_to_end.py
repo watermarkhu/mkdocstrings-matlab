@@ -362,3 +362,23 @@ def test_end_to_end_for_signatures(
     html = _render(session_handler, "module_arguments", final_options)
     snapshot_key = tuple(sorted(final_options.items()))
     assert outsource(html, suffix=".html") == snapshots.signatures[snapshot_key]
+
+
+@pytest.mark.parametrize("separate_signature", [True, False])
+def test_end_to_end_class_property_crossrefs(
+    session_handler: "MatlabHandler", separate_signature: bool
+) -> None:
+    """Name-value arguments from class properties cross-reference the class.
+
+    The type of ``opts.?moduleNamespace.namespaceClass`` must render as an autoref
+    to the collected class when signature cross-references are enabled.
+    """
+    final_options = {
+        "show_signature_types": True,
+        "signature_crossrefs": True,
+        "separate_signature": separate_signature,
+        "show_docstring_name_value_arguments": True,
+    }
+    html = _render(session_handler, "class_property", final_options)
+    assert "moduleNamespace.namespaceClass" in html
+    assert "<autoref" in html
