@@ -32,7 +32,7 @@ Context:
       <tbody>
         {% for property in section.value %}
           <tr class="doc-section-item">
-            <td><code><autoref identifier="{{ obj.path }}.{{ property.name }}" optional hover>{{ property.name }}</autoref></code></td>
+            <td><code><autoref identifier="{{ obj.canonical_path }}.{{ property.name }}" optional hover>{{ property.name }}</autoref></code></td>
             <td>
               {% if property.annotation %}
                 {% with expression = property.annotation %}
@@ -57,7 +57,7 @@ Context:
     <ul>
       {% for property in section.value %}
         <li class="doc-section-item field-body">
-          <b><code><autoref identifier="{{ obj.path }}.{{ property.name }}" optional hover>{{ property.name }}</autoref></code></b>
+          <b><code><autoref identifier="{{ obj.canonical_path }}.{{ property.name }}" optional hover>{{ property.name }}</autoref></code></b>
           {% if property.annotation %}
             {% with expression = property.annotation %}
               (<code>{% include "expression.html.jinja" with context %}</code>)
@@ -84,7 +84,7 @@ Context:
       <tbody>
         {% for property in section.value %}
           <tr class="doc-section-item">
-            <td><code><autoref identifier="{{ obj.path }}.{{ property.name }}" optional hover>{{ property.name }}</autoref></code></td>
+            <td><code><autoref identifier="{{ obj.canonical_path }}.{{ property.name }}" optional hover>{{ property.name }}</autoref></code></td>
             <td class="doc-property-details">
               <div class="doc-md-description">
                 {{ property.description|convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
