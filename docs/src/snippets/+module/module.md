@@ -23,7 +23,7 @@
         ```matlab
         --8<-- "docs/src/snippets/+module/do_something.m"
         ```
-    
+
     === ":material-file-code: `aClass.m`"
 
         ```matlab

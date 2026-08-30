@@ -15,7 +15,7 @@ When injecting documentation for an object, the object itself and its members ar
 
 The initial heading level will be used for the first layer. If you set it to 3, then headings will start with `<h3>`.
 
-If the [heading for the root object][show_root_heading] is not shown, then the initial heading level is used for its members.
+If the [heading for the root object](#show_root_heading) is not shown, then the initial heading level is used for its members.
 
 === "mkdocs.yml"
 
@@ -43,7 +43,7 @@ If the [heading for the root object][show_root_heading] is not shown, then the i
 
 --8<-- "docs/src/snippets/+mynamespace/mynamespace.md"
 
-???+ preview 
+???+ preview
 
     === "With level 3 and root heading"
 
@@ -65,7 +65,6 @@ If the [heading for the root object][show_root_heading] is not shown, then the i
         <p>Docstring of class B.</p>
         <h4><code>myfunction</code> (4)</h4>
         <p>Docstring of the function.</p>
-
 
 ## `argument_headings`
 
@@ -178,7 +177,6 @@ The identifier used in the permalink and inventory is of the following form: `pa
     <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code> typed_function<br>
     <code class="doc-symbol doc-symbol-toc doc-symbol-argument" style="margin-left: 16px;"></code> input
 
-
 ## `show_root_heading`
 
 - **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
@@ -223,7 +221,7 @@ Sparing that extra level can be helpful when your objects tree is deeply nested 
 ???+ preview
 
     === "With root heading"
-    
+
         ::: mynamespace.classA
             options:
               show_root_heading: true
@@ -234,7 +232,7 @@ Sparing that extra level can be helpful when your objects tree is deeply nested 
               members: true
 
     === "Without root heading"
-    
+
         ::: mynamespace.classA
             options:
               show_root_heading: false
@@ -250,7 +248,7 @@ Sparing that extra level can be helpful when your objects tree is deeply nested 
 
 If the root heading is not shown, at least add a ToC entry for it.
 
-If you inject documentation for an object in the middle of a page, after long paragraphs, and without showing the [root heading][show_root_heading], then you will not be able to link to this particular object as it won't have a permalink and will be "lost" in the middle of text. In that case, it is useful to add a hidden anchor to the document, which will also appear in the table of contents.
+If you inject documentation for an object in the middle of a page, after long paragraphs, and without showing the [root heading](#show_root_heading), then you will not be able to link to this particular object as it won't have a permalink and will be "lost" in the middle of text. In that case, it is useful to add a hidden anchor to the document, which will also appear in the table of contents.
 
 In other cases, you might want to disable the entry to avoid polluting the ToC. It is not possible to show the root heading *and* hide the ToC entry.
 
@@ -296,10 +294,12 @@ More text.
               show_root_toc_entry: true
         ```
 
-        **Table of contents**  
-        [Some heading](#permalink-to-some-heading){ title="#permalink-to-some-heading" }  
-        [`matlab_callable`](#permalink-to-object){ title="#permalink-to-object" }   
-        [Other heading](#permalink-to-other-heading){ title="#permalink-to-other-heading" } 
+        <!-- rumdl-disable -->
+        **Table of contents**
+        [Some heading](#permalink-to-some-heading){ title="#permalink-to-some-heading" }
+        [`matlab_callable`](#permalink-to-object){ title="#permalink-to-object" }
+        [Other heading](#permalink-to-other-heading){ title="#permalink-to-other-heading" }
+        <!-- rumdl-enable -->
 
     === "Without ToC entry"
 
@@ -309,9 +309,11 @@ More text.
               show_root_toc_entry: false
         ```
 
-        **Table of contents**  
-        [Some heading](#permalink-to-some-heading){ title="#permalink-to-some-heading" }  
+        <!-- rumdl-disable -->
+        **Table of contents**
+        [Some heading](#permalink-to-some-heading){ title="#permalink-to-some-heading" }
         [Other heading](#permalink-to-other-heading){ title="#permalink-to-other-heading" }
+        <!-- rumdl-enable -->
 
 ## `show_root_full_path`
 
@@ -383,7 +385,7 @@ With this option you can choose to show the full path of the object you inject d
 
 Show the full namespace path of the root members.
 
-This option does the same thing as [`show_root_full_path`][], but for direct members  of the root object instead of the root object itself.
+This option does the same thing as [`show_root_full_path`][], but for direct members of the root object instead of the root object itself.
 
 To show the full path for every member recursively, see [`show_object_full_path`][].
 
@@ -496,7 +498,7 @@ True                          | True                    | Full
               show_docstring_output_arguments: false
 
     === "Without object full path"
-        
+
         ```markdown
         ::: +mynamespace
             options:
@@ -514,13 +516,13 @@ True                          | True                    | Full
 - **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
 <!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
 
-When [grouped by categories][group_by_category], show a heading for each category.
+When [grouped by categories](./members.md#group_by_category), show a heading for each category.
 These category headings will appear in the table of contents,
 allowing you to link to them using their permalinks.
 
 !!! warning "Not recommended with deeply nested object"
 
-    When injecting documentation for deeply nested objects, you'll quickly run out of heading levels, and the objects at the bottom of the tree risk all getting documented using H6 headings, which might decrease the readability of your API docs. 
+    When injecting documentation for deeply nested objects, you'll quickly run out of heading levels, and the objects at the bottom of the tree risk all getting documented using H6 headings, which might decrease the readability of your API docs.
 
 === "mkdocs.yml"
 
@@ -561,7 +563,7 @@ allowing you to link to them using their permalinks.
               group_by_category: true
               show_category_heading: true
         ```
-        
+
         ::: +mynamespace
             options:
               group_by_category: true
@@ -642,7 +644,7 @@ See also [`show_symbol_type_toc`][show_symbol_type_toc].
 
         ::: docs/src/snippets
             options:
-              members: 
+              members:
                 - mynamespace
               show_symbol_type_heading: true
               show_docstring_input_arguments: false

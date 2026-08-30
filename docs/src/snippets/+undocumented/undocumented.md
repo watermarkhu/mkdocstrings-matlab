@@ -14,7 +14,7 @@
         ```matlab
         --8<-- "docs/src/snippets/+undocumented/ClassWithoutDocstring.m"
         ```
-    
+
     === ":material-file-code: `function_with_docstring.m`"
 
         ```matlab

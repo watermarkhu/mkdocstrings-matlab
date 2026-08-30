@@ -76,7 +76,7 @@ Without it, just the function/method name is rendered.
 
 Show the type annotations in methods and functions signatures.
 
-Since the heading can become quite long when annotations are rendered, it is usually best to [separate the signature][separate_signature] from the heading.
+Since the heading can become quite long when annotations are rendered, it is usually best to [separate the signature](#separate_signature) from the heading.
 
 === "mkdocs.yml"
 
@@ -137,7 +137,6 @@ Since the heading can become quite long when annotations are rendered, it is usu
             options:
               show_signature: true
               show_signature_types: false
-
 
 ## `separate_signature`
 

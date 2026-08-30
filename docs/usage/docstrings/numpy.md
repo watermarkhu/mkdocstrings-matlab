@@ -1,6 +1,6 @@
 # Numpydoc style
 
-## :warning: Work in Progress!
+## :warning: Work in Progress
 
 NOTE: As Numpy-style is partially supported by the underlying parser,
 you may experience problems in the building process if your docstring

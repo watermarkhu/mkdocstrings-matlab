@@ -49,6 +49,7 @@ dev = [
     "beautifulsoup4>=4.13.3,<5",
     "inline-snapshot>=0.32.0,<1",
     "mkdocs-material>=9.5,<10",
+    "rumdl>=0.2.62",
 ]
 docs = [
     "pygments",
