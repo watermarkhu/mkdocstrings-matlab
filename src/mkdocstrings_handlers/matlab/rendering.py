@@ -44,6 +44,7 @@ from mkdocstrings import get_logger
 if TYPE_CHECKING:
     from collections.abc import Iterator, Sequence
 
+    from jinja2 import Environment
     from jinja2.runtime import Context
     from mkdocstrings import CollectorItem
 
@@ -119,6 +120,53 @@ do_stash_crossref = _StashCrossRefFilter()
 """Filter to stash cross-references (and restore them after formatting and highlighting)."""
 
 
+def _apply_highlight_filter(
+    env: Environment,
+    code: str,
+    *,
+    language: str | None = None,
+    inline: bool = False,
+    linenums: bool | None = None,
+    **kwargs: Any,
+) -> str:
+    """Apply the ``highlight`` Jinja filter with a known signature.
+
+    Parameters:
+        env: The Jinja environment, passed automatically.
+        code: The code to highlight.
+        language: The language of the code.
+        inline: Whether to highlight inline.
+        linenums: Whether to show line numbers.
+        **kwargs: Extra keyword arguments forwarded to the filter.
+
+    Returns:
+        The highlighted code.
+
+    Note:
+        ``env.filters`` is typed as a union of all Jinja filter signatures, which ``ty``
+        cannot resolve for the runtime-registered ``highlight`` filter. Casting it here
+        keeps the actual call signature available to type checkers.
+    """
+    highlight = cast(Callable[..., str], env.filters["highlight"])
+    return highlight(code, language=language, inline=inline, linenums=linenums, **kwargs)
+
+
+def _stash_crossref_filter(env: Environment) -> _StashCrossRefFilter:
+    """Return the ``stash_crossref`` Jinja filter.
+
+    Parameters:
+        env: The Jinja environment, passed automatically.
+
+    Returns:
+        The ``stash_crossref`` filter.
+
+    Note:
+        As with the ``highlight`` filter, ``env.filters`` is typed as a union of all Jinja
+        filter signatures, so we cast the runtime-registered ``stash_crossref`` filter here.
+    """
+    return cast(_StashCrossRefFilter, env.filters["stash_crossref"])
+
+
 @pass_context
 def do_format_signature(
     context: Context,
@@ -152,17 +200,16 @@ def do_format_signature(
         new_context["config"] = replace(new_context["config"], show_signature_types=annotations)
 
     signature = template.render(new_context, function=function, signature=True)
-    signature = str(
-        env.filters["highlight"](
-            Markup.escape(signature),
-            language="matlab",
-            inline=False,
-            classes=["doc-signature"],
-            linenums=False,
-        ),
+    signature = _apply_highlight_filter(
+        env,
+        Markup.escape(signature),
+        language="matlab",
+        inline=False,
+        classes=["doc-signature"],
+        linenums=False,
     )
 
-    if stash := env.filters["stash_crossref"].stash:
+    if stash := _stash_crossref_filter(env).stash:
         for key, value in stash.items():
             signature = re.sub(rf"\b{key}\b", value, signature)
         stash.clear()
@@ -192,7 +239,7 @@ def do_format_arguments(
 
     html = template.render(context.parent, section=section)
 
-    if stash := env.filters["stash_crossref"].stash:
+    if stash := _stash_crossref_filter(env).stash:
         for key, value in stash.items():
             html = re.sub(rf"\b{key}\b", value, html)
         stash.clear()
@@ -243,17 +290,16 @@ def do_format_property(
         )
         signature += f" = {value}"
 
-    signature = str(
-        env.filters["highlight"](
-            Markup.escape(signature),
-            language="matlab",
-            inline=False,
-            classes=["doc-signature"],
-            linenums=False,
-        ),
+    signature = _apply_highlight_filter(
+        env,
+        Markup.escape(signature),
+        language="matlab",
+        inline=False,
+        classes=["doc-signature"],
+        linenums=False,
     )
 
-    if stash := env.filters["stash_crossref"].stash:
+    if stash := _stash_crossref_filter(env).stash:
         for key, value in stash.items():
             signature = re.sub(rf"\b{key}\b", value, signature)
         stash.clear()
