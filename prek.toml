@@ -1,0 +1,69 @@
+# Configuration file for `prek`, a git hook framework written in Rust.
+# See https://prek.j178.dev for more information.
+#:schema https://www.schemastore.org/prek.json
+
+fail_fast = false
+[[repos]]
+repo = "builtin"
+hooks = [
+  { id = "trailing-whitespace" },
+  { id = "end-of-file-fixer" },
+  { id = "check-merge-conflict" },
+]
+
+[[repos]]
+repo = "local"
+hooks = [
+  {
+    id = "uv",
+    name = "uv-lock",
+    entry = "uv lock",
+    language = "system",
+    files = '^(uv\.lock|pyproject\.toml|uv\.toml)$',
+    pass_filenames = false
+  },
+  {
+    id = "ruff-check",
+    name = "ruff check",
+    entry = "uv run ruff check --fix --exit-non-zero-on-fix",
+    language = "system",
+    types_or = [
+      "python",
+      "pyi",
+      "jupyter"
+    ]
+  },
+  {
+    id = "ruff-format",
+    name = "ruff format",
+    entry = "uv run ruff format --force-exclude",
+    language = "system",
+    types_or = [
+      "python",
+      "pyi",
+      "jupyter"
+    ]
+  },
+  {
+    id = "ty",
+    name = "ty check",
+    entry = "uv run ty check",
+    language = "system",
+    types_or = [
+      "python",
+      "pyi",
+      "jupyter"
+    ],
+    pass_filenames = false
+  },
+  {
+    id = "rumdl",
+    name = "rumdl check",
+    entry = "uv run rumdl check",
+    language = "system",
+    types_or = [
+      "markdown",
+    ],
+    pass_filenames = false
+  }
+]

@@ -15,7 +15,7 @@
         ```matlab
         --8<-- "docs/src/snippets/+mymembers/Contents.m"
         ```
-    
+
     === ":material-file-code: `ThisClass.m`"
 
         ```matlab

@@ -43,7 +43,7 @@ Show the base classes of a class.
 
 ???+ preview
 
-    === "with bases" 
+    === "with bases"
 
         ```markdown
         ::: myClass
@@ -56,7 +56,7 @@ Show the base classes of a class.
                 show_bases: true
 
     === "without bases"
-        
+
         ```markdown
         ::: myClass
             options:
@@ -69,13 +69,12 @@ Show the base classes of a class.
 
 ## `show_inheritance_diagram`
 
-
 - **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**
 <!-- - **:octicons-project-template-24: Template :material-null:** (contained in [`class.html`][class template]) -->
 
 Show the inheritance diagram of a class using [Mermaid](https://mermaid.js.org/).
 
-With this option enabled, an inheritance diagram (as a flowchart) will be displayed after a class  signature. Each node will act as a cross-reference and will bring you to the relevant class' documentation when clicking on it.
+With this option enabled, an inheritance diagram (as a flowchart) will be displayed after a class signature. Each node will act as a cross-reference and will bring you to the relevant class' documentation when clicking on it.
 
 It should work out of the box with [Material for MkDocs](https://squidfunk.github.io), but it is recommended to follow the [setup guide](https://squidfunk.github.io/mkdocs-material/reference/diagrams/#other-diagram-types) for optimal support in Material for Mkdocs. For other themes, you must either setup [mkdocs-mermaid2](https://mkdocs-mermaid2.readthedocs.io/en/latest), or include Mermaid's Javascript code manually:
 
@@ -166,8 +165,8 @@ Show the source code of this object.
 
 ???+ preview
 
-    === "with source" 
-        
+    === "with source"
+
         ```markdown
         ::: myfunction
             options:

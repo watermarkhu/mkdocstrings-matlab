@@ -51,13 +51,13 @@ Possible values:
         ```matlab
         function message = greet(name)
             % Greet someone.
-            %  
+            %
             % Parameters:
             %     name: The name of the person to greet.
-            % 
+            %
             % Returns:
             %     message: A greeting message.
-            
+
             message = sprintf("Hello %s!", name)
         end
         ```
@@ -67,17 +67,17 @@ Possible values:
         ```matlab
         function message = greet(name)
             % Greet someone.
-            %  
+            %
             % Parameters
             % ----------
             % name
             %    The name of the person to greet.
-            % 
+            %
             % Returns
             % -------
             % message
             %    A greeting message.
-            
+
             message = sprintf("Hello %s!", name)
         end
         ```
@@ -87,10 +87,10 @@ Possible values:
         ```matlab
         function message = greet(name)
             % Greet someone.
-            %  
+            %
             % :param name: The name of the person to greet.
             % :return: A greeting message.
-            
+
             message = sprintf("Hello %s!", name)
         end
         ```
@@ -107,7 +107,7 @@ The options for the docstring parser.
 
 The Sphinx style does not offer any option.
 
-Most of the options in the linked pages will not have an effect to mkdocstrings-matlab, since here the objects are mocked as Python objects are docstrings are injected into the mocked objects. 
+Most of the options in the linked pages will not have an effect to mkdocstrings-matlab, since here the objects are mocked as Python objects are docstrings are injected into the mocked objects.
 
 === "mkdocs.yml"
 
@@ -176,7 +176,6 @@ Sections are parsed as structured data and can therefore be rendered in differen
 
 ???+ preview
 
-
     === "Table"
 
         Tables work well when you have lots of items with short names, type annotations, descriptions, etc.. With longer strings, the columns risk getting squished horizontally. In that case, the Spacy tables can help.
@@ -233,24 +232,23 @@ Sections are parsed as structured data and can therefore be rendered in differen
 
 Whether to load inputs and output parameters based on argument validation blocks.
 
-Similarly to Python, MATLAB is by default not a typed language. Function and method arguments are dynamically typed, in most cases. This provides flexibility, but is generally bad behavior if the code is meant for production or is intended to be exposed as an API. 
+Similarly to Python, MATLAB is by default not a typed language. Function and method arguments are dynamically typed, in most cases. This provides flexibility, but is generally bad behavior if the code is meant for production or is intended to be exposed as an API.
 
-In MATLAB R2019b the concept of [Argument Definitions](https://mathworks.com/help/matlab/input-and-output-arguments.html) was introduced. Within an [arguments](https://mathworks.com/help/matlab/ref/arguments.html) block, the type, size, or other aspects of the inputs (and outputs since R2022b) can be verified. 
+In MATLAB R2019b the concept of [Argument Definitions](https://mathworks.com/help/matlab/input-and-output-arguments.html) was introduced. Within an [arguments](https://mathworks.com/help/matlab/ref/arguments.html) block, the type, size, or other aspects of the inputs (and outputs since R2022b) can be verified.
 
 ```matlab
 function z = mySharedFunction(x,y,NameValueArgs)
    arguments
       x (1,1) double     % scalar
-      y double {mustBeVector,mustBePositive} 
+      y double {mustBeVector,mustBePositive}
       NameValueArgs.A string
       NameValueArgs.B string = "default"
-   end 
+   end
 ...
 end
 ```
 
 The mkdocstrings-matlab plugin is able to parse the argument blocks and extract the type and default information, and any comment after each Argument Definition will be parsed as the argument docstring. If if `parse_arguments` is enabled, sections will be rendered for the parameters, name-value pairs and the return arguments of functions and methods. These sections can be individually toggled with [`show_docstring_input_arguments`][], [`show_docstring_name_value_arguments`][] and [`show_docstring_output_arguments`][].
-
 
 === "mkdocs.yml"
 
@@ -306,7 +304,7 @@ The mkdocstrings-matlab plugin is able to parse the argument blocks and extract 
 
 !!! note
 
-    Prior to MATLAB R2019b, the functionality of the arguments blocks was most commonly achieved through [`inputParser`](https://mathworks.com/help/matlab/ref/inputparser.html). The validations created with `inputParser` will not be parsed by mkdocstrings-matlab, since it does not have a strict syntax as opposed to Argument Definitions. 
+    Prior to MATLAB R2019b, the functionality of the arguments blocks was most commonly achieved through [`inputParser`](https://mathworks.com/help/matlab/ref/inputparser.html). The validations created with `inputParser` will not be parsed by mkdocstrings-matlab, since it does not have a strict syntax as opposed to Argument Definitions.
 
 ### Name-value arguments from class properties
 
@@ -349,7 +347,7 @@ The name-value argument is parsed with the struct name (`opts`) as the argument 
 
 Whether to merge the constructor method into the class' signature and docstring.
 
-By default, only the class name is rendered in headings. When merging, the constructor method parameters are added after the class name, like a signature, and the constructor method docstring is appended to the class' docstring. 
+By default, only the class name is rendered in headings. When merging, the constructor method parameters are added after the class name, like a signature, and the constructor method docstring is appended to the class' docstring.
 
 === "mkdocs.yml"
 
@@ -405,13 +403,11 @@ By default, only the class name is rendered in headings. When merging, the const
               merge_constructor_into_class: false
               parse_arguments: true
         ```
-        
+
         ::: Thing
             options:
               merge_constructor_into_class: false
               parse_arguments: true
-
-
 
 ## `show_if_no_docstring`
 
@@ -471,7 +467,7 @@ With this option you can tell the Python handler to skip the docstring check.
             options:
               show_if_no_docstring: false
         ```
-        
+
         ::: +undocumented
             options:
               show_if_no_docstring: false
@@ -689,7 +685,6 @@ Whether to render the "Classes" sections of docstrings.
               show_docstring_classes: false
               members: false
 
-
 ## `show_docstring_namespaces`
 
 - **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
@@ -856,7 +851,7 @@ Whether to render the "Examples" sections of docstrings.
 ???+ preview
 
     === "With examples"
-        
+
         ```markdown
         ::: print_hello
             options:
@@ -884,7 +879,7 @@ Whether to render the "Examples" sections of docstrings.
 - **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
 <!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
 
-Whether to render the "Parameters" sections of docstrings. The accepted title headings are `inputs` or `input arguments` (case-insensitive). 
+Whether to render the "Parameters" sections of docstrings. The accepted title headings are `inputs` or `input arguments` (case-insensitive).
 
 === "mkdocs.yml"
 
@@ -925,7 +920,7 @@ Whether to render the "Parameters" sections of docstrings. The accepted title he
             options:
               show_docstring_input_arguments: true
         ```
-        
+
         ::: do_something
             options:
               show_docstring_input_arguments: true
@@ -951,7 +946,7 @@ Whether to render the "Parameters" sections of docstrings. The accepted title he
 - **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
 <!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
 
-Whether to render the "Name-value pairs" sections of docstrings. The accepted title headings are `name-value pairs` or `name-value arguments` (case-insensitive). 
+Whether to render the "Name-value pairs" sections of docstrings. The accepted title headings are `name-value pairs` or `name-value arguments` (case-insensitive).
 
 === "mkdocs.yml"
 
@@ -992,7 +987,7 @@ Whether to render the "Name-value pairs" sections of docstrings. The accepted ti
             options:
               show_docstring_name_value_arguments: true
         ```
-        
+
         ::: do_varargin
             options:
               show_docstring_name_value_arguments: true
@@ -1018,7 +1013,7 @@ Whether to render the "Name-value pairs" sections of docstrings. The accepted ti
 - **:octicons-package-24: Type [`bool`][] :material-equal: `True`{ title="default value" }**
 <!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
 
-Whether to render the "Returns" sections of docstrings. The accepted title headings are `outputs` or `output arguments` (case-insensitive). 
+Whether to render the "Returns" sections of docstrings. The accepted title headings are `outputs` or `output arguments` (case-insensitive).
 
 === "mkdocs.yml"
 
@@ -1059,7 +1054,7 @@ Whether to render the "Returns" sections of docstrings. The accepted title headi
             options:
               show_docstring_output_arguments: true
         ```
-        
+
         ::: do_output
             options:
               show_docstring_output_arguments: true

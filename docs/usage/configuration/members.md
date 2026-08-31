@@ -60,7 +60,7 @@ Any given value, except for an explicit `None` (`null` in YAML) will tell the ha
             options:
               members: true
         ```
-        
+
         ::: +mymembers
             options:
               members: true
@@ -89,7 +89,6 @@ Any given value, except for an explicit `None` (`null` in YAML) will tell the ha
             options:
               members: [ThisClass]
 
-
 !!! info
 
     The default behavior (with unspecified `members` or `members: null`) is to use [`filters`][].
@@ -97,12 +96,12 @@ Any given value, except for an explicit `None` (`null` in YAML) will tell the ha
 ## `hidden_members`
 
 - **:octicons-package-24: Type <code><autoref identifier="list" optional>list</autoref>[<autoref identifier="str" optional>str</autoref>] |
-    <autoref identifier="bool" optional>bool</autoref></code>  :material-equal: `False`{ title="default value" }**
+    <autoref identifier="bool" optional>bool</autoref></code> :material-equal: `False`{ title="default value" }**
 <!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
 
-MATLAB's [classes](https://mathworks.com/help/matlab/matlab_oop/class-attributes.html), [methods](https://mathworks.com/help/matlab/matlab_oop/method-attributes.html) and [properties](https://mathworks.com/help/matlab/matlab_oop/property-attributes.html) can be hidden by setting its attributes to `Hidden` or `Hidden=true`. By default, members that are specified as hidden will not be documented. 
+MATLAB's [classes](https://mathworks.com/help/matlab/matlab_oop/class-attributes.html), [methods](https://mathworks.com/help/matlab/matlab_oop/method-attributes.html) and [properties](https://mathworks.com/help/matlab/matlab_oop/property-attributes.html) can be hidden by setting its attributes to `Hidden` or `Hidden=true`. By default, members that are specified as hidden will not be documented.
 
-This takes precedence over [`members`][] and [`filters`][], and also applies for [`inherited_members`][]. This means that for any hidden member to be shown, `hidden_members` must be enabled, and further selection is possible via [`members`][] and [`filters`][]. Hidden members will be labeled `Hidden`, this can be disabled in [`show_attributes`][]. 
+This takes precedence over [`members`][] and [`filters`][], and also applies for [`inherited_members`][]. This means that for any hidden member to be shown, `hidden_members` must be enabled, and further selection is possible via [`members`][] and [`filters`][]. Hidden members will be labeled `Hidden`, this can be disabled in [`show_attributes`][].
 
 === "mkdocs.yml"
 
@@ -171,34 +170,34 @@ This takes precedence over [`members`][] and [`filters`][], and also applies for
 ## `private_members`
 
 - **:octicons-package-24: Type <code><autoref identifier="list" optional>list</autoref>[<autoref identifier="str" optional>str</autoref>] |
-    <autoref identifier="bool" optional>bool</autoref></code>  :material-equal: `False`{ title="default value" }**
+    <autoref identifier="bool" optional>bool</autoref></code> :material-equal: `False`{ title="default value" }**
 <!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
 
-MATLAB's [methods](https://mathworks.com/help/matlab/matlab_oop/method-attributes.html) and [properties](https://mathworks.com/help/matlab/matlab_oop/property-attributes.html) can be set to private via the `Access` attribute, and additionally via the `SetAccess` and `GetAccess` attributes for properties. The possible settings for these attributes are 
+MATLAB's [methods](https://mathworks.com/help/matlab/matlab_oop/method-attributes.html) and [properties](https://mathworks.com/help/matlab/matlab_oop/property-attributes.html) can be set to private via the `Access` attribute, and additionally via the `SetAccess` and `GetAccess` attributes for properties. The possible settings for these attributes are
 
 1. *public*
 2. *protected*
 3. *private*
 4. *immutable* (only for `SetAccess`)
-5. List of classes that have access to the current method or property. 
+5. List of classes that have access to the current method or property.
 
 To simplify the definition here, any property or method that do not have attribute `Access` or `GetAccess` set to *public* is considered a private member.
 
-```mermaid 
+```mermaid
 flowchart TD
 a[Access=public]
 ga[GetAccess=public]
 
 public[not private member]
 private[private member]
-a -- yes --> public 
+a -- yes --> public
 a -- no --> private
 a -- "not specified" --> ga
 ga -- no --> private
 ga -- yes --> public
 ```
 
-This takes precedence over [`members`][] and [`filters`][], and also applies for [`inherited_members`][]. This means that for any private member to be shown, `private_members` must be enabled, and further selection is possible via [`members`][] and [`filters`][]. Private members will be labeled with it access attribute setting, this can be disabled in [`show_attributes`][]. 
+This takes precedence over [`members`][] and [`filters`][], and also applies for [`inherited_members`][]. This means that for any private member to be shown, `private_members` must be enabled, and further selection is possible via [`members`][] and [`filters`][]. Private members will be labeled with it access attribute setting, this can be disabled in [`show_attributes`][].
 
 === "mkdocs.yml"
 
@@ -267,12 +266,12 @@ This takes precedence over [`members`][] and [`filters`][], and also applies for
 ## `inherited_members`
 
 - **:octicons-package-24: Type <code><autoref identifier="list" optional>list</autoref>[<autoref identifier="str" optional>str</autoref>] |
-    <autoref identifier="bool" optional>bool</autoref></code>  :material-equal: `False`{ title="default value" }**
+    <autoref identifier="bool" optional>bool</autoref></code> :material-equal: `False`{ title="default value" }**
 <!-- - **:octicons-project-template-24: Template :material-null:** (N/A) -->
 
 An explicit list of inherited members (for classes) to render.
 
-Inherited members are always fetched from classes that are in the same namespace as the currently rendered class. Otherwise, it must be ensured that the paths to the parent is included in [paths](../index.md#paths). This is also the case for MATLAB built-in classes. 
+Inherited members are always fetched from classes that are in the same namespace as the currently rendered class. Otherwise, it must be ensured that the paths to the parent is included in [paths](../global.md#paths). This is also the case for MATLAB built-in classes.
 
 Passing a falsy value (`no`, `false` in YAML) or an empty list (`[]`) will tell the MATLAB handler not to render any inherited member. Passing a truthy value (`yes`, `true` in YAML) will tell the MATLAB handler to render every inherited member.
 
@@ -476,7 +475,7 @@ A list of filters applied to filter objects based on their name.
 
 Filters are regular expressions. These regular expressions are evaluated by Python and so must match the syntax supported by the [`re`][] module. A filter starting with `!` (negative filter) will exclude matching objects instead of including them.
 
-The default value (`[!^delete$|^disp$]`) means: *render every object, except for members that are named [`delete`](https://mathworks.com/help/matlab/matlab_oop/handle-class-destructors.html) or [`disp`](https://mathworks.com/help/matlab/matlab_oop/displaying-objects-in-the-command-window.html), which are two of MATLAB classes' built-in methods. 
+The default value (`[!^delete$|^disp$]`) means: *render every object, except for members that are named [`delete`](https://mathworks.com/help/matlab/matlab_oop/handle-class-destructors.html) or [`disp`](https://mathworks.com/help/matlab/matlab_oop/displaying-objects-in-the-command-window.html), which are two of MATLAB classes' built-in methods.
 
 Each filter takes precedence over the previous one. This allows for fine-grain selection of objects by adding more specific filters. For example, you can start by unselecting objects that start with `_`, and add a second filter
 that re-select objects that start with `__`. The default filters can therefore be rewritten like this:
@@ -538,8 +537,8 @@ An empty list of filters tells the MATLAB handler to render every object. The [`
         ::: mymembers.ThisClass
             options:
               filters: ["method"]
-        ``` 
-        
+        ```
+
         ::: mymembers.ThisClass
             options:
               filters: ["method"]
@@ -555,7 +554,6 @@ An empty list of filters tells the MATLAB handler to render every object. The [`
         ::: mymembers.ThisClass
             options:
               filters: ["!method"]
-
 
 ## `group_by_category`
 
@@ -595,7 +593,7 @@ Members within a same category will be ordered according to the [`members_order`
 ???+ preview
 
     === "With category grouping and heading"
-        
+
         ```markdown
         ::: +mymembers
             options:
@@ -609,7 +607,7 @@ Members within a same category will be ordered according to the [`members_order`
               show_category_heading: true
 
     === "With category grouping, no heading"
-        
+
         ```markdown
         ::: +mymembers
             options:
@@ -640,7 +638,7 @@ Members within a same category will be ordered according to the [`members_order`
 
 When rendering a namespace, show its subnamespaces recursively.
 
-This is false by default, because most of the time we render only one namespace per page, and when rendering a full package (a tree of namespaces and their members) on a single page, we quickly run out of [heading levels][heading_level].
+This is false by default, because most of the time we render only one namespace per page, and when rendering a full package (a tree of namespaces and their members) on a single page, we quickly run out of [heading levels][#].
 
 === "mkdocs.yml"
 
@@ -671,7 +669,7 @@ This is false by default, because most of the time we render only one namespace 
 ???+ preview
 
     === "With show subnamespaces"
-        
+
         ```markdown
         ::: +module
             options:
@@ -706,7 +704,7 @@ This is false by default, because most of the time we render only one namespace 
 
 When rendering a folder, show its subfolders recursively.
 
-This is false by default, because most of the time we render only one directory per page, and when rendering a full directory on a single page, we quickly run out of [heading levels][heading_level].
+This is false by default, because most of the time we render only one directory per page, and when rendering a full directory on a single page, we quickly run out of [heading levels](headings.md#heading_level).
 
 === "mkdocs.yml"
 
@@ -763,7 +761,7 @@ This is false by default, because most of the time we render only one directory 
 ???+ preview
 
     === "With show subfolders"
-        
+
         ```markdown
         ::: ./subdir
             options:
@@ -920,7 +918,7 @@ Whether to show [property](https://mathworks.com/help/matlab/matlab_oop/property
 ???+ preview
 
     === "With show attributes"
-        
+
         ```markdown
         ::: mymembers.ThisClass
             options:

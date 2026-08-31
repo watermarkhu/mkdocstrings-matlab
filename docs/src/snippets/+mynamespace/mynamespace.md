@@ -23,7 +23,7 @@
         ```matlab
         --8<-- "docs/src/snippets/+mynamespace/classA.m"
         ```
-    
+
     === ":material-file-code: `classB.m`"
 
         ```matlab
