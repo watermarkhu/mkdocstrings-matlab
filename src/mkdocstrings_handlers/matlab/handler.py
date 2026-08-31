@@ -5,7 +5,7 @@ from __future__ import annotations
 from contextlib import suppress
 from dataclasses import asdict
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, ClassVar
+from typing import TYPE_CHECKING, Any, ClassVar, cast
 
 from griffe import AliasResolutionError, Parser
 from maxx.collection import LinesCollection, PathsCollection
@@ -203,8 +203,11 @@ class MatlabHandler(BaseHandler):
             rendering.do_as_inheritance_diagram_section
         )
         self.env.globals["AutorefsHook"] = rendering.AutorefsHook  # ty: ignore[invalid-assignment]
-        self.env.tests["existing_template"] = lambda template_name: (  # ty: ignore[invalid-assignment]
-            template_name in self.env.list_templates()
+        # `env.tests` is typed as a union of all Jinja test callables, so we cast the
+        # runtime-registered test here to keep its actual signature available to type checkers.
+        self.env.tests["existing_template"] = cast(
+            Any,
+            lambda template_name: template_name in self.env.list_templates(),
         )
         # The following is required since in MATLAB there is a concept called namespace
         # This is used as a variable in Jinja templates and would overwrite the namespace macro

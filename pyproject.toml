@@ -28,7 +28,7 @@ classifiers = [
 
 dependencies = [
     "griffe>=2.0.0,<3",
-    "maxx>=0.8.0,<1",
+    "maxx>=0.10.0,<1",
     "mkdocstrings>=1.0,<2",
     "mkdocs-autorefs>=1.4,<2",
     "charset-normalizer>=3.4,<4",
@@ -39,7 +39,7 @@ dependencies = [
 pygments = { git = "https://github.com/watermarkhu/pygments", branch = "matlab" }
 [dependency-groups]
 dev = [
-    "ty>=0.0.25,<1",
+    "ty>=0.0.75,<1",
     "prek>=0.2.19,<1",
     "ruff>=0.15.0,<1",
     "pydantic>=2.13,<2.14",

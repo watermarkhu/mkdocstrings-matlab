@@ -308,6 +308,40 @@ The mkdocstrings-matlab plugin is able to parse the argument blocks and extract 
 
     Prior to MATLAB R2019b, the functionality of the arguments blocks was most commonly achieved through [`inputParser`](https://mathworks.com/help/matlab/ref/inputparser.html). The validations created with `inputParser` will not be parsed by mkdocstrings-matlab, since it does not have a strict syntax as opposed to Argument Definitions. 
 
+### Name-value arguments from class properties
+
+Since MATLAB R2021b, name-value arguments can be validated against the [properties of a class](https://www.mathworks.com/help/matlab/matlab_prog/validate-name-value-arguments.html), instead of specifying each property individually:
+
+```matlab
+function myFunction(opts)
+    arguments
+        opts.?mynamespace.classA
+    end
+end
+```
+
+The name-value argument is parsed with the struct name (`opts`) as the argument name, and the class path (`mynamespace.classA`) as its type. When [`signature_crossrefs`][] is enabled, the type is cross-referenced to the collected class.
+
+???+ preview "Preview: Name-value arguments from class properties"
+
+    === "With class properties"
+
+        ```markdown
+        ::: mynamespace.typed_class_property
+            options:
+              parse_arguments: true
+              show_signature_types: true
+              separate_signature: true
+              signature_crossrefs: true
+        ```
+
+        ::: mynamespace.typed_class_property
+            options:
+              parse_arguments: true
+              show_signature_types: true
+              separate_signature: true
+              signature_crossrefs: true
+
 ## `merge_constructor_into_class`
 
 - **:octicons-package-24: Type [`bool`][] :material-equal: `False`{ title="default value" }**

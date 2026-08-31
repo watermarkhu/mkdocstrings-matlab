@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
+import functools
 import json
 import re
 from typing import TYPE_CHECKING, Any
 
 import bs4
+import mkdocs_autorefs
 import pytest
 from inline_snapshot import outsource, register_format_alias
 
@@ -221,6 +223,68 @@ def test_end_to_end_members_summary(
     assert outsource(html, suffix=".html") == snapshots.members_summary[snapshot_key]
 
 
+def test_end_to_end_members_summary_crossrefs(
+    session_handler: "MatlabHandler",
+) -> None:
+    """Summary entries must cross-reference and link to their rendered documentation.
+
+    Regression test for https://github.com/watermarkhu/mkdocstrings-matlab/issues/186.
+
+    Summary entries are rendered as ``<autoref>`` elements whose identifiers must match
+    the anchors registered for the rendered members (their heading ids). The identifiers
+    were previously built from ``obj.path``, which includes the ``+`` prefix for
+    namespaces, producing identifiers like ``+moduleNamespace.namespaceClass`` that did
+    not match the ``moduleNamespace.namespaceClass`` anchor. As a result, the entries
+    rendered as non-clickable tooltips instead of links.
+    """
+    options = session_handler.get_options(
+        {
+            "summary": True,
+            "heading_level": 1,
+            "show_root_heading": True,
+            "show_source": False,
+        },
+    )
+    data = session_handler.collect("+moduleNamespace", options)
+    html = session_handler.render(data, options)
+
+    if stash := session_handler.env.filters["stash_crossref"].stash:
+        for key, value in stash.items():
+            html = re.sub(rf"\b{key}\b", value, html)
+        stash.clear()
+
+    soup = bs4.BeautifulSoup(html, features="html.parser")
+
+    # The namespace heading anchor must use the namespace path (a single "+"), not a doubled one.
+    namespace_heading = soup.find("h1", class_="doc-heading")
+    assert namespace_heading["id"] == "+moduleNamespace"
+
+    # Summary entries must reference members with their actual identifier: no "+" prefix
+    # for classes and functions living inside a namespace.
+    identifiers = [autoref["identifier"] for autoref in soup.find_all("autoref")]
+    assert "moduleNamespace.namespaceClass" in identifiers
+    assert "moduleNamespace.namespace_function" in identifiers
+    assert not any(identifier.startswith("+moduleNamespace") for identifier in identifiers)
+
+    # Simulate mkdocs-autorefs: register the rendered headings as anchors, then resolve the
+    # autorefs. Summary entries must become real links pointing to their documentation.
+    plugin = mkdocs_autorefs.AutorefsPlugin()
+    page = type("Page", (), {"url": "page/"})()
+
+    for tag in soup.find_all(id=True):
+        plugin.register_anchor(page, tag["id"], title=tag.get_text(strip=True))
+
+    fixed, unmapped = mkdocs_autorefs.fix_refs(
+        html,
+        functools.partial(plugin.get_item_url, from_url="page/"),
+    )
+    resolved = bs4.BeautifulSoup(fixed, features="html.parser")
+    hrefs = {link.get("href") for link in resolved.find_all("a", class_="autorefs")}
+    assert "#moduleNamespace.namespaceClass" in hrefs
+    assert "#moduleNamespace.namespace_function" in hrefs
+    assert not unmapped
+
+
 @pytest.mark.parametrize("hidden_members", [True, False])
 @pytest.mark.parametrize("private_members", [True, False])
 @pytest.mark.parametrize("show_attributes", [True, False])
@@ -362,3 +426,23 @@ def test_end_to_end_for_signatures(
     html = _render(session_handler, "module_arguments", final_options)
     snapshot_key = tuple(sorted(final_options.items()))
     assert outsource(html, suffix=".html") == snapshots.signatures[snapshot_key]
+
+
+@pytest.mark.parametrize("separate_signature", [True, False])
+def test_end_to_end_class_property_crossrefs(
+    session_handler: "MatlabHandler", separate_signature: bool
+) -> None:
+    """Name-value arguments from class properties cross-reference the class.
+
+    The type of ``opts.?moduleNamespace.namespaceClass`` must render as an autoref
+    to the collected class when signature cross-references are enabled.
+    """
+    final_options = {
+        "show_signature_types": True,
+        "signature_crossrefs": True,
+        "separate_signature": separate_signature,
+        "show_docstring_name_value_arguments": True,
+    }
+    html = _render(session_handler, "class_property", final_options)
+    assert "moduleNamespace.namespaceClass" in html
+    assert "<autoref" in html
