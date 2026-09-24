@@ -448,7 +448,7 @@ docstring_arguments = snapshot(
             ("docstring_section_style", "spacy"),
             ("parse_arguments", True),
             ("show_docstring_examples", True),
-        ): external("hash:d75158ca9780*.html"),
+        ): external("hash:45b2feb7ffc1*.html"),
         (
             ("docstring_section_style", "spacy"),
             ("parse_arguments", False),
@@ -458,7 +458,7 @@ docstring_arguments = snapshot(
             ("docstring_section_style", "spacy"),
             ("parse_arguments", True),
             ("show_docstring_examples", False),
-        ): external("hash:3e7bbbc8686f*.html"),
+        ): external("hash:2dec9ad9ccd9*.html"),
         (
             ("docstring_section_style", "spacy"),
             ("parse_arguments", False),
