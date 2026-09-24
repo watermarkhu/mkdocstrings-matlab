@@ -448,22 +448,22 @@ docstring_arguments = snapshot(
             ("docstring_section_style", "spacy"),
             ("parse_arguments", True),
             ("show_docstring_examples", True),
-        ): external("hash:d75158ca9780*.html"),
+        ): external("hash:49ec4d9dec8e*.html"),
         (
             ("docstring_section_style", "spacy"),
             ("parse_arguments", False),
             ("show_docstring_examples", True),
-        ): external("hash:5958a350dfbc*.html"),
+        ): external("hash:080f99ac5e7a*.html"),
         (
             ("docstring_section_style", "spacy"),
             ("parse_arguments", True),
             ("show_docstring_examples", False),
-        ): external("hash:3e7bbbc8686f*.html"),
+        ): external("hash:5fb312c0fbdb*.html"),
         (
             ("docstring_section_style", "spacy"),
             ("parse_arguments", False),
             ("show_docstring_examples", False),
-        ): external("hash:3307c670266e*.html"),
+        ): external("hash:1da17de1fef2*.html"),
     }
 )
 docstring_class = snapshot(
