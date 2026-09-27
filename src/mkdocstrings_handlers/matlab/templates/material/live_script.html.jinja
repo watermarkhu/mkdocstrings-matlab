@@ -1,0 +1,110 @@
+{#- Template for MATLAB live scripts.
+
+This template renders a MATLAB live script (.mlx or plain-text R2025a .m format).
+
+A live script consists of an ordered sequence of sections, each being either:
+  - a ``"text"`` section: formatted narrative text, rendered as Markdown.
+  - a ``"code"`` section: executable MATLAB code, rendered as a highlighted code block.
+
+Context:
+  live_script (maxx.objects.LiveScript): The LiveScript object to render.
+  root (bool): Whether this is the root object, injected with `:::` in a Markdown page.
+  heading_level (int): The HTML heading level to use.
+  config (dict): The configuration options.
+-#}
+
+{% block logs scoped %}
+  {#- Logging block.
+
+  This block can be used to log debug messages, deprecation messages, warnings, etc.
+  -#}
+  {{ log.debug("Rendering " + live_script.path) }}
+{% endblock logs %}
+
+<div class="doc doc-object doc-live-script">
+  {% with obj = live_script, html_id = live_script.path %}
+
+    {% if root %}
+      {% set show_full_path = config.show_root_full_path %}
+      {% set root_members = True %}
+    {% elif root_members %}
+      {% set show_full_path = config.show_root_members_full_path or config.show_object_full_path %}
+      {% set root_members = False %}
+    {% else %}
+      {% set show_full_path = config.show_object_full_path %}
+    {% endif %}
+
+    {% set live_script_name = live_script.path if show_full_path else live_script.name %}
+
+    {% if not root or config.show_root_heading %}
+      {% filter heading(
+          heading_level,
+          role="live_script",
+          id=html_id,
+          class="doc doc-heading",
+          toc_label=('<code class="doc-symbol doc-symbol-toc doc-symbol-script"></code>&nbsp;'|safe if config.show_symbol_type_toc else '') + live_script.name,
+        ) %}
+
+        {% block heading scoped %}
+          {#- Heading block.
+
+          This block renders the heading for the live script.
+          -#}
+          {% if config.show_symbol_type_heading %}<code class="doc-symbol doc-symbol-heading doc-symbol-script"></code>{% endif %}
+          <span class="doc doc-object-name doc-script-name">{{ live_script_name }}</span>
+        {% endblock heading %}
+
+      {% endfilter %}
+
+    {% else %}
+
+      {% if config.show_root_toc_entry %}
+        {% filter heading(heading_level,
+            role="live_script",
+            id=html_id,
+            toc_label=('<code class="doc-symbol doc-symbol-toc doc-symbol-script"></code>&nbsp;'|safe if config.show_symbol_type_toc else '') + live_script.name,
+            hidden=True,
+          ) %}
+        {% endfilter %}
+      {% endif %}
+      {% set heading_level = heading_level - 1 %}
+    {% endif %}
+
+    <div class="doc doc-contents {% if root %}first{% endif %}">
+      {% block contents scoped %}
+        {#- Contents block.
+
+        This block renders the contents of the live script.
+        It contains an ordered sequence of text and code sections.
+        -#}
+        {% with autoref_hook = AutorefsHook(live_script, config) %}
+          {% for section in live_script.sections %}
+
+            {% if section.kind == "text" %}
+              {% block text_section scoped %}
+                {#- Text section block.
+
+                Renders a narrative text section as Markdown.
+                Leading ``%`` comment prefixes are stripped for R2025a plain-text live scripts.
+                -#}
+                {{ section.content | strip_livescript_comments | convert_markdown(heading_level, html_id, autoref_hook=autoref_hook) }}
+              {% endblock text_section %}
+
+            {% elif section.kind == "code" %}
+              {% block code_section scoped %}
+                {#- Code section block.
+
+                Renders an executable MATLAB code section as a syntax-highlighted code block.
+                -#}
+                {{ section.content | highlight(language="matlab") }}
+              {% endblock code_section %}
+
+            {% endif %}
+
+          {% endfor %}
+        {% endwith %}
+      {% endblock contents %}
+    </div>
+
+  {% endwith %}
+</div>
