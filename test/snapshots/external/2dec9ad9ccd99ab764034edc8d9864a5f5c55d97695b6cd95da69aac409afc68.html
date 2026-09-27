@@ -1,8 +1,8 @@
 <!--
 {
-  "docstring_section_style": "table",
+  "docstring_section_style": "spacy",
   "parse_arguments": true,
-  "show_docstring_examples": true
+  "show_docstring_examples": false
 }
 -->
 
@@ -70,25 +70,18 @@
   </h2>
   <pre><code class="language-matlab">[outa, outb] = module_arguments(1, 2, "withdefault", "foo", "nodefault", 'bar');
 </code></pre>
-  <p>
-   <span class="doc-section-title">
-    Input arguments:
-   </span>
-  </p>
   <table>
    <thead>
     <tr>
      <th>
-      Name
+      <span class="doc-section-title">
+       INPUT ARGUMENT
+      </span>
      </th>
      <th>
-      Type
-     </th>
-     <th>
-      Description
-     </th>
-     <th>
-      Default
+      <span>
+       DESCRIPTION
+      </span>
      </th>
     </tr>
    </thead>
@@ -99,22 +92,22 @@
        required
       </code>
      </td>
-     <td>
-      <code>
-       double
-      </code>
-     </td>
-     <td>
+     <td class="doc-argument-details">
       <div class="doc-md-description">
        <p>
         Required parameter
        </p>
       </div>
-     </td>
-     <td>
-      <em>
-       required
-      </em>
+      <p>
+       <span class="doc-argument-annotation">
+        <b>
+         TYPE:
+        </b>
+        <code>
+         double
+        </code>
+       </span>
+      </p>
      </td>
     </tr>
     <tr class="doc-section-item">
@@ -123,22 +116,22 @@
        optional
       </code>
      </td>
-     <td>
-      <code>
-       double
-      </code>
-     </td>
-     <td>
+     <td class="doc-argument-details">
       <div class="doc-md-description">
        <p>
         Optional parameter
        </p>
       </div>
-     </td>
-     <td>
-      <em>
-       required
-      </em>
+      <p>
+       <span class="doc-argument-annotation">
+        <b>
+         TYPE:
+        </b>
+        <code>
+         double
+        </code>
+       </span>
+      </p>
      </td>
     </tr>
     <tr class="doc-section-item">
@@ -147,42 +140,30 @@
        varargin
       </code>
      </td>
-     <td>
-     </td>
-     <td>
+     <td class="doc-argument-details">
       <div class="doc-md-description">
        <p>
         Repeating input parameter
        </p>
       </div>
-     </td>
-     <td>
-      <em>
-       required
-      </em>
+      <p>
+      </p>
      </td>
     </tr>
    </tbody>
   </table>
-  <p>
-   <span class="doc-section-title">
-    Name-value arguments:
-   </span>
-  </p>
   <table>
    <thead>
     <tr>
      <th>
-      Name
+      <span class="doc-section-title">
+       NAME-VALUE ARGUMENT
+      </span>
      </th>
      <th>
-      Type
-     </th>
-     <th>
-      Description
-     </th>
-     <th>
-      Default
+      <span>
+       DESCRIPTION
+      </span>
      </th>
     </tr>
    </thead>
@@ -193,23 +174,31 @@
        withdefault
       </code>
      </td>
-     <td>
-      <code>
-       string
-      </code>
-     </td>
-     <td>
+     <td class="doc-argument-details">
       <div class="doc-md-description">
        <p>
-        name value pair 
+        name value pair
 with default value
        </p>
       </div>
-     </td>
-     <td>
-      <code>
-       "withdefault"
-      </code>
+      <p>
+       <span class="doc-argument-annotation">
+        <b>
+         TYPE:
+        </b>
+        <code>
+         string
+        </code>
+       </span>
+       <span class="doc-argument-default">
+        <b>
+         DEFAULT:
+        </b>
+        <code>
+         "withdefault"
+        </code>
+       </span>
+      </p>
      </td>
     </tr>
     <tr class="doc-section-item">
@@ -218,41 +207,38 @@ with default value
        nodefault
       </code>
      </td>
-     <td>
-      <code>
-       char
-      </code>
-     </td>
-     <td>
+     <td class="doc-argument-details">
       <div class="doc-md-description">
        <p>
         name value pair without default value
        </p>
       </div>
-     </td>
-     <td>
-      <em>
-      </em>
+      <p>
+       <span class="doc-argument-annotation">
+        <b>
+         TYPE:
+        </b>
+        <code>
+         char
+        </code>
+       </span>
+      </p>
      </td>
     </tr>
    </tbody>
   </table>
-  <p>
-   <span class="doc-section-title">
-    Output arguments:
-   </span>
-  </p>
   <table>
    <thead>
     <tr>
      <th>
-      Name
+      <span class="doc-section-title">
+       OUTPUT ARGUMENT
+      </span>
      </th>
      <th>
-      Type
-     </th>
-     <th>
-      Description
+      <span>
+       DESCRIPTION
+      </span>
      </th>
     </tr>
    </thead>
@@ -263,17 +249,22 @@ with default value
        outa
       </code>
      </td>
-     <td>
-      <code>
-       double
-      </code>
-     </td>
-     <td>
+     <td class="doc-argument-details">
       <div class="doc-md-description">
        <p>
         Output parameter
        </p>
       </div>
+      <p>
+       <span class="doc-argument-annotation">
+        <b>
+         TYPE:
+        </b>
+        <code>
+         double
+        </code>
+       </span>
+      </p>
      </td>
     </tr>
     <tr class="doc-section-item">
@@ -282,17 +273,22 @@ with default value
        outb
       </code>
      </td>
-     <td>
-      <code>
-       double
-      </code>
-     </td>
-     <td>
+     <td class="doc-argument-details">
       <div class="doc-md-description">
        <p>
         Another output parameter
        </p>
       </div>
+      <p>
+       <span class="doc-argument-annotation">
+        <b>
+         TYPE:
+        </b>
+        <code>
+         double
+        </code>
+       </span>
+      </p>
      </td>
     </tr>
    </tbody>

@@ -60,6 +60,12 @@ def _render(handler: "MatlabHandler", identifier: str, final_options: dict[str, 
             html = re.sub(rf"\b{key}\b", value, html)
         stash.clear()
 
+    # The `trailing-whitespace` pre-commit hook strips trailing whitespace from the
+    # external snapshot files after they are written. Without normalizing it here, the
+    # stored files no longer match the hashes recorded in ``snapshots/__init__.py`` and
+    # every test run rewrites them to the exact same (then re-stripped) content.
+    html = re.sub(r"[ \t]+$", "", html, flags=re.MULTILINE)
+
     return _render_options(final_options) + _normalize_html(html)
 
 
