@@ -141,6 +141,9 @@ venv.bak/
 # mkdocs documentation
 /site
 
+# inline-snapshot
+test/snapshots/files_using_external.txt
+
 # mypy
 .mypy_cache/
 .dmypy.json
