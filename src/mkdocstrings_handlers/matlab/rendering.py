@@ -37,6 +37,7 @@ from griffe._internal.docstrings.parsers import DocstringStyle, parse
 from jinja2 import pass_context
 from markupsafe import Markup
 from maxx.enums import ArgumentKind
+from maxx.exceptions import CyclicAliasError as MaxxCyclicAliasError
 from maxx.objects import Alias, Class, Folder, Function, Namespace, Object, Property, Script
 from mkdocs_autorefs import AutorefsHookInterface
 from mkdocstrings import get_logger
@@ -401,6 +402,41 @@ def _remove_cycles(objects: list[MEMBERS]) -> Iterator[MEMBERS]:
         yield obj
 
 
+def _has_docstrings(obj: MEMBERS, _seen: set[int] | None = None) -> bool:
+    """
+    Whether an object or any of its members has a docstring (empty or not).
+
+    maxx's models only expose the non-recursive ``has_docstring`` (unlike
+    griffe's ``has_docstrings``), so containers such as namespaces, classes,
+    and folders that lack their own docstring were being dropped entirely by
+    ``do_filter_objects`` even when they contain documented members. This
+    recurses into members (including sub-namespaces) to find any docstring.
+
+    Aliases are resolved to their targets before recursing. ``Alias.members`` builds
+    fresh alias wrappers on every access, so identity of the wrapper cannot detect a
+    cycle; the identity of the resolved target can.
+
+    Args:
+        obj: The object to check.
+        _seen: Identities of resolved targets already visited in this traversal.
+
+    Returns:
+        Whether the object or any of its members (recursively) has a docstring.
+    """
+    seen = set() if _seen is None else _seen
+    try:
+        target = cast("Alias", obj).target if obj.is_alias else obj
+        if id(target) in seen:
+            return False
+        seen.add(id(target))
+        if target.has_docstring:
+            return True
+        members = getattr(target, "members", None) or {}
+    except (AliasResolutionError, CyclicAliasError, MaxxCyclicAliasError):
+        return False
+    return any(_has_docstrings(member, seen) for member in members.values())
+
+
 def do_filter_objects(
     objects_dictionary: dict[str, MEMBERS],
     *,
@@ -490,7 +526,11 @@ def do_filter_objects(
         objects = [
             obj
             for obj in objects
-            if obj.has_docstring or (inherited_members_specified and obj.inherited)
+            if _has_docstrings(obj)
+            # Folders are structural containers; hiding an undocumented folder would also
+            # hide its children, which `show_if_no_docstring` is not meant to control.
+            or getattr(obj, "is_folder", False)
+            or (inherited_members_specified and obj.inherited)
         ]
 
     # Prevent infinite recursion.
