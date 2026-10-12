@@ -34,7 +34,7 @@ See: [pytest documentation](https://docs.pytest.org/en/stable/)
 
 ## 4. Pull Request Guidelines
 
-- Pull requests should target the `main` branch.
+- Pull requests should target the `dev` branch.
 - Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for commit messages.
 
 See: [Conventional Commits Spec](https://www.conventionalcommits.org/en/v1.0.0/)
