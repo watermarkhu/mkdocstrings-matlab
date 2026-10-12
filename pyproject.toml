@@ -31,6 +31,9 @@ dependencies = [
     "maxx>=0.10.0,<1",
     "mkdocstrings>=1.0,<2",
     "mkdocs-autorefs>=1.4,<2",
+    # pymdown-extensions 12.2 made `md` a required argument of `Highlight.__init__`;
+    # mkdocstrings <1.0.7 (the last release supporting Python 3.10) does not pass it.
+    "pymdown-extensions<12.2; python_version < '3.11'",
     "charset-normalizer>=3.4,<4",
     "typing-extensions>=4.0; python_version < '3.11'",
 ]
@@ -39,7 +42,7 @@ dependencies = [
 pygments = { git = "https://github.com/watermarkhu/pygments", branch = "matlab" }
 [dependency-groups]
 dev = [
-    "ty>=0.0.75,<1",
+    "ty>=0.0.85,<1",
     "prek>=0.2.19,<1",
     "ruff>=0.15.0,<1",
     "pydantic>=2.14,<2.15",

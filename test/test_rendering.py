@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 import pytest
+from maxx.exceptions import CyclicAliasError as MaxxCyclicAliasError
 
 from mkdocstrings_handlers.matlab import rendering
 
@@ -19,11 +20,68 @@ class _FakeMatlabObject:
     is_alias: bool = False
     is_private: bool = False
     is_hidden: bool = False
+    is_folder: bool = False
+    has_docstring: bool = True
     path: str = ""
 
     def __post_init__(self):
+        """Default `path` to `name`."""
         if not self.path:
             self.path = self.name
+
+
+@dataclass
+class _FakeContainer:
+    """Minimal stand-in for a maxx container/alias with controllable `members`."""
+
+    name: str
+    has_docstring: bool = False
+    is_alias: bool = False
+    target_obj: Any = None
+    children: list[Any] = field(default_factory=list)
+    raises: Exception | None = None
+
+    @property
+    def target(self) -> Any:
+        """Return the aliased object, or raise the configured error."""
+        if self.raises is not None:
+            raise self.raises
+        return self.target_obj
+
+    @property
+    def members(self) -> dict[str, Any]:
+        """Wrap each child in a new alias on every access, like `maxx.objects.Alias.members`."""
+        return {
+            child.name: _FakeContainer(child.name, is_alias=True, target_obj=child)
+            for child in self.children
+        }
+
+
+def test_has_docstrings_terminates_on_alias_cycle() -> None:
+    """Repeated alias wrappers around the same target must not recurse forever."""
+    parent = _FakeContainer("parent")
+    parent.children.append(parent)
+
+    assert rendering._has_docstrings(parent) is False  # ty: ignore[invalid-argument-type]
+
+
+def test_has_docstrings_finds_documented_descendant_through_aliases() -> None:
+    """A documented descendant is found even when every level is reached via a fresh alias."""
+    leaf = _FakeContainer("leaf", has_docstring=True)
+    mid = _FakeContainer("mid", children=[leaf])
+    root = _FakeContainer("root", children=[mid])
+
+    assert rendering._has_docstrings(root) is True  # ty: ignore[invalid-argument-type]
+
+
+def test_has_docstrings_treats_maxx_cyclic_alias_error_as_undocumented() -> None:
+    """A maxx `CyclicAliasError` while resolving an alias must read as "no docstring"."""
+    broken = _FakeContainer("broken", is_alias=True, raises=MaxxCyclicAliasError(["a", "b", "a"]))
+    root = _FakeContainer("root", children=[])
+    root.children.append(broken)
+
+    assert rendering._has_docstrings(broken) is False  # ty: ignore[invalid-argument-type]
+    assert rendering._has_docstrings(root) is False  # ty: ignore[invalid-argument-type]
 
 
 @pytest.mark.parametrize(
@@ -70,6 +128,28 @@ def test_filter_objects(
     filtered = rendering.do_filter_objects(objects, **filter_params)  # ty: ignore[invalid-assignment]
     filtered_names = {obj.name for obj in filtered}
     assert set(filtered_names) == set(expected_names)
+
+
+def test_filter_objects_keeps_folders_without_docstring() -> None:
+    """Folders without their own docstring must survive the `show_if_no_docstring` filter.
+
+    Folders are structural containers: dropping an undocumented folder would also hide its
+    children, which is unrelated to the `show_if_no_docstring` setting. Only `show_subfolders`
+    (applied in the template) should decide whether a folder's contents are shown.
+    """
+    objects = {
+        "undocumented_function": _FakeMatlabObject("undocumented_function", has_docstring=False),
+        "undocumented_folder": _FakeMatlabObject(
+            "undocumented_folder", has_docstring=False, is_folder=True
+        ),
+    }
+
+    filtered_names = {
+        obj.name
+        for obj in rendering.do_filter_objects(objects, keep_no_docstrings=False)  # ty: ignore[invalid-assignment]
+    }
+
+    assert filtered_names == {"undocumented_folder"}
 
 
 @pytest.mark.parametrize(

@@ -1,0 +1,76 @@
+name: Dev branch
+
+on:
+  # Manually (re)bootstrap the dev branch.
+  workflow_dispatch:
+  # Recreate dev once its pull request into main has been merged.
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  sync-dev:
+    name: Recreate dev branch and draft pull request
+    # Run on manual dispatch, or when a dev -> main pull request was merged.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.pull_request.merged == true &&
+       github.event.pull_request.head.ref == 'dev')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Recreate dev from main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Ensure the old dev branch is gone (it may already be
+          # auto-deleted by GitHub when the pull request was merged).
+          git push origin --delete dev || echo "dev branch already deleted."
+
+          # Start a fresh dev branch from main. The empty commit makes dev
+          # diverge from main so a pull request can be opened immediately.
+          git checkout -B dev origin/main
+          git commit --allow-empty -m "chore: bootstrap dev branch"
+          git push --force origin dev
+
+      - name: Create draft pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          open_prs=$(gh pr list --base main --head dev --state open --json number --jq 'length')
+          if [ "$open_prs" -gt 0 ]; then
+            echo "An open dev -> main pull request already exists; skipping creation."
+            exit 0
+          fi
+
+          gh pr create \
+            --base main \
+            --head dev \
+            --draft \
+            --title "chore: merge dev into main" \
+            --body "$(cat <<'EOF'
+          This is the rolling pull request for the `dev` branch.
+
+          Contributor pull requests should target `dev` (see [CONTRIBUTING.md](../blob/main/.github/CONTRIBUTING.md)).
+          Mark this pull request as ready for review and merge it when the changes on
+          `dev` are ready to land on `main`.
+
+          > This pull request is created automatically. Edit the title to follow
+          > [Conventional Commits](https://www.conventionalcommits.org) so the
+          > correct version bump is determined when it is merged.
+          EOF
+          )"

@@ -797,7 +797,7 @@ class MatlabInputOptions:
 class MatlabOptions(MatlabInputOptions):
     """Final options passed as template context."""
 
-    filters: list[tuple[re.Pattern, bool]] = field(default_factory=list)
+    filters: list[tuple[re.Pattern, bool]] = field(default_factory=list)  # ty: ignore[invalid-attribute-override]
     """A list of filters applied to filter objects based on their name."""
 
     summary: SummaryOption = field(default_factory=SummaryOption)
@@ -923,5 +923,5 @@ class MatlabInputConfig:
 class MatlabConfig(MatlabInputConfig):
     """MATLAB handler configuration."""
 
-    inventories: list[Inventory] = field(default_factory=list)
-    options: dict[str, Any] = field(default_factory=dict)
+    inventories: list[Inventory] = field(default_factory=list)  # ty: ignore[invalid-attribute-override]
+    options: dict[str, Any] = field(default_factory=dict)  # ty: ignore[invalid-attribute-override]
