@@ -136,16 +136,16 @@ headings_namespace = snapshot(
 toc = snapshot(
     {
         (("show_root_toc_entry", False), ("show_symbol_type_toc", True)): external(
-            "hash:60f32a129c3f*.html"
+            "hash:4408faa7050e*.html"
         ),
         (("show_root_toc_entry", False), ("show_symbol_type_toc", False)): external(
-            "hash:7dfe15f2fd74*.html"
+            "hash:f2ce9a9971b2*.html"
         ),
         (("show_root_toc_entry", True), ("show_symbol_type_toc", False)): external(
-            "hash:aa5ac519d46f*.html"
+            "hash:19e0c5a7554b*.html"
         ),
         (("show_root_toc_entry", True), ("show_symbol_type_toc", True)): external(
-            "hash:96a12ab150b1*.html"
+            "hash:3d2b99985751*.html"
         ),
     }
 )

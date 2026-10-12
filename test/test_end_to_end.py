@@ -206,6 +206,55 @@ def test_end_to_end_members_namespace(
     assert outsource(html, suffix=".html") == snapshots.members_namespace[snapshot_key]
 
 
+def test_end_to_end_members_namespace_recurses_into_undocumented_subnamespace(
+    session_handler: "MatlabHandler",
+) -> None:
+    """``show_subnamespaces`` must recurse into a subnamespace with no docstring of its own.
+
+    Regression test: ``+recursiveNamespace/+nested`` has no ``Contents.m`` (so the
+    ``+nested`` namespace itself has no docstring), but it contains a documented
+    function. ``do_filter_objects`` used to check only the namespace's own,
+    non-recursive ``has_docstring``, so with the default ``show_if_no_docstring: false``
+    the whole ``+nested`` subtree was dropped before ``show_subnamespaces`` was ever
+    consulted. ``+Sub``/``+internal``-style subnamespaces therefore never appeared,
+    even with the option explicitly forced ``true``.
+    """
+    options = session_handler.get_options(
+        {
+            "show_subnamespaces": True,
+            "heading_level": 1,
+            "show_root_heading": True,
+            "show_source": False,
+        },
+    )
+    data = session_handler.collect("+recursiveNamespace", options)
+    html = session_handler.render(data, options)
+    ids = {tag["id"] for tag in bs4.BeautifulSoup(html, features="html.parser").find_all(id=True)}
+
+    assert "recursiveNamespace.doIt" in ids
+    assert "+recursiveNamespace.nested" in ids
+    assert "recursiveNamespace.nested.helper" in ids
+
+    # With the option disabled, the nested namespace must stay hidden.
+    options_disabled = session_handler.get_options(
+        {
+            "show_subnamespaces": False,
+            "heading_level": 1,
+            "show_root_heading": True,
+            "show_source": False,
+        },
+    )
+    data_disabled = session_handler.collect("+recursiveNamespace", options_disabled)
+    html_disabled = session_handler.render(data_disabled, options_disabled)
+    ids_disabled = {
+        tag["id"]
+        for tag in bs4.BeautifulSoup(html_disabled, features="html.parser").find_all(id=True)
+    }
+
+    assert "+recursiveNamespace.nested" not in ids_disabled
+    assert "recursiveNamespace.nested.helper" not in ids_disabled
+
+
 @pytest.mark.parametrize(
     "summary",
     [
