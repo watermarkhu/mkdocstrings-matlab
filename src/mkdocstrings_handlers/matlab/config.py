@@ -800,7 +800,7 @@ class MatlabOptions(MatlabInputOptions):
     filters: list[tuple[re.Pattern, bool]] = field(default_factory=list)  # ty: ignore[invalid-attribute-override]
     """A list of filters applied to filter objects based on their name."""
 
-    summary: SummaryOption = field(default_factory=SummaryOption)
+    summary: SummaryOption = field(default_factory=SummaryOption)  # ty: ignore[invalid-mutable-override]
     """Whether to render summaries of namespaces, classes, functions (methods) and properties."""
 
     @classmethod
