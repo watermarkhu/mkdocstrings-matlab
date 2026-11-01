@@ -38,14 +38,6 @@ Given the function above, the rendered documentation here is created from the fo
 
 !!! note
 
-    Syntax highlighting of argument blocks will be incorrect with the default configuration due to the outdated MATLAB lexer in [Pygments](https://github.com/pygments/pygments/) and will be resolved after [our PR](https://github.com/pygments/pygments/pull/2887) is merged.
-
-    In the meantime, the correct syntax highlighing can be configured by adding our branch as the dependency in `pyproject.toml`
-
-    ```toml title="pyproject.toml"
-    dependencies = [
-        "pygments @ git+https://github.com/watermarkhu/pygments.git@matlab",
-    ]
-    ```
+    MATLAB code blocks are highlighted using the bundled TextMate grammar from `textmate-grammar-python`, with classes derived from its scopes. The `matlab` fence formatter is registered in the documentation configuration, so examples and snippets use the same highlighter.
 
 --8<-- "README.md:footer"

@@ -40,6 +40,7 @@ dependencies = [
 
 [tool.uv.sources]
 pygments = { git = "https://github.com/watermarkhu/pygments", branch = "matlab" }
+
 [dependency-groups]
 dev = [
     "ty==0.0.95",
@@ -57,6 +58,7 @@ dev = [
 docs = [
     "pygments",
     "mkdocstrings-python>=2.0",
+    "textmate-grammar-python>=1.0.0",
     "zensical>=0.0.29",
 ]
 mkdocs = [
@@ -64,6 +66,7 @@ mkdocs = [
     "mkdocs<2",
     "mkdocs-material>=9.5",
     "mkdocstrings-python>=2.0",
+    "textmate-grammar-python>=1.0.0",
 ]
 
 [build-system]
