@@ -7,14 +7,13 @@ authors = [
 ]
 license =  { text = "MIT" }
 readme = "README.md"
-requires-python = ">=3.10, <3.16"
+requires-python = ">=3.11, <3.16"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -27,42 +26,38 @@ classifiers = [
 ]
 
 dependencies = [
-    "griffe>=2.0.0,<3",
-    "maxx>=0.10.0,<1",
-    "mkdocstrings>=1.0,<2",
+    "griffe>=2.3.2,<3",
+    "maxx>=0.10.4,<1",
+    "mkdocstrings>=1.0.8,<2",
     "mkdocs-autorefs>=1.4,<2",
-    # pymdown-extensions 12.2 made `md` a required argument of `Highlight.__init__`;
-    # mkdocstrings 1.0.2 does not pass it, so keep the supported extension range below 12.2.
-    "pymdown-extensions>=10.4,<12.2",
-    "charset-normalizer>=3.4,<4",
+    "pymdown-extensions>=12.3,<13",
+    "charset-normalizer>=3.5.2,<4",
     "textmate-grammar-python>=1.1.0",
-    "typing-extensions>=4.0; python_version < '3.11'",
     "certifi>=2026.10.18",
 ]
 
 [dependency-groups]
 dev = [
     "ty==0.0.95",
-    "prek>=0.2.19,<1",
-    "ruff>=0.15.0,<1",
+    "prek>=0.5.9,<1",
+    "ruff>=0.17.3,<1",
     "pydantic>=2.14,<2.15",
     "pydantic-core>=2.35.0,<3",
-    "pytest>=9.0.0,<10",
+    "pytest>=9.2.0,<10",
     "pytest-cov>=7.1.0,<8",
-    "beautifulsoup4>=4.13.3,<5",
-    "inline-snapshot>=0.32.0,<1",
-    "mkdocs-material>=9.5,<10",
-    "rumdl>=0.2.62",
+    "beautifulsoup4>=4.15.0,<5",
+    "inline-snapshot>=0.36.1,<1",
+    "mkdocs-material>=9.8.0,<10",
+    "rumdl>=0.3.2",
 ]
 docs = [
-    "mkdocstrings-python>=2.0",
-    # zensical requires Python >=3.11, while the project still supports 3.10.
-    "zensical>=0.0.74; python_version >= '3.11'",
+    "mkdocstrings-python>=2.0.10",
+    "zensical>=0.0.74",
 ]
 mkdocs = [
     "mkdocs<2",
-    "mkdocs-material>=9.5",
-    "mkdocstrings-python>=2.0",
+    "mkdocs-material>=9.8.0",
+    "mkdocstrings-python>=2.0.10",
 ]
 
 [build-system]
@@ -84,7 +79,7 @@ markers = [
 ]
 
 [tool.ruff]
-target-version = "py310"
+target-version = "py311"
 line-length = 100
 indent-width = 4
 
