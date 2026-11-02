@@ -3,18 +3,11 @@
 from __future__ import annotations
 
 import re
-import sys
 from dataclasses import field, fields
-from typing import TYPE_CHECKING, Annotated, Any, Literal, cast
+from typing import TYPE_CHECKING, Annotated, Any, Literal, Self, cast
 
 from griffe._internal.docstrings.parsers import DocstringStyle
 from mkdocstrings import get_logger
-
-# YORE: EOL 3.10: Replace block with line 2.
-if sys.version_info >= (3, 11):
-    from typing import Self
-else:
-    from typing_extensions import Self
 
 logger = get_logger(__name__)
 

@@ -47,3 +47,14 @@
     -webkit-mask-image: var(--md-admonition-icon--code);
     mask-image: var(--md-admonition-icon--code);
 }
+
+/* TextMate scope classes emitted by the MATLAB code-fence formatter. */
+.tm-token-comment { color: var(--md-code-hl-comment-color); }
+.tm-token-constant { color: var(--md-code-hl-constant-color); }
+.tm-token-error { color: var(--md-code-hl-generic-color); text-decoration: underline wavy; }
+.tm-token-function { color: var(--md-code-hl-function-color); }
+.tm-token-keyword { color: var(--md-code-hl-keyword-color); }
+.tm-token-number { color: var(--md-code-hl-number-color); }
+.tm-token-string { color: var(--md-code-hl-string-color); }
+.tm-token-type { color: var(--md-code-hl-name-color); }
+.tm-token-variable { color: var(--md-code-hl-variable-color); }
