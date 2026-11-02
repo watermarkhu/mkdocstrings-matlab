@@ -49,36 +49,12 @@
 }
 
 /* TextMate scope classes emitted by the MATLAB code-fence formatter. */
-:root {
-    --tm-comment: #008000;
-    --tm-constant: #0070c1;
-    --tm-error: #cd3131;
-    --tm-function: #795e26;
-    --tm-keyword: #0000ff;
-    --tm-number: #098658;
-    --tm-string: #a31515;
-    --tm-type: #267f99;
-    --tm-variable: #001080;
-}
-
-[data-md-color-scheme="slate"] {
-    --tm-comment: #6a9955;
-    --tm-constant: #4fc1ff;
-    --tm-error: #f44747;
-    --tm-function: #dcdcaa;
-    --tm-keyword: #c586c0;
-    --tm-number: #b5cea8;
-    --tm-string: #ce9178;
-    --tm-type: #4ec9b0;
-    --tm-variable: #9cdcfe;
-}
-
-.tm-token-comment { color: var(--tm-comment); }
-.tm-token-constant { color: var(--tm-constant); }
-.tm-token-error { color: var(--tm-error); text-decoration: underline wavy; }
-.tm-token-function { color: var(--tm-function); }
-.tm-token-keyword { color: var(--tm-keyword); font-weight: 600; }
-.tm-token-number { color: var(--tm-number); }
-.tm-token-string { color: var(--tm-string); }
-.tm-token-type { color: var(--tm-type); }
-.tm-token-variable { color: var(--tm-variable); }
+.tm-token-comment { color: var(--md-code-hl-comment-color); }
+.tm-token-constant { color: var(--md-code-hl-constant-color); }
+.tm-token-error { color: var(--md-code-hl-generic-color); text-decoration: underline wavy; }
+.tm-token-function { color: var(--md-code-hl-function-color); }
+.tm-token-keyword { color: var(--md-code-hl-keyword-color); }
+.tm-token-number { color: var(--md-code-hl-number-color); }
+.tm-token-string { color: var(--md-code-hl-string-color); }
+.tm-token-type { color: var(--md-code-hl-name-color); }
+.tm-token-variable { color: var(--md-code-hl-variable-color); }
