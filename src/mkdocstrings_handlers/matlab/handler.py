@@ -22,6 +22,7 @@ from mkdocstrings import (
 
 from mkdocstrings_handlers.matlab import rendering
 from mkdocstrings_handlers.matlab.config import MatlabConfig, MatlabOptions
+from mkdocstrings_handlers.matlab.highlighting import configure_matlab_highlighting
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, MutableMapping, Sequence
@@ -72,6 +73,7 @@ class MatlabHandler(BaseHandler):
         Returns:
             None
         """
+        configure_matlab_highlighting(mdx, mdx_config)
         super().__init__(
             theme=theme, custom_templates=custom_templates, mdx=mdx, mdx_config=mdx_config
         )

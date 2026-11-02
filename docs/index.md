@@ -38,6 +38,6 @@ Given the function above, the rendered documentation here is created from the fo
 
 !!! note
 
-    MATLAB code blocks are highlighted using the bundled TextMate grammar from `textmate-grammar-python`, with classes derived from its scopes. The `matlab` fence formatter is registered in the documentation configuration, so examples and snippets use the same highlighter.
+    MATLAB code blocks are highlighted using the bundled TextMate grammar from `textmate-grammar-python`, with classes derived from its scopes. The MATLAB handler registers this highlighter with SuperFences automatically.
 
 --8<-- "README.md:footer"

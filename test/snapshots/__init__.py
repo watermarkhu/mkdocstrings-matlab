@@ -49,7 +49,7 @@ headings_root = snapshot(
             ("show_root_full_path", True),
             ("show_root_heading", True),
             ("show_root_members_full_path", True),
-        ): external("hash:76b88fd60fd4*.html"),
+        ): external("hash:fbdb38ecf7b1*.html"),
         (
             ("show_root_full_path", True),
             ("show_root_heading", False),
@@ -136,16 +136,16 @@ headings_namespace = snapshot(
 toc = snapshot(
     {
         (("show_root_toc_entry", False), ("show_symbol_type_toc", True)): external(
-            "hash:9d161c71ab3d*.html"
+            "hash:4bf1de629599*.html"
         ),
         (("show_root_toc_entry", False), ("show_symbol_type_toc", False)): external(
-            "hash:27f59dd7f63e*.html"
+            "hash:71ea20e9fc7c*.html"
         ),
         (("show_root_toc_entry", True), ("show_symbol_type_toc", False)): external(
-            "hash:d70e4189f1a9*.html"
+            "hash:77e453a502c2*.html"
         ),
         (("show_root_toc_entry", True), ("show_symbol_type_toc", True)): external(
-            "hash:cff647447c06*.html"
+            "hash:d8f6343d27de*.html"
         ),
     }
 )
@@ -408,62 +408,62 @@ docstring_arguments = snapshot(
             ("docstring_section_style", "table"),
             ("parse_arguments", True),
             ("show_docstring_examples", True),
-        ): external("hash:cb1d0b79d923*.html"),
+        ): external("hash:cb1da721afb0*.html"),
         (
             ("docstring_section_style", "table"),
             ("parse_arguments", False),
             ("show_docstring_examples", True),
-        ): external("hash:c85f810b7358*.html"),
+        ): external("hash:782480b1cd02*.html"),
         (
             ("docstring_section_style", "table"),
             ("parse_arguments", True),
             ("show_docstring_examples", False),
-        ): external("hash:bd354cf9e1a0*.html"),
+        ): external("hash:75cc9eca631b*.html"),
         (
             ("docstring_section_style", "table"),
             ("parse_arguments", False),
             ("show_docstring_examples", False),
-        ): external("hash:d7b4faafacb6*.html"),
+        ): external("hash:2bb13d44f2d2*.html"),
         (
             ("docstring_section_style", "list"),
             ("parse_arguments", True),
             ("show_docstring_examples", True),
-        ): external("hash:a81e564858f6*.html"),
+        ): external("hash:1c56163e3277*.html"),
         (
             ("docstring_section_style", "list"),
             ("parse_arguments", False),
             ("show_docstring_examples", True),
-        ): external("hash:6a9b6622aceb*.html"),
+        ): external("hash:bdcd35201ca8*.html"),
         (
             ("docstring_section_style", "list"),
             ("parse_arguments", True),
             ("show_docstring_examples", False),
-        ): external("hash:98e171199983*.html"),
+        ): external("hash:c7ed3284d629*.html"),
         (
             ("docstring_section_style", "list"),
             ("parse_arguments", False),
             ("show_docstring_examples", False),
-        ): external("hash:010546ac3038*.html"),
+        ): external("hash:72504518c532*.html"),
         (
             ("docstring_section_style", "spacy"),
             ("parse_arguments", True),
             ("show_docstring_examples", True),
-        ): external("hash:6e6f0664c421*.html"),
+        ): external("hash:5bf0468411d2*.html"),
         (
             ("docstring_section_style", "spacy"),
             ("parse_arguments", False),
             ("show_docstring_examples", True),
-        ): external("hash:080f99ac5e7a*.html"),
+        ): external("hash:95229dccd138*.html"),
         (
             ("docstring_section_style", "spacy"),
             ("parse_arguments", True),
             ("show_docstring_examples", False),
-        ): external("hash:4e1d1e37821d*.html"),
+        ): external("hash:060c82061754*.html"),
         (
             ("docstring_section_style", "spacy"),
             ("parse_arguments", False),
             ("show_docstring_examples", False),
-        ): external("hash:1da17de1fef2*.html"),
+        ): external("hash:41c8b32f285b*.html"),
     }
 )
 docstring_class = snapshot(
@@ -560,42 +560,42 @@ docstring_function = snapshot(
             ("show_docstring_input_arguments", False),
             ("show_docstring_name_value_arguments", True),
             ("show_docstring_output_arguments", False),
-        ): external("hash:8c30aa2d3990*.html"),
+        ): external("hash:2bdff1db2364*.html"),
         (
             ("show_docstring_input_arguments", False),
             ("show_docstring_name_value_arguments", False),
             ("show_docstring_output_arguments", False),
-        ): external("hash:df8a84e073ca*.html"),
+        ): external("hash:e050e7273030*.html"),
         (
             ("show_docstring_input_arguments", True),
             ("show_docstring_name_value_arguments", True),
             ("show_docstring_output_arguments", False),
-        ): external("hash:fa4c19557405*.html"),
+        ): external("hash:b5abfe8044cc*.html"),
         (
             ("show_docstring_input_arguments", True),
             ("show_docstring_name_value_arguments", False),
             ("show_docstring_output_arguments", False),
-        ): external("hash:ab126c603463*.html"),
+        ): external("hash:cc35a213cd17*.html"),
         (
             ("show_docstring_input_arguments", False),
             ("show_docstring_name_value_arguments", True),
             ("show_docstring_output_arguments", True),
-        ): external("hash:f9fa8abeb68f*.html"),
+        ): external("hash:c6fc804d12cd*.html"),
         (
             ("show_docstring_input_arguments", True),
             ("show_docstring_name_value_arguments", True),
             ("show_docstring_output_arguments", True),
-        ): external("hash:86c57514bfba*.html"),
+        ): external("hash:053429d89158*.html"),
         (
             ("show_docstring_input_arguments", True),
             ("show_docstring_name_value_arguments", False),
             ("show_docstring_output_arguments", True),
-        ): external("hash:22ed8d7799f7*.html"),
+        ): external("hash:ff57d45ed3b9*.html"),
         (
             ("show_docstring_input_arguments", False),
             ("show_docstring_name_value_arguments", False),
             ("show_docstring_output_arguments", True),
-        ): external("hash:8f8fe3a13df5*.html"),
+        ): external("hash:6f2137b9ad18*.html"),
     }
 )
 
@@ -614,41 +614,41 @@ signatures = snapshot(
             ("separate_signature", True),
             ("show_signature_annotations", False),
             ("signature_crossrefs", True),
-        ): external("hash:03b0e96c64f7*.html"),
+        ): external("hash:c0dfd29713ed*.html"),
         (
             ("separate_signature", True),
             ("show_signature_annotations", True),
             ("signature_crossrefs", False),
-        ): external("hash:c89fa863ac71*.html"),
+        ): external("hash:43dc7cbecc65*.html"),
         (
             ("separate_signature", False),
             ("show_signature_annotations", False),
             ("signature_crossrefs", False),
-        ): external("hash:e55378fdc0a2*.html"),
+        ): external("hash:c6b58a620bda*.html"),
         (
             ("separate_signature", False),
             ("show_signature_annotations", True),
             ("signature_crossrefs", True),
-        ): external("hash:9d1e017567e0*.html"),
+        ): external("hash:bfd68cee0e92*.html"),
         (
             ("separate_signature", True),
             ("show_signature_annotations", True),
             ("signature_crossrefs", True),
-        ): external("hash:81894de832e1*.html"),
+        ): external("hash:eac5703b19c0*.html"),
         (
             ("separate_signature", True),
             ("show_signature_annotations", False),
             ("signature_crossrefs", False),
-        ): external("hash:e818a834b7ed*.html"),
+        ): external("hash:f6c6d9263e1c*.html"),
         (
             ("separate_signature", False),
             ("show_signature_annotations", False),
             ("signature_crossrefs", True),
-        ): external("hash:d4de51a8d435*.html"),
+        ): external("hash:394b9f67b66b*.html"),
         (
             ("separate_signature", False),
             ("show_signature_annotations", True),
             ("signature_crossrefs", False),
-        ): external("hash:6cb590583494*.html"),
+        ): external("hash:d4800ac98a81*.html"),
     }
 )

@@ -32,9 +32,10 @@ dependencies = [
     "mkdocstrings>=1.0,<2",
     "mkdocs-autorefs>=1.4,<2",
     # pymdown-extensions 12.2 made `md` a required argument of `Highlight.__init__`;
-    # mkdocstrings <1.0.7 (the last release supporting Python 3.10) does not pass it.
-    "pymdown-extensions<12.2; python_version < '3.11'",
+    # mkdocstrings 1.0.2 does not pass it, so keep the supported extension range below 12.2.
+    "pymdown-extensions>=10.4,<12.2",
     "charset-normalizer>=3.4,<4",
+    "textmate-grammar-python>=1.1.0",
     "typing-extensions>=4.0; python_version < '3.11'",
     "certifi>=2026.10.18",
 ]
@@ -55,7 +56,6 @@ dev = [
 ]
 docs = [
     "mkdocstrings-python>=2.0",
-    "textmate-grammar-python>=1.1.0",
     # zensical requires Python >=3.11, while the project still supports 3.10.
     "zensical>=0.0.74; python_version >= '3.11'",
 ]
@@ -63,7 +63,6 @@ mkdocs = [
     "mkdocs<2",
     "mkdocs-material>=9.5",
     "mkdocstrings-python>=2.0",
-    "textmate-grammar-python>=1.1.0",
 ]
 
 [build-system]

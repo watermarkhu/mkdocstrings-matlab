@@ -4,7 +4,11 @@ from html.parser import HTMLParser
 
 from markdown import Markdown
 
-from mkdocstrings_handlers.matlab.highlighting import highlight_matlab, validate_matlab_fence
+from mkdocstrings_handlers.matlab.highlighting import (
+    configure_matlab_highlighting,
+    highlight_matlab,
+    validate_matlab_fence,
+)
 
 
 class _TextParser(HTMLParser):
@@ -56,19 +60,23 @@ def test_highlight_matlab_preserves_fence_attributes_and_source() -> None:
 
 
 def test_superfences_routes_matlab_blocks_to_textmate_formatter() -> None:
-    extension_config = {
-        "custom_fences": [
-            {
-                "name": "matlab",
-                "class": "matlab",
-                "format": highlight_matlab,
-                "validator": validate_matlab_fence,
-            }
-        ]
-    }
+    extensions = ["pymdownx.highlight"]
+    extension_config = {}
+    configure_matlab_highlighting(extensions, extension_config)
+
+    assert "pymdownx.superfences" in extensions
+    assert extension_config["pymdownx.superfences"]["custom_fences"] == [
+        {
+            "name": "matlab",
+            "class": "matlab",
+            "format": highlight_matlab,
+            "validator": validate_matlab_fence,
+        }
+    ]
+
     markdown = Markdown(
-        extensions=["pymdownx.highlight", "pymdownx.superfences"],
-        extension_configs={"pymdownx.superfences": extension_config},
+        extensions=extensions,
+        extension_configs=extension_config,
     )
 
     result = markdown.convert('```matlab title="sample.m"\nx = 42\n```')
@@ -77,3 +85,20 @@ def test_superfences_routes_matlab_blocks_to_textmate_formatter() -> None:
     assert "tm-token-number" in result
     assert "tm-constant-numeric-decimal-matlab" in result
     assert '<span class="mi">42</span>' not in result
+
+
+def test_superfences_configuration_preserves_other_fences_and_is_idempotent() -> None:
+    mermaid = {"name": "mermaid", "class": "mermaid"}
+    custom_matlab = {"name": "matlab", "class": "custom-matlab", "format": str}
+    extensions = ["pymdownx.superfences"]
+    extension_config = {"pymdownx.superfences": {"custom_fences": [mermaid, custom_matlab]}}
+
+    configure_matlab_highlighting(extensions, extension_config)
+    configure_matlab_highlighting(extensions, extension_config)
+
+    fences = extension_config["pymdownx.superfences"]["custom_fences"]
+    assert fences[0] is mermaid
+    assert fences[1]["class"] == "custom-matlab"
+    assert fences[1]["format"] is highlight_matlab
+    assert fences[1]["validator"] is validate_matlab_fence
+    assert len(fences) == 2

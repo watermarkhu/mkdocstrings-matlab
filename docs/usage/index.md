@@ -42,6 +42,8 @@ configuration option of `mkdocstrings` in `mkdocs.yml` or `zensical.toml`:
     # The MATLAB handler configuration
     ```
 
+When the MATLAB handler is configured, it automatically registers a TextMate-backed `matlab` code-fence highlighter. No custom SuperFences formatter is needed.
+
 ## Injecting documentation
 
 With the MATLAB handler installed and configured as default handler, you can inject documentation for a module, class, function, or any other MATLAB object with *mkdocstrings*' `[autodoc syntax]`, in your Markdown pages:

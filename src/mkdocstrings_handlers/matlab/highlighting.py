@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import html
 import re
+from collections.abc import Mapping, MutableMapping, MutableSequence, Sequence
 from typing import Any
 
 from textmate_grammar.parsers.matlab import matlab_grammar
@@ -36,6 +37,42 @@ def validate_matlab_fence(
     del language, attrs, md
     options.update(inputs)
     return True
+
+
+def configure_matlab_highlighting(mdx: Sequence[Any], mdx_config: Mapping[str, Any]) -> None:
+    """Register the TextMate formatter on the site's SuperFences extension."""
+    if not isinstance(mdx, MutableSequence) or not isinstance(mdx_config, MutableMapping):
+        raise TypeError("MkDocs must provide mutable Markdown extension configuration")
+
+    extension_name = "pymdownx.superfences"
+    if not any(
+        extension == extension_name or type(extension).__module__.startswith(extension_name)
+        for extension in mdx
+    ):
+        mdx.append(extension_name)
+
+    extension_config = mdx_config.setdefault(extension_name, {})
+    if not isinstance(extension_config, MutableMapping):
+        raise TypeError("The SuperFences configuration must be mutable")
+    custom_fences = extension_config.setdefault("custom_fences", [])
+    if not isinstance(custom_fences, MutableSequence):
+        raise TypeError("SuperFences custom_fences must be a mutable sequence")
+
+    for fence in custom_fences:
+        if isinstance(fence, MutableMapping) and fence.get("name") == "matlab":
+            fence["class"] = fence.get("class") or "matlab"
+            fence["format"] = highlight_matlab
+            fence["validator"] = validate_matlab_fence
+            break
+    else:
+        custom_fences.append(
+            {
+                "name": "matlab",
+                "class": "matlab",
+                "format": highlight_matlab,
+                "validator": validate_matlab_fence,
+            }
+        )
 
 
 def highlight_matlab(
@@ -112,4 +149,4 @@ def _css_name(value: str) -> str:
     return re.sub(r"[^a-zA-Z0-9_-]+", "-", value).strip("-").lower()
 
 
-__all__ = ["highlight_matlab", "validate_matlab_fence"]
+__all__ = ["configure_matlab_highlighting", "highlight_matlab", "validate_matlab_fence"]

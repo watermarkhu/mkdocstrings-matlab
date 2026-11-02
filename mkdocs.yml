@@ -110,10 +110,6 @@ markdown_extensions:
       check_paths: true
   - pymdownx.superfences:
       custom_fences:
-        - name: matlab
-          class: matlab
-          format: !!python/name:mkdocstrings_handlers.matlab.highlighting.highlight_matlab
-          validator: !!python/name:mkdocstrings_handlers.matlab.highlighting.validate_matlab_fence
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
