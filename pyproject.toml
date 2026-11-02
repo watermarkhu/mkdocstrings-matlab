@@ -38,9 +38,6 @@ dependencies = [
     "typing-extensions>=4.0; python_version < '3.11'",
 ]
 
-[tool.uv.sources]
-pygments = { git = "https://github.com/watermarkhu/pygments", branch = "matlab" }
-
 [dependency-groups]
 dev = [
     "ty==0.0.95",
@@ -56,13 +53,12 @@ dev = [
     "rumdl>=0.2.62",
 ]
 docs = [
-    "pygments",
     "mkdocstrings-python>=2.0",
     "textmate-grammar-python>=1.1.0",
-    "zensical>=0.0.29",
+    # zensical requires Python >=3.11, while the project still supports 3.10.
+    "zensical>=0.0.74; python_version >= '3.11'",
 ]
 mkdocs = [
-    "pygments",
     "mkdocs<2",
     "mkdocs-material>=9.5",
     "mkdocstrings-python>=2.0",
