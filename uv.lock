@@ -829,7 +829,7 @@ dev = [
 docs = [
     { name = "mkdocstrings-python", specifier = ">=2.0" },
     { name = "pygments", git = "https://github.com/watermarkhu/pygments?branch=matlab" },
-    { name = "textmate-grammar-python", specifier = ">=1.0.0" },
+    { name = "textmate-grammar-python", specifier = ">=1.1.0" },
     { name = "zensical", specifier = ">=0.0.29" },
 ]
 mkdocs = [
@@ -837,7 +837,7 @@ mkdocs = [
     { name = "mkdocs-material", specifier = ">=9.5" },
     { name = "mkdocstrings-python", specifier = ">=2.0" },
     { name = "pygments", git = "https://github.com/watermarkhu/pygments?branch=matlab" },
-    { name = "textmate-grammar-python", specifier = ">=1.0.0" },
+    { name = "textmate-grammar-python", specifier = ">=1.1.0" },
 ]
 
 [[package]]

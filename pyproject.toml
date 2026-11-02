@@ -58,7 +58,7 @@ dev = [
 docs = [
     "pygments",
     "mkdocstrings-python>=2.0",
-    "textmate-grammar-python>=1.0.0",
+    "textmate-grammar-python>=1.1.0",
     "zensical>=0.0.29",
 ]
 mkdocs = [
@@ -66,7 +66,7 @@ mkdocs = [
     "mkdocs<2",
     "mkdocs-material>=9.5",
     "mkdocstrings-python>=2.0",
-    "textmate-grammar-python>=1.0.0",
+    "textmate-grammar-python>=1.1.0",
 ]
 
 [build-system]
