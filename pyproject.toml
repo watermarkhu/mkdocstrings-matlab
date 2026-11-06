@@ -39,7 +39,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "ty==0.0.98",
+    "ty==0.0.99",
     "prek>=0.5.9,<1",
     "ruff>=0.17.3,<1",
     "pydantic>=2.14,<2.15",
