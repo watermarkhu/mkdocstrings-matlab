@@ -10,10 +10,12 @@ for their sections.
 
 from __future__ import annotations
 
+import json
 import logging
 import re
 from enum import Enum
-from functools import cached_property
+from functools import cached_property, lru_cache
+from importlib import resources
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, NoReturn
 
@@ -97,48 +99,27 @@ def configure_index_logger(level: str = "WARNING") -> None:
     logging.getLogger("malt_index").setLevel(_LOG_LEVELS[level])
 
 
-MATHWORKS_DOC_URL = "https://www.mathworks.com/help/matlab"
-"""The MathWorks documentation that builtin expressions link to."""
-
-_BUILTIN_DOC_PAGES: dict[str, str] = {
-    name: f"ref/{name.lower()}.html"
-    for name in (
-        "categorical",
-        "cell",
-        "char",
-        "datetime",
-        "double",
-        "duration",
-        "function_handle",
-        "int8",
-        "int16",
-        "int32",
-        "int64",
-        "logical",
-        "single",
-        "string",
-        "struct",
-        "table",
-        "uint8",
-        "uint16",
-        "uint32",
-        "uint64",
-    )
-}
-"""The builtin data types that link to their reference page.
-
-The table is short on purpose: it lists the data types the templates link, and it is not
-a list of all MATLAB builtins. Add a name here to link it.
-"""
-
 _TOKEN = re.compile(r"\w+|[^\w\s]")
+_STRING = re.compile(r"\"[^\"]*\"|'[^']*'")
+_NAME = re.compile(r"[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*")
+
+
+@lru_cache(maxsize=1)
+def _builtin_docs() -> dict[str, str]:
+    """The documentation URL of each builtin name, read once from the packaged table.
+
+    The table is generated from MATLAB's reference index (`scripts/gen_builtin_docs.py`).
+    """
+    table = resources.files("mkdocstrings_handlers.matlab").joinpath("data", "builtin_docs.json")
+    data = json.loads(table.read_text(encoding="utf-8"))
+    return {name: data["base"] + page for name, page in data["pages"].items()}
 
 
 class Expression:
     """A type, default, validator or base class, as written in the source.
 
-    It renders as its text. A builtin data type in it links to its documentation (`doc`).
-    Iterating it gives its tokens.
+    It renders as its text. A MATLAB builtin in it, such as a function, class or data type
+    that MATLAB documents, links to its documentation (`doc`). Iterating it gives its tokens.
     """
 
     def __init__(self, text: str) -> None:
@@ -161,10 +142,14 @@ class Expression:
 
     @property
     def doc(self) -> str:
-        """The documentation URL of a builtin in the expression, or an empty string."""
-        for token in _TOKEN.findall(self.text):
-            if (page := _BUILTIN_DOC_PAGES.get(token)) is not None:
-                return f"{MATHWORKS_DOC_URL}/{page}"
+        """The documentation URL of a builtin in the expression, or an empty string.
+
+        Quoted text is not a name: in `"text", double`, `double` is the builtin.
+        """
+        docs = _builtin_docs()
+        for name in _NAME.findall(_STRING.sub(" ", self.text)):
+            if (url := docs.get(name)) is not None:
+                return url
         return ""
 
 

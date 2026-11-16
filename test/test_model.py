@@ -24,7 +24,7 @@ def test_expression_renders_its_text_and_tokens() -> None:
 
     assert str(expression) == "containers.Map"
     assert list(expression) == ["containers", ".", "Map"]
-    assert expression.doc == ""
+    assert expression.doc == "https://www.mathworks.com/help/matlab/ref/containers.map.html"
 
 
 def test_builtin_expression_links_its_reference_page() -> None:
