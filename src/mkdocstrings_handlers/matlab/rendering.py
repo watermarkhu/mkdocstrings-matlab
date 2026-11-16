@@ -12,8 +12,6 @@ from re import Pattern
 from typing import TYPE_CHECKING, Any, Callable, ClassVar, Literal, cast
 
 from griffe import (
-    AliasResolutionError,
-    CyclicAliasError,
     Docstring,
     DocstringAttribute,
     DocstringClass,
@@ -35,12 +33,21 @@ from griffe._internal.docstrings.models import (
 )
 from griffe._internal.docstrings.parsers import DocstringStyle, parse
 from jinja2 import pass_context
+from malt_index import CyclicAliasError
 from markupsafe import Markup
-from maxx.enums import ArgumentKind
-from maxx.exceptions import CyclicAliasError as MaxxCyclicAliasError
-from maxx.objects import Alias, Class, Folder, Function, Namespace, Object, Property, Script
 from mkdocs_autorefs import AutorefsHookInterface
 from mkdocstrings import get_logger
+
+from mkdocstrings_handlers.matlab.model import (
+    ArgumentKind,
+    Class,
+    Folder,
+    Function,
+    Namespace,
+    Object,
+    Property,
+    Script,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Iterator, Sequence
@@ -49,7 +56,7 @@ if TYPE_CHECKING:
     from jinja2.runtime import Context
     from mkdocstrings import CollectorItem
 
-    MEMBERS = Alias | Class | Folder | Function | Namespace | Property | Script
+    MEMBERS = Class | Folder | Function | Namespace | Property | Script | Object
 
 _logger = get_logger(__name__)
 
@@ -90,7 +97,7 @@ Order = Literal["alphabetical", "source"]
 - `source`: order members as they appear in the source file.
 """
 
-_order_map: dict[str, Callable[[Object | Alias], str | float]] = {
+_order_map: dict[str, Callable[[Object], str | float]] = {
     "alphabetical": _sort_key_alphabetical,
     "source": _sort_key_source,
 }
@@ -309,10 +316,10 @@ def do_format_property(
 
 
 def do_order_members(
-    members: Sequence[Object | Alias],
+    members: Sequence[Object],
     order: Order | list[Order],
     members_list: bool | list[str] | None,
-) -> Sequence[Object | Alias]:
+) -> Sequence[Object]:
     """Order members given an ordering method.
 
     Parameters:
@@ -362,7 +369,7 @@ def _keep_object(name: str, filters: Sequence[tuple[Pattern, bool]]) -> bool:
     return keep
 
 
-def _parents(obj: Alias) -> set[str]:
+def _parents(obj: Object) -> set[str]:
     """
     Get the full set of parent paths for an object.
 
@@ -370,16 +377,16 @@ def _parents(obj: Alias) -> set[str]:
     including paths for both direct parents and their alias targets.
 
     Args:
-        obj: The alias object to get parents for.
+        obj: The object to get parents for.
 
     Returns:
         A set of parent path strings.
     """
-    parent: Object | Alias = obj.parent
-    parents = {parent.path}
-    while parent.parent:
-        parent = parent.parent
+    parents: set[str] = set()
+    parent = obj.parent
+    while parent is not None:
         parents.add(parent.path)
+        parent = parent.parent
     return parents
 
 
@@ -393,11 +400,11 @@ def _remove_cycles(objects: list[MEMBERS]) -> Iterator[MEMBERS]:
     Returns:
         An iterator yielding objects that don't create inheritance cycles.
     """
-    suppress_errors = suppress(AliasResolutionError, CyclicAliasError)
+    suppress_errors = suppress(CyclicAliasError)
     for obj in objects:
         if obj.is_alias:
             with suppress_errors:
-                if obj.parent and obj.path in _parents(cast(Alias, obj)):
+                if obj.parent and obj.path in _parents(obj):
                     continue
         yield obj
 
@@ -406,15 +413,14 @@ def _has_docstrings(obj: MEMBERS, _seen: set[int] | None = None) -> bool:
     """
     Whether an object or any of its members has a docstring (empty or not).
 
-    maxx's models only expose the non-recursive ``has_docstring`` (unlike
+    The models only expose the non-recursive ``has_docstring`` (unlike
     griffe's ``has_docstrings``), so containers such as namespaces, classes,
     and folders that lack their own docstring were being dropped entirely by
     ``do_filter_objects`` even when they contain documented members. This
     recurses into members (including sub-namespaces) to find any docstring.
 
-    Aliases are resolved to their targets before recursing. ``Alias.members`` builds
-    fresh alias wrappers on every access, so identity of the wrapper cannot detect a
-    cycle; the identity of the resolved target can.
+    An inherited member's target is resolved before recursing. Identity of the
+    target guards against cycles.
 
     Args:
         obj: The object to check.
@@ -425,14 +431,14 @@ def _has_docstrings(obj: MEMBERS, _seen: set[int] | None = None) -> bool:
     """
     seen = set() if _seen is None else _seen
     try:
-        target = cast("Alias", obj).target if obj.is_alias else obj
+        target = obj.target if obj.is_alias else obj
         if id(target) in seen:
             return False
         seen.add(id(target))
         if target.has_docstring:
             return True
         members = getattr(target, "members", None) or {}
-    except (AliasResolutionError, CyclicAliasError, MaxxCyclicAliasError):
+    except CyclicAliasError:
         return False
     return any(_has_docstrings(member, seen) for member in members.values())
 
@@ -551,7 +557,7 @@ def do_get_template(obj: Object) -> str:
         A template name.
     """
     name = obj
-    if isinstance(obj, (Alias, Object)):
+    if isinstance(obj, Object):
         extra_data = getattr(obj, "extra", {}).get("mkdocstrings", {})
         if name := extra_data.get("template", ""):
             return name
@@ -759,7 +765,7 @@ def do_function_docstring(
                     DocstringParameter(
                         name=param.name,
                         value=str(param.default) if param.default is not None else None,
-                        annotation=param.type,
+                        annotation=param.type,  # ty: ignore[invalid-argument-type]
                         description=param.docstring.value if param.docstring is not None else "",
                     )
                     for param in standard_arguments
@@ -775,7 +781,7 @@ def do_function_docstring(
                     DocstringParameter(
                         name=param.name,
                         value=str(param.default) if param.default is not None else None,
-                        annotation=param.type,
+                        annotation=param.type,  # ty: ignore[invalid-argument-type]
                         description=param.docstring.value if param.docstring is not None else "",
                     )
                     for param in keyword_arguments
@@ -790,7 +796,7 @@ def do_function_docstring(
                 DocstringReturn(
                     name=param.name,
                     value=str(param.default) if param.default is not None else None,
-                    annotation=param.type,
+                    annotation=param.type,  # ty: ignore[invalid-argument-type]
                     description=param.docstring.value if param.docstring is not None else "",
                 )
                 for param in function.returns or []
@@ -858,7 +864,7 @@ class AutorefsHook(AutorefsHookInterface):
     such as originating file path and line number, to improve error reporting.
     """
 
-    def __init__(self, current_object: Object | Alias, config: dict[str, Any]) -> None:
+    def __init__(self, current_object: Object, config: dict[str, Any]) -> None:
         """Initialize the hook.
 
         Parameters:

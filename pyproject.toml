@@ -28,7 +28,8 @@ classifiers = [
 
 dependencies = [
     "griffe>=2.3.2,<3",
-    "maxx>=0.10.4,<1",
+    # Placeholder bound: the first published malt-index release sets the real one.
+    "malt-index>=0.1,<1",
     "mkdocstrings>=1.0.8,<2",
     "mkdocs-autorefs>=1.4,<2",
     "pymdown-extensions>=12.3,<13",

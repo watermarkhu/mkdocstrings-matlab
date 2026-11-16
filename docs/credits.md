@@ -4,4 +4,6 @@ This project owes its existence to the incredible [`mkdocstrings`](https://mkdoc
 
 Moreover, `mkdocstrings` itself extends [`mkdocs`](https://www.mkdocs.org/) and [`mkdocs-material`](https://squidfunk.github.io/mkdocs-material/), which form the foundation of the entire mkdoc* suite of documentation tools.
 
-Finally, the parsing of MATLAB docstrings is powered by [maxx](https://github.com/watermarkhu/maxx), which in turn requires [Tree-sitter](https://tree-sitter.github.io/tree-sitter/) and its [MATLAB parser](https://github.com/acristoffers/tree-sitter-matlab). These libraries enable the parsing of MATLAB source code with exceptional speed and accuracy.
+Finally, MATLAB source code is read by [malt-index](https://github.com/watermarkhu/malt), the native index of the MATLAB path in malt, which requires [Tree-sitter](https://tree-sitter.github.io/tree-sitter/) and its [MATLAB parser](https://github.com/acristoffers/tree-sitter-matlab). These libraries enable the parsing of MATLAB source code with exceptional speed and accuracy.
+
+Thanks also to [maxx](https://github.com/watermarkhu/maxx), the MATLAB collector this handler used before malt-index. malt-index was written from scratch; it does not contain maxx's code.

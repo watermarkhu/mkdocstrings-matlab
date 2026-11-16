@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 import pytest
-from maxx.exceptions import CyclicAliasError as MaxxCyclicAliasError
+from malt_index import CyclicAliasError
 
 from mkdocstrings_handlers.matlab import rendering
 
@@ -74,9 +74,9 @@ def test_has_docstrings_finds_documented_descendant_through_aliases() -> None:
     assert rendering._has_docstrings(root) is True  # ty: ignore[invalid-argument-type]
 
 
-def test_has_docstrings_treats_maxx_cyclic_alias_error_as_undocumented() -> None:
-    """A maxx `CyclicAliasError` while resolving an alias must read as "no docstring"."""
-    broken = _FakeContainer("broken", is_alias=True, raises=MaxxCyclicAliasError(["a", "b", "a"]))
+def test_has_docstrings_treats_cyclic_alias_error_as_undocumented() -> None:
+    """A `CyclicAliasError` while resolving an alias must read as "no docstring"."""
+    broken = _FakeContainer("broken", is_alias=True, raises=CyclicAliasError("a -> b -> a"))
     root = _FakeContainer("root", children=[])
     root.children.append(broken)
 

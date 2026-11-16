@@ -5,9 +5,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from griffe import Docstring
-from maxx.enums import ArgumentKind
 
 from mkdocstrings_handlers.matlab import rendering
+from mkdocstrings_handlers.matlab.model import ArgumentKind
 
 
 @dataclass

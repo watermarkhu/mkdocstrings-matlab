@@ -2,15 +2,12 @@
 
 from __future__ import annotations
 
-from contextlib import suppress
 from dataclasses import asdict
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, ClassVar, cast
 
-from griffe import AliasResolutionError, Parser
-from maxx.collection import LinesCollection, PathsCollection
-from maxx.config import ParserConfig
-from maxx.logger import configure as configure_maxx_logger
+from griffe import Parser
+from malt_index import CyclicAliasError, FilePathError, LinesCollection, ParserConfig
 from mkdocs.exceptions import PluginError
 from mkdocstrings import (
     BaseHandler,
@@ -23,6 +20,7 @@ from mkdocstrings import (
 from mkdocstrings_handlers.matlab import rendering
 from mkdocstrings_handlers.matlab.config import MatlabConfig, MatlabOptions
 from mkdocstrings_handlers.matlab.highlighting import configure_matlab_highlighting
+from mkdocstrings_handlers.matlab.model import PathsCollection, configure_index_logger
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, MutableMapping, Sequence
@@ -82,7 +80,7 @@ class MatlabHandler(BaseHandler):
         self.base_dir = base_dir
         self.global_options = config.options
 
-        configure_maxx_logger(level=config.tree_sitter_logging_level)
+        configure_index_logger(config.tree_sitter_logging_level)
 
         # Warn if user overrides base templates.
         if self.custom_templates:
@@ -238,13 +236,11 @@ class MatlabHandler(BaseHandler):
 
         try:
             if "/" in identifier:
-                # If the identifier contains a slash, it is a path to a file.
-                # We use the lines collection to get the model.
+                # If the identifier contains a slash, it is a path: only a folder on the
+                # search path (or below one) is a valid collection item.
                 path = (self.base_dir / identifier).resolve()
-                if path in self._paths_collection._folders:
-                    # If the path is a folder, we return the folder model.
-                    model = self._paths_collection._folders[path]
-                else:
+                model = self._paths_collection.get_member(str(path))
+                if model is None or not model.is_folder:
                     raise CollectionError(
                         f"Path '{identifier}' is not a valid path in the collection"
                     )
@@ -257,7 +253,7 @@ class MatlabHandler(BaseHandler):
             raise CollectionError(msg) from ex
         except KeyError as ex:
             raise CollectionError(str(ex)) from ex
-        except AliasResolutionError as ex:
+        except (CyclicAliasError, FilePathError) as ex:
             raise CollectionError(str(ex)) from ex
 
         if model is None:
@@ -269,10 +265,9 @@ class MatlabHandler(BaseHandler):
             options.docstring_options  # ty: ignore[invalid-argument-type]
         )
 
-        with suppress(AliasResolutionError):
-            if model.docstring is not None:
-                model.docstring.parser = parser
-                model.docstring.parser_options = parser_options or {}
+        if model.docstring is not None:
+            model.docstring.parser = parser
+            model.docstring.parser_options = parser_options or {}  # ty: ignore[invalid-assignment]
 
         return model
 
