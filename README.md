@@ -13,7 +13,7 @@
 
 **A modern documentation framework for MATLAB.** Automatically generate beautiful documentation pages from your MATLAB code's comments and docstrings, harnessing the power of Markdown for advanced formatting.
 
-The MATLAB handler uses [maxx](https://github.com/watermarkhu/maxx) to collect documentation from MATLAB source code, which in turn uses [Tree-sitter](https://tree-sitter.github.io/tree-sitter/) and its [MATLAB parser](https://github.com/acristoffers/tree-sitter-matlab).
+The MATLAB handler uses [malt-index](https://github.com/watermarkhu/malt/tree/main/crates/malt_py) to collect documentation from MATLAB source code. It is the native index of the [malt](https://github.com/watermarkhu/malt) linter, built on [Tree-sitter](https://tree-sitter.github.io/tree-sitter/) and its [MATLAB parser](https://github.com/acristoffers/tree-sitter-matlab).
 
 You can install this handler by specifying it as a dependency:
 

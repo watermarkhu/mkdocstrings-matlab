@@ -2,15 +2,13 @@
 
 from __future__ import annotations
 
+import logging
 from contextlib import suppress
 from dataclasses import asdict
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, ClassVar, cast
 
 from griffe import AliasResolutionError, Parser
-from maxx.collection import LinesCollection, PathsCollection
-from maxx.config import ParserConfig
-from maxx.logger import configure as configure_maxx_logger
 from mkdocs.exceptions import PluginError
 from mkdocstrings import (
     BaseHandler,
@@ -23,6 +21,7 @@ from mkdocstrings import (
 from mkdocstrings_handlers.matlab import rendering
 from mkdocstrings_handlers.matlab.config import MatlabConfig, MatlabOptions
 from mkdocstrings_handlers.matlab.highlighting import configure_matlab_highlighting
+from mkdocstrings_handlers.matlab.model import ParserConfig, PathsCollection
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, MutableMapping, Sequence
@@ -32,6 +31,17 @@ if TYPE_CHECKING:
 
 
 _logger = get_logger(__name__)
+
+# The option takes Loguru's level names; the index logs through `logging`.
+_LOG_LEVELS = {
+    "TRACE": logging.DEBUG,
+    "DEBUG": logging.DEBUG,
+    "INFO": logging.INFO,
+    "SUCCESS": logging.INFO,
+    "WARNING": logging.WARNING,
+    "ERROR": logging.ERROR,
+    "CRITICAL": logging.CRITICAL,
+}
 
 
 class MatlabHandler(BaseHandler):
@@ -82,7 +92,9 @@ class MatlabHandler(BaseHandler):
         self.base_dir = base_dir
         self.global_options = config.options
 
-        configure_maxx_logger(level=config.tree_sitter_logging_level)
+        logging.getLogger("malt_index").setLevel(
+            _LOG_LEVELS.get(config.tree_sitter_logging_level, logging.WARNING)
+        )
 
         # Warn if user overrides base templates.
         if self.custom_templates:
@@ -120,7 +132,7 @@ class MatlabHandler(BaseHandler):
             working_directory=base_dir,
             parser_config=parser_config,
         )
-        self._lines_collection: LinesCollection = self._paths_collection.lines_collection
+        self._lines_collection = self._paths_collection.lines_collection
 
     def get_options(self, local_options: Mapping[str, Any]) -> HandlerOptions:
         """Get combined default, global and local options.
@@ -240,11 +252,8 @@ class MatlabHandler(BaseHandler):
             if "/" in identifier:
                 # If the identifier contains a slash, it is a path to a file.
                 # We use the lines collection to get the model.
-                path = (self.base_dir / identifier).resolve()
-                if path in self._paths_collection._folders:
-                    # If the path is a folder, we return the folder model.
-                    model = self._paths_collection._folders[path]
-                else:
+                model = self._paths_collection.get_folder(self.base_dir / identifier)
+                if model is None:
                     raise CollectionError(
                         f"Path '{identifier}' is not a valid path in the collection"
                     )
@@ -272,7 +281,7 @@ class MatlabHandler(BaseHandler):
         with suppress(AliasResolutionError):
             if model.docstring is not None:
                 model.docstring.parser = parser
-                model.docstring.parser_options = parser_options or {}
+                model.docstring.parser_options = parser_options or {}  # ty: ignore[invalid-assignment]
 
         return model
 

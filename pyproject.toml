@@ -28,13 +28,13 @@ classifiers = [
 
 dependencies = [
     "griffe>=2.3.2,<3",
-    "maxx>=0.10.4,<1",
     "mkdocstrings>=1.0.8,<2",
     "mkdocs-autorefs>=1.4,<2",
     "pymdown-extensions>=12.3,<13",
     "charset-normalizer>=3.5.2,<4",
     "textmate-grammar-python>=1.1.0",
     "certifi>=2026.10.18",
+    "malt-index>=0.2.1,<1",
 ]
 
 [dependency-groups]
