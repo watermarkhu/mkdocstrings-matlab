@@ -34,7 +34,7 @@ dependencies = [
     "charset-normalizer>=3.5.2,<4",
     "textmate-grammar-python>=1.1.0",
     "certifi>=2026.10.18",
-    "malt-index>=0.2.1,<1",
+    "malt-index>=0.3.0,<1",
 ]
 
 [dependency-groups]

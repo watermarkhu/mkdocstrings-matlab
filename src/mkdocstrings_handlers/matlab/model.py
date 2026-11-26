@@ -1,24 +1,22 @@
 """The documentation model: `malt_index` objects dressed for the templates.
 
-`malt_index` returns plain facts read from the source (strings, spans, members). The
-templates and the rendering helpers expect objects that behave like Griffe's: a parsed
-`Docstring` attached to the object, aliases for inherited members, a `canonical_path`, and
-expressions that can be walked token by token. This module wraps the index objects in
-classes with those attributes. Nothing here reads files or parses MATLAB.
+`malt_index` knows the MATLAB side: paths, members, inherited members, constructors,
+builtin documentation links. What it does not know is Griffe: the templates and the
+rendering helpers want a parsed `Docstring` attached to each object, an `extra` dictionary,
+a `Kind` enumeration, and the member views as wrapped objects. This module wraps the index
+objects with just that. Nothing here reads files or parses MATLAB.
 """
 
 from __future__ import annotations
 
-import json
-import re
 from collections.abc import Iterator
 from enum import Enum
-from functools import lru_cache
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, cast
 
 import malt_index
 from griffe import Docstring
+from malt_index import Expr
 
 if TYPE_CHECKING:
     from malt_index import PathsCollection as IndexPaths
@@ -68,60 +66,6 @@ class ArgumentKind(str, Enum):
     varargin = "varargin"
 
 
-MATHWORKS_DOC_URL = "https://www.mathworks.com/help/matlab"
-
-
-@lru_cache(maxsize=1)
-def _builtins() -> dict[str, str]:
-    """The documentation page (relative to the MATLAB help) of each builtin name."""
-    path = Path(__file__).parent / "matlab_builtins.json"
-    return json.loads(path.read_text(encoding="utf-8", errors="replace"))
-
-
-_TOKEN = re.compile(r"[A-Za-z_][A-Za-z0-9_]*|\s+|.", re.DOTALL)
-
-
-class Expr:
-    """A type, default, validator or base expression.
-
-    `str(expr)` is the source text. Iterating gives the tokens, so a template can link
-    each name separately. `doc` is the documentation URL of the first builtin in it.
-    """
-
-    def __init__(self, text: str) -> None:
-        self.text = text
-
-    def __iter__(self) -> Iterator[str]:
-        yield from _TOKEN.findall(self.text)
-
-    def __str__(self) -> str:
-        return self.text
-
-    def __repr__(self) -> str:
-        return f"Expr({self.text!r})"
-
-    def __eq__(self, other: object) -> bool:
-        return self.text == str(other) if isinstance(other, (Expr, str)) else NotImplemented
-
-    def __hash__(self) -> int:
-        return hash(self.text)
-
-    @property
-    def doc(self) -> str:
-        """The documentation URL of the first builtin name in the expression, or ``""``."""
-        builtins = _builtins()
-        for token in self:
-            if token in builtins:
-                return f"{MATHWORKS_DOC_URL}/{builtins[token]}"
-        return ""
-
-
-def _expr(value: Any) -> Expr | None:
-    if value is None or value == "":
-        return None
-    return Expr(str(value))
-
-
 def _docstring(raw: Any, parent: Any) -> Docstring | None:
     value = getattr(raw, "docstring", None)
     if value is None:
@@ -152,7 +96,6 @@ class PathsCollection:
             parser_config=parser_config,
         )
         self.lines_collection = self._index.lines_collection
-        self._wrapped: dict[int, Object] = {}
 
     @property
     def members(self) -> dict[str, Object]:
@@ -190,10 +133,10 @@ class Argument:
         self.parent = parent
         self.name: str = raw.name
         self.kind = ArgumentKind(raw.kind) if getattr(raw, "kind", None) else None
-        self.type = _expr(raw.type)
+        self.type: Expr | None = raw.type_expr
         self.dimensions = list(raw.dimensions) if raw.dimensions else None
-        self.validators = _expr(raw.validators)
-        self.default = _expr(raw.default)
+        self.validators: Expr | None = raw.validators_expr
+        self.default: Expr | None = raw.default_expr
         self.docstring = _docstring(raw, self)
 
     @property
@@ -237,50 +180,10 @@ class Arguments:
         return f"Arguments({self._arguments!r})"
 
 
-class _MembersByKind:
-    """The member views of an object or an alias, by kind."""
-
-    @property
-    def all_members(self) -> dict[str, Any]:
-        raise NotImplementedError
-
-    def _of_kind(self, kind: Kind) -> dict[str, Any]:
-        return {name: m for name, m in self.all_members.items() if m.kind is kind}
-
-    @property
-    def folders(self) -> dict[str, Any]:
-        return self._of_kind(Kind.FOLDER)
-
-    @property
-    def namespaces(self) -> dict[str, Any]:
-        return self._of_kind(Kind.NAMESPACE)
-
-    @property
-    def scripts(self) -> dict[str, Any]:
-        return self._of_kind(Kind.SCRIPT)
-
-    @property
-    def classes(self) -> dict[str, Any]:
-        return self._of_kind(Kind.CLASS)
-
-    @property
-    def functions(self) -> dict[str, Any]:
-        return self._of_kind(Kind.FUNCTION)
-
-    @property
-    def properties(self) -> dict[str, Any]:
-        return self._of_kind(Kind.PROPERTY)
-
-    @property
-    def enumerations(self) -> dict[str, Any]:
-        return {}
-
-
-class Object(_MembersByKind):
+class Object:
     """A documented object: a folder, namespace, class, function, script or property."""
 
     is_collection = False
-    inherited = False
 
     def __init__(
         self, raw: Any, paths_collection: PathsCollection, *, parent: Object | None = None
@@ -291,6 +194,9 @@ class Object(_MembersByKind):
         self.docstring: Docstring | None = _docstring(raw, self)
         self.extra: dict[str, dict[str, Any]] = {}
 
+    def _wrap_all(self, raws: dict[str, Any]) -> dict[str, Object]:
+        return {name: wrap(raw, self._paths_collection, parent=self) for name, raw in raws.items()}
+
     # identity ---------------------------------------------------------------
 
     @property
@@ -299,13 +205,11 @@ class Object(_MembersByKind):
 
     @property
     def path(self) -> str:
-        return self.canonical_path
+        return self._raw.canonical_path
 
     @property
     def canonical_path(self) -> str:
-        # Inside a folder the index prefixes the folder (`/fixture/classFolder`); the
-        # documented name is the dotted name alone.
-        return self._raw.path.rsplit("/", 1)[-1]
+        return self._raw.canonical_path
 
     @property
     def kind(self) -> Kind:
@@ -356,7 +260,16 @@ class Object(_MembersByKind):
 
     @property
     def is_alias(self) -> bool:
-        return False
+        return bool(self._raw.is_alias)
+
+    @property
+    def inherited(self) -> bool:
+        """Whether the object is a member inherited from a base class."""
+        return bool(self._raw.is_alias)
+
+    @property
+    def target(self) -> Object:
+        return wrap(self._raw.target, self._paths_collection, parent=self._parent)
 
     @property
     def parent(self) -> Object | None:
@@ -371,26 +284,19 @@ class Object(_MembersByKind):
 
     @property
     def is_internal(self) -> bool:
-        """Whether the file is in a `+internal` package."""
-        return "+internal" in self.filepath.parts
+        return bool(self._raw.is_internal)
 
     @property
     def is_private(self) -> bool:
-        """Whether the file is in a `private` folder, or the access is not public."""
-        return "private" in self.filepath.parts or bool(self._raw.is_private)
+        return bool(self._raw.is_private)
 
     @property
     def is_hidden(self) -> bool:
-        """Whether the object is internal or declared `Hidden`."""
-        return self.is_internal or bool(self._raw.is_hidden)
+        return bool(self._raw.is_hidden)
 
     @property
     def has_docstring(self) -> bool:
         return bool(self.docstring)
-
-    def has_attributes(self, *attributes: str) -> bool:
-        own = self.attributes
-        return all(attribute in own for attribute in attributes)
 
     def is_kind(self, kind: str | Kind | set[str | Kind]) -> bool:
         kinds = kind if isinstance(kind, set) else {kind}
@@ -407,18 +313,41 @@ class Object(_MembersByKind):
 
     @property
     def members(self) -> dict[str, Object]:
-        return {
-            name: wrap(raw, self._paths_collection, parent=self)
-            for name, raw in self._raw.members.items()
-        }
+        return self._wrap_all(self._raw.members)
 
     @property
-    def inherited_members(self) -> dict[str, Alias]:
-        return {}
+    def inherited_members(self) -> dict[str, Object]:
+        return self._wrap_all(getattr(self._raw, "inherited_members", {}))
 
     @property
-    def all_members(self) -> dict[str, Object | Alias]:
-        return {**self.inherited_members, **self.members}
+    def all_members(self) -> dict[str, Object]:
+        return self._wrap_all(self._raw.all_members)
+
+    @property
+    def folders(self) -> dict[str, Object]:
+        return self._wrap_all(self._raw.folders)
+
+    @property
+    def namespaces(self) -> dict[str, Object]:
+        return self._wrap_all(self._raw.namespaces)
+
+    @property
+    def scripts(self) -> dict[str, Object]:
+        return self._wrap_all(self._raw.scripts)
+
+    @property
+    def classes(self) -> dict[str, Object]:
+        return self._wrap_all(self._raw.classes)
+
+    @property
+    def functions(self) -> dict[str, Object]:
+        return self._wrap_all(self._raw.functions)
+
+    @property
+    def properties(self) -> dict[str, Object]:
+        # Enumeration members are rendered as properties, in member order.
+        wanted = {*self._raw.properties, *self._raw.enumerations}
+        return self._wrap_all({n: m for n, m in self._raw.all_members.items() if n in wanted})
 
     def __bool__(self) -> bool:
         return True
@@ -430,12 +359,12 @@ class Object(_MembersByKind):
         return f"{type(self).__name__}({self.name!r}, {self.lineno!r}, {self.endlineno!r})"
 
 
+# Inherited members are objects too: `is_alias` and `target` tell them apart.
+Alias = Object
+
+
 class Folder(Object):
     """A plain folder, or a class folder."""
-
-    @property
-    def canonical_path(self) -> str:
-        return self._raw.path
 
 
 class Namespace(Object):
@@ -444,10 +373,6 @@ class Namespace(Object):
     @property
     def path(self) -> str:
         return "+" + self.canonical_path
-
-    @property
-    def is_subnamespace(self) -> bool:
-        return "." in self.canonical_path
 
 
 class Script(Object):
@@ -459,7 +384,7 @@ class Property(Object):
 
     @property
     def type(self) -> Expr | None:
-        return _expr(getattr(self._raw, "type", None))
+        return getattr(self._raw, "type_expr", None)
 
     @property
     def dimensions(self) -> list[str] | None:
@@ -468,14 +393,11 @@ class Property(Object):
 
     @property
     def validators(self) -> Expr | None:
-        return _expr(getattr(self._raw, "validators", None))
+        return getattr(self._raw, "validators_expr", None)
 
     @property
     def default(self) -> Expr | None:
-        value = getattr(self._raw, "default", None)
-        if value is None:
-            value = getattr(self._raw, "value", None)
-        return _expr(value)
+        return getattr(self._raw, "default_expr", None) or getattr(self._raw, "value_expr", None)
 
     @property
     def getter(self) -> Function | None:
@@ -509,13 +431,11 @@ class Function(Object):
 
     @property
     def is_method(self) -> bool:
-        parent = self.parent
-        return parent is not None and parent.kind is Kind.CLASS
+        return bool(self._raw.is_method)
 
     @property
     def is_constructor_method(self) -> bool:
-        parent = self.parent
-        return self.is_method and parent is not None and self.name == parent.name
+        return bool(self._raw.is_constructor_method)
 
     @property
     def is_getter(self) -> bool:
@@ -531,95 +451,25 @@ class Class(Object):
 
     @property
     def bases(self) -> list[Expr]:
-        return [Expr(str(base)) for base in self._raw.bases]
+        return list(self._raw.bases_expr)
 
     @property
     def resolved_bases(self) -> list[Object]:
-        resolved = []
-        for base in self.bases:
-            found = self._paths_collection.get_member(str(base))
-            if found is not None:
-                resolved.append(found)
-        return resolved
-
-    @property
-    def mro(self) -> list[Class]:
-        return [cast("Class", wrap(raw, self._paths_collection)) for raw in self._raw.mro[1:]]
+        return [wrap(raw, self._paths_collection) for raw in self._raw.resolved_bases]
 
     @property
     def constructor(self) -> Function | None:
-        member = self.members.get(self.name)
-        return member if isinstance(member, Function) else None
+        raw = self._raw.constructor
+        return (
+            None
+            if raw is None
+            else cast("Function", wrap(raw, self._paths_collection, parent=self))
+        )
 
     @property
     def arguments(self) -> Arguments:
         constructor = self.constructor
         return constructor.arguments if constructor is not None else Arguments()
-
-    @property
-    def inherited_members(self) -> dict[str, Alias]:
-        return {
-            name: Alias(name, wrap(raw.target, self._paths_collection), self, inherited=True)
-            for name, raw in self._raw.inherited_members.items()
-        }
-
-
-class Alias(_MembersByKind):
-    """A member inherited from a base class: the same object under a new parent."""
-
-    is_alias = True
-    inherited = True
-    is_collection = False
-
-    def __init__(
-        self, name: str, target: Object, parent: Object | Alias, *, inherited: bool = False
-    ) -> None:
-        self.name = name
-        self._target = target
-        self.parent = parent
-        # An inherited member keeps the path of the member it was inherited from.
-        self._inherited = inherited
-
-    @property
-    def target(self) -> Object:
-        return self._target
-
-    @property
-    def path(self) -> str:
-        if self._inherited:
-            return self._target.path
-        return f"{self.parent.path}.{self.name}"
-
-    @property
-    def canonical_path(self) -> str:
-        return self._target.path
-
-    @property
-    def members(self) -> dict[str, Object | Alias]:
-        return {
-            name: Alias(name, member, self) if not isinstance(member, Alias) else member
-            for name, member in self._target.members.items()
-        }
-
-    @property
-    def inherited_members(self) -> dict[str, Alias]:
-        return {}
-
-    @property
-    def all_members(self) -> dict[str, Object | Alias]:
-        return {**self.inherited_members, **self.members}
-
-    def __getattr__(self, item: str) -> Any:
-        return getattr(self._target, item)
-
-    def __bool__(self) -> bool:
-        return True
-
-    def __len__(self) -> int:
-        return len(self._target)
-
-    def __repr__(self) -> str:
-        return f"Alias({self.name!r}, {self._target!r})"
 
 
 _CLASSES: dict[str, type[Object]] = {

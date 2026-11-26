@@ -572,17 +572,17 @@ wheels = [
 
 [[package]]
 name = "malt-index"
-version = "0.2.1"
+version = "0.3.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/61/9e/9bb3ba7cf0712c2ea3b57b32ee6cc47fe33dc85c3d2dbeaff8142a4df4b5/malt_index-0.2.1.tar.gz", hash = "sha256:cd5f398d2049b96603b2dac9e355dd6e739fc1a694fae6d4c688317838937904", size = 101910, upload-time = "2026-11-23T09:20:43.601Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e9/2a/c58fc0276988c05ba6511fbd91d208bbdc8fdc9ed1f7585eef29434633c8/malt_index-0.3.0.tar.gz", hash = "sha256:39b1728fab055824081cc4d320ac7eb7c1b2b5a7a4b78156a02623c3102fb592", size = 128068, upload-time = "2026-11-26T11:56:38.738Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c0/df/44c9871ca2e56e62a027e55c50eccc75160bebac20bbf9ec33d07c7cc021/malt_index-0.2.1-cp310-abi3-macosx_11_0_arm64.whl", hash = "sha256:50bc55384aba7ed3e94efc1c8ba3be69667d3ca6cfd54e7fc381b166fcf5023f", size = 652786, upload-time = "2026-11-23T09:20:33.193Z" },
-    { url = "https://files.pythonhosted.org/packages/e8/a3/4cfb7fc40501c5e2c2878f483f1af20c6a02f1fed0a995080d6cb2f80c39/malt_index-0.2.1-cp310-abi3-manylinux_2_28_aarch64.whl", hash = "sha256:006929535d658b96a646627808ca98354b10525d66cb04ba7ca0efa2bccb4ff4", size = 670930, upload-time = "2026-11-23T09:20:34.36Z" },
-    { url = "https://files.pythonhosted.org/packages/e8/15/83afdaf441b7a20888a36fd1b6430e84426dc2c3249b52af8722de8042c9/malt_index-0.2.1-cp310-abi3-manylinux_2_28_x86_64.whl", hash = "sha256:951f41ff0d10da857ae10e287b877df08b9147bc4ceb99f9906e59646553e812", size = 699927, upload-time = "2026-11-23T09:20:35.493Z" },
-    { url = "https://files.pythonhosted.org/packages/38/b6/c7cda23f842069a54bb8dd925ca87e5efc5b9efd18aaa375a98bc4e78874/malt_index-0.2.1-cp310-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:d0ae56ec99ab235e5a67a504bb4b0319a3f33fe108488ab869ecefec8b767796", size = 853750, upload-time = "2026-11-23T09:20:36.616Z" },
-    { url = "https://files.pythonhosted.org/packages/33/a7/e050ace82f6daf87016de2377d06f68d35e43880c499c798f481e5fd19c8/malt_index-0.2.1-cp310-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:0702a106a28c646de61f65f63f4e4948b9db1ff68d960df92b738b0c906cddf1", size = 913367, upload-time = "2026-11-23T09:20:37.967Z" },
-    { url = "https://files.pythonhosted.org/packages/fc/e7/77fcfb197b65fe32073cf097cb59082990757adf026bfed4b551691ec1cf/malt_index-0.2.1-cp310-abi3-win_amd64.whl", hash = "sha256:ec065bc3476cda9296f415d3d84f67d3ed9a0e18b4c7c1f3ad06a1b6d2085a83", size = 636487, upload-time = "2026-11-23T09:20:39.537Z" },
-    { url = "https://files.pythonhosted.org/packages/28/93/b06527605eadd8c7f884ed9434419abe3bcb4afba4fac8107581fe3493b0/malt_index-0.2.1-cp310-abi3-win_arm64.whl", hash = "sha256:6614750e9f48b4483b892fc3672c0c454ef1c15451cb1b6c88073b17cd90eb7e", size = 600404, upload-time = "2026-11-23T09:20:41.309Z" },
+    { url = "https://files.pythonhosted.org/packages/31/56/b315b183c201464950d99a4556c36abf867f2e7ee05041ee708eb3e411ea/malt_index-0.3.0-cp310-abi3-macosx_11_0_arm64.whl", hash = "sha256:8ff2324a4daea0e7317b3620189fcbb888047d59fbdf51edee23229273ceaf3f", size = 724967, upload-time = "2026-11-26T11:56:30.354Z" },
+    { url = "https://files.pythonhosted.org/packages/a6/6c/d3798a031705454e83e29e905cf1d58d705f3d3f3c49e5b31d308ee335da/malt_index-0.3.0-cp310-abi3-manylinux_2_28_aarch64.whl", hash = "sha256:6d488f176aa06a893cc108c3e45d1d8544c7350ae26ef76c127acf953b0ee1d2", size = 744064, upload-time = "2026-11-26T11:56:31.238Z" },
+    { url = "https://files.pythonhosted.org/packages/55/fb/53994cef1a0774ae746fda87065925016294a936e55356af61125096619a/malt_index-0.3.0-cp310-abi3-manylinux_2_28_x86_64.whl", hash = "sha256:d7330541f820e7d0cc58fc1fabb0050788e150a4c1a1998f440a62b23ec0495c", size = 778877, upload-time = "2026-11-26T11:56:32.229Z" },
+    { url = "https://files.pythonhosted.org/packages/66/de/bc00a9936aab642f702d71b26aa250dc2dd3a56568ba860ec7a2dfeeef8a/malt_index-0.3.0-cp310-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:4555c611a163c067d77474a4354b4832b6c44d1203b0233e2b23c237dd126260", size = 927286, upload-time = "2026-11-26T11:56:33.317Z" },
+    { url = "https://files.pythonhosted.org/packages/34/ff/c7d0bccdede4c7339301f9627cdd619ccf7acee7c2cf2740e58e9ae9d3b8/malt_index-0.3.0-cp310-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:932d6d2d40b60e2669a9cbc9c6d612f4da4261ec52f9fb7dd006b71c51c478d4", size = 991530, upload-time = "2026-11-26T11:56:34.466Z" },
+    { url = "https://files.pythonhosted.org/packages/81/26/c5ff4a78aa175852d1b515f391d4535af24294ab4848ed8425a0138602f7/malt_index-0.3.0-cp310-abi3-win_amd64.whl", hash = "sha256:b940beb46bca2602c9724dcf27d834e8737e060121951b6f59170f1ab30a679e", size = 709707, upload-time = "2026-11-26T11:56:35.58Z" },
+    { url = "https://files.pythonhosted.org/packages/cf/f3/a0f3b7bc37d26871890571bbd7ac5b41bf2b9bcc172776e13de6d4beb499/malt_index-0.3.0-cp310-abi3-win_arm64.whl", hash = "sha256:98439460dd64acd080313f8c68c55009ed25b6334f0acab0ea56677553bd7f41", size = 673078, upload-time = "2026-11-26T11:56:36.499Z" },
 ]
 
 [[package]]
@@ -897,7 +897,7 @@ requires-dist = [
     { name = "certifi", specifier = ">=2026.10.18" },
     { name = "charset-normalizer", specifier = ">=3.5.2,<4" },
     { name = "griffe", specifier = ">=2.3.2,<3" },
-    { name = "malt-index", specifier = ">=0.2.1,<1" },
+    { name = "malt-index", specifier = ">=0.3.0,<1" },
     { name = "mkdocs-autorefs", specifier = ">=1.4,<2" },
     { name = "mkdocstrings", specifier = ">=1.0.8,<2" },
     { name = "pymdown-extensions", specifier = ">=12.3,<13" },

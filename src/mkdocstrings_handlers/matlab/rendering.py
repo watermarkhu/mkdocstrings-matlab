@@ -385,7 +385,8 @@ def _parents(obj: Alias) -> set[str]:
     Returns:
         A set of parent path strings.
     """
-    parent: Object | Alias = obj.parent
+    parent = obj.parent
+    assert parent is not None
     parents = {parent.path}
     while parent.parent:
         parent = parent.parent
@@ -407,7 +408,7 @@ def _remove_cycles(objects: list[MEMBERS]) -> Iterator[MEMBERS]:
     for obj in objects:
         if obj.is_alias:
             with suppress_errors:
-                if obj.parent and obj.path in _parents(cast(Alias, obj)):
+                if obj.parent and obj.path in _parents(obj):
                     continue
         yield obj
 
@@ -435,7 +436,7 @@ def _has_docstrings(obj: MEMBERS, _seen: set[int] | None = None) -> bool:
     """
     seen = set() if _seen is None else _seen
     try:
-        target = cast("Alias", obj).target if obj.is_alias else obj
+        target = obj.target if obj.is_alias else obj
         if id(target) in seen:
             return False
         seen.add(id(target))
