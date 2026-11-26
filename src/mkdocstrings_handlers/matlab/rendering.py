@@ -36,11 +36,21 @@ from griffe._internal.docstrings.models import (
 from griffe._internal.docstrings.parsers import DocstringStyle, parse
 from jinja2 import pass_context
 from markupsafe import Markup
-from maxx.enums import ArgumentKind
-from maxx.exceptions import CyclicAliasError as MaxxCyclicAliasError
-from maxx.objects import Alias, Class, Folder, Function, Namespace, Object, Property, Script
 from mkdocs_autorefs import AutorefsHookInterface
 from mkdocstrings import get_logger
+
+from mkdocstrings_handlers.matlab.model import (
+    Alias,
+    ArgumentKind,
+    Class,
+    Folder,
+    Function,
+    Namespace,
+    Object,
+    Property,
+    Script,
+)
+from mkdocstrings_handlers.matlab.model import CyclicAliasError as IndexCyclicAliasError
 
 if TYPE_CHECKING:
     from collections.abc import Iterator, Sequence
@@ -375,7 +385,8 @@ def _parents(obj: Alias) -> set[str]:
     Returns:
         A set of parent path strings.
     """
-    parent: Object | Alias = obj.parent
+    parent = obj.parent
+    assert parent is not None
     parents = {parent.path}
     while parent.parent:
         parent = parent.parent
@@ -397,7 +408,7 @@ def _remove_cycles(objects: list[MEMBERS]) -> Iterator[MEMBERS]:
     for obj in objects:
         if obj.is_alias:
             with suppress_errors:
-                if obj.parent and obj.path in _parents(cast(Alias, obj)):
+                if obj.parent and obj.path in _parents(obj):
                     continue
         yield obj
 
@@ -406,7 +417,7 @@ def _has_docstrings(obj: MEMBERS, _seen: set[int] | None = None) -> bool:
     """
     Whether an object or any of its members has a docstring (empty or not).
 
-    maxx's models only expose the non-recursive ``has_docstring`` (unlike
+    the index models only expose the non-recursive ``has_docstring`` (unlike
     griffe's ``has_docstrings``), so containers such as namespaces, classes,
     and folders that lack their own docstring were being dropped entirely by
     ``do_filter_objects`` even when they contain documented members. This
@@ -425,14 +436,14 @@ def _has_docstrings(obj: MEMBERS, _seen: set[int] | None = None) -> bool:
     """
     seen = set() if _seen is None else _seen
     try:
-        target = cast("Alias", obj).target if obj.is_alias else obj
+        target = obj.target if obj.is_alias else obj
         if id(target) in seen:
             return False
         seen.add(id(target))
         if target.has_docstring:
             return True
         members = getattr(target, "members", None) or {}
-    except (AliasResolutionError, CyclicAliasError, MaxxCyclicAliasError):
+    except (AliasResolutionError, CyclicAliasError, IndexCyclicAliasError):
         return False
     return any(_has_docstrings(member, seen) for member in members.values())
 
@@ -759,7 +770,7 @@ def do_function_docstring(
                     DocstringParameter(
                         name=param.name,
                         value=str(param.default) if param.default is not None else None,
-                        annotation=param.type,
+                        annotation=param.type,  # ty: ignore[invalid-argument-type]
                         description=param.docstring.value if param.docstring is not None else "",
                     )
                     for param in standard_arguments
@@ -775,7 +786,7 @@ def do_function_docstring(
                     DocstringParameter(
                         name=param.name,
                         value=str(param.default) if param.default is not None else None,
-                        annotation=param.type,
+                        annotation=param.type,  # ty: ignore[invalid-argument-type]
                         description=param.docstring.value if param.docstring is not None else "",
                     )
                     for param in keyword_arguments
@@ -790,7 +801,7 @@ def do_function_docstring(
                 DocstringReturn(
                     name=param.name,
                     value=str(param.default) if param.default is not None else None,
-                    annotation=param.type,
+                    annotation=param.type,  # ty: ignore[invalid-argument-type]
                     description=param.docstring.value if param.docstring is not None else "",
                 )
                 for param in function.returns or []

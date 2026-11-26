@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 import pytest
-from maxx.exceptions import CyclicAliasError as MaxxCyclicAliasError
+from malt_index import CyclicAliasError as IndexCyclicAliasError
 
 from mkdocstrings_handlers.matlab import rendering
 
@@ -32,7 +32,7 @@ class _FakeMatlabObject:
 
 @dataclass
 class _FakeContainer:
-    """Minimal stand-in for a maxx container/alias with controllable `members`."""
+    """Minimal stand-in for a container/alias with controllable `members`."""
 
     name: str
     has_docstring: bool = False
@@ -50,7 +50,7 @@ class _FakeContainer:
 
     @property
     def members(self) -> dict[str, Any]:
-        """Wrap each child in a new alias on every access, like `maxx.objects.Alias.members`."""
+        """Wrap each child in a new alias on every access, like `Alias.members`."""
         return {
             child.name: _FakeContainer(child.name, is_alias=True, target_obj=child)
             for child in self.children
@@ -74,9 +74,9 @@ def test_has_docstrings_finds_documented_descendant_through_aliases() -> None:
     assert rendering._has_docstrings(root) is True  # ty: ignore[invalid-argument-type]
 
 
-def test_has_docstrings_treats_maxx_cyclic_alias_error_as_undocumented() -> None:
-    """A maxx `CyclicAliasError` while resolving an alias must read as "no docstring"."""
-    broken = _FakeContainer("broken", is_alias=True, raises=MaxxCyclicAliasError(["a", "b", "a"]))
+def test_has_docstrings_treats_index_cyclic_alias_error_as_undocumented() -> None:
+    """An index `CyclicAliasError` while resolving an alias must read as "no docstring"."""
+    broken = _FakeContainer("broken", is_alias=True, raises=IndexCyclicAliasError(["a", "b", "a"]))
     root = _FakeContainer("root", children=[])
     root.children.append(broken)
 
